@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<!-- Creator: CorelDRAW 2020 (64-Bit 评估版) -->
+<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="36.9684mm" height="36.8619mm" version="1.1" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+viewBox="0 0 206.37 205.78"
+ xmlns:xlink="http://www.w3.org/1999/xlink"
+ xmlns:xodm="http://www.corel.com/coreldraw/odm/2003">
+ <defs>
+  <style type="text/css">
+   <![CDATA[
+    .str0 {stroke:#0AF5B6;stroke-width:7.88;stroke-miterlimit:22.9256}
+    .str1 {stroke:#0AF5B6;stroke-width:1.12;stroke-miterlimit:22.9256}
+    .fil0 {fill:#0AF5B6}
+   ]]>
+  </style>
+ </defs>
+ <g id="图层_x0020_1">
+  <metadata id="CorelCorpID_0Corel-Layer"/>
+  <g id="_2345414397456">
+   <g>
+    <rect class="fil0 str0" transform="matrix(0.45777 -0.45777 0.45777 0.45777 5.56997 103.099)" width="81.97" height="28.06"/>
+    <rect class="fil0 str0" transform="matrix(-0.45777 -0.45777 0.45777 -0.45777 43.1808 140.709)" width="81.97" height="28.06"/>
+   </g>
+   <g>
+    <rect class="fil0 str0" transform="matrix(-0.45777 -0.45777 -0.45777 0.45777 200.804 102.681)" width="81.97" height="28.06"/>
+    <rect class="fil0 str0" transform="matrix(0.45777 -0.45777 -0.45777 -0.45777 163.193 140.292)" width="81.97" height="28.06"/>
+   </g>
+   <g>
+    <rect class="fil0 str0" transform="matrix(0.45777 -0.45777 -0.45777 -0.45777 103.219 200.209)" width="81.97" height="28.06"/>
+    <rect class="fil0 str0" transform="matrix(0.45777 0.45777 0.45777 -0.45777 65.608 162.598)" width="81.97" height="28.06"/>
+   </g>
+   <g>
+    <rect class="fil0 str0" transform="matrix(-0.45777 0.45777 0.45777 0.45777 103.336 5.56998)" width="81.97" height="28.06"/>
+    <rect class="fil0 str0" transform="matrix(-0.45777 -0.45777 -0.45777 0.45777 140.947 43.1808)" width="81.97" height="28.06"/>
+   </g>
+   <circle class="fil0 str1" cx="103.27" cy="102.92" r="34.96"/>
+  </g>
+ </g>
+</svg>

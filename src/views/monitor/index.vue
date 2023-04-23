@@ -1,0 +1,2096 @@
+<template>
+  <div style="height:100%">
+    <!-- <div class="page-title">
+      {{ $t("home_page.monitor_information") }}
+      <span class="video-btn" @click="$router.push('/map')"
+        ><svg-icon icon-class="ditu"
+      /></span>
+    </div> -->
+    <div class="content">
+      <el-row :gutter="10">
+        <el-col :span="6">
+          <!-- <div class="selectAdvice">
+            <div class="cearchAdvice">
+              <el-input placeholder="输入关键字进行过滤" v-model="filterText">
+              </el-input>
+            </div>
+            <el-tree class="filter-tree" 
+            :data="adviceList" :props="defaultProps" 
+            :filter-node-method="filterNode"
+            ref="tree" node-key="label" auto-expand-parent accordion expand-on-click-node
+              :default-expanded-keys="defaultExpanded"
+              	 @node-click="treeNodeClick">
+            </el-tree>
+          </div> -->
+          <div class="robot back-shaodow">
+            <div class="leftTitle"> 机器人信息 <span v-if="butteryInfo">({{ butteryInfo }})</span> </div>
+            <div class="robotMessage">
+              <div>
+                当前速度
+                <div>
+                  {{ carList.realTimeSpeed == null ? '0' : (carList.realTimeSpeed/1000).toFixed(1) }}m/s
+                </div>
+              </div>
+              <div style="margin-left:10% ;">
+                累计运行里程
+                <div>
+                 {{carList.totalDistance == null?'0':(carList.totalDistance/100000).toFixed(2) }}Km
+                </div>
+              </div>
+              <div>
+                累计运行时间
+                <div>
+                  {{carList.totalRunTime == null?'0': (carList.totalRunTime/1440).toFixed(1) }}天
+                </div>
+              </div>
+            </div>
+            <div>
+              <img src="../../assets/img/robot.png" class="robotPic">
+            </div>
+            <div class="robotEletri">
+              <div style="display:flex;margin:2rem auto;">
+                <i class="el-icon-caret-left arrow" @click="changeRobotLeft"></i>
+                <div class="onLine">{{ carrierName }}({{ carList.inSystem ? '在线' : '离线' }})</div>
+                <i class="el-icon-caret-right arrow" @click="changeRobotRight"></i>
+              </div>
+            </div>
+            <div class="electri">
+              <el-progress :width="40" text-color="#fbf9ea" type="circle"
+                :percentage="carList.batteryLevel"></el-progress>
+              <div>当前电量</div>
+            </div>
+            <div class="microphone">
+              <Intercom></Intercom>
+              <div class="speak_detail" style="font-size: 0.875rem;">双向喊话</div>
+            </div>
+            <div class="broadcast" @click="broadcastVisible = true">
+              <svg-icon icon-class="broadcast"></svg-icon>
+              <!-- <svg-icon icon-class="stopBroadcast" v-show="broadcasting == true"></svg-icon> -->
+            </div>
+            <div class="broadcast_detail">语音播报</div>
+          </div>
+
+        </el-col>
+        <el-col :span="10">
+          <div class="center">
+            <div class="video" v-if="currentAdvices.length">
+              <iframe :class="[
+                currentCamera.accessoryID === currentAdvices.accessoryID
+                  ? 'active'
+                  : '', 'back-shaodow'
+              ]" :ref="'iframe0'" :myData="currentAdvices[0]" style="width: 100%;height:27.5rem;" marginwidth="0"
+                marginheight="0" name="ddddd" :id="'iframes0'" scrolling="auto" :src="currentAdvices[0].src">
+              </iframe>
+              <!-- <iframe v-for="(item, index) in currentAdvices" allow="fullscreen" :class="[
+                  currentCamera.accessoryID === item.accessoryID
+                    ? 'active'
+                    : '',
+                ]" :ref="'iframe' + index" :myData="item" style="width: 25.6; height: 40 ;margin-right: 0.9375rem;"
+                  name="ddddd" :id="'iframes' + index" scrolling="auto" :src="item.src" :key="index">
+                </iframe> -->
+
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="right">
+            <iframe :class="[
+              currentCamera.accessoryID === currentAdvices.accessoryID
+                ? 'active'
+                : '', 'back-shaodow'
+            ]" :ref="'iframe1'" :myData="currentAdvices[1]" style="width:100%;height:27.5rem;" name="ddddd"
+              marginwidth="0" marginheight="0" :id="'iframes1'" scrolling="auto" :src="currentAdvices[1].src">
+            </iframe>
+          </div>
+        </el-col>
+        <div v-if="broadcastVisible" class="broadcastSelect">
+          <div class="leftTitle" style="display: flex;">
+             <div>语音播报</div> 
+            <i class="el-icon-close closeBroad" style="margin-left: auto;color: #000000;"
+              @click="broadcastVisible = false"></i>           
+          </div>
+          <el-radio-group v-model="selectedOption">
+            <el-radio style="color:red ;" label="语音停止播放"></el-radio><br>
+            <el-radio label="前方事故，请注意绕行"></el-radio><br>
+            <el-radio label="路面凹坑，请谨慎驾驶"></el-radio><br>
+            <el-radio label="路面异物，请谨慎驾驶"></el-radio><br>
+            <el-radio label="前方拥堵，请注意减速"></el-radio><br>
+            <el-radio label="道路湿滑，请谨慎驾驶"></el-radio><br>
+          </el-radio-group>
+          <div class="broadcastBtn">
+            <el-button type="primary" style="background-color:#64C8C8 ;" size="mini" @click="broadcast()">确 定</el-button>
+          </div>
+        </div>
+        <el-dialog :visible.sync="lowButtery" title="低电量提示" width="30%">
+          <span style="font-size:1.5rem ;">机器人低电量,确定启动该任务吗? </span>
+          <span slot="footer">
+            <el-button size="mini" @click="lowButtery = false">取 消</el-button>
+            <el-button size="mini" type="primary" @click="goLocationLowButtery()">确 定</el-button>
+          </span>
+        </el-dialog>
+        <el-dialog :visible.sync="locationAuto" :close-on-click-modal="false" title="操作提示" width="30%">
+          <span style="font-size:1.5rem ;">已到达巡检点，是否手动操作机器人</span>
+          <span slot="footer">
+            <el-button size="mini" @click="cancelLocation()">否</el-button>
+            <el-button size="mini" type="primary" @click="openLocation()">是</el-button>
+          </span>
+        </el-dialog>
+      </el-row>
+      <el-row :gutter="10">
+        <el-col :span="6">
+          <div class="task back-shaodow">
+            <div class="leftTitle" style="padding-top: 1rem;padding-bottom: 0.5rem;">任务信息</div>
+            <div class="taskDetail">
+              当前任务 ：<span style="color:#66B3B2 ;">{{ realTimeTask == '' ? '空闲状态' : realTimeTask }} </span>
+              <span style="margin-left: 1.875rem;">预计完成时间：<span style="color:#66B3B2 ;">10分钟</span> </span>
+            </div>
+            <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0rem;">
+              任务下发
+            </div>
+            <div class="taskDetail">
+              <span style="width: 7rem;line-height: 2rem;">任务模板 ：</span>
+              <span style="color:#66B3B2 ;">
+                <el-select v-model="taskID" placeholder="请选择">
+                  <el-option v-for="item in taskList" :key="item.value" :label="item.label" :value="item.value">
+                  </el-option>
+                </el-select>
+              </span>
+              <!-- <el-button size="small" round
+                  style="background-color:#66B3B2 ; color:#ffffff;margin-left: 3.75rem;height: 3;line-height: 0.3125rem;"
+                  @click="startPlan()">执行</el-button> -->
+              <el-popconfirm title="确定执行任务吗?" @confirm="startPlan()">
+                <div
+                  style="background-color:#66B3B2 ; color:#ffffff;margin-left: 2.5rem;width: 3.75rem; text-align: center; height: 1.875rem;line-height: 1.875rem;"
+                  slot="reference">执行</div>
+              </el-popconfirm>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="10">
+          <div class="map back-shaodow">
+            <img src="../../assets/img/suidao.png" class="backgroundIm">
+            <div class="nowPosition">
+              <span style="margin:0.125rem 0.625rem 0  0.625rem ;font-size: 1.25rem;">巡检地图</span>
+              <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }}机器人当前位置：{{ carList.vertexNumber == 0 ?
+                carList.x / 1000 :
+                '站点' + carList.vertexNumber
+              }}</span>
+            </div>
+
+            <div id="robot" style="position:relative;width: 3.125rem;bottom: 9rem;margin-left: 0.3rem;">
+              <img src="../../assets/img/robot1.png" style="width:2.5rem;height: 1.875rem;opacity: 1;">
+            </div>
+            <div class="goLocation">
+              选择速度
+              <el-select v-model="riskSpeed" placeholder="请选择巡检速度">
+                <el-option v-for="item in speedList" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+              <!-- <el-select v-model="locationID" placeholder="请选择巡检点">
+                <el-option v-for="item in locationList" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select> -->
+              <span style="margin:0 0.625rem ;">去往</span>
+              <el-input  
+              oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
+               class="location_Detail" v-model="locationID" placeholder="如:101">
+                <template slot="prefix">K100</template>
+              </el-input>
+              <el-popconfirm title="确定去往巡检点?" @confirm="goLocation">
+                <div class="goYes" slot="reference">确定</div>
+              </el-popconfirm>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="robotControl back-shaodow">
+            <div class="leftTitle" style="display: flex;position: relative;">
+              机器人控制
+              <div>
+                <el-switch :disabled="!carID" style="height: 1.25rem;margin-left:1rem ;" v-model="robotOpen"
+                  active-text="开" inactive-text="关" @change="setOpen()" :active-value="1" :inactive-value="2">
+                </el-switch>
+              </div>
+              <div style="margin-left: 7vw;">机器人速度{{ robotSpeed / 1000 }}m/s</div>
+            </div>
+
+            <div style="display:flex;margin: 0.75rem 0;">
+              <div class="robotDirec" @mousedown="setRobotMoveCrl(2)" @mouseup="setRobotMoveCrl(3)">
+                <img src="../../assets/img/robotLeft.png">
+                <span style="position: relative;;bottom: 0.3125rem;">后退</span>
+              </div>
+              <div class="robotDirec" @mousedown="setRobotMoveCrl(1)" @mouseup="setRobotMoveCrl(3)">
+                <span style="position: relative;;bottom: 0.3125rem;">前进</span> <img src="../../assets/img/robotRight.png"
+                  alt="">
+              </div>
+              <div class="speed">
+                <div @click="robotSpeed = 1000" :class="robotSpeed == 1000 ? 'speed_detail_active' : 'speed_detail'">
+                  巡检速度
+                </div>
+                <div style="margin-top:0.4375rem ;" @click="robotSpeed = 6000"
+                  :class="robotSpeed == 6000 ? 'speed_urgency_active' : 'speed_urgency'">
+                  应急速度
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </el-col>
+      </el-row>
+      <el-row :gutter="10">
+        <el-col :span="6">
+          <div class="enviroment back-shaodow threeRow">
+            <div class="leftTitle">环境信息</div>
+            <div style="display:flex">
+              <div class="enviroDetail">
+                <div class="detail_icon">
+                  <svg-icon icon-class="tempicture" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
+                  <div style="color:#66B3B2 ;">温度</div>
+                </div>
+                <div class="gasDetail">
+                  {{ (gasList.Temperature / 100).toFixed(1) }}℃
+                </div>
+              </div>
+              <div class="enviroDetail">
+                <div class="detail_icon">
+                  <svg-icon icon-class="shidu" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
+                  <div style="color:#66B3B2 ;">湿度</div>
+                </div>
+                <div class="gasDetail">
+                  {{ gasList.Humidity == null ? '0' : (gasList.Humidity / 100).toFixed(1) }}<span
+                    style="font-size: 0.625rem;">%</span>
+                </div>
+              </div>
+              <div class="enviroDetail">
+                <div style="color:#66B3B2;margin: 1.25rem 0 0 0.375rem;">烟雾</div>
+                <div class="gasDetail">
+                  {{ gasList.Smoke == null ? '0' : (gasList.Smoke / 100).toFixed(1) }}<span
+                    style="font-size: 0.625rem;">ppm</span>
+                </div>
+              </div>
+            </div>
+            <div style="display:flex;margin-top: 0.625rem;">
+              <div class="enviroDetail">
+                <div style="color:#66B3B2;margin: 0.625rem 0 0 0.375rem;">硫化氢</div>
+                <div class="gasDetail">
+                  {{ gasList.H2S == null ? '0' : (gasList.H2S / 100).toFixed(1) }}<span
+                    style="font-size: 0.625rem;">ppm</span>
+                </div>
+              </div>
+              <div class="enviroDetail">
+                <div class="gas">一氧化碳</div>
+                <div class="gasDetail">
+                  {{ gasList.CO == null ? '0' : (gasList.CO / 100).toFixed(1) }}<span
+                    style="font-size: 0.625rem;">ppm</span>
+                </div>
+              </div>
+              <div class="enviroDetail">
+                <div style="color:#66B3B2;margin: 1.25rem 0 0 0.375rem;">甲烷</div>
+                <div class="gasDetail">
+                  {{ gasList.CH4 == null ? '0' : (gasList.CH4 / 100).toFixed(1) }} <span
+                    style="font-size: 0.625rem;">%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="10">
+          <div class="alarm_2 back-shaodow threeRow">
+            <div class="alarm_title">告警信息
+              <div class="chart" @click="chart()">告警分析</div>
+            </div>
+            <div class="alarm">
+              <div class="myTable">
+                <el-table :data="showTable" @row-click="getDetailMessage" style="width: 98%" height="10rem">
+                  <el-table-column width="60" label="序号" type="index" align="center">
+                  </el-table-column>
+                  <el-table-column prop="AlarmCode" :label="'告警码'" width="80" align="center">
+                  </el-table-column>
+                  <el-table-column prop="AlarmName" :label="$t('alarm_dealWith.alarm_name_label')" align="center">
+                    <template slot-scope="scope">
+                      {{ scope.row.AlarmName.slice(0, -2) }}
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="MaxLevel" width="100" :label="'告警级别'" align="center">
+                    <template slot-scope="scope">
+                      <span v-if="scope.row.MaxLevel === 4" class="first">致命</span>
+                      <span v-else-if="scope.row.MaxLevel === 3" class="two">严重</span>
+                      <span v-else-if="scope.row.MaxLevel === 2" class="three">一般</span>
+                      <span v-else class="four">提示</span>
+
+                      <!-- {{ scope.row.MaxLevel ==0?'默认':scope.row.MaxLevel ==1?'提示':scope.row.MaxLevel ==2?'一般':scope.row.MaxLevel ==3?'严重':'致命' }} -->
+                    </template>
+                  </el-table-column>
+                  <!-- <el-table-column prop="CarrierName" :label="$t('alarm_dealWith.machine_name_label')">
+                            </el-table-column>
+                             <el-table-column prop="EquipmentName" :label="$t('alarm_dealWith.equipment_name_label')">
+                             </el-table-column> -->
+                  <el-table-column prop="ReportTime" :label="$t('alarm_dealWith.happen_time')" align="center">
+                  </el-table-column>
+                </el-table>
+              </div>
+              <el-dialog title="告警详情" :visible.sync="dialogVisible" width="60%">
+                <div style="display:flex">
+                  <img :src="imageUrl" alt="" style="width:70%">
+                  <div style="margin-left:2.5rem">
+                    <div style="margin: 0.625rem  0;">告警级别:
+                      <span v-if="alarm.MaxLevel == 4"
+                        style="border: red 0.0625rem solid; color: red;font-size: 1.375rem;">致命</span>
+                      <span v-if="alarm.MaxLevel == 3"
+                        style="border: orange 0.0625rem solid; color: orange;font-size: 1.375rem;">严重</span>
+                      <span v-if="alarm.MaxLevel == 2"
+                        style="border: yellow 0.0625rem solid; color: yellow;font-size: 1.25rem;">一般</span>
+                      <span v-if="alarm.MaxLevel == 1"
+                        style="border: #08F9EB 0.0625rem solid; color: #08F9EB ;font-size: 1.25rem;">提示</span>
+                    </div>
+                    <div style="margin: 1.25rem  0;">
+                      告警名称：{{ alarm.AlarmName }}
+                    </div>
+                    <div style="margin: 1.875rem  0;">
+                      告警编号：{{ alarm.ID }}
+                    </div>
+                    <div style="margin: 1.875rem  0;">
+                      告警类型：{{ alarm.AlarmCode == 1001 ? "行人告警" : alarm.AlarmCode == 1002 ? "非机动车告警" :
+                        alarm.AlarmCode
+                          == 1003 ? "异物告警" : alarm.AlarmCode == 1004 ? "温度告警" :
+                          alarm.AlarmCode == 1005 ? "湿度告警" : alarm.AlarmCode == 1006 ? "气体告警" : alarm.AlarmCode ==
+                            1007 ? "灯光告警" :
+                            alarm.AlarmCode == 1008 ? "违停逆行告警" : alarm.AlarmCode == 1009 ? "超速告警" : alarm.AlarmCode
+                              == 1010 ? "动物告警" : alarm.AlarmCode == 1012 ? "消防设备告警" : alarm.AlarmCode == 1011 ? "井盖异常告警" :
+                                alarm.AlarmCode
+                                  == 1013 ? "火灾烟雾告警" : "机体告警" }} </div>
+                    <div style="margin: 1.875rem 0;">
+                      事件描述：{{ alarm.Description }}
+                    </div>
+                    <div style="margin: 1.875rem 0;">
+                      告警位置：{{ alarm.Location }}
+                    </div>
+                    <div style="margin: 1.875rem  0;">
+                      发生时间：{{ alarm.ReportTime }}
+                    </div>
+                    <div style="margin: 1.875rem  0;">
+                      修复时间：{{ alarm.RecoveryTime == null ? "未修复" : alarm.RecoveryTime }}
+                    </div>
+                  </div>
+                </div>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click="dialogVisible = false">取 消</el-button>
+                  <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                </span>
+              </el-dialog>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="hkControl back-shaodow threeRow">
+            <div class="leftTitle" widht="100px">
+              云台控制器
+            </div>
+            <div style="display:flex ;">
+              <div class="hkMove">
+                <img src="../../assets/img/hkUp.png" @mousedown="setCameraOperate(1)" @mouseup="stopCam()" class="hkUp">
+                <div style="display: flex;">
+                  <img src="../../assets/img/hkLeft.png" @mousedown="setCameraOperate(5)" @mouseup="stopCam()"
+                    class="hkLeft">
+                  <img src="../../assets/img/hkConnect.png" @click="HKlogin()"
+                    :class="[YTlogin == true ? 'HKloading' : 'hkConnect']">
+                  <img src="../../assets/img/hkRight.png" @mousedown="setCameraOperate(7)" @mouseup="stopCam()"
+                    class="hkRight">
+                </div>
+                <img src="../../assets/img/hkDown.png" @mousedown="setCameraOperate(3)" @mouseup="stopCam()"
+                  class="hkDown">
+              </div>
+              <div style="margin-left: 8.125rem;width:18.75rem;position: relative;bottom: 1rem;">
+                <div class="hkAction">
+                  <div class="action_detail" @mousedown="setCameraOperate(9)" @mouseup="stopCam()">
+                    <img src="../../assets/img/fangda.png" alt="">
+                  </div>
+                  <div class="action_detail">
+                    <img src="../../assets/img/takephoto.png" @click="setCameraOperate(20)">
+                  </div>
+                  <div class="action_detail" @mousedown="setCameraOperate(16)" @mouseup="stopCam()">
+                    <img src="../../assets/img/clean.png" alt="">
+                  </div>
+                  <div class="action_detail" @mousedown="setCameraOperate(13)" @mouseup="stopCam()">
+                    <img src="../../assets/img/jujiao.png" alt="">
+                  </div>
+                </div>
+                <div class="hkAction">
+                  <div class="action_detail" @mousedown="setCameraOperate(11)" @mouseup="stopCam()">
+                    <img src="../../assets/img/suoxiao.png" alt="">
+                  </div>
+                  <div class="action_detail">
+                    <img src="../../assets/img/video.png" v-if="!videoOn" @click="setCameraOperate(21)">
+                    <img src="../../assets/img/closeVideo.png" v-if="videoOn" @click="setCameraOperate(23)">
+                  </div>
+                  <div class="action_detail">
+                    <img src="../../assets/img/light.png" v-if="!lightOn" @click="setCameraOperate(12)">
+                    <img src="../../assets/img/closeLiht.png" v-if="lightOn" @click="setCameraOperate(14)">
+                  </div>
+                  <div class="action_detail" @mousedown="setCameraOperate(15)" @mouseup="stopCam()">
+                    <img src="../../assets/img/yuanjiao.png" alt="">
+                  </div>
+                </div>
+                <div style="margin-top:1.5rem;padding-left: 1.25rem;">
+                  云台速度
+                  <!-- <el-input disabled v-model="speed" ></el-input> -->
+                  <span
+                    style="width: 3.75rem;float: right;margin-right: 1.25rem;background-color: #071828;text-align: center; border: 0.0625rem #ffffff solid;">{{
+                      speed }}</span>
+                </div>
+                <div class="speed" style="margin: 0.625rem;">
+                  <el-slider :max="7" v-model="speed" style="margin: 0 1.25rem;">
+                  </el-slider>
+                </div>
+              </div>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
+  </div>
+</template>
+<script>
+import { Notification } from 'element-ui';
+import { getCurrentAlarmRecordList } from '../../api/inspectRecord';
+import { mapGetters, mapState } from 'vuex';
+import { getRealPatrolTaskList, cancelPatrolTask } from '@/api/inspectRecord';
+import { getSystemXmlConfig } from '../../api/sysCtrl';
+import {
+  getCarrierDetailInfo, getMapData
+} from '../../api/map';
+import {
+  getEquipmentList,SetSpeed,
+  moveToPatrolPoint,
+  getAllCarrierDetailInfo,
+  getChargingStateByCarrierID,
+  GetMonitorData,
+  informOpenRobot,
+  informCloseRobot,
+  robotStop,
+  setDeviceOperate,
+  startBroadcast,
+  openBroadcast,
+  login,
+  logOut,
+  connectCar,
+  moveCar,
+  stopCar, CancelCarrierControl,
+  startVoiceBroadcast, stopVoiceBroadcast, getCarrierList, getRtsp
+} from '../../api/robot';
+import { getAllPatrolPlan, startPatrolPlan } from '../../api/taskConfig';
+import {
+  StartLight, EndLight, StartWiper, EndWiper, startPanLeft, endPanLeft, startPanRight, endPanRight, startTiltUp, endTiltUp, startTiltDown, endTiltDown,
+  StartZoomIn, StartZoomOut, EndZoomIn, EndZoomOut, StartIrisOpen, EndIrisOpen, StartIrisClose, EndIrisClose, StartFocusFar, EndFocusFar, StartFocusNear, EndFocusNear, takePhoto, startRecord, endRecord
+} from '../../api/dashboard';
+import Intercom from './intercom.vue';
+import { clearInterval } from 'timers';
+import { async } from 'q';
+
+
+
+
+export default {
+  components: {
+    Intercom,
+  },
+  data() {
+    return {
+      filterText: '',
+      adviceList: [],
+      defaultProps: {
+        children: 'children',
+        label: 'label',
+      },
+      alarmList: [],
+      activeName: '云台',
+      speed: 3,
+      robotSpeed: 1000,
+      currentAdvices: [{}, {}],
+      robotOpen: 2,
+      carID: '',
+      robotDrict: 1,
+      robotStop: 1,
+      currentCamera: {},
+      currentNode: {},
+      defaultExpanded: [],
+      webRtcIP: '',
+      recorder: null,
+      broadcastStatus: 1,
+      camState: 1,
+      timeInte: null,
+      dialogVisible: false,
+      imageUrl: null,
+      alarm: [],
+      videoOn: false,
+      lightOn: false,
+      YTlogin: false,
+      HKloading: false,
+      pageNum: 1,
+      pageSize: 15,
+      carList: [],
+      gasList: [],
+      taskList: [],
+      taskID: '',
+      locationID: '',
+      realTimeTask: '',
+      carRoller: '',
+      carMove: '',
+      broadcastVisible: false,
+      selectedOption: '',
+      speedList: [{
+        value: 6000,
+        label: "应急速度"
+      }, {
+        value: 1000,
+        label: "巡检速度"
+      }],
+      riskSpeed: 1000,
+      broadcasting: false,
+      lowButtery: false,
+      butteryInfo: null,
+      carrierIndex: 0,
+      carrierName: null,
+      carrierArr: [],
+      carrierSelected: null,
+      locationAuto: false,
+      lowButteryType: false, //false去巡检点 true特殊计划
+      locationContent:'',
+    };
+  },
+  created() { },
+
+
+  async mounted() {
+    try {
+      await this.getSysConfig();
+      await this.init();
+      await this.getAdvices();
+      await this.lazyLoad()
+      await this.getCarTask()
+      await this.getcarList()
+      await this.getAlarmList()
+    } catch (error) {
+      console.log(error);
+    }
+    this.beforeunloadHandler()
+    if(this.dialogLocation.includes('机器人到达巡检点')){
+      this.locationAuto = true
+    }
+     this.carRoller = setInterval(() => {
+      this.getcarList()
+    }, 500)
+  },
+  beforeDestroy() {
+    this.HKlogout()
+    console.log(this.robotOpen == 1)
+    if(this.robotOpen == 1){
+       this.logoutCar()
+       
+    }
+    window.clearInterval(this.carRoller)
+  },
+
+  computed: {
+    ...mapState({
+      systemConfig: (state) => state.sysConfig.systemConfig,
+    }),
+    ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips']),
+    realTimeAlarminfo() {
+      return this.realTimeAlarm[0]
+    },
+    yuntaiInfo() {
+      return this.cameraOut
+    },
+    showTable() {
+      const now = 0
+      const next = this.pageSize * this.pageNum
+      return this.alarmList.slice(now, next);
+    },
+    carrierIp() {
+      return this.carrierSelectedIp
+    },
+    dialogLocation() {
+      return this.locationTips
+    },
+
+  },
+  watch: {
+    filterText(val) {
+      this.$refs.tree.filter(val);
+    },
+    realTimeAlarminfo(newV, oldV) {
+      console.log('有更新', newV)
+      this.showTable.unshift(newV)
+    },
+    dialogLocation(newV, old) {
+      if (newV.includes('机器人到达巡检点')){
+        this.locationAuto = true
+      }
+    },
+    yuntaiInfo() {
+      if (this.YTlogin == true) {
+        this.YTlogin = false
+        this.$notify({
+          message: '有任务执行，自动退出连接',
+          type: 'warning',
+          title: '提示',
+          duration: 5000,
+        });
+      }
+    },
+    carID() {
+      return this.carrierSelected.CarrierID
+    },
+    riskSpeed(newV,oldV){
+      // console.log('速度变化了',newV ==1000,oldV)
+      if(newV == 1000){
+        const param = {
+          carrier:this.carID,
+        speed:1000,
+        speedMode:1
+        }
+        SetSpeed(param).then((res)=>{
+          console.log('巡检速度',res,param)
+        })
+      }else{
+        const param = {
+          carrier:this.carID,
+        speed:6000,
+        speedMode:1
+        }
+        SetSpeed(param).then((res)=>{
+          console.log('应急速度',res,param)
+        })
+      }
+     
+    }
+  },
+
+  methods: {
+    async init() {
+      const res = await getAllCarrierDetailInfo()
+      //机器人列表
+    
+      const robotInfo = await getCarrierList({
+        current: 1,
+        keyWord: "",
+        limit: 1000
+      })
+
+      this.carrierArr = robotInfo.data //机器人的集合
+      this.carrierIndex = robotInfo.data.length - 1 //数组长度
+
+      this.carrierSelected = robotInfo.data[this.carrierIndex]
+      // console.log('获取机器人列表',res)
+      // console.log('获取选中机器人',this.carrierSelected)
+      this.carID = this.carrierSelected.CarrierID
+      this.carrierName = robotInfo.data[this.carrierIndex].CarrierName
+      this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
+
+      // console.log('小车ip', this.carrierSelected)
+      const iframe = document.getElementById('iframes0');
+      iframe.onload = () => {
+        iframe.contentDocument.onclick = (e) => {
+          // console.log("查看摄像机信息", this.currentAdvices[0].accessoryID)
+          this.currentCamera = this.currentAdvices[0]
+        };
+      };
+      const iframe1 = document.getElementById('iframes1');
+      // iframe1.onload = () => {
+      //   iframe1.contentDocument.onclick = (e) => {
+      //     this.currentCamera = this.currentAdvices[1]
+      //     // console.log("查看红外信息", this.currentAdvices[1])
+      //   };
+      // };
+
+    },
+    handleClose() {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          this.cancelLocation()
+          done();
+        })
+        .catch(_ => { });
+    },
+    cancelLocation() {
+      CancelCarrierControl(this.carID).then((res) => {
+        console.log('取消回到返回', res)
+        this.locationAuto = false
+      })
+    },
+    async openLocation() {
+      this.robotOpen = 1
+      const time = this.getNowtime()
+      const informOpen = await informOpenRobot(this.carrierSelected.CarrierID)
+      if (informOpen.code == 20000) {
+        connectCar(this.robotOpen, time).then((res) => {
+          console.log("开关状态", res)
+          if (res.code == 20000) {
+            Notification({
+              title: '提示',
+              message: res.message,
+              type: 'success',
+              duration: 5000
+            });
+          }
+          else {
+            Notification({
+              title: '提示',
+              message: res.message,
+              type: 'error',
+              duration: 5000
+            });
+            this.robotOpen = 2
+          }
+        })
+      }
+      else {
+        this.robotOpen = 2
+      }
+      this.locationAuto = false
+    },
+    clearDetail() {
+      this.carList = []
+      this.butteryInfo = null
+      this.gasList = []
+    },
+    async changeRobotLeft() {
+      setTimeout(() => {
+        this.clearDetail()
+      }, 1500)
+      if (this.carrierIndex > 0) {
+        --this.carrierIndex
+      } else {
+        this.carrierIndex = this.carrierArr.length - 1
+      }
+      this.carrierSelected = this.carrierArr[this.carrierIndex]
+      this.carID = this.carrierSelected.CarrierID
+      this.carrierName = this.carrierArr[this.carrierIndex].CarrierName
+      this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
+      this.getVideo()
+    },
+    getVideo() {
+      let that = this
+      getRtsp(this.carID).then((res) => {
+
+        that.currentAdvices[0].src = `/static/video.html?data=${res.data.lightRTSP}&serve=${this.webRtcIP
+          }`
+        that.currentAdvices[1].src = `/static/video.html?data=${res.data.infraredRTSP}&serve=${this.webRtcIP
+          }`
+        // that.currentAdvices[1]=
+        // console.log('获取设备', that.currentAdvices[0].src,that.currentAdvices[1].src)
+      })
+    },
+    async changeRobotRight() {
+      setTimeout(() => {
+        this.clearDetail()
+      }, 1500)
+
+      if (this.carrierIndex >= this.carrierArr.length - 1) {
+        this.carrierIndex = 0
+      } else {
+        ++this.carrierIndex
+      }
+      this.carrierSelected = this.carrierArr[this.carrierIndex]
+      this.carID = this.carrierSelected.CarrierID
+      this.carrierName = this.carrierArr[this.carrierIndex].CarrierName
+      this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
+      this.getVideo()
+    },
+    async getAlarmList() {
+      //获取实时警告
+      const res = await getCurrentAlarmRecordList({
+        // current: 1,
+        alarmCode: null,
+        alarmName: null,
+        alarmType: 2,
+        current: 1,
+        limit: 1000000,
+        status: ""
+      });
+      // console.log('实时告警', res)
+      if (res.code === 20000) {
+        if (res.data) {
+          res.data.records.forEach(element => {
+
+            this.alarmList.push(element)
+          });
+          this.alarmList.forEach((item, index) => {
+            item.index = index + 1;
+          });
+        }
+      }
+    },
+    async getcarList() {
+      const res = await getCarrierDetailInfo(this.carrierSelected.CarrierID);
+      const gas = await GetMonitorData()
+      const buttery = await getChargingStateByCarrierID(this.carrierSelected.CarrierID)
+      // console.log('小车具体速度,总运行时间,',res.data.realTimeSpeed,res.data.totalRunTime)
+      this.butteryInfo = buttery.data
+
+      // console.log('气体',gas)
+      let robot = document.getElementById('robot')
+      if (res.code === 20000) {
+        this.carList = res.data || [];
+         console.log('小车速度',this.carList.realTimeSpeed,'总运行时间',this.carList.totalRunTime,'里程',this.carList.totalDistance)
+        if (this.carList.x >= 1) {
+          const left = (93 / 46072) * this.carList.x
+          robot.style.left = left + '%'
+        }
+      }
+      //气体
+      if (gas.code == 20000) {
+        this.gasList = gas.data
+      }
+      const car = await getRealPatrolTaskList()
+      if (car.data.length > 0) {
+        this.realTimeTask = car.data[0].planName
+      }
+    },
+    async getCarTask() {
+      getAllPatrolPlan({
+        keyWord: '',
+        planType: 2,
+      }).then((res) => {
+        // console.log('查看巡检计划',res)
+        res.data.forEach(element => {
+          // console.log(element.PlanName.includes('巡检点'))          
+            this.taskList.push({
+              label: element.PlanName,
+              value: element.PlanID
+            })        
+        });
+      })
+    },
+    beforeunloadHandler(e) {
+      window.addEventListener("beforeunload", () => {
+        this.HKlogout()
+        if(this.robotOpen == 1){
+           this.logoutCar()
+        }
+      });
+    },
+    broadcast() {
+      this.broadcastVisible = false
+      if(this.selectedOption != '语音停止播放' && this.selectedOption != '' ){
+        startVoiceBroadcast({
+        carrierID: this.carrierSelected.CarrierID,
+        text: this.selectedOption
+      }).then((res) => {
+        if (res.code == 20000) {
+          this.broadcasting = true
+        }else{
+          this.selectedOption = null
+        }
+      })
+      }
+      else　if(this.selectedOption == '语音停止播放'){
+        stopVoiceBroadcast(this.carrierSelected.CarrierID).then((res) => {
+          if (res.code == 20000) {
+            Notification({
+          title: '提示',
+          duration: 5000,
+          message: '语音停止播放',
+          type: 'success'
+        })
+          }
+        })
+      }
+
+    },
+    startPlan() {
+      this.lowButteryType = true
+      if (this.taskID == '') {
+        Notification({
+          title: '提示',
+          duration: 5000,
+          message: '请选择任务模板',
+          type: 'error'
+        })
+      }
+      else {
+        this.startPatrol()
+      }
+    },
+    startPatrol() {
+      startPatrolPlan(this.taskID, this.lowButtery).then((res) => {
+        if (res.code === 20000) {
+          Notification({
+            title: '提示',
+            duration: 5000,
+            message: res.data,
+            type: 'success',
+          });
+          this.lowButtery = false
+        }
+        else if (res.code === 20003) {
+          this.lowButtery = true
+        }
+      })
+    },
+    goLocation() {
+      this.lowButteryType = false
+      if (this.locationID == '') {
+        Notification({
+          title: '提示',
+          duration: 5000,
+          message: '请输入巡检点',
+          type: 'error'
+        })
+      }
+      else {
+        let param = {
+          carrierId: this.carrierSelected.CarrierID,
+          patrolPoint: this.locationID,
+          count: null,
+          voiceBroadcastText: null,
+          exit: this.lowButtery
+        }
+        moveToPatrolPoint(param).then((res) => {
+          console.log(param)
+          if (res.code === 20000) {
+            Notification({
+              title: '提示',
+              duration: 5000,
+              message: res.data,
+              type: 'success',
+            });
+            this.lowButtery = false
+          } else if (res.code === 20003) {
+            this.lowButtery = true
+          }
+        })
+      }
+    },
+    goLocationLowButtery() {
+      // this.lowButtery = false
+      if (this.lowButteryType == false) {
+        this.goLocation()
+      }
+      else {
+        this.startPatrol()
+      }
+
+    },
+    async HKlogin() {
+      if (!this.YTlogin) {
+        let param = {
+          carrierID:this.carID,
+          id: this.currentAdvices[0].accessoryID,
+          accessoryType: this.currentAdvices[0].accessoryType,
+          configJson: this.currentAdvices[0].configJson
+        }
+        login(param).then((res) => {
+          // console.log("连接云台", this.currentAdvices[0].configJson, param)
+          if (res.code == '20000') {
+            this.YTlogin = true
+          }
+          else {
+            this.YTlogin = false
+          }
+        })
+      }
+      else {
+        this.HKlogout()
+
+      }
+    },
+    HKlogout() {
+      if (this.YTlogin == true) {
+        // console.log("执行关闭云台")
+        logOut(this.currentAdvices[0].accessoryID).then((res) => {
+          if (res.code == '20000') {
+            this.YTlogin = false
+          }
+        })
+      }
+
+    },
+    chart() {
+      this.$router.push({
+        name: 'menu.sys_run',
+      });
+    },
+    async lazyLoad() {
+      this.$nextTick(() => {
+        const arr = document.getElementsByClassName('el-table__body-wrapper'); // 伪数组
+        const el = arr[arr.length - 1];
+        // 绑定事件
+        el.addEventListener('scroll', this.handlerLazyLoad);
+      });
+    },
+    async handlerLazyLoad(e) {
+      const scrollDistance = e.target.scrollHeight - e.target.scrollTop - 1 - e.target.clientHeight;
+      if (scrollDistance <= 0) {
+        this.pageNum++;
+      }
+    },
+    async getDetailMessage(e) {
+      console.log("实时", e)
+      this.imageUrl = 'http://192.168.100.88:8888/images/' + e.Image
+      this.alarm = e
+      this.dialogVisible = true
+    },
+    //树结构 隧道
+    async getAdvices() {
+      try {
+        const res = await getEquipmentList();
+        console.log("获取设备列表", res)
+        //递归重构数据 把设备和隧道组合起来
+        let hasFindFirstVideo = true;
+        const deepfined = (list) => {
+          if (!list && !list.length) return;
+          list.forEach((item, index) => {
+            //默认播放第一个机器人摄像头
+            // console.log('第一个节点',item.children)
+            // console.log('看隧道',item.areaList && item.areaList.length == true)
+            if (hasFindFirstVideo && item.children && item.children[0]) {
+
+              hasFindFirstVideo = false;
+              this.treeNodeClick(item.children[0]);
+              console.log('第er个节点', item.children[0])
+              //展开并选中第一个节点
+              this.defaultExpanded = [item.label];
+              this.$nextTick(() => {
+                this.$refs.tree.setCurrentKey(item.children[0].label);
+              });
+            }
+            if (item.areaList && item.areaList.length) {
+              item.children = [...item.children, ...item.areaList];
+
+            }
+            if (item.children && item.children.length) {
+              deepfined(item.children);
+            }
+          });
+        };
+        if (res.code === 20000) {
+          if (res.data) {
+            deepfined(res.data);
+            this.adviceList = res.data || [];
+
+          }
+        }
+      } catch (error) {
+      }
+    },
+    treeNodeClick(node) {
+      if (!node.accessoryList) {
+        if (this.YTlogin == true) {
+          this.HKlogout()
+        }
+        this.$notify({
+          message: '请点击机器节点经行选择！',
+          type: 'warning',
+          title: '提示',
+          duration: 5000,
+        });
+        this.$refs.tree.setCurrentKey(null);
+        this.$refs.tree.setCurrentKey(this.currentNode.label);
+        return;
+      }
+      if (this.robotOpen === 1) {
+        // this.$notify({
+        //   message: '当前有机器正在被控制,不允许切换',
+        //   type: 'warning',
+        //   title: '提示',
+        //   duration: 1000,
+        // });
+        // this.$refs.tree.setCurrentKey(null);
+        // this.$refs.tree.setCurrentKey(this.currentNode.label);
+        // return;
+      }
+      let arr = [];
+      if (node && node.accessoryList) {
+        // console.log("点击节点信息", node.accessoryList)
+        node.accessoryList.forEach((item) => {
+          if (item && item.configObj) {
+            let video = item.configObj;
+            const src = `/static/video.html?data=${video.rtsp}&serve=${this.webRtcIP
+              }`;
+            arr.push({
+              ...item,
+              src,
+            });
+          }
+        });
+        // console.log('获取小车ID', node)
+        // this.carID = node.id;
+        this.currentNode = node;
+        // console.log('摄像机ID',this.carID)
+      }
+      if (arr.length < 1) {
+        this.arr = [{}, {}];
+      }
+      this.currentAdvices = arr;
+      console.log('摄像机信息', this.currentAdvices)
+    },
+    tabClick(val) {
+      this.activeName = val;
+    },
+    filterNode(value, data) {
+      if (!value) return true;
+      return data.label.indexOf(value) !== -1;
+    },
+    async setOpen() {
+      const time = this.getNowtime()
+      //通知后台再开遥控
+      if (this.robotOpen == 1) {
+        // console.log("查看kai", this.robotOpen)
+        const informOpen = await informOpenRobot(this.carrierSelected.CarrierID)
+        if (informOpen.code == 20000) {
+          connectCar(this.robotOpen, time).then((res) => {
+            console.log("开关状态", res)
+            if (res.code == 20000) {
+              Notification({
+                title: '提示',
+                message: res.message,
+                type: 'success',
+                duration: 5000
+              });
+            }
+            else {
+              Notification({
+                title: '提示',
+                message: res.message,
+                type: 'error',
+                duration: 5000
+              });
+              this.robotOpen = 2
+            }
+          })
+        }
+        else {
+          this.robotOpen = 2
+        }
+      }else if(this.robotOpen == 2) {
+        console.log('关闭切换')
+        this.logoutCar() 
+      }
+             
+      //关闭后通知
+    },
+    logoutCar() {
+      const time = this.getNowtime()
+      connectCar(2, time).then((res) => {
+        console.log('关闭退出了')  
+        informCloseRobot(this.carrierSelected.CarrierID)
+        this.robotOpen = 2
+        console.log('关闭退出了')  
+      })
+        
+    },
+    //速度执行
+    async setRobotMoveCrl(flag) {
+      const time = this.getNowtime()
+      if (this.robotOpen == 2 && flag != 3) {
+        Notification({
+          title: '提示',
+          message: '请打开开关',
+          type: 'error',
+          duration: 5000
+        });
+      } else {
+        if (flag == 1) {
+          moveCar(flag, this.robotSpeed, 10000, time).then((res) => {
+            console.log('前进', time, res)
+          })
+        }
+        else if (flag == 2) {
+          moveCar(flag, this.robotSpeed, 10000, time).then((res) => {
+            console.log('后退', time, res)
+          })
+        }
+        else if (flag == 3) {
+          setTimeout(() => {
+            const time = this.getNowtime()
+            stopCar(time).then((res) => {
+              console.log('暂停', res)
+            })
+          }, 300)
+        }
+      }
+
+    },
+    async stopCam() {
+      if (this.YTlogin == true) {
+        setTimeout(() => {
+          switch (this.camState) {
+            case 1:
+              endTiltUp(this.currentAdvices[0].accessoryID)
+              break;
+            case 3:
+              endTiltDown(this.currentAdvices[0].accessoryID)
+              break;
+            case 5:
+              endPanLeft(this.currentAdvices[0].accessoryID)
+              break;
+            case 7:
+              endPanRight(this.currentAdvices[0].accessoryID)
+              break;
+            case 9:
+              EndZoomIn(this.currentAdvices[0].accessoryID)
+              break;
+            case 11:
+              EndZoomOut(this.currentAdvices[0].accessoryID)
+              break;
+            case 13:
+              EndFocusNear(this.currentAdvices[0].accessoryID)
+              break;
+            case 15:
+              EndFocusFar(this.currentAdvices[0].accessoryID)
+              break;
+            case 17:
+              EndIrisOpen(this.currentAdvices[0].accessoryID)
+              break;
+            case 19:
+              EndIrisClose(this.currentAdvices[0].accessoryID)
+              break;
+          }
+        }, 500)
+      }
+    },
+    async setCameraOperate(val) {
+      // console.log( this.speed)
+      this.camState = val
+      if (this.YTlogin == false) {
+        console.log('点击了')
+        Notification({
+          title: '提示',
+          message: '请先登录设备',
+          type: 'error',
+          duration: 5000
+        })
+
+      } else {
+
+
+        switch (val) {
+          case 1:
+            this.camState = val
+            console.log('点击了')
+            startTiltUp(this.speed, this.currentAdvices[0].accessoryID).then((res) => {
+            })
+            break;
+          case 3:
+            startTiltDown(this.speed, this.currentAdvices[0].accessoryID).then((res) => {
+              // console.log("点击向下",res)
+            })
+            break;
+          case 5:
+            startPanLeft(this.speed, this.currentAdvices[0].accessoryID).then((res) => {
+              console.log("左移动", res)
+            })
+            break;
+          case 7:
+            startPanRight(this.speed, this.currentAdvices[0].accessoryID).then((res) => {
+              // console.log("右移动",res)
+            })
+            break;
+          case 9:
+            StartZoomIn(this.speed, this.currentAdvices[0].accessoryID)
+            break;
+          case 11:
+            StartZoomOut(this.speed, this.currentAdvices[0].accessoryID)
+            break;
+
+          case 12:
+            StartLight(this.speed, this.currentAdvices[0].accessoryID).then((res) => {
+              console.log('开灯', res)
+              if (res.code == 20000) {
+                this.lightOn = true
+              }
+            })
+          case 13:
+            StartFocusNear(this.speed, this.currentAdvices[0].accessoryID)
+            break;
+          case 14:
+            if (this.YTlogin == true) {
+              EndLight(this.currentAdvices[0].accessoryID).then((res) => {
+                if (res.code == 20000) {
+                  this.lightOn = false
+                }
+              })
+            }
+
+          case 15:
+            StartFocusFar(this.speed, this.currentAdvices[0].accessoryID)
+            break;
+          case 16:
+            StartWiper(this.speed, this.currentAdvices[0].accessoryID).then((res) => {
+              console.log(res)
+            })
+            break;
+          case 17:
+            StartIrisOpen(this.speed, this.currentAdvices[0].accessoryID)
+            break;
+          case 18:
+            EndWiper()
+            break;
+          case 19:
+            StartIrisClose(this.speed, this.currentAdvices[0].accessoryID)
+            break;
+          case 20:
+            // console.log("点击拍照")
+            takePhoto(this.currentAdvices[0].accessoryID).then((res) => {
+              if (res.code == 20000) {
+                this.$notify({
+                  title: '提示',
+                  message: '已拍照，请在媒体文件中查看',
+                  duration: 5000
+                });
+              }
+
+            })
+            break;
+          case 21:
+            startRecord(this.currentAdvices[0].accessoryID).then((res) => {
+              if (res.code == 20000) {
+                Notification({
+                  title: '提示',
+                  message: '录像中',
+                  type: 'success',
+                  duration: 0
+                });
+                this.videoOn = true
+              }
+
+            })
+            break;
+          case 23:
+            endRecord(this.currentAdvices[0].accessoryID).then((res) => {
+              if (res.code == 20000) {
+                this.$notify.closeAll()
+                this.$notify({
+                  title: '提示',
+                  message: '结束录像，请在媒体文件中查看',
+                  duration: 5000
+                });
+              }
+              this.videoOn = false
+            })
+        }
+      }
+      try {
+        const { currentCamera, currentNode, speed } = this;
+        const {
+          ip,
+          brandName,
+          passWord,
+          port,
+          userName,
+          brandType,
+        } = currentCamera.configObj;
+        if (!currentCamera.accessoryID) {
+          this.$notify({
+            type: 'error',
+            message: '请选择摄像头',
+            title: '提示',
+            duration: 5000,
+          });
+          return;
+        }
+        const res = await setDeviceOperate({
+          deviceID: currentCamera.accessoryID,
+          deviceName: currentCamera.accessoryID,
+          ip,
+          operateCode: val,
+          brandName,
+          passWord,
+          port,
+          speed,
+          userName,
+          brandType,
+        });
+
+        if (res.code === 20000) {
+        }
+      } catch (error) { }
+    },
+    async getSysConfig() {
+      const res = await getSystemXmlConfig();
+      if (res.code === 20000 && res.data) {
+        this.webRtcIP = res.data.webRtcIP;
+      }
+    },
+
+
+
+
+    async upload() {
+      if (this.recorder) {
+        const { currentCamera, currentNode, speed } = this;
+        // const {
+        //   ip,
+        //   brandName,
+        //   passWord,
+        //   port,
+        //   userName,
+        //   brandType,
+        // } = currentCamera.configObj;
+
+        if (!currentCamera.accessoryID) {
+          this.$notify({
+            type: 'error',
+            message: '请选择摄像头',
+            title: '提示',
+            duration: 5000,
+          });
+          return;
+        }
+
+        const res = await openBroadcast({
+          id: currentCamera.accessoryID,
+          accessoryType: currentCamera.accessoryType,
+          configJson: currentCamera.configJson,
+        });
+        if (res.code === 20000) {
+          let blob = this.recorder.getWAVBlob();
+          let formData = new FormData();
+          formData.append('file', blob);
+          const res2 = await startBroadcast(formData);
+          if (res2.code === 20000) {
+            this.broadcastStatus = 1;
+          }
+        }
+      }
+    },
+    // 时间格式
+
+    getNowtime() {
+
+      //获取当前时间并打印
+      var _this = this;
+      let yy = new Date().getFullYear();
+      let mm = new Date().getMonth() + 1
+      let dd = new Date().getDate();
+      let hh = new Date().getHours();
+      let mf = new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes();
+      let ss = new Date().getSeconds() < 10 ? '0' + new Date().getSeconds() : new Date().getSeconds();
+      let ms = new Date().getMilliseconds();
+      _this.gettime = yy + '-' + mm + '-' + dd + ' ' + hh + ':' + mf + ':' + ss + '.' + ms;
+      return _this.gettime
+    }
+  },
+
+
+
+
+};
+</script>
+<style lang="scss" scoped>
+.page-title {
+  line-height: 1.75rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: rgb(243, 239, 239);
+  padding-left: 0.9375rem;
+  border-bottom: 0.0625rem solid rgb(4, 114, 141);
+
+  .time {
+    font-size: 0.75rem;
+    color: #bae1f3;
+    margin-left: 0.625rem;
+    font-weight: normal;
+  }
+
+  .video-btn {
+    float: right;
+    margin-right: 0.75rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+  }
+}
+
+.content {
+  font-size: 1.25rem;
+  padding-top: 1vh;
+
+  >.el-row {
+    height: 100%;
+
+    >.el-col {
+      height: 100%;
+    }
+  }
+
+  //筛选框
+  // .selectAdvice {
+  //   height: 80;
+  //   background: #384C55;
+  //   padding: 0.625rem;
+
+  //   .cearchAdvice {
+  //     margin-bottom: 2.4375rem;
+  //     margin-top: 1.25rem;
+  //     padding: 0.25rem 0rem;
+  //     height: 2.125rem;
+
+  //     >>>.el-input__inner {
+  //       background: rgba(16, 74, 182, 0);
+  //       color: #e1ecf1;
+  //     }
+  //   }
+
+  //   ::v-deep .el-tree {
+  //     background-color: #384C55;
+  //     color: #fff;
+
+  //     .el-tree-node__label {
+  //       font-size: 1.125rem;
+  //     }
+
+  //     .el-tree-node__content:hover {
+  //       background-color: transparent;
+  //     }
+
+  //     .el-tree-node:focus {
+  //       background-color: transparent;
+  //     }
+
+  //     .el-tree-node:focus>.el-tree-node__content {
+  //       background-color: transparent;
+  //     }
+
+  //     .is-current {
+  //       background-color: #4069a7 !important;
+  //     }
+  //   }
+  // }
+  .broadcastSelect {
+    position: absolute;
+    top: 9rem;
+    border-radius: 10px;
+    padding-bottom: 1rem;
+    left: 25.3%;
+    background-color: #fff;
+    z-index: 999;
+    .leftTitle {
+      color: #66B3B2;
+      padding-right: 2rem;
+    }
+
+    // .closeBroad:hover{
+    //   background-color: #15B3B4;
+    // }
+
+  }
+
+  //机器人信息2.0
+  .leftTitle {
+    font-size: 1.2rem;
+    color: #fff;
+    padding: 0.75rem 0 0.75rem 1.25rem;
+  }
+
+  .robot {
+    height: 27.5rem; //27.5rem
+    // min-height: 40.7vh;
+
+    .robotMessage {
+      display: flex;
+      font-size: 1.125rem;
+      color: #fff;
+
+      div {
+        margin: auto;
+
+        div {
+          margin-top: 0.625rem;
+          text-align: center;
+          color: #67B3B3;
+        }
+      }
+    }
+
+    .robotPic {
+      width: 17vh;
+      height: 10.625rem;
+      margin-left: 33%;
+      margin-top: 2.6rem;
+    }
+
+    .robotEletri {
+      display: flex;
+      flex: 1;
+      font-size: 1.125rem;
+      color: #fff;
+
+      .arrow {
+        font-size: 2rem;
+      }
+
+      .arrow:active {
+        color: #15B3B4;
+      }
+
+      .onLine {
+        width: 10rem;
+        background-color: #67B3B2;
+        text-align: center;
+        line-height: 1.875rem;
+      }
+    }
+
+    .electri {
+      position: absolute;
+      color: #fff;
+      top: 15.875rem;
+      left: 1.8125rem;
+
+      .el-progress {
+        margin-left: 1rem;
+      }
+
+      ::v-deep .el-progress__text {
+        color: #fff;
+      }
+    }
+
+    .microphone,
+    .broadcast {
+      position: absolute;
+      margin-bottom: 3.125rem;
+      top: 16.875rem;
+      left: 20.3%;
+      border-radius: 0.625rem;
+      font-size: 2.5rem;
+      color: #fff;
+      width: 3.75rem;
+      height: 3.125rem;
+      line-height: 3.125rem;
+      background-color: #66B3B2;
+      text-align: center;
+
+
+    }
+
+    .speak_detail {
+      color: #fff;
+      // position: fixed;
+      font-size: 0.8rem;
+      text-align: left;
+      width: 6.5rem;
+    }
+
+    .microphone {
+      top: 16rem;
+    }
+
+    .broadcast {
+      top: 9.375rem;
+    }
+
+    .broadcast_detail {
+      color: #fff;
+      position: absolute;
+      font-size: 0.8rem;
+      left: 20.3%;
+      top: 48%;
+    }
+
+    .broadcast:active {
+      opacity: 0.7;
+    }
+  }
+
+  .task {
+    //28.75rem
+    height: 8.5rem; //11.25rem
+    margin: 0.5rem 0; //1.25rem
+
+
+    .taskDetail {
+      display: flex;
+      padding-left: 1.25rem;
+      // margin-top: %;
+      color: #fff;
+      font-size: 1rem;
+      width: 100%;
+
+      ::v-deep .el-input__inner {
+        background-color: rgba($color: #071828, $alpha: 0.5);
+        width: 8rem;
+        height: 1.875rem;
+      }
+    }
+
+  }
+
+  .threeRow {
+    height: 13.1rem;
+    min-height: 170px;
+  }
+
+  .enviroment {
+    // height: 13.8rem;
+    color: #fff;
+
+    .enviroDetail {
+      display: flex;
+      width: 25%;
+      min-width: 6rem;
+      height: 4.5rem;
+      min-height: 60px;
+      background: linear-gradient(181deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.00) 100%);
+      opacity: 0.9;
+      margin: auto;
+      border-radius: 0.2081rem;
+      font-size: 1rem;
+      word-break: break-all;
+
+      .gas {
+        color: #66B3B2;
+        margin: 0.625rem 0 0 0.375rem;
+      }
+
+      .gasDetail {
+        margin: 1.625rem 0 0 0.5rem;
+        width: 3.75rem;
+      }
+
+      div {
+        width: 2.5rem;
+      }
+
+      .detail_icon {
+        margin-left: 0.375rem;
+        margin-top: 0.625rem;
+      }
+
+    }
+  }
+
+  .alarm_2 {
+
+    .alarm_title {
+      width: 95%;
+      position: relative;
+      display: flex;
+      font-size: 1.125rem;
+      color: #ffffff;
+      margin: 0.625rem 0 0 1.25rem;
+
+      .chart {
+        background-color: #64C8C8;
+        border-radius: 0.625rem;
+        font-size: 1.125rem;
+        width: 6.25rem;
+        position: absolute;
+        right: 0;
+        text-align: center;
+        line-height: 1.875rem;
+      }
+
+      .chart:active {
+        opacity: 0.5;
+      }
+
+    }
+
+    .alarm {
+      padding-left: 0.625rem;
+      height: 1.875rem;
+
+      .el-table::before {
+        height: 0;
+      }
+
+
+      .first {
+        background: rgb(254, 0, 0);
+        border-radius: 0.125rem;
+        padding: 0.0625rem 0.25rem;
+      }
+
+      .two {
+        background: rgb(236, 109, 30);
+        border-radius: 0.125rem;
+        padding: 0.0625rem 0.25rem;
+      }
+
+      .three {
+        background: rgb(215, 146, 102);
+        border-radius: 0.125rem;
+        padding: 0.0625rem 0.25rem;
+      }
+
+      .four {
+        background: rgb(100, 229, 238);
+        border-radius: 0.125rem;
+        padding: 0.0625rem 0.25rem;
+      }
+    }
+  }
+
+  // 云台控制
+  .control_direction:active {
+    color: red;
+  }
+
+
+
+  ::v-deep .el-select .el-input .el-select__caret {
+    line-height: 1.5rem;
+  }
+
+  .center {
+
+    // height: 84;
+    .video {
+      display: flex;
+
+      // .active {
+      //   border: 0.1875rem solid #bae1f3;
+      // }
+    }
+  }
+
+  .map {
+    // margin: 0.625rem;
+    margin: 0.5rem 0; //1.25rem
+    height: 8.5rem;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    color: #fff;
+
+    .backgroundIm {
+      border: transparent;
+      width: 103%;
+      height: 10.2rem;
+      position: relative;
+      right: 1.5625rem;
+      bottom: 0.8rem;
+      opacity: 0.5;
+    }
+
+    .nowPosition {
+      display: flex;
+      position: relative;
+      bottom: 10.25rem;
+    }
+
+    .goLocation {
+      display: flex;
+      position: relative;
+      bottom: 8.3rem;
+      left: 1.25rem;
+      font-size: 1.125rem;
+      line-height: 1.875rem;
+
+      .location_Detail {
+        width: 12.5rem;
+        min-width: 150px;
+
+        ::v-deep .el-input__inner {
+
+          padding-left: 52px;
+        }
+      }
+
+      ::v-deep .el-input__inner {
+        background-color: rgba($color: #071828, $alpha: 1);
+        height: 1.875rem;
+      }
+
+      .el-select {
+        width: 9.5rem;
+        min-width: 110px;
+        margin: 0 0.625rem;
+      }
+
+      .goYes {
+        width: 3.75rem;
+        height: 1.875rem;
+        line-height: 1.9375rem;
+        background-color: #64C8C8;
+        border-radius: 0.1875rem;
+        text-align: center;
+        margin-left: 2.5rem;
+      }
+    }
+  }
+
+  // .right {
+  //   width: 19.375rem;
+
+  // }
+
+  .hkControl {
+    width: 100%;
+    background-color: rgba(7, 24, 40, 0.5);
+    border-radius: 0.625rem;
+    margin: 0 0 0.875rem 0;
+    color: #fff;
+    border: 0.0625rem solid rgba($color: #fff, $alpha: 0.5);
+
+    .leftTitle {
+      padding-bottom: 0.3125rem;
+    }
+
+    .hkMove {
+
+      .hkUp,
+      .hkLeft,
+      .hkRight,
+      .hkDown,
+      .hkConnect,
+      .HKloading {
+        position: relative;
+      }
+
+      .hkUp {
+        width: 6.25rem;
+        left: 3.125rem;
+        top: 0.5375rem;
+      }
+
+      .hkLeft,
+      .hkRight {
+        width: 2.8125rem;
+        left: 1.5625rem;
+        transform: translateY(-15%);
+      }
+
+      .hkRight {
+        left: 1.875rem;
+      }
+
+      .hkConnect,
+      .HKloading {
+        width: 3.4375rem;
+        height: 3.4375rem;
+        left: 1.75rem;
+        transform: translateY(15%);
+      }
+
+      .HKloading {
+        opacity: 0.7;
+      }
+
+      .hkDown {
+        width: 6.25rem;
+        left: 3.125rem;
+        transform: translateY(-68%);
+      }
+    }
+
+
+    ::v-deep .el-input.is-disabled .el-input__inner {
+      width: 3.75rem;
+      text-align: center;
+    }
+
+    img:active,
+    .action_detail:active {
+      opacity: 0.5;
+    }
+
+    .hkAction {
+      display: flex;
+      margin-top: 0.625rem;
+
+      .action_detail {
+        width: 3.125rem;
+        height: 1.875rem;
+        line-height: 1.875rem;
+        background-color: #64C8C8;
+        border-radius: 0.2081rem;
+        margin: auto;
+        text-align: center;
+
+        //  justify-content: center;
+        img {
+          height: 1.5625rem;
+          margin-top: 0.125rem;
+        }
+      }
+    }
+  }
+
+  ::v-deep .el-radio {
+    color: #000000;
+    margin: 0.625rem 1.25rem;
+
+    .el-radio__inner {
+      border: 1px solid #000000;
+    }
+  }
+
+  ::v-deep .el-slider__bar {
+    background-color: #64C8C8;
+  }
+
+  .broadcastBtn {
+    position: relative;
+    top: 2%;
+    margin-left: 33%;
+  }
+
+  .robotControl {
+    margin: 0.5rem 0; //1.25rem
+    width: 100%;
+    background-color: rgba(7, 24, 40, 0.5);
+    color: #fff;
+    height: 8.5rem;
+    border: 0.0625rem solid rgba($color: #fff, $alpha: 0.5);
+
+    .leftTitle {
+      // padding-bottom: 0.5rem;
+
+    }
+
+    .robotDirec {
+      width: 7rem;
+      height: 3rem;
+      background-color: #64C8C8;
+      margin: 0 1.1563rem;
+      border-radius: 0.625rem;
+      text-align: center;
+      line-height: 3.635rem;
+
+      img {
+        width: 1.5625rem;
+
+      }
+    }
+
+    .speed {
+      margin-left: 6rem;
+
+      font-size: 1rem;
+
+    }
+
+    .robotDirec:active {
+      opacity: 0.5;
+    }
+
+    .speed_detail,
+    .speed_urgency,
+    .speed_detail_active,
+    .speed_urgency_active {
+      width: 6.25rem;
+      height: 1.875rem;
+      line-height: 1.875rem;
+      border-radius: 0.625rem;
+      background-color: #64C8C8;
+      text-align: center;
+      margin: auto;
+      opacity: 0.5;
+    }
+
+    .speed_urgency,
+    .speed_detail {
+      background-color: #fff;
+      color: black;
+    }
+
+    .speed_detail_active,
+    .speed_urgency_active {
+      opacity: 1;
+    }
+  }
+
+}</style>
