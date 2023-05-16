@@ -17,5 +17,6 @@ const getters = {
   carrierSelectedIp:(state)=>state.global.carrierSelectedIp,
   locationTips:(state)=>state.global.locationTips,
   locationFail:(state)=>state.global.locationFail,
+  locationBoolen:(state)=>state.global.locationBoolen,
 }; 
 export default getters;

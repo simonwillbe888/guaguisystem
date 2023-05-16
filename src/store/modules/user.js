@@ -1,4 +1,4 @@
-import { login, logOut, getInfo } from '@/api/user';
+import { login, loginOut, getInfo,remoteLoginOut } from '@/api/user';
 import { getToken, setToken, removeToken } from '@/utils/auth';
 import { resetRouter } from '@/router';
 
@@ -43,8 +43,11 @@ const actions = {
     return new Promise((resolve, reject) => {
       login(userInfo)
         .then((response) => {
+          // console.log('登录结果',response)
+          getInfo()
           if (response.code === 20000) {
             const { data } = response;
+            // console.log('异地登录获取token',response.data)
             commit('SET_TOKEN', response.data);
             setToken(response.data);
             resolve();
@@ -62,6 +65,7 @@ const actions = {
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
+      // console.log('登录后获取信息',state.token)
       getInfo(state.token)
         .then((response) => {
           if (response.code === 20000) {
@@ -84,10 +88,12 @@ const actions = {
   // user logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      log0ut(state.token)
+      if(state.account!= ''){
+        loginOut()
         .then((res) => {
-          console.log("查看登出",res)
+          console.log("查看登出的vuex",res,state.token)
           commit('SET_TOKEN', '');
+          // commit('SET_ACCOUNT','')
           commit('SET_ROLES', []);
           removeToken();
           resetRouter();
@@ -96,6 +102,28 @@ const actions = {
         .catch((error) => {
           reject(error);
         });
+      }
+
+    });
+  },
+  remoteLogout(){
+    return new Promise((resolve, reject) => {
+      if(state.account!= ''){
+        remoteLoginOut()
+        .then((res) => {
+          console.log("查看登出的vuex",res,state.token)
+          commit('SET_TOKEN', '');
+          commit('SET_ACCOUNT',null)
+          commit('SET_ROLES', []);
+          // removeToken();
+          resetRouter();
+          resolve();
+        })
+        .catch((error) => {
+          reject(error);
+        });
+      }
+
     });
   },
 

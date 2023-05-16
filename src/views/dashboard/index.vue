@@ -3,7 +3,7 @@
     <div class="selectDate">
       <div style="margin:.625rem ;flex: 1;display: flex;position: relative;i">
         <div class="block">
-          <el-date-picker v-model="date"   value-format="yyyy-MM-dd HH:mm:ss"   type="daterange" align="right" unlink-panels range-separator="至"
+          <el-date-picker v-model="date"   value-format="yyyy-MM-dd"   type="daterange" align="right" unlink-panels range-separator="至"
             start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
           </el-date-picker>
         </div>
@@ -13,7 +13,7 @@
           </template>
         </el-input> -->
         <!-- <span class="day">告警数据</span> -->
-        <div class="search" @click="time = date">查询</div>
+        <div class="search" @click="search()">查询</div>
         <div class="back" @click="$router.back();">
           <img src="../../assets/img/fanhui.png">返回
         </div>
@@ -108,8 +108,11 @@ export default {
   },
 
   methods: {
-
-
+   search(){
+    console.log('查询日期')
+    this.time = this.date;
+   }
+ 
 
   },
 }

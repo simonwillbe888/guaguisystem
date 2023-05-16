@@ -1,0 +1,433 @@
+Date : 2023-01-30 17:25:47
+Directory : d:\Source code\guagui\JRMS2.0
+Total : 302 files,  40194 codes, 3596 comments, 3308 blanks, all 47098 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| vue        |         77 |     23,818 |        955 |        981 |     25,754 |
+| JavaScript |        101 |     15,219 |      2,587 |      2,106 |     19,912 |
+| SCSS       |          7 |        576 |         33 |        128 |        737 |
+| XML        |         82 |        270 |          6 |          6 |        282 |
+| Markdown   |          2 |        113 |          0 |         74 |        187 |
+| HTML       |          4 |         82 |          2 |          6 |         90 |
+| JSON       |          1 |         80 |          0 |          1 |         81 |
+| CSS        |         26 |         26 |          0 |          0 |         26 |
+| YAML       |          2 |         10 |         13 |          6 |         29 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                    | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                       |        302 |     40,194 |      3,596 |      3,308 |     47,098 |
+| . (Files)                                                                               |         10 |        540 |         33 |         90 |        663 |
+| build                                                                                   |          1 |         28 |          0 |          8 |         36 |
+| mock                                                                                    |          4 |        200 |         18 |         33 |        251 |
+| public                                                                                  |          3 |        311 |         81 |         39 |        431 |
+| public (Files)                                                                          |          1 |         17 |          2 |          4 |         23 |
+| public\static                                                                           |          2 |        294 |         79 |         35 |        408 |
+| public\static (Files)                                                                   |          1 |         32 |          0 |          1 |         33 |
+| public\static\js                                                                        |          1 |        262 |         79 |         34 |        375 |
+| src                                                                                     |        217 |     38,412 |      3,107 |      3,088 |     44,607 |
+| src (Files)                                                                             |          4 |        156 |         55 |         30 |        241 |
+| src\api                                                                                 |         16 |      1,484 |         91 |        165 |      1,740 |
+| src\assets                                                                              |          5 |     10,277 |      1,770 |      1,677 |     13,724 |
+| src\assets\css                                                                          |          1 |        240 |         14 |         49 |        303 |
+| src\assets\js                                                                           |          4 |     10,037 |      1,756 |      1,628 |     13,421 |
+| src\components                                                                          |         26 |      2,304 |         48 |        146 |      2,498 |
+| src\components (Files)                                                                  |          1 |         21 |          1 |          8 |         30 |
+| src\components\BgAnimation                                                              |          1 |        110 |          0 |          5 |        115 |
+| src\components\Breadcrumb                                                               |          1 |         75 |          1 |          7 |         83 |
+| src\components\Camera                                                                   |          1 |         26 |          0 |          1 |         27 |
+| src\components\Charts                                                                   |          1 |        174 |          0 |          7 |        181 |
+| src\components\Hamburger                                                                |          1 |         41 |          0 |          4 |         45 |
+| src\components\LangSwitch                                                               |          1 |         40 |          4 |          2 |         46 |
+| src\components\MapComponent                                                             |         14 |      1,266 |         40 |         68 |      1,374 |
+| src\components\MapComponent\agv                                                         |          2 |        170 |          0 |          6 |        176 |
+| src\components\MapComponent\agvmoreinfo                                                 |          5 |        480 |         36 |         33 |        549 |
+| src\components\MapComponent\graphics                                                    |          7 |        616 |          4 |         29 |        649 |
+| src\components\Pagination                                                               |          1 |         97 |          0 |          4 |        101 |
+| src\components\Screenfull                                                               |          1 |         62 |          0 |          4 |         66 |
+| src\components\SvgIcon                                                                  |          1 |         57 |          2 |          5 |         64 |
+| src\components\ThemePicker                                                              |          1 |        172 |          0 |         26 |        198 |
+| src\components\WebSocket                                                                |          1 |        163 |          0 |          5 |        168 |
+| src\icons                                                                               |         84 |        281 |         20 |         14 |        315 |
+| src\icons (Files)                                                                       |          2 |         11 |         14 |          8 |         33 |
+| src\icons\svg                                                                           |         82 |        270 |          6 |          6 |        282 |
+| src\langs                                                                               |          3 |        767 |         10 |          5 |        782 |
+| src\layout                                                                              |         10 |        857 |         36 |         59 |        952 |
+| src\layout (Files)                                                                      |          1 |        320 |          4 |          8 |        332 |
+| src\layout\components                                                                   |          9 |        537 |         32 |         51 |        620 |
+| src\layout\components (Files)                                                           |          3 |        183 |         17 |         24 |        224 |
+| src\layout\components\Sidebar                                                           |          6 |        354 |         15 |         27 |        396 |
+| src\router                                                                              |          1 |        349 |         47 |         14 |        410 |
+| src\store                                                                               |          9 |        361 |         19 |         41 |        421 |
+| src\store (Files)                                                                       |          2 |         42 |          0 |          4 |         46 |
+| src\store\modules                                                                       |          7 |        319 |         19 |         37 |        375 |
+| src\styles                                                                              |          6 |        336 |         19 |         79 |        434 |
+| src\utils                                                                               |          9 |        373 |        103 |         49 |        525 |
+| src\vendor                                                                              |          1 |        180 |         15 |         26 |        221 |
+| src\views                                                                               |         43 |     20,687 |        874 |        783 |     22,344 |
+| src\views (Files)                                                                       |          1 |        225 |          0 |          4 |        229 |
+| src\views\alarm                                                                         |          1 |      1,105 |         20 |         17 |      1,142 |
+| src\views\alarmStatics                                                                  |          1 |         21 |          0 |          8 |         29 |
+| src\views\charge                                                                        |          1 |      1,042 |          1 |         25 |      1,068 |
+| src\views\dashboard                                                                     |          7 |      1,918 |         61 |         84 |      2,063 |
+| src\views\dashboard (Files)                                                             |          3 |      1,245 |         61 |         55 |      1,361 |
+| src\views\dashboard\echarts                                                             |          4 |        673 |          0 |         29 |        702 |
+| src\views\exportReport                                                                  |          1 |         32 |          0 |          3 |         35 |
+| src\views\graphicGathering                                                              |          1 |         17 |          0 |          6 |         23 |
+| src\views\hardwareConfig                                                                |          6 |      4,163 |        173 |        134 |      4,470 |
+| src\views\hardwareConfig\areaConfig                                                     |          1 |        582 |         18 |         27 |        627 |
+| src\views\hardwareConfig\chargingStation                                                |          1 |        390 |         81 |         12 |        483 |
+| src\views\hardwareConfig\chargingStrategy                                               |          1 |        393 |         37 |         10 |        440 |
+| src\views\hardwareConfig\equipConfig                                                    |          1 |        914 |         22 |         36 |        972 |
+| src\views\hardwareConfig\robotConfig                                                    |          1 |      1,245 |         11 |         43 |      1,299 |
+| src\views\hardwareConfig\videoRecordConfig                                              |          1 |        639 |          4 |          6 |        649 |
+| src\views\inspectionRecord                                                              |          5 |      2,567 |        135 |         99 |      2,801 |
+| src\views\inspectionRecord\equipAlarm                                                   |          1 |        654 |         41 |         26 |        721 |
+| src\views\inspectionRecord\historyAlarm                                                 |          1 |        775 |         20 |         29 |        824 |
+| src\views\inspectionRecord\realTimeAlarm                                                |          1 |        726 |         68 |         32 |        826 |
+| src\views\inspectionRecord\realTimeTask                                                 |          1 |        146 |          4 |          2 |        152 |
+| src\views\inspectionRecord\statics                                                      |          1 |        266 |          2 |         10 |        278 |
+| src\views\login                                                                         |          2 |        389 |          1 |         16 |        406 |
+| src\views\map                                                                           |          2 |      1,890 |         96 |         66 |      2,052 |
+| src\views\monitor                                                                       |          2 |      1,469 |         34 |        141 |      1,644 |
+| src\views\redirect                                                                      |          1 |         12 |          0 |          1 |         13 |
+| src\views\system                                                                        |          2 |        443 |         11 |         17 |        471 |
+| src\views\systemManage                                                                  |          4 |      1,225 |         31 |         18 |      1,274 |
+| src\views\systemManage\purviewManage                                                    |          1 |        323 |          0 |          8 |        331 |
+| src\views\systemManage\roleManage                                                       |          1 |        381 |         24 |          6 |        411 |
+| src\views\systemManage\systemSetting                                                    |          1 |        109 |          7 |          1 |        117 |
+| src\views\systemManage\userManage                                                       |          1 |        412 |          0 |          3 |        415 |
+| src\views\system\language                                                               |          1 |         72 |          6 |          3 |         81 |
+| src\views\system\user                                                                   |          1 |        371 |          5 |         14 |        390 |
+| src\views\taskConfig                                                                    |          5 |      4,086 |        311 |        135 |      4,532 |
+| src\views\taskConfig (Files)                                                            |          1 |          5 |          0 |          1 |          6 |
+| src\views\taskConfig\inspectPoints                                                      |          2 |      2,067 |        154 |         74 |      2,295 |
+| src\views\taskConfig\inspectPoints (Files)                                              |          1 |        567 |         18 |         29 |        614 |
+| src\views\taskConfig\inspectPoints\actionManage                                         |          1 |      1,500 |        136 |         45 |      1,681 |
+| src\views\taskConfig\planConfig                                                         |          1 |      1,240 |        108 |         34 |      1,382 |
+| src\views\taskConfig\processConfig                                                      |          1 |        774 |         49 |         26 |        849 |
+| src\views\video                                                                         |          1 |         83 |          0 |          9 |         92 |
+| static                                                                                  |         60 |        507 |        343 |         35 |        885 |
+| static (Files)                                                                          |          1 |         32 |          0 |          1 |         33 |
+| static\css                                                                              |         26 |         26 |          0 |          0 |         26 |
+| static\js                                                                               |         33 |        449 |        343 |         34 |        826 |
+| tests                                                                                   |          7 |        196 |         14 |         15 |        225 |
+| tests\unit                                                                              |          7 |        196 |         14 |         15 |        225 |
+| tests\unit (Files)                                                                      |          1 |          5 |          0 |          1 |          6 |
+| tests\unit\components                                                                   |          3 |        120 |         14 |          7 |        141 |
+| tests\unit\utils                                                                        |          3 |         71 |          0 |          7 |         78 |
++-----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                | language   | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| d:\Source code\guagui\JRMS2.0\.eslintrc.js                                              | JavaScript |        195 |          2 |          2 |        199 |
+| d:\Source code\guagui\JRMS2.0\.travis.yml                                               | YAML       |          5 |          0 |          1 |          6 |
+| d:\Source code\guagui\JRMS2.0\README-zh.md                                              | Markdown   |         60 |          0 |         37 |         97 |
+| d:\Source code\guagui\JRMS2.0\README.md                                                 | Markdown   |         53 |          0 |         37 |         90 |
+| d:\Source code\guagui\JRMS2.0\babel.config.js                                           | JavaScript |          6 |          0 |          0 |          6 |
+| d:\Source code\guagui\JRMS2.0\build\index.js                                            | JavaScript |         28 |          0 |          8 |         36 |
+| d:\Source code\guagui\JRMS2.0\index.html                                                | HTML       |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\jest.config.js                                            | JavaScript |         22 |          2 |          1 |         25 |
+| d:\Source code\guagui\JRMS2.0\mock\index.js                                             | JavaScript |         51 |          7 |          9 |         67 |
+| d:\Source code\guagui\JRMS2.0\mock\mock-server.js                                       | JavaScript |         52 |          6 |         11 |         69 |
+| d:\Source code\guagui\JRMS2.0\mock\table.js                                             | JavaScript |         27 |          0 |          3 |         30 |
+| d:\Source code\guagui\JRMS2.0\mock\user.js                                              | JavaScript |         70 |          5 |         10 |         85 |
+| d:\Source code\guagui\JRMS2.0\package.json                                              | JSON       |         80 |          0 |          1 |         81 |
+| d:\Source code\guagui\JRMS2.0\postcss.config.js                                         | JavaScript |          5 |          2 |          2 |          9 |
+| d:\Source code\guagui\JRMS2.0\public\index.html                                         | HTML       |         17 |          2 |          4 |         23 |
+| d:\Source code\guagui\JRMS2.0\public\static\js\webrtcstreamer.js                        | JavaScript |        262 |         79 |         34 |        375 |
+| d:\Source code\guagui\JRMS2.0\public\static\video.html                                  | HTML       |         32 |          0 |          1 |         33 |
+| d:\Source code\guagui\JRMS2.0\src\App.vue                                               | vue        |         27 |          0 |          3 |         30 |
+| d:\Source code\guagui\JRMS2.0\src\api\accesso.js                                        | JavaScript |         63 |          1 |         10 |         74 |
+| d:\Source code\guagui\JRMS2.0\src\api\alarm.js                                          | JavaScript |        114 |         10 |          9 |        133 |
+| d:\Source code\guagui\JRMS2.0\src\api\areaConfig.js                                     | JavaScript |         36 |          5 |          2 |         43 |
+| d:\Source code\guagui\JRMS2.0\src\api\carrier.js                                        | JavaScript |         28 |          0 |          3 |         31 |
+| d:\Source code\guagui\JRMS2.0\src\api\charge.js                                         | JavaScript |        147 |         15 |         12 |        174 |
+| d:\Source code\guagui\JRMS2.0\src\api\dashboard.js                                      | JavaScript |        176 |          1 |         18 |        195 |
+| d:\Source code\guagui\JRMS2.0\src\api\file.js                                           | JavaScript |          3 |          0 |          1 |          4 |
+| d:\Source code\guagui\JRMS2.0\src\api\homepageAlarm.js                                  | JavaScript |         29 |          4 |          1 |         34 |
+| d:\Source code\guagui\JRMS2.0\src\api\inspectRecord.js                                  | JavaScript |         78 |         10 |          5 |         93 |
+| d:\Source code\guagui\JRMS2.0\src\api\map.js                                            | JavaScript |         32 |          0 |          5 |         37 |
+| d:\Source code\guagui\JRMS2.0\src\api\patrolDic.js                                      | JavaScript |          7 |          0 |          1 |          8 |
+| d:\Source code\guagui\JRMS2.0\src\api\robot.js                                          | JavaScript |        208 |         33 |         26 |        267 |
+| d:\Source code\guagui\JRMS2.0\src\api\statics.js                                        | JavaScript |        183 |          0 |         19 |        202 |
+| d:\Source code\guagui\JRMS2.0\src\api\sysCtrl.js                                        | JavaScript |        107 |          0 |         15 |        122 |
+| d:\Source code\guagui\JRMS2.0\src\api\taskConfig.js                                     | JavaScript |        208 |         11 |         29 |        248 |
+| d:\Source code\guagui\JRMS2.0\src\api\user.js                                           | JavaScript |         65 |          1 |          9 |         75 |
+| d:\Source code\guagui\JRMS2.0\src\assets\css\casun.scss                                 | SCSS       |        240 |         14 |         49 |        303 |
+| d:\Source code\guagui\JRMS2.0\src\assets\js\bus.js                                      | JavaScript |          2 |          0 |          2 |          4 |
+| d:\Source code\guagui\JRMS2.0\src\assets\js\flexible.js                                 | JavaScript |         34 |          9 |          6 |         49 |
+| d:\Source code\guagui\JRMS2.0\src\assets\js\flv.js                                      | JavaScript |      9,992 |      1,747 |      1,619 |     13,358 |
+| d:\Source code\guagui\JRMS2.0\src\assets\js\title.js                                    | JavaScript |          9 |          0 |          1 |         10 |
+| d:\Source code\guagui\JRMS2.0\src\components\BgAnimation\index.vue                      | vue        |        110 |          0 |          5 |        115 |
+| d:\Source code\guagui\JRMS2.0\src\components\Breadcrumb\index.vue                       | vue        |         75 |          1 |          7 |         83 |
+| d:\Source code\guagui\JRMS2.0\src\components\Camera\index.vue                           | vue        |         26 |          0 |          1 |         27 |
+| d:\Source code\guagui\JRMS2.0\src\components\Charts\MixChart.vue                        | vue        |        174 |          0 |          7 |        181 |
+| d:\Source code\guagui\JRMS2.0\src\components\Hamburger\index.vue                        | vue        |         41 |          0 |          4 |         45 |
+| d:\Source code\guagui\JRMS2.0\src\components\LangSwitch\index.vue                       | vue        |         40 |          4 |          2 |         46 |
+| d:\Source code\guagui\JRMS2.0\src\components\MapComponent\agv\AgvOne.vue                | vue        |         82 |          0 |          3 |         85 |
+| d:\Source code\guagui\JRMS2.0\src\components\MapComponent\agv\AgvTwo.vue                | vue        |         88 |          0 |          3 |         91 |
+| d:\Source code\guagui\JRMS2.0\src\components\MapComponent\agvmoreinfo\AgvCard.vue       | vue        |        165 |          0 |          9 |        174 |
+| d:\Source code\guagui\JRMS2.0\src\components\MapComponent\agvmoreinfo\AgvRadar.vue      | vue        |         38 |         36 |          5 |         79 |
+| d:\Source code\guagui\JRMS2.0\src\components\MapComponent\agvmoreinfo\AgvState.vue      | vue        |        164 |          0 |         11 |        175 |
+| d:\Source code\guagui\JRMS2.0\src\components\MapComponent\agvmoreinfo\PlanArc.vue       | vue        |         82 |          0 |          4 |         86 |
+| d:\Source code\guagui\JRMS2.0\src\components\MapComponent\agvmoreinfo\PlanRoute.vue     | vue        |         31 |          0 |          4 |         35 |
+| d:\Source code\guagui\JRMS2.0\src\components\MapComponent\graphics\ActivityPoint.vue    | vue        |         36 |          0 |          3 |         39 |
+| d:\Source code\guagui\JRMS2.0\src\components\MapComponent\graphics\Arc.vue              | vue        |        210 |          0 |          7 |        217 |
+| d:\Source code\guagui\JRMS2.0\src\components\MapComponent\graphics\CargoInform.vue      | vue        |         83 |          0 |          1 |         84 |
+| d:\Source code\guagui\JRMS2.0\src\components\MapComponent\graphics\Line.vue             | vue        |        111 |          0 |         10 |        121 |
+| d:\Source code\guagui\JRMS2.0\src\components\MapComponent\graphics\LocationInform.vue   | vue        |         96 |          4 |          3 |        103 |
+| d:\Source code\guagui\JRMS2.0\src\components\MapComponent\graphics\Point.vue            | vue        |         36 |          0 |          3 |         39 |
+| d:\Source code\guagui\JRMS2.0\src\components\MapComponent\graphics\StandPoint.vue       | vue        |         44 |          0 |          2 |         46 |
+| d:\Source code\guagui\JRMS2.0\src\components\Pagination\index.vue                       | vue        |         97 |          0 |          4 |        101 |
+| d:\Source code\guagui\JRMS2.0\src\components\Screenfull\index.vue                       | vue        |         62 |          0 |          4 |         66 |
+| d:\Source code\guagui\JRMS2.0\src\components\SvgIcon\index.vue                          | vue        |         57 |          2 |          5 |         64 |
+| d:\Source code\guagui\JRMS2.0\src\components\ThemePicker\index.vue                      | vue        |        172 |          0 |         26 |        198 |
+| d:\Source code\guagui\JRMS2.0\src\components\WebSocket\index.vue                        | vue        |        163 |          0 |          5 |        168 |
+| d:\Source code\guagui\JRMS2.0\src\components\index.js                                   | JavaScript |         21 |          1 |          8 |         30 |
+| d:\Source code\guagui\JRMS2.0\src\icons\index.js                                        | JavaScript |          6 |          1 |          3 |         10 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\24gf-pauseCircle.svg                        | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\3d.svg                                      | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\404.svg                                     | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\47_jujiao.svg                               | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\agv_info.svg                                | XML        |         33 |          1 |          1 |         35 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\alarm.svg                                   | XML        |         32 |          1 |          1 |         34 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\alarm_setting.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\battery.svg                                 | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\bug.svg                                     | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\carrier_type.svg                            | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\casun-logo.svg                              | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\chart.svg                                   | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\clipboard.svg                               | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\component.svg                               | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\dashboard.svg                               | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\dengguang.svg                               | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\device_status.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\display_setting.svg                         | XML        |         29 |          1 |          1 |         31 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\ditu.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\documentation.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\drag.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\edit.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\education.svg                               | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\email.svg                                   | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\example.svg                                 | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\excel.svg                                   | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\excute_task.svg                             | XML        |         38 |          1 |          1 |         40 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\execute.svg                                 | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\exit-fullscreen.svg                         | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\eye-open.svg                                | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\eye.svg                                     | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\fanhui.svg                                  | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\form.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\fullscreen.svg                              | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\guangquan-.svg                              | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\guangquan.svg                               | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\guide.svg                                   | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\icon-24-jinjiao.svg                         | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\icon-24-yuanjiao.svg                        | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\icon.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\international.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\ip.svg                                      | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\jiankong.svg                                | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\language.svg                                | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\link.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\list.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\lock.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\message.svg                                 | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\money.svg                                   | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\mubiaogenzong.svg                           | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\nested.svg                                  | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\panel.svg                                   | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\password.svg                                | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\pdf.svg                                     | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\people.svg                                  | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\peoples.svg                                 | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\qq.svg                                      | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\search.svg                                  | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\shopping.svg                                | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\shuju_jilu.svg                              | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\size.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\skill.svg                                   | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\software_version.svg                        | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\star.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\sys_info.svg                                | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\tab.svg                                     | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\table.svg                                   | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\task_plan.svg                               | XML        |         37 |          1 |          1 |         39 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\task_setting.svg                            | XML        |         25 |          1 |          1 |         27 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\theme.svg                                   | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\tree-table.svg                              | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\tree.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\user.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\wechat.svg                                  | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\xunjian_setting.svg                         | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\yingjian_setting.svg                        | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\zanting.svg                                 | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\zhuapaixiangji.svg                          | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\zip.svg                                     | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\录像.svg                                      | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\系统管理.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svg\翻转镜头.svg                                    | XML        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\src\icons\svgo.yml                                        | YAML       |          5 |         13 |          5 |         23 |
+| d:\Source code\guagui\JRMS2.0\src\langs\en.js                                           | JavaScript |        337 |          0 |          1 |        338 |
+| d:\Source code\guagui\JRMS2.0\src\langs\index.js                                        | JavaScript |         21 |         10 |          3 |         34 |
+| d:\Source code\guagui\JRMS2.0\src\langs\zh.js                                           | JavaScript |        409 |          0 |          1 |        410 |
+| d:\Source code\guagui\JRMS2.0\src\layout\components\AppMain.vue                         | vue        |         50 |          0 |          7 |         57 |
+| d:\Source code\guagui\JRMS2.0\src\layout\components\Navbar.vue                          | vue        |        121 |         17 |         16 |        154 |
+| d:\Source code\guagui\JRMS2.0\src\layout\components\Sidebar\FixiOSBug.js                | JavaScript |         24 |          2 |          1 |         27 |
+| d:\Source code\guagui\JRMS2.0\src\layout\components\Sidebar\Item.vue                    | vue        |         27 |          0 |          3 |         30 |
+| d:\Source code\guagui\JRMS2.0\src\layout\components\Sidebar\Link.vue                    | vue        |         32 |          1 |          4 |         37 |
+| d:\Source code\guagui\JRMS2.0\src\layout\components\Sidebar\Logo.vue                    | vue        |         85 |          5 |          9 |         99 |
+| d:\Source code\guagui\JRMS2.0\src\layout\components\Sidebar\SidebarItem.vue             | vue        |        101 |          0 |          7 |        108 |
+| d:\Source code\guagui\JRMS2.0\src\layout\components\Sidebar\index.vue                   | vue        |         85 |          7 |          3 |         95 |
+| d:\Source code\guagui\JRMS2.0\src\layout\components\index.js                            | JavaScript |         12 |          0 |          1 |         13 |
+| d:\Source code\guagui\JRMS2.0\src\layout\index.vue                                      | vue        |        320 |          4 |          8 |        332 |
+| d:\Source code\guagui\JRMS2.0\src\main.js                                               | JavaScript |         61 |         21 |         13 |         95 |
+| d:\Source code\guagui\JRMS2.0\src\permission.js                                         | JavaScript |         63 |         26 |         11 |        100 |
+| d:\Source code\guagui\JRMS2.0\src\router\index.js                                       | JavaScript |        349 |         47 |         14 |        410 |
+| d:\Source code\guagui\JRMS2.0\src\settings.js                                           | JavaScript |          5 |          8 |          3 |         16 |
+| d:\Source code\guagui\JRMS2.0\src\store\getters.js                                      | JavaScript |         18 |          0 |          1 |         19 |
+| d:\Source code\guagui\JRMS2.0\src\store\index.js                                        | JavaScript |         24 |          0 |          3 |         27 |
+| d:\Source code\guagui\JRMS2.0\src\store\modules\app.js                                  | JavaScript |         53 |          0 |          4 |         57 |
+| d:\Source code\guagui\JRMS2.0\src\store\modules\carrier.js                              | JavaScript |         19 |          1 |          1 |         21 |
+| d:\Source code\guagui\JRMS2.0\src\store\modules\global.js                               | JavaScript |         47 |          0 |          4 |         51 |
+| d:\Source code\guagui\JRMS2.0\src\store\modules\permission.js                           | JavaScript |         47 |         14 |          8 |         69 |
+| d:\Source code\guagui\JRMS2.0\src\store\modules\settings.js                             | JavaScript |         25 |          0 |          7 |         32 |
+| d:\Source code\guagui\JRMS2.0\src\store\modules\systemConfig.js                         | JavaScript |         22 |          0 |          4 |         26 |
+| d:\Source code\guagui\JRMS2.0\src\store\modules\user.js                                 | JavaScript |        106 |          4 |          9 |        119 |
+| d:\Source code\guagui\JRMS2.0\src\styles\element-ui.scss                                | SCSS       |         32 |          4 |          9 |         45 |
+| d:\Source code\guagui\JRMS2.0\src\styles\index.scss                                     | SCSS       |         62 |          1 |         12 |         75 |
+| d:\Source code\guagui\JRMS2.0\src\styles\mixin.scss                                     | SCSS       |         24 |          0 |          5 |         29 |
+| d:\Source code\guagui\JRMS2.0\src\styles\sidebar.scss                                   | SCSS       |        165 |          6 |         38 |        209 |
+| d:\Source code\guagui\JRMS2.0\src\styles\transition.scss                                | SCSS       |         35 |          4 |         10 |         49 |
+| d:\Source code\guagui\JRMS2.0\src\styles\variables.scss                                 | SCSS       |         18 |          4 |          5 |         27 |
+| d:\Source code\guagui\JRMS2.0\src\utils\auth.js                                         | JavaScript |         11 |          1 |          5 |         17 |
+| d:\Source code\guagui\JRMS2.0\src\utils\date-time.js                                    | JavaScript |         16 |          1 |          4 |         21 |
+| d:\Source code\guagui\JRMS2.0\src\utils\directives.js                                   | JavaScript |         63 |         12 |         13 |         88 |
+| d:\Source code\guagui\JRMS2.0\src\utils\get-page-title.js                               | JavaScript |          8 |          0 |          3 |         11 |
+| d:\Source code\guagui\JRMS2.0\src\utils\helper.js                                       | JavaScript |         14 |          0 |          1 |         15 |
+| d:\Source code\guagui\JRMS2.0\src\utils\index.js                                        | JavaScript |         85 |         20 |          6 |        111 |
+| d:\Source code\guagui\JRMS2.0\src\utils\request.js                                      | JavaScript |        130 |         43 |          9 |        182 |
+| d:\Source code\guagui\JRMS2.0\src\utils\scroll-to.js                                    | JavaScript |         39 |         15 |          5 |         59 |
+| d:\Source code\guagui\JRMS2.0\src\utils\validate.js                                     | JavaScript |          7 |         11 |          3 |         21 |
+| d:\Source code\guagui\JRMS2.0\src\vendor\Export2Excel.js                                | JavaScript |        180 |         15 |         26 |        221 |
+| d:\Source code\guagui\JRMS2.0\src\views\404.vue                                         | vue        |        225 |          0 |          4 |        229 |
+| d:\Source code\guagui\JRMS2.0\src\views\alarmStatics\index.vue                          | vue        |         21 |          0 |          8 |         29 |
+| d:\Source code\guagui\JRMS2.0\src\views\alarm\index.vue                                 | vue        |      1,105 |         20 |         17 |      1,142 |
+| d:\Source code\guagui\JRMS2.0\src\views\charge\index.vue                                | vue        |      1,042 |          1 |         25 |      1,068 |
+| d:\Source code\guagui\JRMS2.0\src\views\dashboard\echarts\FourEcharts.vue               | vue        |        171 |          0 |          5 |        176 |
+| d:\Source code\guagui\JRMS2.0\src\views\dashboard\echarts\OneEcharts.vue                | vue        |        184 |          0 |          3 |        187 |
+| d:\Source code\guagui\JRMS2.0\src\views\dashboard\echarts\ThreeEcharts.vue              | vue        |        164 |          0 |         12 |        176 |
+| d:\Source code\guagui\JRMS2.0\src\views\dashboard\echarts\TowEcharts.vue                | vue        |        154 |          0 |          9 |        163 |
+| d:\Source code\guagui\JRMS2.0\src\views\dashboard\index.vue                             | vue        |        436 |         26 |         40 |        502 |
+| d:\Source code\guagui\JRMS2.0\src\views\dashboard\index1.vue                            | vue        |        776 |         28 |         14 |        818 |
+| d:\Source code\guagui\JRMS2.0\src\views\dashboard\index2.vue                            | vue        |         33 |          7 |          1 |         41 |
+| d:\Source code\guagui\JRMS2.0\src\views\exportReport\index.vue                          | vue        |         32 |          0 |          3 |         35 |
+| d:\Source code\guagui\JRMS2.0\src\views\graphicGathering\index.vue                      | vue        |         17 |          0 |          6 |         23 |
+| d:\Source code\guagui\JRMS2.0\src\views\hardwareConfig\areaConfig\index.vue             | vue        |        582 |         18 |         27 |        627 |
+| d:\Source code\guagui\JRMS2.0\src\views\hardwareConfig\chargingStation\index.vue        | vue        |        390 |         81 |         12 |        483 |
+| d:\Source code\guagui\JRMS2.0\src\views\hardwareConfig\chargingStrategy\index.vue       | vue        |        393 |         37 |         10 |        440 |
+| d:\Source code\guagui\JRMS2.0\src\views\hardwareConfig\equipConfig\index.vue            | vue        |        914 |         22 |         36 |        972 |
+| d:\Source code\guagui\JRMS2.0\src\views\hardwareConfig\robotConfig\index.vue            | vue        |      1,245 |         11 |         43 |      1,299 |
+| d:\Source code\guagui\JRMS2.0\src\views\hardwareConfig\videoRecordConfig\index.vue      | vue        |        639 |          4 |          6 |        649 |
+| d:\Source code\guagui\JRMS2.0\src\views\inspectionRecord\equipAlarm\index.vue           | vue        |        654 |         41 |         26 |        721 |
+| d:\Source code\guagui\JRMS2.0\src\views\inspectionRecord\historyAlarm\index.vue         | vue        |        775 |         20 |         29 |        824 |
+| d:\Source code\guagui\JRMS2.0\src\views\inspectionRecord\realTimeAlarm\realAlarm.vue    | vue        |        726 |         68 |         32 |        826 |
+| d:\Source code\guagui\JRMS2.0\src\views\inspectionRecord\realTimeTask\index.vue         | vue        |        146 |          4 |          2 |        152 |
+| d:\Source code\guagui\JRMS2.0\src\views\inspectionRecord\statics\index.vue              | vue        |        266 |          2 |         10 |        278 |
+| d:\Source code\guagui\JRMS2.0\src\views\login\auth-redirect.vue                         | vue        |         15 |          0 |          1 |         16 |
+| d:\Source code\guagui\JRMS2.0\src\views\login\index.vue                                 | vue        |        374 |          1 |         15 |        390 |
+| d:\Source code\guagui\JRMS2.0\src\views\map\index.vue                                   | vue        |        957 |         38 |         45 |      1,040 |
+| d:\Source code\guagui\JRMS2.0\src\views\map\map.vue                                     | vue        |        933 |         58 |         21 |      1,012 |
+| d:\Source code\guagui\JRMS2.0\src\views\monitor\index.vue                               | vue        |      1,122 |         34 |        102 |      1,258 |
+| d:\Source code\guagui\JRMS2.0\src\views\monitor\intercom.vue                            | vue        |        347 |          0 |         39 |        386 |
+| d:\Source code\guagui\JRMS2.0\src\views\redirect\index.vue                              | vue        |         12 |          0 |          1 |         13 |
+| d:\Source code\guagui\JRMS2.0\src\views\systemManage\purviewManage\index.vue            | vue        |        323 |          0 |          8 |        331 |
+| d:\Source code\guagui\JRMS2.0\src\views\systemManage\roleManage\index.vue               | vue        |        381 |         24 |          6 |        411 |
+| d:\Source code\guagui\JRMS2.0\src\views\systemManage\systemSetting\index.vue            | vue        |        109 |          7 |          1 |        117 |
+| d:\Source code\guagui\JRMS2.0\src\views\systemManage\userManage\index.vue               | vue        |        412 |          0 |          3 |        415 |
+| d:\Source code\guagui\JRMS2.0\src\views\system\language\index.vue                       | vue        |         72 |          6 |          3 |         81 |
+| d:\Source code\guagui\JRMS2.0\src\views\system\user\index.vue                           | vue        |        371 |          5 |         14 |        390 |
+| d:\Source code\guagui\JRMS2.0\src\views\taskConfig\index.vue                            | vue        |          5 |          0 |          1 |          6 |
+| d:\Source code\guagui\JRMS2.0\src\views\taskConfig\inspectPoints\actionManage\index.vue | vue        |      1,500 |        136 |         45 |      1,681 |
+| d:\Source code\guagui\JRMS2.0\src\views\taskConfig\inspectPoints\index.vue              | vue        |        567 |         18 |         29 |        614 |
+| d:\Source code\guagui\JRMS2.0\src\views\taskConfig\planConfig\index.vue                 | vue        |      1,240 |        108 |         34 |      1,382 |
+| d:\Source code\guagui\JRMS2.0\src\views\taskConfig\processConfig\index.vue              | vue        |        774 |         49 |         26 |        849 |
+| d:\Source code\guagui\JRMS2.0\src\views\video\index.vue                                 | vue        |         83 |          0 |          9 |         92 |
+| d:\Source code\guagui\JRMS2.0\static\css\app.38108e99.css                               | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-07a93e04.1e7aa360.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-0b17ac02.6ce4a681.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-0c3b81a2.157c82e9.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-0e0e199e.8eb3b0f0.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-17020ec8.aec50204.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-25b9db8f.c794b5b2.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-28d46e79.fafb8ff3.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-2b7dcf44.3c7f5ad9.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-338d1a06.0f039f2a.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-4161a6c4.ddb3809f.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-54324bf6.0932dd2d.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-6aaea5f1.9c0d0561.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-6b82a51a.b129ad25.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-6da3fb8c.f2ada036.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-7572eeb0.4068be2d.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-78e79de7.5d29e495.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-95c04d6e.f4af168a.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-9dcaa5aa.58508018.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-a7a99e68.f8e18d29.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-bfb6dd06.817f768e.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-d44ca9d6.dee98b92.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-elementUI.dd50ba92.css                   | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-f0d7cd78.f1411ebe.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-f4af7d1e.9558d598.css                    | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\css\chunk-libs.e1a3f7f5.css                        | CSS        |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\app.daf4d9cc.js                                 | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-04a4268a.9f83cbcd.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-07a93e04.d80d04b3.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-0b17ac02.2404ed24.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-0c3b81a2.49b25c3e.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-0dab76e4.3bfee43f.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-0e0e199e.b6da3c23.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-17020ec8.c05ac9d9.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-192bbb3c.994dc866.js                      | JavaScript |          2 |          5 |          0 |          7 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-25b9db8f.bc826bbb.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-28d46e79.89bae593.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-2b7dcf44.30b15736.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-2d230fe7.20704891.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-338d1a06.5f0936f0.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-4161a6c4.d83bb614.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-54324bf6.151228d1.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-58537f8d.cb83e404.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-6aaea5f1.45a44de8.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-6b82a51a.c8712393.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-6da3fb8c.e1d632cd.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-7572eeb0.85ff7193.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-78e79de7.db0526e6.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-95c04d6e.f74398a6.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-9dcaa5aa.72bfa4c8.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-a7a99e68.1bf7d4e9.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-bfb6dd06.b5781c09.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-d44ca9d6.4c91ae50.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-e3958fd2.485ed43e.js                      | JavaScript |          4 |         19 |          0 |         23 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-elementUI.c8e38944.js                     | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-f0d7cd78.c88d1f69.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-f4af7d1e.13ebe691.js                      | JavaScript |          1 |          0 |          0 |          1 |
+| d:\Source code\guagui\JRMS2.0\static\js\chunk-libs.d20b0251.js                          | JavaScript |        152 |        240 |          0 |        392 |
+| d:\Source code\guagui\JRMS2.0\static\js\webrtcstreamer.js                               | JavaScript |        262 |         79 |         34 |        375 |
+| d:\Source code\guagui\JRMS2.0\static\video.html                                         | HTML       |         32 |          0 |          1 |         33 |
+| d:\Source code\guagui\JRMS2.0\tests\unit\.eslintrc.js                                   | JavaScript |          5 |          0 |          1 |          6 |
+| d:\Source code\guagui\JRMS2.0\tests\unit\components\Breadcrumb.spec.js                  | JavaScript |         80 |         14 |          5 |         99 |
+| d:\Source code\guagui\JRMS2.0\tests\unit\components\Hamburger.spec.js                   | JavaScript |         18 |          0 |          1 |         19 |
+| d:\Source code\guagui\JRMS2.0\tests\unit\components\SvgIcon.spec.js                     | JavaScript |         22 |          0 |          1 |         23 |
+| d:\Source code\guagui\JRMS2.0\tests\unit\utils\formatTime.spec.js                       | JavaScript |         28 |          0 |          3 |         31 |
+| d:\Source code\guagui\JRMS2.0\tests\unit\utils\parseTime.spec.js                        | JavaScript |         27 |          0 |          2 |         29 |
+| d:\Source code\guagui\JRMS2.0\tests\unit\utils\validate.spec.js                         | JavaScript |         16 |          0 |          2 |         18 |
+| d:\Source code\guagui\JRMS2.0\vue.config.js                                             | JavaScript |        113 |         27 |          9 |        149 |
+| Total                                                                                   |            |     40,194 |      3,596 |      3,308 |     47,098 |
++-----------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

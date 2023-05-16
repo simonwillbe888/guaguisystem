@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-
+import request3 from '@/utils/request3'
 export function getRole() {
   return request({
     url: '/api/Role/getRole',
@@ -46,7 +46,7 @@ export function getRoleList(data) {
   });
 }
 export function downLoadBatchPTZFile(data) {
-  return request({
+  return request3({
     url: '/api/HKControl/downLoadBatchPTZFile',
     method: 'post',
     data,

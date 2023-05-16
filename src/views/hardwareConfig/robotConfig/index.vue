@@ -550,11 +550,15 @@ export default {
             };
             self.options.push(optionObj);
           }
-          getCarrierList({
+          let params ={
+            current:null,
             keyWord: self.inquireVal,
-          })
+            limit:null,
+          }
+          getCarrierList(params)
             .then((response) => {
               let robotArr = response.data;
+              console.log('相应参数',response,params)
               for (let i = 0, len = robotArr.length; i < len; i++) {
                 let rowObj = {
                   id: robotArr[i].ID,
@@ -582,7 +586,7 @@ export default {
                 }
                 self.robotInfoArr.push(rowObj);
               }
-              console.log("查看机器列表",this.robotInfoArr)
+              // console.log("查看机器列表",this.robotInfoArr,params)
               self.initAccessoType();
               self.initFeatureOption();
             })

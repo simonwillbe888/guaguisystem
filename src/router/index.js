@@ -389,6 +389,7 @@ export const asyncRoutes = [
           parent_id: 6,
           roles: ['RoleSetting'],
         },
+    
       },
       // {
       //   path: 'purviewManage',
@@ -411,6 +412,7 @@ export const asyncRoutes = [
           parent_id: 6,
           roles: ['SysSetting'],
         },
+        // hidden:true,
       },
     ],
   },

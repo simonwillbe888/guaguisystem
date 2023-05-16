@@ -41,7 +41,7 @@ export default {
           self.alarmLevelDesc = []
           response.data.forEach(item => {
             self.alarmLevelDesc.unshift(item.alarmLevelDesc)
-            self.count.push(item.count)
+            self.count.unshift(item.count)
             
           });
           this.getEchartLeft3();
