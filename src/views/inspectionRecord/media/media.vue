@@ -121,10 +121,10 @@ export default {
         this.list.forEach(element => {
 
           if (element.fileType == 4) {
-            element.FilePath = 'http://192.168.100.85:8888/' + element.fileUrl
+            element.FilePath = 'http://192.168.20.23:8888/' + element.fileUrl
           }
           else if (element.fileType == 1) {
-            element.FilePath = 'http://192.168.100.85:8888/images/' + element.fileUrl
+            element.FilePath = 'http://192.168.20.23:8888/images/' + element.fileUrl
           }
 
         });

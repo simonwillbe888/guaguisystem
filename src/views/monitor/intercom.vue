@@ -103,7 +103,7 @@ export default {
           this.end()
          }
       });
-      console.log('埋点监听')
+      // console.log('埋点监听')
     },
   },
 };

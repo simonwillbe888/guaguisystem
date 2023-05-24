@@ -558,7 +558,8 @@ export default {
       locationContent: '',
       finishTime: '',
       tranLeft: 100,
-      tempicture: null
+      tempicture: null,
+      tempicTimer:null
     };
   },
   created() {
@@ -697,8 +698,10 @@ export default {
       };
 
       infrared.onload = () => {
-        let clientX 
-        let clientY
+        let clientX = 2
+        let clientY  = 110
+        let timer
+        let that = this
         infrared.contentDocument.onmousemove = (e) => {
           // this.currentCamera = this.currentAdvices[1]
           // console.log('视频宽高', e.clientX,e.target.clientWidth)
@@ -708,6 +711,7 @@ export default {
           
           }
           infrared.contentDocument.onmouseover = (e)=>{
+            that.tempicTimer = setInterval(() => {
             let param = {
             accessoryID: this.carrierSelected.CarrierAccessoryList[0].AccessoryID,
             sourceHeight: parseFloat(e.target.clientWidth * 512 / 640),//512
@@ -715,21 +719,20 @@ export default {
             x: clientX,
             y: clientY,
           }
-          getTemperature(param).then((res) => {
-            // console.log('调用接口参数', param, res)
+              getTemperature(param).then((res) => {
+            console.log('调用接口参数', param, res)
             if (res.code == 20000) {
               this.tempicture = res.data + '℃'
             }
             getHot()
             setTimeout(()=>{
               this.tempicture = null    
-            },5000)
+            },10000)
           })
-
           const getHot = function () {
             let tempictureMove = document.getElementById('tempicture')
             const rightMove = e.target.clientWidth - clientX
-            if (e.clientX > 65) {
+            if (clientX > 65) {
               tempictureMove.style.right = rightMove + 'px'
               tempictureMove.style.top = clientY + 'px'
             }
@@ -738,10 +741,15 @@ export default {
               tempictureMove.style.top = clientY + 'px'
             }
 
-          }     
+          }  
+            }, 800);
                   
-
         };
+        infrared.contentDocument.onmouseout = ()=>{
+            console.log('移除')
+               window.clearInterval(that.tempicTimer)
+               timer = null
+          }
       };
 
     },
@@ -923,7 +931,7 @@ export default {
       // console.log('里程任务id',car)
       if (car.data.length > 0) {
         getTaskRemainingMileage(car.data[0].taskID).then((res) => {
-          console.log('里程信息',res)
+          // console.log('里程信息',res)
           const mileage = res.data.mileage
           if (this.carList.realTimeSpeed != 0 &&  mileage > 2 ) {
             this.finishTime = (mileage / (this.carList.realTimeSpeed * 60)).toFixed(1)
@@ -1121,7 +1129,7 @@ export default {
     },
     async getDetailMessage(e) {
       console.log("实时", e)
-      this.imageUrl = 'http://192.168.20.4:8888/images/' + e.Image
+      this.imageUrl = 'http://192.168.20.23:8888/images/' + e.Image
       this.alarm = e
       this.dialogVisible = true
     },
@@ -1129,7 +1137,7 @@ export default {
     async getAdvices() {
       try {
         const res = await getEquipmentList();
-        console.log("获取设备列表", res)
+        // console.log("获取设备列表", res)
         //递归重构数据 把设备和隧道组合起来
         let hasFindFirstVideo = true;
         const deepfined = (list) => {
@@ -1599,7 +1607,7 @@ export default {
 .tempicture {
   position: absolute;
   bottom: 26rem;
-  color: #fff;
+  color: black;
 }
 
 .content {
