@@ -75,7 +75,7 @@
       >
         <div style="line-height:2.5rem">
           <div>
-            <span>产品名称：</span><span>佳启智能巡检机器人监控平台</span>
+            <span>产品名称：</span><span>隧道智能巡检系统</span>
           </div>
           <div><span>版本号：</span><span>V2.0.0.0</span></div>
         </div>

@@ -559,7 +559,7 @@ export default {
       finishTime: '',
       tranLeft: 100,
       tempicture: null,
-      tempicTimer:null
+      tempicTimer: null
     };
   },
   created() {
@@ -629,7 +629,10 @@ export default {
       this.$refs.tree.filter(val);
     },
     realTimeAlarminfo(newV, oldV) {
-      this.showTable.unshift(newV)
+      if(newv != undefined){
+        this.showTable.unshift(newV)
+      }
+     
     },
     dialogLocation(newV, old) {
       this.locationAuto = true
@@ -699,7 +702,7 @@ export default {
 
       infrared.onload = () => {
         let clientX = 2
-        let clientY  = 110
+        let clientY = 110
         let timer
         let that = this
         infrared.contentDocument.onmousemove = (e) => {
@@ -708,48 +711,48 @@ export default {
           // console.log("查看红外信息", this.carrierSelected.CarrierAccessoryList[0].AccessoryID)
           clientX = parseFloat(e.clientX).toFixed(1)
           clientY = parseFloat(e.clientY).toFixed(1)
-          
-          }
-          infrared.contentDocument.onmouseover = (e)=>{
-            that.tempicTimer = setInterval(() => {
-            let param = {
-            accessoryID: this.carrierSelected.CarrierAccessoryList[0].AccessoryID,
-            sourceHeight: parseFloat(e.target.clientWidth * 512 / 640),//512
-            sourceWidth: e.target.clientWidth,//640
-            x: clientX,
-            y: clientY,
-          }
-              getTemperature(param).then((res) => {
-            console.log('调用接口参数', param, res)
-            if (res.code == 20000) {
-              this.tempicture = res.data + '℃'
-            }
-            getHot()
-            setTimeout(()=>{
-              this.tempicture = null    
-            },10000)
-          })
-          const getHot = function () {
-            let tempictureMove = document.getElementById('tempicture')
-            const rightMove = e.target.clientWidth - clientX
-            if (clientX > 65) {
-              tempictureMove.style.right = rightMove + 'px'
-              tempictureMove.style.top = clientY + 'px'
-            }
-            else {
-              tempictureMove.style.right = e.target.clientWidth -  65 + 'px'
-              tempictureMove.style.top = clientY + 'px'
-            }
 
-          }  
-            }, 800);
-                  
+        }
+        infrared.contentDocument.onmouseover = (e) => {
+          that.tempicTimer = setInterval(() => {
+            let param = {
+              accessoryID: this.carrierSelected.CarrierAccessoryList[0].AccessoryID,
+              sourceHeight: parseFloat(e.target.clientWidth * 512 / 640),//512
+              sourceWidth: e.target.clientWidth,//640
+              x: clientX,
+              y: clientY,
+            }
+            getTemperature(param).then((res) => {
+              console.log('调用接口参数', param, res)
+              if (res.code == 20000) {
+                this.tempicture = res.data + '℃'
+              }
+              getHot()
+              setTimeout(() => {
+                this.tempicture = null
+              }, 10000)
+            })
+            const getHot = function () {
+              let tempictureMove = document.getElementById('tempicture')
+              const rightMove = e.target.clientWidth - clientX
+              if (clientX > 65) {
+                tempictureMove.style.right = rightMove + 'px'
+                tempictureMove.style.top = clientY + 'px'
+              }
+              else {
+                tempictureMove.style.right = e.target.clientWidth - 65 + 'px'
+                tempictureMove.style.top = clientY + 'px'
+              }
+
+            }
+          }, 800);
+
         };
-        infrared.contentDocument.onmouseout = ()=>{
-            console.log('移除')
-               window.clearInterval(that.tempicTimer)
-               timer = null
-          }
+        infrared.contentDocument.onmouseout = () => {
+          console.log('移除')
+          window.clearInterval(that.tempicTimer)
+          timer = null
+        }
       };
 
     },
@@ -931,17 +934,20 @@ export default {
       // console.log('里程任务id',car)
       if (car.data.length > 0) {
         getTaskRemainingMileage(car.data[0].taskID).then((res) => {
-          // console.log('里程信息',res)
-          const mileage = res.data.mileage
-          if (this.carList.realTimeSpeed != 0 &&  mileage > 2 ) {
-            this.finishTime = (mileage / (this.carList.realTimeSpeed * 60)).toFixed(1)
-          }else if (mileage !=0){
+          const time = (res.data.time / 60)
+          console.log('查看剩余里程',res.data.mileage,time)
+          if (this.carList.realTimeSpeed > 0 && res.data.mileage > 20000) {
+            this.finishTime = Number( ((res.data.mileage / (this.carList.realTimeSpeed * 60))).toFixed(1)) +time
+            this.finishTime = this.finishTime.toFixed(1)
+            console.log('看看时间', typeof this.finishTime ,time)
+            if (res.data.mileage = 0) {
+              this.finishTime = 0
+            }
+          }
+          else if (this.carList.realTimeSpeed > 0 &&res.data.mileage <20000  ){
             this.finishTime = 0.1
           }
-          else if(mileage = 0){
-            this.finishTime = 0
-          }
-        })
+          })
         this.realTimeTask = car.data[0].planName
       }
       else {
@@ -1129,7 +1135,7 @@ export default {
     },
     async getDetailMessage(e) {
       console.log("实时", e)
-      this.imageUrl = 'http://192.168.20.23:8888/images/' + e.Image
+      this.imageUrl = 'http://192.168.20.4:8888/images/' + e.Image
       this.alarm = e
       this.dialogVisible = true
     },
@@ -2209,4 +2215,5 @@ export default {
     }
   }
 
-}</style>
+}
+</style>

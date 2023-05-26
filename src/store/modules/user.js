@@ -44,8 +44,9 @@ const actions = {
       login(userInfo)
         .then((response) => {
           // console.log('登录结果',response)
-          getInfo()
+     
           if (response.code === 20000) {
+            getInfo()
             const { data } = response;
             // console.log('异地登录获取token',response.data)
             commit('SET_TOKEN', response.data);
