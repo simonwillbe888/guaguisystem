@@ -641,7 +641,7 @@ export default {
       if (this.YTlogin == true) {
         this.YTlogin = false
         this.$notify({
-          message: '有任务执行，自动退出连接',
+          message: '云台退出连接',
           type: 'warning',
           title: '提示',
           duration: 5000,
@@ -841,7 +841,7 @@ export default {
       }
       // console.log('查左侧',this.currentAdvices[0])
       this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
-      console.log('选中机器人且更改参数', this.currentAdvices[0].configJson)
+      // console.log('选中机器人且更改参数', this.currentAdvices[0].configJson)
       this.getVideo()
     },
     getVideo() {
@@ -882,7 +882,7 @@ export default {
         this.currentAdvices[0].accessoryType = camera.AccessoryType
         this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
       }
-      console.log('查看右侧', this.currentAdvices[0])
+      // console.log('查看右侧', this.currentAdvices[0])
       this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
       this.getVideo()
     },

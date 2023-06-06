@@ -48,10 +48,11 @@ export default {
     },
     wsInit() {
       const username = this.$store.getters.account
-      console.log('websocket连接',username)
       // 通信URL，godlike为用户名，后续可以修改
       if (!this.webSocketUrl || !username) return;
       this.ws = this.webSocketUrl + username;
+      console.log('websocket连接',this.ws)
+
       if (!this.wsIsRun) {
         return;
       }

@@ -655,11 +655,12 @@ export default {
     // 修改成功
     editSuccess(alarmData) {
       let self = this;
+      
       this.$refs.alarmForm.validate((valid) => {
         if (valid) {
           let param = {
             id: Number(alarmData.ID),
-            // alarmCode: Number(alarmData.AlarmCode),
+            alarmCode: Number(alarmData.AlarmType),
             alarmName: alarmData.AlarmName,
             alarmType: alarmData.AlarmType,
             deviceType: alarmData.DeviceType,
@@ -671,7 +672,7 @@ export default {
           };
           getUpdateAlarmSet(param)
             .then((response) => {
-              console.log(param)
+              console.log('修改的参数',param)
               if (response.code === 20000) {
                 this.cancel();
                 self.init();

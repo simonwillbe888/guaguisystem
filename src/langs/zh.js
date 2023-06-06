@@ -49,7 +49,7 @@ module.exports = {
     sys_role_mg: '角色管理',
     sys_purview_mg: '权限管理',
     video_record_config_label: '硬盘录像机配置',
-    system_setting: '系统配置',
+    system_setting: '授权管理',
     charging_strategy_label: '充电策略配置',
     charging_station_label: '充电站配置',
   },

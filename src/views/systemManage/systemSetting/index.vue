@@ -2,24 +2,24 @@
   <div>
     <div class="sysSetting">
       <div style="text-align: center;color: white;margin-top: 40px;">
-        <el-form :model="form" :rules="rules" ref="form">
+        <!-- <el-form :model="form" :rules="rules" ref="form">
           <el-form-item label="" prop="webRtcIP">
             <span>推流IP</span> <el-input placeholder="请输入推流Ip" style="width:400px" v-model="form.webRtcIP"></el-input>
           </el-form-item>
-          <!-- <el-form-item prop="fileAddress">
+          <el-form-item prop="fileAddress">
             <span>图片保存位置</span> <el-input :disabled="true" placeholder="请输入文件保存位置" style="width:400px;margin-right: 41px;"
               v-model="form.fileAddress"></el-input>
           </el-form-item>
 
           <span>视频保存位置</span> <el-input :disabled="true" placeholder="请输入文件保存位置"
-            style="width:400px;margin-right: 55px;margin-top: 30px;" v-model="video"></el-input> -->
+            style="width:400px;margin-right: 55px;margin-top: 30px;" v-model="video"></el-input>
 
-        </el-form>
+        </el-form> -->
       </div>
-      <div class="btn">
+      <!-- <div class="btn">
         <el-button style="background-color:  #15B3B4; color: #fff;border: none;" :loading="saveBtnLoding" size="mini" @click="saveSetting" type="primary">确定</el-button>
-        <!-- <el-button :loading="saveBtnLoding" size="mini" @click="download = true" type="primary">下载</el-button> -->
-      </div>
+        <el-button :loading="saveBtnLoding" size="mini" @click="download = true" type="primary">下载</el-button>
+      </div> -->
       <el-dialog title="下载视频图片" :visible.sync="download">
         <div>
           <el-date-picker v-model="startVal" type="date" value-format="yyyy-MM-dd"
