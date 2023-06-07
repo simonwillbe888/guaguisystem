@@ -77,7 +77,7 @@ export const asyncRoutes = [
           // title: 'menu.sys_run',
           parent_id: 1,
           roles: ['SystemRun'],
-         
+
         },
         component: () => import('@/views/dashboard/index'),
         hidden:true,
@@ -94,7 +94,7 @@ export const asyncRoutes = [
         component: () => import('@/views/map/index'),
         hidden:true,
       },
-    
+
     ],
   },
   // 硬件配置
@@ -389,7 +389,7 @@ export const asyncRoutes = [
           parent_id: 6,
           roles: ['RoleSetting'],
         },
-    
+
       },
       // {
       //   path: 'purviewManage',
@@ -402,17 +402,27 @@ export const asyncRoutes = [
       //     roles: ['PowerSetting'],
       //   },
       // },
+      // {
+      //   path: 'systemSetting',
+      //   name: 'system_setting',
+      //   component: () => import('@/views/systemManage/systemSetting/index'),
+      //   meta: {
+      //     title: 'menu.system_setting',
+      //     //   icon: 'battery',
+      //     parent_id: 6,
+      //     roles: ['SysSetting'],
+      //   },
+      // },
       {
-        path: 'systemSetting',
-        name: 'system_setting',
-        component: () => import('@/views/systemManage/systemSetting/index'),
+        path: 'licenseSetting',
+        name: 'license_setting',
+        component: () => import('@/views/systemManage/licenseSetting/index'),
         meta: {
-          title: 'menu.system_setting',
+          title: 'menu.license_setting',
           //   icon: 'battery',
           parent_id: 6,
-          roles: ['SysSetting'],
+          roles: ['LicenseSetting'],
         },
-        // hidden:true,
       },
     ],
   },
