@@ -47,8 +47,8 @@
             </el-table-column>
             <el-table-column prop="startTime" align="center" label="开始时间">
             </el-table-column>
-            <el-table-column prop="residueCount" align="center" label="剩余次数">
-            </el-table-column>
+            <!-- <el-table-column prop="residueCount" align="center" label="剩余次数">
+            </el-table-column> -->
             <el-table-column
               fixed="right"
               align="center"

@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <div class="page-title">
-      {{ $route.query.title }}
+      配置流程
       <span class="right-btn" @click="$router.back()"
         ><svg-icon icon-class="fanhui"
       /></span>
@@ -14,7 +14,6 @@
               class="list-item oneLine"
               v-for="item in templateList"
               :key="item.id"
-              @click="addSonTemplate"
             >
               模板ID：{{ item.id }}
               <span style="margin-left: 5px"

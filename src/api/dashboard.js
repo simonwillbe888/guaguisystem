@@ -8,6 +8,18 @@ export function startPanLeft (speed,id) {
   })
 }
 
+export function startTalk (id) {
+  return request({
+    url: '/api/CarrierSet/startTalk?carrierID=' + id,
+    method: 'get'
+  })
+}
+export function stopTalk (id) {
+  return request({
+    url: '/api/CarrierSet/stopTalk?carrierID=' + id,
+    method: 'get'
+  })
+}
 export function endPanLeft (id) {
   return request({
     url: '/api/HKControl/EndPanLeft?accessoryID=' + id,

@@ -75,7 +75,7 @@
       >
         <div style="line-height:2.5rem">
           <div>
-            <span>产品名称：</span><span>佳启智能巡检机器人监控平台</span>
+            <span>产品名称：</span><span>隧道智能巡检系统</span>
           </div>
           <div><span>版本号：</span><span>V2.0.0.0</span></div>
         </div>
@@ -94,7 +94,7 @@ import Screenfull from '@/components/Screenfull';
 import { getAlarmNotice } from '@/api/user.js';
 import { mapGetters } from 'vuex';
 import { removeToken } from '@/utils/auth';
-import {logOut,remoteLoginOut,getInfo} from '@/api/user'
+import {loginOut,remoteLoginOut,getInfo} from '@/api/user'
 
 export default {
   name: 'Layout',
@@ -116,7 +116,10 @@ export default {
       interValTime: '',
     };
   },
-
+  created(){
+    // getInfo(this.token).then((res)=>{
+    // })
+  },
   mounted() {
     const { permission_routes } = this;
     let route = this.$route;
@@ -130,7 +133,7 @@ export default {
       this.currentManue.currentPath = route.path;
     }
     // this.getWarn();
-    getInfo(this.token)
+
   },
   computed: {
     ...mapGetters(['permission_routes', 'sidebar','logoutState','token']),
@@ -140,7 +143,7 @@ export default {
   },
   beforeDestroy() {
     this.interValTime = '';
-    this.remove();
+    // this.remove();
   },
   watch: {
     $route(newName, oldName) {
@@ -190,17 +193,17 @@ export default {
       // console.log("查看子路由2",this.currentManue)
     },
     async logout() {
-      logOut().then((res)=>{
+      loginOut().then((res)=>{
+        this.$store.dispatch('user/logout')
         removeToken();
         this.$router.push(`/login?redirect=${this.$route.fullPath}`);
 
       })
       //   await this.$store.dispatch('user/logout');
-
-
     },
     async remove(){
       // remoteLoginOut()
+      this.$store.dispatch('user/logout')
       removeToken();
       this.$router.push(`/login?redirect=${this.$route.fullPath}`);
     }

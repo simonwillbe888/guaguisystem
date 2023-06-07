@@ -20,7 +20,7 @@
     <div class="equip-body content-body">
       <div class="container" style="background-color: rgba(7, 24, 40, 0.5)">
         <el-row style="height: 36rem;overflow-y:scroll">
-          <el-col :xs="24" :sm="12" :md="6" v-for="(item, index) in list" :key="index" >
+          <el-col :xs="24" :sm="12" :md="6" v-for="(item, index) in list" :key="index">
             <el-card class="box" :style="{ width: '20.625rem', height: '21.25rem' }">
               <div class="box-content">
                 <div>
@@ -28,11 +28,12 @@
                     <svg-icon icon-class="download"></svg-icon>
                   </div>
                   <!-- @click="largerPic(item.FilePath)" -->
-                  <el-image :src="item.FilePath" style="width: 20.625rem;height: 14.0625rem;" v-if="item.fileType == 1" :preview-src-list="imgaeList" ></el-image>
+                  <el-image :src="item.FilePath" style="width: 20.625rem;height: 14.0625rem;" v-if="item.fileType == 1"
+                    :preview-src-list="imgaeList"></el-image>
                   <!-- <img @click="largerPic(item.FilePath)" :src="item.FilePath" style="width: 20.625rem;height: 14.0625rem;" v-if="item.fileType == 1"> -->
                   <!-- <video ></video>     -->
                   <iframe :src="item.FilePath" style="width: 20.625rem;height: 14.0625rem;" v-if="item.fileType == 4"
-                   allowfullscreen="true"  frameborder="0"></iframe>
+                    allowfullscreen="true" frameborder="0"></iframe>
                 </div>
                 <div class="box-content-detail">
                   <div class="line" style="margin-top: .9375rem;">媒体内容：{{ item.fileType == 1 ? '图片' : item.fileType == 4 ?
@@ -58,7 +59,8 @@
         </span>
       </el-dialog>
       <div>
-        <pagination v-show="total > 0" :total="total" :page.sync="page" :limit.sync="limit" @pagination="init" :pageSizes="[8,16,24,32]" />
+        <pagination v-show="total > 0" :total="total" :page.sync="page" :limit.sync="limit" @pagination="init"
+          :pageSizes="[8, 16, 24, 32]" />
       </div>
     </div>
 
@@ -73,6 +75,7 @@ import { downLoadBatchPTZFile } from '../../../api/sysCtrl';
 import Pagination from '@/components/Pagination';
 
 import { mapGetters, mapState } from 'vuex';
+import { type } from 'os';
 export default {
   components: { Pagination },
   data() {
@@ -80,7 +83,7 @@ export default {
       startVal: null,
       endVal: null,
       list: [1, 2, 3, 4, 5, 6, 7, 8], // 8 items in the list
-      imgaeList:[],
+      imgaeList: [],
       page: 1,
       total: 0,
       limit: 8,
@@ -91,8 +94,8 @@ export default {
       Checked: [],
       fileType: ['图片', '视频'],
       downloadAll: false,
-      enlargePic:false,
-      picLarger:null
+      enlargePic: false,
+      picLarger: null
     };
   },
   mounted() {
@@ -118,20 +121,20 @@ export default {
         this.list.forEach(element => {
 
           if (element.fileType == 4) {
-            element.FilePath = 'http://192.168.100.88:8888/' + element.fileUrl
+            element.FilePath = 'http://192.168.20.6:8888/' + element.fileUrl
           }
           else if (element.fileType == 1) {
-            element.FilePath = 'http://192.168.100.88:8888/images/' + element.fileUrl
+            element.FilePath = 'http://192.168.20.6:8888/images/' + element.fileUrl
           }
 
         });
         console.log('查看list', this.list)
-                this.list.forEach(element =>{
-                  if(element.fileUrl.includes('jpg')){
-                    console.log('包含图片了',element.fileUrl)
-                    this.imgaeList.push(element.FilePath)
-                  }
-                })
+        this.list.forEach(element => {
+          if (element.fileUrl.includes('jpg')) {
+            console.log('包含图片了', element.fileUrl)
+            this.imgaeList.push(element.FilePath)
+          }
+        })
       })
     },
     download(e) {
@@ -193,48 +196,52 @@ export default {
       }
     },
     handleCheckedCitiesChange(value) {
-        let checkedCount = value.length;
-        this.checkAll = checkedCount === this.fileType.length;
-       console.log("查看选择",this.Checked)
-      },
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.fileType.length;
+      console.log("查看选择", this.Checked)
+    },
     confirm() {
       let that = this
       that.actions = null
-      if(this.Checked.length == 2){
-          that.actions = 0
-        }
-        else{  this.Checked == '视频'?that.actions = 2: this.Checked == '图片'?that.actions = 1:that.actions==null}
-        let params ={
-          startTime: that.startVal,
-          endTime:that.endVal,
-          limit:null,
-          currend:null,
-          fileType:that.actions
-        }
-        // console.log(params.fileType)
-        downLoadBatchPTZFile(params).then((res)=>{
-          if(that.actions == null){
-            this.$notify({
-          type: 'error',
-          message: '请选择导出类型',
-          title: '提示',
-          duration: 3000,
-        });
-          }
-          else {
-            that.downloadAll = false
-            // console.log("查看",that.download)
+      if (this.Checked.length == 2) {
+        that.actions = 0
+      }
+      else { this.Checked == '视频' ? that.actions = 4 : this.Checked == '图片' ? that.actions = 1 : that.actions = null }
+      let params = {
+        startTime: that.startVal,
+        endTime: that.endVal,
+        limit: null,
+        currend: null,
+        fileType: that.actions
+      }
+      console.log('下载的类型参数', typeof params.fileType, params)
+      // console.log(params.fileType)
+      if (that.actions == null) {
           this.$notify({
-          type: 'success',
-          message: '导出成功',
-          title: '提示',
-          duration: 1000,
-        });
-        
+            type: 'error',
+            message: '请选择下载类型',
+            title: '提示',
+            duration: 3000,
+          });
+        }
+        else {
+          that.downloadAll = false
+          // console.log("查看",that.download)
+          this.$notify({
+            type: 'success',
+            message: '下载成功，请稍候',
+            title: '提示',
+            duration: 1000,
+          });
+        }
+      downLoadBatchPTZFile(params).then((res) => {
+        console.log('下载成功')
+
+
 
         let blob = new Blob([res], { type: "application/zip" });
         // let blob = new Blob([res]);//response.data为后端传的流文件
-        let downloadFilename = '下载图片' + this.$moment(new Date()).format('YYYY-MM-DD HH:mm:ss') + ".zip";//设置导出的文件名  用moment时间插件对文件命名防止每次都是一样的文件名
+        let downloadFilename = '下载文件' + this.$moment(new Date()).format('YYYY-MM-DD HH:mm:ss') + ".zip";//设置导出的文件名  用moment时间插件对文件命名防止每次都是一样的文件名
         if (window.navigator && window.navigator.msSaveOrOpenBlob) {
           //兼容ie浏览器
           window.navigator.msSaveOrOpenBlob(blob, downloadFilename)
@@ -250,16 +257,16 @@ export default {
           document.body.removeChild(downloadElement);
           window.URL.revokeObjectURL(url);
         }
-      }}).catch(function (err) {
+      }).catch(function (err) {
         // console.log(err)
       }).finally(function () {
 
       })
     },
-    largerPic(src){
-       console.log('放大版',src)
-       this.picLarger = src
-       this.enlargePic = true
+    largerPic(src) {
+      console.log('放大版', src)
+      this.picLarger = src
+      this.enlargePic = true
     }
   }
 }

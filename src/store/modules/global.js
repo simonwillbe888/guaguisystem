@@ -2,11 +2,12 @@ const state = {
   realTimeTasks: [],
   planTasks: [],
   realTimeAlarm:[],
-  logoutState:[],
+  logoutState:[], //登出
   cameraOut:[],
   carrierSelectedIp:'111',
   locationTips:'小提示',
   locationFail:false,
+  locationBoolen:false,
 };
 
 const mutations = {
@@ -30,6 +31,9 @@ const mutations = {
   },
   setLocationTips:(state,data)=>{
    state.locationTips = data
+   if(data.includes('机器人到达巡检点')){
+    state.locationBoolen = !state.locationBoolen
+   }
   },
   setLocationAlarm:(state)=>{
     state.locationFail = !state.locationFail

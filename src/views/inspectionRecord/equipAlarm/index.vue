@@ -165,11 +165,12 @@
      <el-table
         :data="planDetailArr"
         header-row-class-name="header-row-class"
+        @row-click="getDetailMessage"
         row-class-name="row-class"
         fit
         highlight-current-row
         size="small"
-        height="50vh"
+        height="51vh"
         :empty-text="'暂无数据'"
         ><el-table-column type="index" label="序号" align="center" width="100">
         </el-table-column>
@@ -223,6 +224,7 @@
       </el-table>
     </div>
     </el-dialog>
+  
   </div>
 </template>
 
@@ -315,7 +317,7 @@ export default {
       };
       getPageList(params)
         .then((response) => {
-        console.log("查看response",response)
+        console.log("查看response",response,params)
           let recordArr = response.data.records;
           self.total = response.data.total;
           if (response.data.total > 0) {
@@ -407,13 +409,14 @@ export default {
         const stDay = this.startVal
         const endDay = this.endVal
         var params = {
-          endTime: endDay + " 23:59:59",
-          startTime: stDay + " 00:00:00"
+          endTime: endDay,
+          startTime: stDay 
         }
       }
       let _this = this
       // console.log("查看导出参数",params)
       patrolRecordExportExcel(params).then(function (res) { //导出流
+        console.log('导出的参数',params)
          _this.$notify({
             type: 'success',
             message: '导出成功',
@@ -482,7 +485,9 @@ export default {
       // this.detailForm.location = item.location
    
     },
-
+    getDetailMessage(e){
+      console.log('告警信息',e)
+    },
     async getTaskType() {
       const res = await getTaskTypeList();
       if (res.code === 20000) {

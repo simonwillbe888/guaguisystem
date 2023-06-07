@@ -22,7 +22,7 @@ export function remoteLoginOut() {
   });
 }
 
-export function logOut() {
+export function loginOut() {
   return request({
     url: '/api/User/loginOut',
     method: 'post',

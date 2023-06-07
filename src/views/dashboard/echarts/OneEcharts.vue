@@ -36,7 +36,6 @@ export default {
   },
   methods: {
     init() {
-      console.log("自定义日期",this.date)
       let self = this;
       let param = {
         endTime: this.date[1],
@@ -44,7 +43,6 @@ export default {
       };
       getCountByLevelAndStatus(param)
         .then((response) => {
-          console.log(param)
           if (response && response.data.length) {
             self.dealCount = [];
             self.noDealCount = [];

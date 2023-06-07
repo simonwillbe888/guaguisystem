@@ -47,9 +47,12 @@ export default {
       //   }
     },
     wsInit() {
+      const username = this.$store.getters.account
       // 通信URL，godlike为用户名，后续可以修改
-      if (!this.webSocketUrl || !this.account) return;
-      this.ws = this.webSocketUrl + this.account;
+      if (!this.webSocketUrl || !username) return;
+      this.ws = this.webSocketUrl + username;
+      console.log('websocket连接',this.ws)
+
       if (!this.wsIsRun) {
         return;
       }
@@ -131,14 +134,15 @@ export default {
         }
         // 登出状态
         else if (data.code === 5){
-          console.log('云台退出websocket消息',data)
+          console.log('用户退出登录',data)  
           if(data.data){
+            // this.$store.dispatch('user/remoteLogout')
             this.$store.dispatch('global/setlogoutState',data.data)
           }
         }
         //6 renwu，7计划结束
         else if(data.code == 8){
-          console.log('巡检点结束，发送提示',data.data)
+          console.log('巡检点结束',data.data)
           this.$store.dispatch('global/setLocation',data.data)
         }
         //去往巡检点失败
@@ -150,6 +154,16 @@ export default {
           type: 'error',
           title: '提示',
           duration: 0,
+         });
+        }
+        else if(data.code == 10){
+          console.log('返回待命点',data.data)
+          this.$store.dispatch('global/setLocation',data.data)
+          this.$notify({
+          message: data.data,
+          type: 'success',
+          title: '提示',
+          duration: 5000,
          });
         }
       }
@@ -168,6 +182,7 @@ export default {
     },
     wsDestroy() {
       if (this.webSocket !== null) {
+        console.log('退出websocket')
         this.webSocket.removeEventListener('open', this.wsOpenHanler);
         this.webSocket.removeEventListener('message', this.wsMessageHanler);
         this.webSocket.removeEventListener('error', this.wsErrorHanler);

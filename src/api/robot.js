@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-import { request2 } from '../utils/request';
+import { request2 } from '../utils/request2';
 // 手摇操作
 export function connectCar(on,nowtime){
   return  request2({
@@ -16,7 +16,6 @@ export function GetMonitorData(){
     data:{},
   })
 }
-
 
 export function moveCar(Direct,Speed,Span,SendTime){
   return request2({
@@ -50,6 +49,13 @@ export function CancelCarrierControl(id){
 
   })
 }
+export function getTaskRemainingMileage(id){
+  return request({
+    url:'/api/PatrolPlan/getTaskRemainingMileage?taskID='+id,
+    method:'get',
+
+  })
+}
 export function SetSpeed(data){
   return request({
     url:'/api/CarrierGroup/SetSpeed',
@@ -73,13 +79,23 @@ export function informCloseRobot(data) {
     data:{}
   });
 }
+
+
 // 机器人配置
 export function getCarrierList(data) {
   return request({
     url: '/api/CarrierSet/getCarrierList',
     method: 'post',
-    data,
+    data
   });
+}
+
+export function getIndexCar(){
+  return request ({
+    url: '/api/AlarmData/getCarrierList',
+    method: 'post',
+    data:{}
+  })
 }
 
 export function addCarrier(data) {
@@ -334,5 +350,13 @@ export function logOut(id) {
     url: '/api/HKControl/LoginOut?accessoryID=' + id,
     method: 'get',
     data: {},
+  });
+}
+//红外测温
+export function getTemperature(data) {
+  return request({
+    url: '/api/HKControl/getTemperature',
+    method: 'post',
+    data: data,
   });
 }

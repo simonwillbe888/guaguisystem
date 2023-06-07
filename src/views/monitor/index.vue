@@ -28,19 +28,19 @@
               <div>
                 当前速度
                 <div>
-                  {{ carList.realTimeSpeed == null ? '0' : (carList.realTimeSpeed/1000).toFixed(1) }}m/s
+                  {{ carList.realTimeSpeed == null ? '0' : Math.abs((carList.realTimeSpeed / 1000).toFixed(1)) }}m/s
                 </div>
               </div>
               <div style="margin-left:10% ;">
                 累计运行里程
                 <div>
-                 {{carList.totalDistance == null?'0':(carList.totalDistance/100000).toFixed(2) }}Km
+                  {{ carList.totalDistance == null ? '0' : (carList.totalDistance / 100000).toFixed(2) }}Km
                 </div>
               </div>
               <div>
                 累计运行时间
                 <div>
-                  {{carList.totalRunTime == null?'0': (carList.totalRunTime/1440).toFixed(1) }}天
+                  {{ carList.totalRunTime == null ? '0' : (carList.totalRunTime / 1440).toFixed(1) }}天
                 </div>
               </div>
             </div>
@@ -60,7 +60,7 @@
               <div>当前电量</div>
             </div>
             <div class="microphone">
-              <Intercom></Intercom>
+              <Intercom :carID="carID"></Intercom>
               <div class="speak_detail" style="font-size: 0.875rem;">双向喊话</div>
             </div>
             <div class="broadcast" @click="broadcastVisible = true">
@@ -79,7 +79,7 @@
                   ? 'active'
                   : '', 'back-shaodow'
               ]" :ref="'iframe0'" :myData="currentAdvices[0]" style="width: 100%;height:27.5rem;" marginwidth="0"
-                marginheight="0" name="ddddd" :id="'iframes0'" scrolling="auto" :src="currentAdvices[0].src">
+                marginheight="0" name="ddddd" :id="'iframes0'" control="" scrolling="auto" :src="currentAdvices[0].src">
               </iframe>
               <!-- <iframe v-for="(item, index) in currentAdvices" allow="fullscreen" :class="[
                   currentCamera.accessoryID === item.accessoryID
@@ -88,26 +88,24 @@
                 ]" :ref="'iframe' + index" :myData="item" style="width: 25.6; height: 40 ;margin-right: 0.9375rem;"
                   name="ddddd" :id="'iframes' + index" scrolling="auto" :src="item.src" :key="index">
                 </iframe> -->
-
             </div>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="right">
             <iframe :class="[
-              currentCamera.accessoryID === currentAdvices.accessoryID
-                ? 'active'
-                : '', 'back-shaodow'
-            ]" :ref="'iframe1'" :myData="currentAdvices[1]" style="width:100%;height:27.5rem;" name="ddddd"
-              marginwidth="0" marginheight="0" :id="'iframes1'" scrolling="auto" :src="currentAdvices[1].src">
+              'infrared', 'back-shaodow'
+            ]" :ref="'iframe1'" :myData="currentAdvices[1]" style="" name="ddddd" marginwidth="0" marginheight="0"
+              :id="'infrared'" scrolling="auto" :src="currentAdvices[1].src">
             </iframe>
+            <div class="tempicture" id="tempicture">{{ tempicture }}</div>
           </div>
         </el-col>
         <div v-if="broadcastVisible" class="broadcastSelect">
           <div class="leftTitle" style="display: flex;">
-             <div>语音播报</div> 
+            <div>语音播报</div>
             <i class="el-icon-close closeBroad" style="margin-left: auto;color: #000000;"
-              @click="broadcastVisible = false"></i>           
+              @click="broadcastVisible = false"></i>
           </div>
           <el-radio-group v-model="selectedOption">
             <el-radio style="color:red ;" label="语音停止播放"></el-radio><br>
@@ -128,8 +126,9 @@
             <el-button size="mini" type="primary" @click="goLocationLowButtery()">确 定</el-button>
           </span>
         </el-dialog>
-        <el-dialog :visible.sync="locationAuto" :close-on-click-modal="false" title="操作提示" width="30%">
-          <span style="font-size:1.5rem ;">已到达巡检点，是否手动操作机器人</span>
+        <el-dialog :visible.sync="locationAuto" :show-close="false" :close-on-click-modal="false" title="操作提示"
+          width="30%">
+          <span style="font-size:1.5rem ;">已到达巡检点{{ locationID }}，是否手动操作机器人</span>
           <span slot="footer">
             <el-button size="mini" @click="cancelLocation()">否</el-button>
             <el-button size="mini" type="primary" @click="openLocation()">是</el-button>
@@ -142,7 +141,8 @@
             <div class="leftTitle" style="padding-top: 1rem;padding-bottom: 0.5rem;">任务信息</div>
             <div class="taskDetail">
               当前任务 ：<span style="color:#66B3B2 ;">{{ realTimeTask == '' ? '空闲状态' : realTimeTask }} </span>
-              <span style="margin-left: 1.875rem;">预计完成时间：<span style="color:#66B3B2 ;">10分钟</span> </span>
+              <span style="margin-left: 1.875rem;">预计完成时间：<span style="color:#66B3B2 ;"></span>{{ finishTime ==
+                '' ? '0' : Math.abs(finishTime) }}分钟 </span>
             </div>
             <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0rem;">
               任务下发
@@ -191,9 +191,9 @@
                 </el-option>
               </el-select> -->
               <span style="margin:0 0.625rem ;">去往</span>
-              <el-input  
-              oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
-               class="location_Detail" v-model="locationID" placeholder="如:101">
+              <el-input
+                oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
+                class="location_Detail" v-model="locationID" placeholder="如:101">
                 <template slot="prefix">K100</template>
               </el-input>
               <el-popconfirm title="确定去往巡检点?" @confirm="goLocation">
@@ -460,7 +460,7 @@ import {
   getCarrierDetailInfo, getMapData
 } from '../../api/map';
 import {
-  getEquipmentList,SetSpeed,
+  getEquipmentList, SetSpeed,
   moveToPatrolPoint,
   getAllCarrierDetailInfo,
   getChargingStateByCarrierID,
@@ -475,8 +475,8 @@ import {
   logOut,
   connectCar,
   moveCar,
-  stopCar, CancelCarrierControl,
-  startVoiceBroadcast, stopVoiceBroadcast, getCarrierList, getRtsp
+  stopCar, CancelCarrierControl, getTemperature,
+  startVoiceBroadcast, stopVoiceBroadcast, getIndexCar, getRtsp, getTaskRemainingMileage
 } from '../../api/robot';
 import { getAllPatrolPlan, startPatrolPlan } from '../../api/taskConfig';
 import {
@@ -555,16 +555,22 @@ export default {
       carrierSelected: null,
       locationAuto: false,
       lowButteryType: false, //false去巡检点 true特殊计划
-      locationContent:'',
+      locationContent: '',
+      finishTime: '',
+      tranLeft: 100,
+      tempicture: null,
+      tempicTimer: null
     };
   },
-  created() { },
+  created() {
+    this.init()
+  },
 
 
   async mounted() {
     try {
       await this.getSysConfig();
-      await this.init();
+      // await this.init();
       await this.getAdvices();
       await this.lazyLoad()
       await this.getCarTask()
@@ -574,19 +580,20 @@ export default {
       console.log(error);
     }
     this.beforeunloadHandler()
-    if(this.dialogLocation.includes('机器人到达巡检点')){
+    if (this.dialogLocationBoolen.includes('机器人到达巡检点')) {
       this.locationAuto = true
     }
-     this.carRoller = setInterval(() => {
+    this.carRoller = setInterval(() => {
       this.getcarList()
     }, 500)
   },
   beforeDestroy() {
     this.HKlogout()
+    this.broadcast()
     console.log(this.robotOpen == 1)
-    if(this.robotOpen == 1){
-       this.logoutCar()
-       
+    if (this.robotOpen == 1) {
+      this.logoutCar()
+
     }
     window.clearInterval(this.carRoller)
   },
@@ -595,7 +602,7 @@ export default {
     ...mapState({
       systemConfig: (state) => state.sysConfig.systemConfig,
     }),
-    ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips']),
+    ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen']),
     realTimeAlarminfo() {
       return this.realTimeAlarm[0]
     },
@@ -611,28 +618,30 @@ export default {
       return this.carrierSelectedIp
     },
     dialogLocation() {
-      return this.locationTips
+      return this.locationBoolen
     },
-
+    dialogLocationBoolen() {
+      return this.locationTips
+    }
   },
   watch: {
     filterText(val) {
       this.$refs.tree.filter(val);
     },
     realTimeAlarminfo(newV, oldV) {
-      console.log('有更新', newV)
-      this.showTable.unshift(newV)
+      if(newv != undefined){
+        this.showTable.unshift(newV)
+      }
+     
     },
     dialogLocation(newV, old) {
-      if (newV.includes('机器人到达巡检点')){
-        this.locationAuto = true
-      }
+      this.locationAuto = true
     },
     yuntaiInfo() {
       if (this.YTlogin == true) {
         this.YTlogin = false
         this.$notify({
-          message: '有任务执行，自动退出连接',
+          message: '云台退出连接',
           type: 'warning',
           title: '提示',
           duration: 5000,
@@ -642,28 +651,28 @@ export default {
     carID() {
       return this.carrierSelected.CarrierID
     },
-    riskSpeed(newV,oldV){
+    riskSpeed(newV, oldV) {
       // console.log('速度变化了',newV ==1000,oldV)
-      if(newV == 1000){
+      if (newV == 1000) {
         const param = {
-          carrier:this.carID,
-        speed:1000,
-        speedMode:1
+          carrier: this.carID,
+          speed: 1000,
+          speedMode: 2
         }
-        SetSpeed(param).then((res)=>{
-          console.log('巡检速度',res,param)
+        SetSpeed(param).then((res) => {
+          console.log('巡检速度', res, param)
         })
-      }else{
+      } else {
         const param = {
-          carrier:this.carID,
-        speed:6000,
-        speedMode:1
+          carrier: this.carID,
+          speed: 500,
+          speedMode: 1
         }
-        SetSpeed(param).then((res)=>{
-          console.log('应急速度',res,param)
+        SetSpeed(param).then((res) => {
+          console.log('应急速度', res, param)
         })
       }
-     
+
     }
   },
 
@@ -671,38 +680,85 @@ export default {
     async init() {
       const res = await getAllCarrierDetailInfo()
       //机器人列表
-    
-      const robotInfo = await getCarrierList({
-        current: 1,
-        keyWord: "",
-        limit: 1000
-      })
-
+      const robotInfo = await getIndexCar()
+      // console.log('获取机器人列表',robotInfo.data)
       this.carrierArr = robotInfo.data //机器人的集合
-      this.carrierIndex = robotInfo.data.length - 1 //数组长度
-
+      this.carrierIndex = 0 //数组长度
       this.carrierSelected = robotInfo.data[this.carrierIndex]
-      // console.log('获取机器人列表',res)
+
       // console.log('获取选中机器人',this.carrierSelected)
       this.carID = this.carrierSelected.CarrierID
-      this.carrierName = robotInfo.data[this.carrierIndex].CarrierName
+      this.carrierName = this.carrierSelected.CarrierName
       this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
 
       // console.log('小车ip', this.carrierSelected)
       const iframe = document.getElementById('iframes0');
       iframe.onload = () => {
         iframe.contentDocument.onclick = (e) => {
-          // console.log("查看摄像机信息", this.currentAdvices[0].accessoryID)
+          console.log("查看摄像机信息", this.currentAdvices[0].src)
           this.currentCamera = this.currentAdvices[0]
         };
       };
-      const iframe1 = document.getElementById('iframes1');
-      // iframe1.onload = () => {
-      //   iframe1.contentDocument.onclick = (e) => {
-      //     this.currentCamera = this.currentAdvices[1]
-      //     // console.log("查看红外信息", this.currentAdvices[1])
-      //   };
-      // };
+
+      infrared.onload = () => {
+        let clientX = 2
+        let clientY = 110
+        let timer
+        let that = this
+        infrared.contentDocument.onmousemove = (e) => {
+          // this.currentCamera = this.currentAdvices[1]
+          // console.log('视频宽高', e.clientX,e.target.clientWidth)
+          // console.log("查看红外信息", this.carrierSelected.CarrierAccessoryList[0].AccessoryID)
+          clientX = parseFloat(e.clientX).toFixed(1)
+          clientY = parseFloat(e.clientY).toFixed(1)
+
+        }
+        infrared.contentDocument.onmouseover = (e) => {
+          that.tempicTimer = setInterval(() => {
+            let param = {
+              accessoryID: this.carrierSelected.CarrierAccessoryList[0].AccessoryID,
+              sourceHeight: parseFloat(e.target.clientWidth * 512 / 640),//512
+              sourceWidth: e.target.clientWidth,//640
+              x: clientX,
+              y: clientY,
+            }
+            getTemperature(param).then((res) => {
+              console.log('调用接口参数', param, res)
+              if (res.code == 20000) {
+                this.tempicture = res.data + '℃'
+              }
+              getHot()
+              setTimeout(() => {
+                this.tempicture = null
+              }, 10000)
+            })
+            const getHot = function () {
+              let tempictureMove = document.getElementById('tempicture')
+              const rightMove = e.target.clientWidth - clientX
+              if (clientX > 65) {
+                tempictureMove.style.right = rightMove + 'px'
+                tempictureMove.style.top = clientY + 'px'
+              }
+              else {
+                tempictureMove.style.right = e.target.clientWidth - 65 + 'px'
+                tempictureMove.style.top = clientY + 'px'
+              }
+
+            }
+          }, 800);
+
+        };
+        infrared.contentDocument.onmouseout = () => {
+          console.log('移除')
+          window.clearInterval(that.tempicTimer)
+          timer = null
+        }
+      };
+
+    },
+    getInfrared() {
+      console.log('点击事件')
+      const iframe1 = document.getElementById('infrared');
 
     },
     handleClose() {
@@ -716,7 +772,10 @@ export default {
     cancelLocation() {
       CancelCarrierControl(this.carID).then((res) => {
         console.log('取消回到返回', res)
-        this.locationAuto = false
+        if (res.code == '20000') {
+          this.locationAuto = false
+          this.$store.dispatch('global/setLocation', '返回待命点')
+        }
       })
     },
     async openLocation() {
@@ -756,9 +815,11 @@ export default {
       this.gasList = []
     },
     async changeRobotLeft() {
+      this.HKlogout()
       setTimeout(() => {
         this.clearDetail()
       }, 1500)
+      let i = 0
       if (this.carrierIndex > 0) {
         --this.carrierIndex
       } else {
@@ -766,8 +827,21 @@ export default {
       }
       this.carrierSelected = this.carrierArr[this.carrierIndex]
       this.carID = this.carrierSelected.CarrierID
-      this.carrierName = this.carrierArr[this.carrierIndex].CarrierName
+      this.carrierName = this.carrierSelected.CarrierName
+      const camera = this.carrierSelected.CarrierAccessoryList[0]
+      if (camera == undefined) {
+        this.currentAdvices[0].accessoryID = null
+        this.currentAdvices[0].accessoryType = null
+        this.currentAdvices[0].configJson = null
+      }
+      else {
+        this.currentAdvices[0].accessoryID = camera.AccessoryID
+        this.currentAdvices[0].accessoryType = camera.AccessoryType
+        this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
+      }
+      // console.log('查左侧',this.currentAdvices[0])
       this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
+      // console.log('选中机器人且更改参数', this.currentAdvices[0].configJson)
       this.getVideo()
     },
     getVideo() {
@@ -783,6 +857,7 @@ export default {
       })
     },
     async changeRobotRight() {
+      this.HKlogout()
       setTimeout(() => {
         this.clearDetail()
       }, 1500)
@@ -794,7 +869,20 @@ export default {
       }
       this.carrierSelected = this.carrierArr[this.carrierIndex]
       this.carID = this.carrierSelected.CarrierID
-      this.carrierName = this.carrierArr[this.carrierIndex].CarrierName
+      this.carrierName = this.carrierSelected.CarrierName
+      const camera = this.carrierSelected.CarrierAccessoryList[0]
+
+      if (camera == undefined) {
+        this.currentAdvices[0].accessoryID = null
+        this.currentAdvices[0].accessoryType = null
+        this.currentAdvices[0].configJson = null
+      }
+      else {
+        this.currentAdvices[0].accessoryID = camera.AccessoryID
+        this.currentAdvices[0].accessoryType = camera.AccessoryType
+        this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
+      }
+      // console.log('查看右侧', this.currentAdvices[0])
       this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
       this.getVideo()
     },
@@ -828,12 +916,11 @@ export default {
       const buttery = await getChargingStateByCarrierID(this.carrierSelected.CarrierID)
       // console.log('小车具体速度,总运行时间,',res.data.realTimeSpeed,res.data.totalRunTime)
       this.butteryInfo = buttery.data
-
       // console.log('气体',gas)
       let robot = document.getElementById('robot')
       if (res.code === 20000) {
         this.carList = res.data || [];
-         console.log('小车速度',this.carList.realTimeSpeed,'总运行时间',this.carList.totalRunTime,'里程',this.carList.totalDistance)
+        //  console.log('小车速度',this.carList.realTimeSpeed)
         if (this.carList.x >= 1) {
           const left = (93 / 46072) * this.carList.x
           robot.style.left = left + '%'
@@ -844,8 +931,28 @@ export default {
         this.gasList = gas.data
       }
       const car = await getRealPatrolTaskList()
+      // console.log('里程任务id',car)
       if (car.data.length > 0) {
+        getTaskRemainingMileage(car.data[0].taskID).then((res) => {
+          const time = (res.data.time / 60)
+          console.log('查看剩余里程',res.data.mileage,time)
+          if (this.carList.realTimeSpeed > 0 && res.data.mileage > 20000) {
+            this.finishTime = Number( ((res.data.mileage / (this.carList.realTimeSpeed * 60))).toFixed(1)) +time
+            this.finishTime = this.finishTime.toFixed(1)
+            console.log('看看时间', typeof this.finishTime ,time)
+            if (res.data.mileage = 0) {
+              this.finishTime = 0
+            }
+          }
+          else if (this.carList.realTimeSpeed > 0 &&res.data.mileage <20000  ){
+            this.finishTime = 0.1
+          }
+          })
         this.realTimeTask = car.data[0].planName
+      }
+      else {
+        this.finishTime = 0
+        this.realTimeTask = ''
       }
     },
     async getCarTask() {
@@ -856,48 +963,47 @@ export default {
         // console.log('查看巡检计划',res)
         res.data.forEach(element => {
           // console.log(element.PlanName.includes('巡检点'))          
-            this.taskList.push({
-              label: element.PlanName,
-              value: element.PlanID
-            })        
+          this.taskList.push({
+            label: element.PlanName,
+            value: element.PlanID
+          })
         });
       })
     },
     beforeunloadHandler(e) {
       window.addEventListener("beforeunload", () => {
         this.HKlogout()
-        if(this.robotOpen == 1){
-           this.logoutCar()
+        if (this.robotOpen == 1) {
+          this.logoutCar()
         }
       });
     },
     broadcast() {
       this.broadcastVisible = false
-      if(this.selectedOption != '语音停止播放' && this.selectedOption != '' ){
+      if (this.selectedOption != '语音停止播放' && this.selectedOption != '') {
         startVoiceBroadcast({
-        carrierID: this.carrierSelected.CarrierID,
-        text: this.selectedOption
-      }).then((res) => {
-        if (res.code == 20000) {
-          this.broadcasting = true
-        }else{
-          this.selectedOption = null
-        }
-      })
-      }
-      else　if(this.selectedOption == '语音停止播放'){
-        stopVoiceBroadcast(this.carrierSelected.CarrierID).then((res) => {
+          carrierID: this.carrierSelected.CarrierID,
+          text: this.selectedOption
+        }).then((res) => {
           if (res.code == 20000) {
-            Notification({
-          title: '提示',
-          duration: 5000,
-          message: '语音停止播放',
-          type: 'success'
-        })
+            this.broadcasting = true
+          } else {
+            this.selectedOption = null
           }
         })
       }
-
+      else if (this.selectedOption == '语音停止播放') {
+        stopVoiceBroadcast(this.carrierSelected.CarrierID).then((res) => {
+          if (res.code == 20000) {
+            Notification({
+              title: '提示',
+              duration: 5000,
+              message: '语音停止播放',
+              type: 'success'
+            })
+          }
+        })
+      }
     },
     startPlan() {
       this.lowButteryType = true
@@ -971,18 +1077,19 @@ export default {
       else {
         this.startPatrol()
       }
-
+      this.lowButtery = false
     },
     async HKlogin() {
       if (!this.YTlogin) {
         let param = {
-          carrierID:this.carID,
+          carrierID: this.carID,
           id: this.currentAdvices[0].accessoryID,
           accessoryType: this.currentAdvices[0].accessoryType,
           configJson: this.currentAdvices[0].configJson
         }
+        console.log("连接云台", param)
         login(param).then((res) => {
-          // console.log("连接云台", this.currentAdvices[0].configJson, param)
+          console.log("连接云台", param)
           if (res.code == '20000') {
             this.YTlogin = true
           }
@@ -1028,7 +1135,7 @@ export default {
     },
     async getDetailMessage(e) {
       console.log("实时", e)
-      this.imageUrl = 'http://192.168.100.88:8888/images/' + e.Image
+      this.imageUrl = 'http://192.168.20.4:8888/images/' + e.Image
       this.alarm = e
       this.dialogVisible = true
     },
@@ -1036,7 +1143,7 @@ export default {
     async getAdvices() {
       try {
         const res = await getEquipmentList();
-        console.log("获取设备列表", res)
+        // console.log("获取设备列表", res)
         //递归重构数据 把设备和隧道组合起来
         let hasFindFirstVideo = true;
         const deepfined = (list) => {
@@ -1049,7 +1156,7 @@ export default {
 
               hasFindFirstVideo = false;
               this.treeNodeClick(item.children[0]);
-              console.log('第er个节点', item.children[0])
+              // console.log('第er个节点', item.children[0])
               //展开并选中第一个节点
               this.defaultExpanded = [item.label];
               this.$nextTick(() => {
@@ -1124,7 +1231,7 @@ export default {
         this.arr = [{}, {}];
       }
       this.currentAdvices = arr;
-      console.log('摄像机信息', this.currentAdvices)
+      // console.log('摄像机信息', this.currentAdvices)
     },
     tabClick(val) {
       this.activeName = val;
@@ -1164,22 +1271,24 @@ export default {
         else {
           this.robotOpen = 2
         }
-      }else if(this.robotOpen == 2) {
+      } else if (this.robotOpen == 2) {
         console.log('关闭切换')
-        this.logoutCar() 
+        this.logoutCar()
       }
-             
+
       //关闭后通知
     },
     logoutCar() {
       const time = this.getNowtime()
       connectCar(2, time).then((res) => {
-        console.log('关闭退出了')  
-        informCloseRobot(this.carrierSelected.CarrierID)
-        this.robotOpen = 2
-        console.log('关闭退出了')  
+        if (res.code == 20000) {
+          informCloseRobot(this.carrierSelected.CarrierID)
+          this.robotOpen = 2
+          this.$store.dispatch('global/setLocation', '返回待命点')
+        }
+
       })
-        
+
     },
     //速度执行
     async setRobotMoveCrl(flag) {
@@ -1193,12 +1302,12 @@ export default {
         });
       } else {
         if (flag == 1) {
-          moveCar(flag, this.robotSpeed, 10000, time).then((res) => {
+          moveCar(flag, 1000, 1000000, time).then((res) => {
             console.log('前进', time, res)
           })
         }
         else if (flag == 2) {
-          moveCar(flag, this.robotSpeed, 10000, time).then((res) => {
+          moveCar(flag, 1000, 1000000, time).then((res) => {
             console.log('后退', time, res)
           })
         }
@@ -1264,8 +1373,6 @@ export default {
         })
 
       } else {
-
-
         switch (val) {
           case 1:
             this.camState = val
@@ -1503,6 +1610,12 @@ export default {
   }
 }
 
+.tempicture {
+  position: absolute;
+  bottom: 26rem;
+  color: black;
+}
+
 .content {
   font-size: 1.25rem;
   padding-top: 1vh;
@@ -1566,6 +1679,7 @@ export default {
     left: 25.3%;
     background-color: #fff;
     z-index: 999;
+
     .leftTitle {
       color: #66B3B2;
       padding-right: 2rem;
@@ -1662,8 +1776,6 @@ export default {
       line-height: 3.125rem;
       background-color: #66B3B2;
       text-align: center;
-
-
     }
 
     .speak_detail {
@@ -1842,9 +1954,19 @@ export default {
       display: flex;
 
       // .active {
-      //   border: 0.1875rem solid #bae1f3;
+      //   border: 0.1875rem solid #f3caba;
       // }
     }
+  }
+
+  .infrared {
+    width: 100%;
+    height: 27.5rem;
+
+  }
+
+  .infrared:hover {
+    border: 0.1rem solid #f3caba;
   }
 
   .map {
@@ -2093,4 +2215,5 @@ export default {
     }
   }
 
-}</style>
+}
+</style>
