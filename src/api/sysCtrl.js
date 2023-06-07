@@ -128,3 +128,27 @@ export function setSystemXmlConfig(data) {
     data,
   });
 }
+
+export function licenseChecker (data) {
+  return request({
+    url: '/api/SystemConfig/licenseChecker',
+    method: 'get',
+    data,
+  })
+}
+
+export function uploadLicense (data) {
+  return request({
+    url: '/api/SystemConfig/uploadLicense',
+    method: 'post',
+    data,
+  })
+}
+
+export function getLicenseStatus (data) {
+  return request({
+    url: '/api/SystemConfig/getLicenseStatus',
+    method: 'get',
+    data,
+  })
+}

@@ -32,3 +32,10 @@ export function getCountByCode (data) {
     data,
   })
 }
+export function getCountByDate (data) {
+  return request({
+    url: '/api/AlarmData/getCountByDate',
+    method: 'post',
+    data,
+  })
+}
