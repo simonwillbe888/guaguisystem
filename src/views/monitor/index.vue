@@ -717,10 +717,10 @@ export default {
           that.tempicTimer = setInterval(() => {
             let param = {
               accessoryID: this.carrierSelected.CarrierAccessoryList[0].AccessoryID,
-              sourceHeight: parseFloat(e.target.clientWidth * 512 / 640),//512
-              sourceWidth: e.target.clientWidth,//640
-              x: clientX,
-              y: clientY,
+              sourceHeight: 512,// parseFloat(e.target.clientWidth * 512 / 640)
+              sourceWidth: 640, //e.target.clientWidth,//640
+              x: parseFloat(640/e.target.clientWidth*clientX).toFixed(2) ,
+              y: parseFloat(512/e.target.clientHeight*clientY).toFixed(2) ,
             }
             getTemperature(param).then((res) => {
               console.log('调用接口参数', param, res)
