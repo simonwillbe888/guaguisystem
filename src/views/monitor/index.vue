@@ -14,8 +14,8 @@
               <el-input placeholder="输入关键字进行过滤" v-model="filterText">
               </el-input>
             </div>
-            <el-tree class="filter-tree" 
-            :data="adviceList" :props="defaultProps" 
+            <el-tree class="filter-tree"
+            :data="adviceList" :props="defaultProps"
             :filter-node-method="filterNode"
             ref="tree" node-key="label" auto-expand-parent accordion expand-on-click-node
               :default-expanded-keys="defaultExpanded"
@@ -88,6 +88,10 @@
                 ]" :ref="'iframe' + index" :myData="item" style="width: 25.6; height: 40 ;margin-right: 0.9375rem;"
                   name="ddddd" :id="'iframes' + index" scrolling="auto" :src="item.src" :key="index">
                 </iframe> -->
+              <el-button style="position:absolute;margin-left: 0; top:1rem;background-color:transparent;border-color: transparent" size="mini"
+                         @click="glassCameraSwitch">
+                <svg-icon icon-class="ar-glass" style="font-size: 2rem"></svg-icon>
+              </el-button>
             </div>
           </div>
         </el-col>
@@ -518,6 +522,8 @@ export default {
       recorder: null,
       broadcastStatus: 1,
       camState: 1,
+      glassCamera: false,
+      glassCameraBak: '',
       timeInte: null,
       dialogVisible: false,
       imageUrl: null,
@@ -632,7 +638,7 @@ export default {
       if(newv != undefined){
         this.showTable.unshift(newV)
       }
-     
+
     },
     dialogLocation(newV, old) {
       this.locationAuto = true
@@ -962,7 +968,7 @@ export default {
       }).then((res) => {
         // console.log('查看巡检计划',res)
         res.data.forEach(element => {
-          // console.log(element.PlanName.includes('巡检点'))          
+          // console.log(element.PlanName.includes('巡检点'))
           this.taskList.push({
             label: element.PlanName,
             value: element.PlanID
@@ -1578,7 +1584,19 @@ export default {
       let ms = new Date().getMilliseconds();
       _this.gettime = yy + '-' + mm + '-' + dd + ' ' + hh + ':' + mf + ':' + ss + '.' + ms;
       return _this.gettime
-    }
+    },
+
+    glassCameraSwitch(){
+      let glassAddress = "192.168.1.117"
+      if(this.glassCamera){
+        this.currentAdvices[0].src = this.glassCameraBak
+      }else {
+        this.glassCameraBak = this.currentAdvices[0].src
+        this.currentAdvices[0].src = `/static/video.html?data=rtsp://${glassAddress}:8080/h264_pcm.sdp&serve=${this.webRtcIP}`
+      }
+      this.glassCamera = !this.glassCamera
+      console.log(this.currentAdvices[0].src)
+    },
   },
 
 
