@@ -491,7 +491,7 @@ export default {
       if(this.alarmType == 2){
       console.log("实时",e)
       this.alarm = e
-      this.imageUrl =  'http://192.168.20.4:8888/images/' + e.Image
+      this.imageUrl =  'http://192.168.20.44:8888/images/' + e.Image
       console.log(this.imageUrl)
       this.dialogVisible = true
      

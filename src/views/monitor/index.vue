@@ -1141,7 +1141,7 @@ export default {
     },
     async getDetailMessage(e) {
       console.log("实时", e)
-      this.imageUrl = 'http://192.168.20.4:8888/images/' + e.Image
+      this.imageUrl = 'http://192.168.20.44:8888/images/' + e.Image
       this.alarm = e
       this.dialogVisible = true
     },
@@ -1587,7 +1587,7 @@ export default {
     },
 
     glassCameraSwitch(){
-      let glassAddress = "192.168.1.117"
+      let glassAddress = "192.168.20.220"
       if(this.glassCamera){
         this.currentAdvices[0].src = this.glassCameraBak
       }else {
