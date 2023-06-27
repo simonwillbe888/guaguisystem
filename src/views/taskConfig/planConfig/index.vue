@@ -1201,9 +1201,7 @@ export default {
         .then(async () => {
           if (!obj.PlanID) return;
           this.planID = obj.PlanID
-          console.log('查看计划ID',this.planID)
           const res = await startPatrolPlan(obj.PlanID,false);
-
           if (res.code === 20000) {
             this.$notify({
               type: 'success',
@@ -1212,12 +1210,13 @@ export default {
               duration: 3000,
             });
           }else if(res.code === 20001){
-            this.$notify({
-              type: 'error',
-              message: res.data,
-              title: '提示',
-              duration: 0,
-            });
+            console.log('提示两次aaa')
+            // this.$notify({
+            //   type: 'error',
+            //   message: res.data,
+            //   title: '提示',
+            //   duration: 3000,
+            // });
           }else if(res.code === 20003){
              this.lowButtery = true
           }

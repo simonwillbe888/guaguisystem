@@ -75,10 +75,10 @@ export default {
         if (this.webSocket.readyState === 1) {
           clearInterval(this.wsTimer);
         } else {
-          // console.log('ws建立连接失败');
+          console.log('ws建立连接失败');
           this.wsInit();
         }
-      }, 50000);
+      }, 5000);
     },
     wsOpenHanler(event) {
         // console.log('ws建立连接成功');
@@ -129,7 +129,8 @@ export default {
           }
         }
         //云台登出
-        else if(data.code == 4){        
+        else if(data.code == 4){ 
+          console.log('云台发来登出消息',data.data)       
           this.$store.dispatch('global/setcameraOut',data.data)
         }
         // 登出状态
@@ -161,6 +162,15 @@ export default {
           this.$store.dispatch('global/setLocation',data.data)
           this.$notify({
           message: data.data,
+          type: 'success',
+          title: '提示',
+          duration: 5000,
+         });
+        }
+        else if(data.code == 11){
+          this.$store.dispatch('global/setCloseAll',data.data)
+          this.$notify({
+          message: '回到初始状态',
           type: 'success',
           title: '提示',
           duration: 5000,

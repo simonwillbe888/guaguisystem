@@ -57,7 +57,7 @@ export const asyncRoutes = [
       title: 'menu.sys_label',
       icon: 'sys_info',
       id: 1,
-      roles: ['SystemInfo'],
+      // roles: ['SystemInfo'],
     },
     children: [
       {
@@ -66,7 +66,7 @@ export const asyncRoutes = [
         meta: {
           title: 'menu.sys_monitor',
           parent_id: 1,
-          roles: ['SystemMonitor'],
+          // roles: ['SystemMonitor'],
         },
         component: () => import('@/views/monitor/index'),
       },
@@ -74,9 +74,9 @@ export const asyncRoutes = [
         path: 'dashboard',
         name: 'menu.sys_run',
         meta: {
-          // title: 'menu.sys_run',
+          title: 'menu.sys_run',
           parent_id: 1,
-          roles: ['SystemRun'],
+          // roles: ['SystemRun'],
 
         },
         component: () => import('@/views/dashboard/index'),
@@ -89,7 +89,7 @@ export const asyncRoutes = [
         meta: {
           title: 'menu.sys_map',
           parent_id: 1,
-          roles: ['SystemMap'],
+          // roles: ['SystemMap'],
         },
         component: () => import('@/views/map/index'),
         hidden:true,
@@ -106,7 +106,7 @@ export const asyncRoutes = [
       title: 'menu.hardware_config_label',
       icon: 'yingjian_setting',
       id: 4,
-      roles: ['HardwareSetting'],
+      // roles: ['HardwareSetting'],
     },
     children: [
       //   {
@@ -129,7 +129,7 @@ export const asyncRoutes = [
           title: 'menu.area_config_label',
           icon: 'carrier_type',
           parent_id: 4,
-          roles: ['AreaSetting'],
+          // roles: ['AreaSetting'],
         },
       },
       {
@@ -139,7 +139,7 @@ export const asyncRoutes = [
         meta: {
           title: 'menu.equip_config_label',
           parent_id: 4,
-          roles: ['EquipSetting'],
+          // roles: ['EquipSetting'],
         },
       },
       {
@@ -150,7 +150,7 @@ export const asyncRoutes = [
           title: 'menu.robot_label',
           icon: 'people',
           parent_id: 4,
-          roles: ['RobotSetting'],
+          // roles: ['RobotSetting'],
         },
       },
       {
@@ -161,7 +161,7 @@ export const asyncRoutes = [
         meta: {
           title: 'menu.video_record_config_label',
           parent_id: 4,
-          roles: ['videoRecordSetting'],
+          // roles: ['videoRecordSetting'],
         },
       },
       {
@@ -171,7 +171,7 @@ export const asyncRoutes = [
         meta: {
           title: 'menu.charging_station_label',
           parent_id: 4,
-          roles: ['ChargingStation'],
+          // roles: ['ChargingStation'],
         },
       },
 
@@ -183,7 +183,7 @@ export const asyncRoutes = [
         meta: {
           title: 'menu.charging_strategy_label',
           parent_id: 4,
-          roles: ['ChargingStrategy'],
+          // roles: ['ChargingStrategy'],
         },
       },
     ],
@@ -198,7 +198,7 @@ export const asyncRoutes = [
       title: 'menu.taskConfig_label',
       icon: 'xunjian_setting',
       id: 2,
-      roles: ['PatrolSetting'],
+      // roles: ['PatrolSetting'],
     },
     children: [
       {
@@ -209,7 +209,7 @@ export const asyncRoutes = [
           title: 'menu.inspectPoints_config',
           icon: 'excel',
           parent_id: 2,
-          roles: ['PointSetting'],
+          // roles: ['PointSetting'],
         },
       },
       {
@@ -222,7 +222,7 @@ export const asyncRoutes = [
           // noCache: true,
           // activeMenu: '/taskConfig/inspectPoints'
           parent_id: 2,
-          roles: ['inspectTaskEdit'],
+          // roles: ['inspectTaskEdit'],
         },
         hidden: true,
       },
@@ -234,7 +234,7 @@ export const asyncRoutes = [
           title: 'menu.processTask_label',
           icon: 'skill',
           parent_id: 2,
-          roles: ['ProcessSetting'],
+          // roles: ['ProcessSetting'],
         },
       },
       {
@@ -245,7 +245,7 @@ export const asyncRoutes = [
           title: 'menu.planTask_label',
           icon: 'list',
           parent_id: 2,
-          roles: ['PlanSetting'],
+          // roles: ['PlanSetting'],
         },
       },
     ],
@@ -258,7 +258,7 @@ export const asyncRoutes = [
       title: 'menu.alarm_label',
       icon: 'alarm_setting',
       id: 3,
-      roles: ['AlarmSetting'],
+      // roles: ['AlarmSetting'],
     },
     children: [
       {
@@ -269,7 +269,7 @@ export const asyncRoutes = [
           title: 'menu.alarm_label',
           icon: 'list',
           parent_id: 3,
-          roles: ['AlarmSetting'],
+          // roles: ['AlarmSetting'],
         },
       },
     ],
@@ -284,7 +284,7 @@ export const asyncRoutes = [
       title: 'menu.dataRecord_label',
       icon: 'shuju_jilu',
       id: 5,
-      roles: ['DataRecord'],
+      // roles: ['DataRecord'],
     },
     children: [
       {
@@ -296,7 +296,7 @@ export const asyncRoutes = [
           title: 'menu.real_alarm_label',
           icon: 'battery',
           parent_id: 5,
-          roles: ['RealAlarm'],
+          // roles: ['RealAlarm'],
         },
       },
       {
@@ -307,7 +307,7 @@ export const asyncRoutes = [
           title: 'menu.history_alarm_label',
           icon: 'battery',
           parent_id: 5,
-          roles: ['HistoryAlarm'],
+          // roles: ['HistoryAlarm'],
         },
       },
       {
@@ -316,7 +316,7 @@ export const asyncRoutes = [
         component: () => import('@/views/inspectionRecord/realTimeTask/index'),
         meta: {
           title: 'menu.real_alarm_task',
-          roles: ['AlarmTask'],
+          // roles: ['AlarmTask'],
           parent_id: 5,
         },
       },
@@ -329,7 +329,7 @@ export const asyncRoutes = [
           title: 'menu.equip_alarm_label',
           icon: 'guide',
           parent_id: 5,
-          roles: ['PatrolData'],
+          // roles: ['PatrolData'],
         },
       },
       {
@@ -340,7 +340,7 @@ export const asyncRoutes = [
           title: '操作日志',
           icon: 'guide',
           parent_id: 5,
-          roles: ['DataRecord'],
+          // roles: ['OperationLog'],
         },
       },
       {
@@ -351,7 +351,7 @@ export const asyncRoutes = [
           title: '媒体文件',
           icon: 'battery',
           parent_id: 5,
-          roles: ['HistoryAlarm'],
+          // roles: ['MediaFiles'],
         },
       },
     ],
@@ -365,7 +365,7 @@ export const asyncRoutes = [
       title: 'menu.system',
       icon: '系统管理',
       id: 6,
-      roles: ['SystemManage'],
+      // roles: ['SystemManage'],
     },
     children: [
       {
@@ -421,7 +421,7 @@ export const asyncRoutes = [
           title: 'menu.license_setting',
           //   icon: 'battery',
           parent_id: 6,
-          roles: ['LicenseSetting'],
+          // roles: ['LicenseSetting'],
         },
       },
     ],

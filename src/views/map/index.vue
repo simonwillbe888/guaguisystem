@@ -130,7 +130,7 @@
             </div>
             <div style="margin: 3vh  0;">
               告警类型：{{  alarm.AlarmCode ==1001?"行人告警": alarm.AlarmCode ==1002?"非机动车告警": alarm.AlarmCode ==1003?"异物告警": alarm.AlarmCode ==1004?"温度告警": 
-            alarm.AlarmCode ==1005?"湿度告警": alarm.AlarmCode ==1006?"气体告警":alarm.AlarmCode ==1007?"灯光告警": alarm.AlarmCode ==1008?"违停逆行告警": alarm.AlarmCode ==1009?"超速告警":alarm.AlarmCode ==1010?"动物告警":alarm.AlarmCode ==1012?"消防设备告警": alarm.AlarmCode ==1011?"井盖异常告警":alarm.AlarmCode ==1013?"火灾烟雾告警":"机体告警"}}            </div>
+            alarm.AlarmCode ==1005?"湿度告警": alarm.AlarmCode ==1006?"气体告警":alarm.AlarmCode ==1007?"灯光告警": alarm.AlarmCode ==1008?"违停逆行告警": alarm.AlarmCode ==1009?"超速告警":alarm.AlarmCode ==1010?"动物告警":alarm.AlarmCode ==1012?"消防设备告警": alarm.AlarmCode ==1011?"井盖异常告警":alarm.AlarmCode ==1013?"火灾烟雾告警":row.AlarmType ==1014?"红外测温告警":"机体告警"}}            </div>
             <div style="margin: 3vh 0;">
               事件描述：{{ alarm.Description }}
             </div>

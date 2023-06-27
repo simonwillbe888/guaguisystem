@@ -101,7 +101,8 @@ export default {
       dialogVisible: false,
       pictureUrl: '',
       details: '',
-      videoUrl: ''
+      videoUrl: '',
+      exportRole:false,
     }
   },
   created() {
@@ -109,6 +110,12 @@ export default {
   },
   methods: {
     init() {
+      const powelist = this.$store.getters.roles
+      powelist.forEach((res) => {
+        if (res == 'exportOperationLog') {
+          this.exportRole = true
+        }
+      })
       if (this.startVal == null && this.endVal == null) {
         var params = {
           current: this.page,
@@ -187,7 +194,8 @@ export default {
         }
 
       }
-      exportRecord(params).then((res) => { //导出流
+      if(this.exportRole){
+        exportRecord(params).then((res) => { //导出流
         console.log("看看导出类型", res)
         this.$notify({
           type: 'success',
@@ -218,6 +226,15 @@ export default {
       }).finally(function () {
 
       })
+      }else{
+        this.$notify({
+          type: 'error',
+          message: '您当前未拥有系统权限',
+          title: '提示',
+          duration: 2000,
+        });
+      }
+      
 
     },
     setPage() {

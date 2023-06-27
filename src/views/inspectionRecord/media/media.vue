@@ -14,7 +14,7 @@
         <el-button size="mini" @click.native="init()">{{
           $t('public_vary.query_label')
         }}</el-button>
-        <el-button icon="el-icon-download" size="mini" @click.native="downloadAll = true">批量下载</el-button>
+        <el-button icon="el-icon-download" size="mini" @click.native="downLoadRole">批量下载</el-button>
       </div>
     </div>
     <div class="equip-body content-body">
@@ -95,7 +95,8 @@ export default {
       fileType: ['图片', '视频'],
       downloadAll: false,
       enlargePic: false,
-      picLarger: null
+      picLarger: null,
+      exportRole:false,
     };
   },
   mounted() {
@@ -107,6 +108,12 @@ export default {
 
   methods: {
     init() {
+      const powelist = this.$store.getters.roles
+      powelist.forEach((res) => {
+        if (res == 'downloadMediaFiles') {
+          this.exportRole = true
+        }
+      })
       let params = {
         startTime: this.startVal,
         endTime: this.endVal,
@@ -136,6 +143,19 @@ export default {
           }
         })
       })
+    },
+    downLoadRole(){
+     if(this.exportRole){
+      this.downloadAll = true
+     }
+     else{
+      this.$notify({
+          type: 'error',
+          message: '您当前未拥有系统权限',
+          title: '提示',
+          duration: 2000,
+        });
+     }
     },
     download(e) {
 

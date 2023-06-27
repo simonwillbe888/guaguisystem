@@ -21,7 +21,7 @@
 				// webRtcServer.connect(s.data);
 				webRtcServer = new WebRtcStreamer("video", `http://${s.serve}:8000`);
 				webRtcServer.connect(s.data);
-				// console.log("海康链接",s.data,s.serve)
+				console.log("海康链接",s.data,s.serve)
 			}
 			window.onbeforeunload = function() {
 				webRtcServer.disconnect();

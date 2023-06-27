@@ -8,6 +8,7 @@ const state = {
   locationTips:'小提示',
   locationFail:false,
   locationBoolen:false,
+  closeAll:false,
 };
 
 const mutations = {
@@ -37,6 +38,9 @@ const mutations = {
   },
   setLocationAlarm:(state)=>{
     state.locationFail = !state.locationFail
+  },
+  setClose:(state)=>{
+     state.closeAll = !state.closeAll
   }
 
 };
@@ -66,6 +70,9 @@ const actions = {
   setcameraOut({commit},cameraOut){
     commit('SET_cameraOut',cameraOut)
   },
+  setCloseAll({commit},data){
+    commit('setClose',data)
+  }
 };
 
 export default {

@@ -213,10 +213,14 @@ function changeWndNum(iType) {
 
 // 登录
 function clickLogin() {
-    var szIP = $("#loginip").val(),
-        szPort = $("#port").val(),
-        szUsername = $("#username").val(),
-        szPassword = $("#password").val();
+    var szIP = '192.168.20.64',
+    szPort = '80',
+    szUsername = 'admin',
+    szPassword = 'Jiaqi2022';
+    // szIP = $("#loginip").val(),
+        // szPort = $("#port").val(),
+        // szUsername = $("#username").val(),
+        // szPassword = $("#password").val();
 
     if ("" == szIP || "" == szPort) {
         return;
@@ -227,6 +231,7 @@ function clickLogin() {
     WebVideoCtrl.I_Login(szIP, 1, szPort, szUsername, szPassword, {
         timeout: 3000,
         success: function (xmlDoc) {            
+
             showOPInfo(szDeviceIdentify + " 登录成功！");
             $("#ip").prepend("<option value='" + szDeviceIdentify + "'>" + szDeviceIdentify + "</option>");
             setTimeout(function () {
@@ -241,7 +246,7 @@ function clickLogin() {
             if (ERROR_CODE_LOGIN_REPEATLOGIN === status) {
                 showOPInfo(szDeviceIdentify + " 已登录过！");
             } else {
-                showOPInfo(szDeviceIdentify + " 登录失败！", oError.errorCode, oError.errorMsg);
+                showOPInfo(szDeviceIdentify +szIP +" 登录失败！", oError.errorCode, oError.errorMsg);
             }
         }
     });
@@ -292,6 +297,7 @@ function clickGetDeviceInfo() {
 
 // 获取通道
 function getChannelInfo() {
+    // console.log('获取频道')
     var szDeviceIdentify = $("#ip").val(),
         oSel = $("#channels").empty();
 
@@ -367,7 +373,7 @@ function getChannelInfo() {
 // 获取端口
 function getDevicePort() {
     var szDeviceIdentify = $("#ip").val();
-
+     console.log('获取端口')
     if (null == szDeviceIdentify) {
         return;
     }
@@ -700,8 +706,12 @@ function clickStopRecord(szType, iWndIndex) {
 // 获取对讲通道
 function clickGetAudioInfo() {
     var szDeviceIdentify = $("#ip").val();
+    console.log('对讲通道',szDeviceIdentify) 
 
     if (null == szDeviceIdentify) {
+        alert('请先打开HCWebSDKPlugin.exe')
+        const data = '123'
+        window.functionForJs(data)
         return;
     }
 
@@ -715,9 +725,11 @@ function clickGetAudioInfo() {
                 oSel.append("<option value='" + id + "'>" + id + "</option>");
             });
             showOPInfo(szDeviceIdentify + " 获取对讲通道成功！");
+            console.log('获取对讲通道成功')
         },
         error: function (oError) {
             showOPInfo(szDeviceIdentify + " 获取对讲通道失败！", oError.errorCode, oError.errorMsg);
+            console.log('获取失败')
         }
     });
 }
@@ -727,7 +739,7 @@ function clickStartVoiceTalk() {
     var szDeviceIdentify = $("#ip").val(),
         iAudioChannel = parseInt($("#audiochannels").val(), 10),
         szInfo = "";
-
+ 
     if (null == szDeviceIdentify) {
         return;
     }
@@ -739,21 +751,31 @@ function clickStartVoiceTalk() {
 
     WebVideoCtrl.I_StartVoiceTalk(szDeviceIdentify, iAudioChannel).then(() => {
         szInfo = "开始对讲成功！";
+        console.log('对讲成功')
         showOPInfo(szDeviceIdentify + " " + szInfo);
     }, (oError) => {
         var szInfo = " 开始对讲失败！";
+        console.log('对讲失败')     
+        
+        alert('请先打开HCWebSDKPlugin.exe')
+        const data = '123'
+        window.functionForJs(data)
         showOPInfo(szDeviceIdentify + szInfo, oError.errorCode, oError.errorMsg);
+        return
     });
 }
 
 // 停止对讲
 function clickStopVoiceTalk() {
+    // console.log('关闭失败')
     var szDeviceIdentify = $("#ip").val();
     WebVideoCtrl.I_StopVoiceTalk().then(() => {
         szInfo = "停止对讲成功！";
+        console.log('关闭对讲成功')
         showOPInfo(szDeviceIdentify + " " + szInfo);
     }, (oError) => {
         var szInfo = " 停止对讲失败！";
+        console.log('关闭失败')
         showOPInfo(szDeviceIdentify + szInfo, oError.errorCode, oError.errorMsg);
     });
 }

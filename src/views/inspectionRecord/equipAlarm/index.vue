@@ -5,46 +5,26 @@
         {{ $t("inspect_record.equip_alarm_statics") }}
       </h3> -->
       <div class="robot-setting-inquire">
-        <el-button
-          icon="el-icon-download"
-          style="background-color: #15B3B4 !important;float: right;border-radius: 10px;"
-          type="primary"
-          size="mini"
-          @click="exportAll()"
-          >导出列表</el-button
-        >
+        <el-button icon="el-icon-download" style="background-color: #15B3B4 !important;float: right;border-radius: 10px;"
+          type="primary" size="mini" @click="exportAll()">导出列表</el-button>
         <span>{{ $t('comment_vary.default_time_label') }}</span>
-        <el-date-picker
-          v-model="startVal"
-          type="datetime"
-          value-format="yyyy-MM-dd HH:mm:ss"
-          :placeholder="$t('comment_vary.start_time_label')"
-        >
+        <el-date-picker v-model="startVal" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
+          :placeholder="$t('comment_vary.start_time_label')">
         </el-date-picker>
         <span>--</span>
-        <el-date-picker
-          v-model="endVal"
-          type="datetime"
-          :placeholder="$t('comment_vary.end_time_label')"
-          style="margin-right: 20px"
-          value-format="yyyy-MM-dd HH:mm:ss"
-        >
+        <el-date-picker v-model="endVal" type="datetime" :placeholder="$t('comment_vary.end_time_label')"
+          style="margin-right: 20px" value-format="yyyy-MM-dd HH:mm:ss">
         </el-date-picker>
         <div class="filter-sty">
           <span>{{ $t('inspect_record.filter_condition_label') }}</span>
           <el-select clearable v-model="condition" style="width: 120px">
-            <el-option
-              v-for="item in filterOption"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
+            <el-option v-for="item in filterOption" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </div>
         <el-button style="background-color: #15B3B4;border-radius: 10px;" size="mini" @click.native="init">查询</el-button>
       </div>
 
-        <!-- <el-button
+      <!-- <el-button
           icon="el-icon-download"
           style="background-color: #15B3B4 !important;"
           type="primary"
@@ -54,19 +34,11 @@
         > -->
     </div>
 
-     
+
     <div class="equip-body content-body">
-      <el-table
-        class="equip-data"
-        :data="alarmInfoArr"
-        header-row-class-name="header-row-class"
-        row-class-name="row-class"
-        fit
-        height="36.5rem"
-        highlight-current-row
-        size="small"
-        :empty-text="'暂无数据'"
-        ><el-table-column type="index" label="序号" align="center" width="100">
+      <el-table class="equip-data" :data="alarmInfoArr" header-row-class-name="header-row-class"
+        row-class-name="row-class" fit height="36.5rem" highlight-current-row size="small"
+        :empty-text="'暂无数据'"><el-table-column type="index" label="序号" align="center" width="100">
         </el-table-column>
         <el-table-column prop="PlanName" label="计划名称" align="center">
           <template slot-scope="{ row }">
@@ -75,7 +47,7 @@
         </el-table-column>
         <el-table-column prop="PlanTypeDesc" label="计划类型" align="center">
           <template slot-scope="{ row }">
-            <span>{{ row.PlanTypeDesc}}</span>
+            <span>{{ row.PlanTypeDesc }}</span>
           </template>
         </el-table-column>
         <!-- <el-table-column prop="area" label="区域名称" align="center">
@@ -83,30 +55,20 @@
             <span>{{ row.area }}</span>
           </template>
         </el-table-column> -->
-        <el-table-column
-          prop="CarrierName"
-          label="机器人名称"
-          align="center"
-          width="130"
-        >
+        <el-table-column prop="CarrierName" label="机器人名称" align="center" width="130">
           <template slot-scope="{ row }">
             <span>{{ row.CarrierName
-       }}</span>
+            }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="AlarmCount"
-          label="是否有告警"
-          align="center"
-          width="130"
-        >
+        <el-table-column prop="AlarmCount" label="是否有告警" align="center" width="130">
           <template slot-scope="{ row }">
             <span>{{ row.AlarmCount > 0 ? '是' : '否' }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="StartTime" label="开始时间" align="center">
           <template slot-scope="{ row }">
-            <span>{{ row.StartTime}}</span>
+            <span>{{ row.StartTime }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="EndTime" label="结束时间" align="center">
@@ -114,40 +76,20 @@
             <span>{{ row.EndTime }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="details"
-          label="详细信息"
-          align="center"
-          width="160"
-        >
+        <el-table-column prop="details" label="详细信息" align="center" width="160">
           <template slot-scope="{ row }">
-            <el-button
-              type="primary"
-              icon="el-icon-document"
-              size="mini"
-              :disabled="row.operateType === 7 ? true : row.operateType === 14 ? true:false"
-              @click="showDetail(row)"
-              >{{ $t('plan_config.inqireDetail_label') }}</el-button
-            >
+            <el-button type="primary" icon="el-icon-document" size="mini"
+              :disabled="row.operateType === 7 ? true : row.operateType === 14 ? true : false" @click="showDetail(row)">{{
+                $t('plan_config.inqireDetail_label') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
       <div>
-        <pagination
-          v-show="total > 0"
-          :total="total"
-          :page.sync="page"
-          :limit.sync="limit"
-          @pagination="setPage"
-        />
+        <pagination v-show="total > 0" :total="total" :page.sync="page" :limit.sync="limit" @pagination="setPage" />
       </div>
     </div>
-    <el-dialog
-      :title="'巡检记录详情'"
-      :visible.sync="dialogDetailFlag"
-      class="detail-dialog"
-    > 
-     <div class="el-dialog__header">
+    <el-dialog :title="'巡检记录详情'" :visible.sync="dialogDetailFlag" class="detail-dialog">
+      <div class="el-dialog__header">
         <div class="name">
           计划名称：{{ planDetail.PlanName }}
         </div>
@@ -157,74 +99,52 @@
         <div class="name">
           结束时间：{{ planDetail.EndTime }}
         </div>
-        <div  style="margin-left: calc(100% - 65%);">
+        <div style="margin-left: calc(100% - 65%);">
           告警数量：{{ planDetail.AlarmCount }}
         </div>
-     </div>
-     <div  class="countData">
-     <el-table
-        :data="planDetailArr"
-        header-row-class-name="header-row-class"
-        @row-click="getDetailMessage"
-        row-class-name="row-class"
-        fit
-        highlight-current-row
-        size="small"
-        height="51vh"
-        :empty-text="'暂无数据'"
-        ><el-table-column type="index" label="序号" align="center" width="100">
-        </el-table-column>
-        <el-table-column prop="AlarmCode" label="告警码" align="center">
-        </el-table-column>
-        <el-table-column prop="AlarmName" label="告警名称" align="center">
-        </el-table-column>
-        <el-table-column
-          prop="Status"
-          label="告警状态"
-          align="center"
-          width="130"
-        >
-        <template slot-scope="scope">
-          {{ scope.row.Status == 1?'提示':scope.row.Status == 2?'一般':scope.row.Status == 3?'严重':scope.row.Status == 4?致命:'默认' }}
-        </template>
-     
-        </el-table-column>
-        <el-table-column
-          prop="HighValue"
-          label="最大告警值"
-          align="center"
-          width="130"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="details"
-          label="机器名称"
-          align="center"
-          width="160"
-        >
-          <template slot-scope="{ row }">
-             <span>{{ planDetail.CarrierName }}</span>         
-          </template>
-        </el-table-column>
-        <el-table-column prop="EquipmentName" label="设备名称" align="center">
-          <template slot-scope="{ row }">
-            <span>{{ row.EquipmentName}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="ReportTime" label="发生时间" align="center">
-          <template slot-scope="{ row }">
-            <span>{{ row.ReportTime}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="RecoveryTime" label="处理时间" align="center">
-          <template slot-scope="{ row }">
-            <span>{{ row.RecoveryTime}}</span>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
+      </div>
+      <div class="countData">
+        <el-table :data="planDetailArr" header-row-class-name="header-row-class" @row-click="getDetailMessage"
+          row-class-name="row-class" fit highlight-current-row size="small" height="51vh"
+          :empty-text="'暂无数据'"><el-table-column type="index" label="序号" align="center" width="100">
+          </el-table-column>
+          <el-table-column prop="AlarmCode" label="告警码" align="center">
+          </el-table-column>
+          <el-table-column prop="AlarmName" label="告警名称" align="center">
+          </el-table-column>
+          <el-table-column prop="Status" label="告警状态" align="center" width="130">
+            <template slot-scope="scope">
+              {{ scope.row.Status == 1 ? '提示' : scope.row.Status == 2 ? '一般' : scope.row.Status == 3 ? '严重' : scope.row.Status ==
+                4 ? 致命 : '默认' }}
+            </template>
+
+          </el-table-column>
+          <el-table-column prop="HighValue" label="最大告警值" align="center" width="130">
+          </el-table-column>
+          <el-table-column prop="details" label="机器名称" align="center" width="160">
+            <template slot-scope="{ row }">
+              <span>{{ planDetail.CarrierName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="EquipmentName" label="设备名称" align="center">
+            <template slot-scope="{ row }">
+              <span>{{ row.EquipmentName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="ReportTime" label="发生时间" align="center">
+            <template slot-scope="{ row }">
+              <span>{{ row.ReportTime }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="RecoveryTime" label="处理时间" align="center">
+            <template slot-scope="{ row }">
+              <span>{{ row.RecoveryTime }}</span>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </el-dialog>
-  
+
   </div>
 </template>
 
@@ -296,8 +216,9 @@ export default {
       pageFlag: false,
       detailes: [],
       taskTypes: [],
-      planDetail:{},
-      planDetailArr:[],
+      planDetail: {},
+      planDetailArr: [],
+      exportRole: false,
     };
   },
   mounted() {
@@ -308,6 +229,12 @@ export default {
     init() {
       let self = this;
       self.alarmInfoArr = [];
+      const powelist = self.$store.getters.roles
+      powelist.forEach((res) => {
+        if (res == 'exportPatrolData') {
+          self.exportRole = true
+        }
+      })
       var params = {
         current: self.page,
         limit: self.limit,
@@ -317,7 +244,7 @@ export default {
       };
       getPageList(params)
         .then((response) => {
-        console.log("查看response",response,params)
+          console.log("查看response", response, params)
           let recordArr = response.data.records;
           self.total = response.data.total;
           if (response.data.total > 0) {
@@ -397,7 +324,7 @@ export default {
       }
     },
     // 导出列表
-    exportAll(){
+    exportAll() {
 
       if (this.startVal == '' && this.endVal == '') {
         var params = {
@@ -410,44 +337,54 @@ export default {
         const endDay = this.endVal
         var params = {
           endTime: endDay,
-          startTime: stDay 
+          startTime: stDay
         }
       }
       let _this = this
       // console.log("查看导出参数",params)
-      patrolRecordExportExcel(params).then(function (res) { //导出流
-        console.log('导出的参数',params)
-         _this.$notify({
+      if (_this.exportRole) {
+        patrolRecordExportExcel(params).then(function (res) { //导出流
+          console.log('导出的参数', params)
+          _this.$notify({
             type: 'success',
             message: '导出成功',
             title: '提示',
             duration: 1000,
           });
-      let blob = new Blob([res], { type: "application/vnd.ms-excel" });
-      // let blob = new Blob([res]);//response.data为后端传的流文件
-      let downloadFilename = '巡检记录全部数据'+ _this.$moment(new Date()).format('YYYY-MM-DD HH:mm:ss')+ ".xlsx";//设置导出的文件名  用moment时间插件对文件命名防止每次都是一样的文件名
-   if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-   //兼容ie浏览器
-       window.navigator.msSaveOrOpenBlob(blob, downloadFilename)
-   }else {
-   //谷歌,火狐等浏览器
-       let url = window.URL.createObjectURL(blob);
-       let downloadElement = document.createElement("a");
-       downloadElement.style.display = "none";
-       downloadElement.href = url;
-       downloadElement.download = downloadFilename;
-       document.body.appendChild(downloadElement);
-       downloadElement.click();
-       document.body.removeChild(downloadElement);
-       window.URL.revokeObjectURL(url);
-    }
-      }).catch(function (err) {
-      // console.log(err)
-    }).finally(function () {
-     
-     })
+          let blob = new Blob([res], { type: "application/vnd.ms-excel" });
+          // let blob = new Blob([res]);//response.data为后端传的流文件
+          let downloadFilename = '巡检记录全部数据' + _this.$moment(new Date()).format('YYYY-MM-DD HH:mm:ss') + ".xlsx";//设置导出的文件名  用moment时间插件对文件命名防止每次都是一样的文件名
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            //兼容ie浏览器
+            window.navigator.msSaveOrOpenBlob(blob, downloadFilename)
+          } else {
+            //谷歌,火狐等浏览器
+            let url = window.URL.createObjectURL(blob);
+            let downloadElement = document.createElement("a");
+            downloadElement.style.display = "none";
+            downloadElement.href = url;
+            downloadElement.download = downloadFilename;
+            document.body.appendChild(downloadElement);
+            downloadElement.click();
+            document.body.removeChild(downloadElement);
+            window.URL.revokeObjectURL(url);
+          }
+        }).catch(function (err) {
+          // console.log(err)
+        }).finally(function () {
 
-    } ,   
+        })
+
+      } else {
+        _this.$notify({
+          type: 'error',
+          message: '您当前未拥有系统权限',
+          title: '提示',
+          duration: 2000,
+        });
+      }
+
+    },
     // 导出本页
 
     formatJson(filterVal) {
@@ -469,12 +406,12 @@ export default {
       this.textType = 'xlsx';
     },
     showDetail(item) {
-      console.log("查看详情",item)
+      console.log("查看详情", item)
       let self = this;
       this.dialogDetailFlag = true;
       this.planDetail = item
-      getAlarmListByPatrolRecordID(item.TaskID).then((res)=>{
-        console.log('详情id',res)
+      getAlarmListByPatrolRecordID(item.TaskID).then((res) => {
+        console.log('详情id', res)
         this.planDetailArr = res.data
       })
       // this.detailForm.taskName = item.taskName
@@ -483,10 +420,10 @@ export default {
       // this.detailForm.accesso = item.accesso
       // this.detailForm.detectTime = item.detectTime
       // this.detailForm.location = item.location
-   
+
     },
-    getDetailMessage(e){
-      console.log('告警信息',e)
+    getDetailMessage(e) {
+      console.log('告警信息', e)
     },
     async getTaskType() {
       const res = await getTaskTypeList();
@@ -511,21 +448,27 @@ export default {
   .robot-setting-inquire {
     margin-left: 15px;
     display: inline-block;
-    >>> .el-input {
+
+    >>>.el-input {
       width: 200px !important;
     }
-    >>> .el-input__inner {
+
+    >>>.el-input__inner {
       width: 200px !important;
     }
+
     ::v-deep .el-input__icon {
       line-height: 25px;
     }
+
     .filter-sty {
       display: inline-block;
-      >>> .el-input {
+
+      >>>.el-input {
         width: 100px !important;
       }
-      >>> .el-input__inner {
+
+      >>>.el-input__inner {
         width: 100px !important;
       }
     }
@@ -543,29 +486,35 @@ export default {
     color: #301d0f;
   }
 }
+
 .detail-dialog {
-  >>> .el-dialog {
+  >>>.el-dialog {
     width: 1200px;
   }
-  >>> .el-dialog__body {
+
+  >>>.el-dialog__body {
     margin-left: 0px;
   }
 }
 
 ::v-deep .el-table th,
 .el-table tr {
-  background-color:  #031B31;
+  background-color: #031B31;
   color: #fff;
 }
-::v-deep .el-table .cell{
+
+::v-deep .el-table .cell {
   color: #fff;
 }
-::v-deep .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell{
+
+::v-deep .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
   background-color: #031B31;
 }
-::v-deep .el-table__body tr.current-row>td.el-table__cell{
+
+::v-deep .el-table__body tr.current-row>td.el-table__cell {
   background-color: #031B31;
 }
+
 ::v-deep .header-row-class {
   background-color: transparent;
 }
@@ -578,7 +527,7 @@ export default {
   color: black;
 }
 
-::v-deep .el-table th > .cell {
+::v-deep .el-table th>.cell {
   padding-left: 0;
   padding-right: 0;
 }
@@ -592,12 +541,14 @@ export default {
   width: 100%;
   padding: 20px;
   display: flex;
-  margin-bottom:1vh;
+  margin-bottom: 1vh;
   background-color: lightgray;
-  .name{
-     margin-left: 1%;
+
+  .name {
+    margin-left: 1%;
   }
-  .countData{
+
+  .countData {
     margin-top: 10vh;
   }
 
@@ -617,6 +568,7 @@ export default {
   ::v-deep .el-input {
     width: 200px;
   }
+
   .centeredVideo {
     margin-top: -10px;
   }
@@ -626,6 +578,7 @@ export default {
   margin: 20px;
   text-align: center;
 }
+
 .detail-dialog-footer {
   margin: 20px;
   text-align: right;

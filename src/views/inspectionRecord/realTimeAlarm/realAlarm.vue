@@ -79,8 +79,8 @@
     </div>
     <div class="equip-body content-body">
       <el-table @row-click="getDetailMessage" class="equip-data" :data="alarmInfoArr" :empty-text="'暂无数据'"
-      height="36.5rem"
-        header-row-class-name="header-row-class" row-class-name="row-class" fit highlight-current-row size="small">
+        height="36.5rem" header-row-class-name="header-row-class" row-class-name="row-class" fit highlight-current-row
+        size="small">
         <el-table-column type="index" label="序号" align="center" width="100">
         </el-table-column>
         <el-table-column prop="alarmCode" :label="$t('alarm_dealWith.alarm_code_label')" align="center">
@@ -124,7 +124,7 @@
             <span>{{ row.happenTime }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="details" label="操作"  v-if="alarmType ==2" align="center" width="120">
+        <el-table-column prop="details" label="操作" v-if="alarmType == 2" align="center" width="120">
           <template slot-scope="{ row }">
             <el-button type="primary" icon="el-icon-edit" size="mini" plain @click="showDetail(row)">处理</el-button>
           </template>
@@ -153,9 +153,11 @@
               告警类型：{{
                 alarm.alarmCode == 1001 ? "行人告警" : alarm.alarmCode == 1002 ? "非机动车告警" : alarm.alarmCode == 1003 ? "异物告警" :
                   alarm.alarmCode == 1004 ? "温度告警" :
-                    alarm.alarmCode == 1005 ? "湿度告警" : alarm.alarmCode == 1006 ? "气体告警" : alarm.alarmCode == 1007 ? "灯光告警" : alarm.alarmCode
-                      == 1008 ? "违停逆行告警" : alarm.alarmCode == 1009 ? "超速告警" : alarm.alarmCode == 1010 ? "动物告警" : alarm.alarmCode
-                        == 1012 ? "消防设备告警" : alarm.alarmCode == 1011 ? "井盖异常告警" : alarm.alarmCode == 1013 ? "火灾烟雾告警" : "机体告警"
+                    alarm.alarmCode == 1005 ? "湿度告警" : alarm.alarmCode == 1006 ? "气体告警" : alarm.alarmCode == 1007 ? "灯光告警" :
+                      alarm.alarmCode
+                        == 1008 ? "违停逆行告警" : alarm.alarmCode == 1009 ? "超速告警" : alarm.alarmCode == 1010 ? "动物告警" : alarm.alarmCode
+                          == 1012 ? "消防设备告警" : alarm.alarmCode == 1011 ? "井盖异常告警" : alarm.alarmCode == 1013 ? "火灾烟雾告警" : alarm.alarmCode
+                            == 1014 ? "红外测温告警" : "机体告警"
               }}
             </div>
             <div style="margin: 3vh 0;">
@@ -277,6 +279,7 @@ export default {
       dialogVisible: false,
       imageUrl: null,
       alarmType: '2',
+      exportRole: false,
     };
   },
   computed: {
@@ -303,7 +306,12 @@ export default {
   methods: {
     init() {
       let self = this;
-      // console.log("查看查询条件", this.alarmState)
+      const powelist = self.$store.getters.roles
+      powelist.forEach((res) => {
+        if (res == 'exportRealAlarm') {
+          self.exportRole = true
+        }
+      })
       let param = {
         current: self.page,
         limit: self.limit,
@@ -382,11 +390,11 @@ export default {
         });
     },
     getDetailMessage(e) {
-      if(this.alarmType == 2){
-      console.log("实时",e)
-      this.alarm = e
-      this.imageUrl =  'http://192.168.20.44:8888/images/' + e.Image
-      this.dialogVisible = true
+      if (this.alarmType == 2) {
+        console.log("实时", e)
+        this.alarm = e
+        this.imageUrl = 'http://192.168.20.44:8888/images/' + e.Image
+        this.dialogVisible = true
       }
     },
     // 告警状态
@@ -433,7 +441,7 @@ export default {
           };
           dealAlarm(param)
             .then((response) => {
-              // console.log("查看处理", response, param)
+              console.log("查看处理", param)
               if (response.code === 20000) {
                 this.$notify({
                   type: 'success',
@@ -478,7 +486,8 @@ export default {
     //导出全部
     exportAll() {
       let _this = this
-      exportExcel({
+      if (_this.exportRole) {
+        exportExcel({
         alarmName: this.alarmName,
         alarmCode: this.alarmCode,
         alarmType: parseInt(this.alarmType)
@@ -518,6 +527,16 @@ export default {
       }).finally(function () {
 
       })
+      }
+      else{
+        _this.$notify({
+          type: 'error',
+          message: '您当前未拥有系统权限',
+          title: '提示',
+          duration: 2000,
+        });
+      }
+
 
     },
     // 导出本页

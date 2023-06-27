@@ -109,7 +109,7 @@
         >
           <template slot-scope="{ row }">
             <span>{{ row.AlarmType ==1001?"行人告警": row.AlarmType ==1002?"非机动车告警": row.AlarmType ==1003?"异物告警": row.AlarmType ==1004?"温度告警": 
-            row.AlarmType ==1005?"湿度告警": row.AlarmType ==1006?"气体告警":row.AlarmType ==1007?"灯光告警": row.AlarmType ==1008?"违停逆行告警": row.AlarmType ==1009?"超速告警":row.AlarmType ==1010?"动物告警":row.AlarmType ==1012?"消防设备告警": row.AlarmType ==1011?"井盖异常告警":row.AlarmType ==1013?"火灾烟雾告警":"机体告警" }}</span>
+            row.AlarmType ==1005?"湿度告警": row.AlarmType ==1006?"气体告警":row.AlarmType ==1007?"灯光告警": row.AlarmType ==1008?"违停逆行告警": row.AlarmType ==1009?"超速告警":row.AlarmType ==1010?"动物告警":row.AlarmType ==1012?"消防设备告警": row.AlarmType ==1011?"井盖异常告警":row.AlarmType ==1013?"火灾烟雾告警":row.AlarmType ==1014?"红外测温告警":"机体告警" }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -602,7 +602,7 @@ export default {
       this.$refs.alarmForm.validate((valid) => {
         if (valid) {
           let param = {
-            // alarmCode: Number(alarmForm.alarmCode),
+            alarmCode: Number(alarmForm.AlarmType),
             alarmName: alarmForm.AlarmName,
             alarmType: alarmForm.AlarmType,
             deviceType: alarmForm.DeviceType,
@@ -611,7 +611,7 @@ export default {
             occurThreshold: alarmForm.OccurThreshold*100,
             recoveryThreshold: alarmForm.RecoveryThreshold*100,
           };
-          // console.log("查看新增数据",param)
+          console.log("查看新增数据",param)
           getAddAlarmSet(param)
             .then((response) => {
               if (response.code === 20000) {

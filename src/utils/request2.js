@@ -42,10 +42,11 @@ export function request2 (config){
         
         // if the custom code is not 20000, it is judged as an error.
         if (res.code != 20000) {
+          console.log('查看错误',res.message)
           Notification({
             title: '提示',
             duration: 1000,
-            message: res.data || 'Error',
+            message: res.message || 'Error',
             type: 'error',
             // duration: 5 * 1000,
           });

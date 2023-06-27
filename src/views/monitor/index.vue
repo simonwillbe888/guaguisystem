@@ -60,7 +60,7 @@
               <div>当前电量</div>
             </div>
             <div class="microphone">
-              <Intercom :carID="carID"></Intercom>
+              <Intercom :carID="carID"  ></Intercom>
               <div class="speak_detail" style="font-size: 0.875rem;">双向喊话</div>
             </div>
             <div class="broadcast" @click="broadcastVisible = true">
@@ -88,8 +88,9 @@
                 ]" :ref="'iframe' + index" :myData="item" style="width: 25.6; height: 40 ;margin-right: 0.9375rem;"
                   name="ddddd" :id="'iframes' + index" scrolling="auto" :src="item.src" :key="index">
                 </iframe> -->
-              <el-button style="position:absolute;margin-left: 0; top:1rem;background-color:transparent;border-color: transparent" size="mini"
-                         @click="glassCameraSwitch">
+              <el-button
+                style="position:absolute;margin-left: 0; top:1rem;background-color:transparent;border-color: transparent"
+                size="mini" @click="glassCameraSwitch">
                 <svg-icon icon-class="ar-glass" style="font-size: 2rem"></svg-icon>
               </el-button>
             </div>
@@ -362,7 +363,8 @@
                             alarm.AlarmCode == 1008 ? "违停逆行告警" : alarm.AlarmCode == 1009 ? "超速告警" : alarm.AlarmCode
                               == 1010 ? "动物告警" : alarm.AlarmCode == 1012 ? "消防设备告警" : alarm.AlarmCode == 1011 ? "井盖异常告警" :
                                 alarm.AlarmCode
-                                  == 1013 ? "火灾烟雾告警" : "机体告警" }} </div>
+                                  == 1013 ? "火灾烟雾告警" : alarm.AlarmCode
+                                    == 1014 ? "红外测温告警" : "机体告警" }} </div>
                     <div style="margin: 1.875rem 0;">
                       事件描述：{{ alarm.Description }}
                     </div>
@@ -394,7 +396,7 @@
               <div class="hkMove">
                 <img src="../../assets/img/hkUp.png" @mousedown="setCameraOperate(1)" @mouseup="stopCam()" class="hkUp">
                 <div style="display: flex;">
-                  <img src="../../assets/img/hkLeft.png" @mousedown="setCameraOperate(5)" @mouseup="stopCam()"
+                  <img  src="../../assets/img/hkLeft.png" @mousedown="setCameraOperate(5)" @mouseup="stopCam()"
                     class="hkLeft">
                   <img src="../../assets/img/hkConnect.png" @click="HKlogin()"
                     :class="[YTlogin == true ? 'HKloading' : 'hkConnect']">
@@ -406,33 +408,33 @@
               </div>
               <div style="margin-left: 8.125rem;width:18.75rem;position: relative;bottom: 1rem;">
                 <div class="hkAction">
-                  <div class="action_detail" @mousedown="setCameraOperate(9)" @mouseup="stopCam()">
+                  <div title="放大" class="action_detail" @mousedown="setCameraOperate(9)" @mouseup="stopCam()">
                     <img src="../../assets/img/fangda.png" alt="">
                   </div>
-                  <div class="action_detail">
+                  <div title="照相" class="action_detail">
                     <img src="../../assets/img/takephoto.png" @click="setCameraOperate(20)">
                   </div>
-                  <div class="action_detail" @mousedown="setCameraOperate(16)" @mouseup="stopCam()">
+                  <div title="清洗" class="action_detail" @mousedown="setCameraOperate(16)" @mouseup="stopCam()">
                     <img src="../../assets/img/clean.png" alt="">
                   </div>
-                  <div class="action_detail" @mousedown="setCameraOperate(13)" @mouseup="stopCam()">
+                  <div title="聚焦" class="action_detail" @mousedown="setCameraOperate(13)" @mouseup="stopCam()">
                     <img src="../../assets/img/jujiao.png" alt="">
                   </div>
                 </div>
-                <div class="hkAction">
-                  <div class="action_detail" @mousedown="setCameraOperate(11)" @mouseup="stopCam()">
+                <div  class="hkAction">
+                  <div title="缩小" class="action_detail" @mousedown="setCameraOperate(11)" @mouseup="stopCam()">
                     <img src="../../assets/img/suoxiao.png" alt="">
                   </div>
                   <div class="action_detail">
-                    <img src="../../assets/img/video.png" v-if="!videoOn" @click="setCameraOperate(21)">
-                    <img src="../../assets/img/closeVideo.png" v-if="videoOn" @click="setCameraOperate(23)">
+                    <img title="录像" src="../../assets/img/video.png" v-if="!videoOn" @click="setCameraOperate(21)">
+                    <img title="关闭录像" src="../../assets/img/closeVideo.png" v-if="videoOn" @click="setCameraOperate(23)">
                   </div>
                   <div class="action_detail">
-                    <img src="../../assets/img/light.png" v-if="!lightOn" @click="setCameraOperate(12)">
-                    <img src="../../assets/img/closeLiht.png" v-if="lightOn" @click="setCameraOperate(14)">
+                    <img title="开灯" src="../../assets/img/light.png" v-if="!lightOn" @click="setCameraOperate(12)">
+                    <img title="关灯" src="../../assets/img/closeLiht.png" v-if="lightOn" @click="setCameraOperate(14)">
                   </div>
                   <div class="action_detail" @mousedown="setCameraOperate(15)" @mouseup="stopCam()">
-                    <img src="../../assets/img/yuanjiao.png" alt="">
+                    <img title="远焦" src="../../assets/img/yuanjiao.png" alt="">
                   </div>
                 </div>
                 <div style="margin-top:1.5rem;padding-left: 1.25rem;">
@@ -454,6 +456,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import { Notification } from 'element-ui';
 import { getCurrentAlarmRecordList } from '../../api/inspectRecord';
@@ -463,6 +466,7 @@ import { getSystemXmlConfig } from '../../api/sysCtrl';
 import {
   getCarrierDetailInfo, getMapData
 } from '../../api/map';
+import { debounce } from '../../utils/debounce';
 import {
   getEquipmentList, SetSpeed,
   moveToPatrolPoint,
@@ -545,13 +549,14 @@ export default {
       broadcastVisible: false,
       selectedOption: '',
       speedList: [{
-        value: 6000,
+        value: 2000,
         label: "应急速度"
       }, {
         value: 1000,
         label: "巡检速度"
       }],
       riskSpeed: 1000,
+      speedMode:1,
       broadcasting: false,
       lowButtery: false,
       butteryInfo: null,
@@ -602,18 +607,22 @@ export default {
 
     }
     window.clearInterval(this.carRoller)
+    window.clearInterval(this.tempicTimer)
   },
 
   computed: {
     ...mapState({
       systemConfig: (state) => state.sysConfig.systemConfig,
     }),
-    ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen']),
+    ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen','closeAll']),
     realTimeAlarminfo() {
       return this.realTimeAlarm[0]
     },
     yuntaiInfo() {
       return this.cameraOut
+    },
+    standby(){
+      return this.closeAll
     },
     showTable() {
       const now = 0
@@ -635,7 +644,7 @@ export default {
       this.$refs.tree.filter(val);
     },
     realTimeAlarminfo(newV, oldV) {
-      if(newv != undefined){
+      if (newv != undefined) {
         this.showTable.unshift(newV)
       }
 
@@ -658,28 +667,37 @@ export default {
       return this.carrierSelected.CarrierID
     },
     riskSpeed(newV, oldV) {
-      // console.log('速度变化了',newV ==1000,oldV)
+      console.log('速度变化了')
       if (newV == 1000) {
-        const param = {
-          carrier: this.carID,
-          speed: 1000,
-          speedMode: 2
-        }
-        SetSpeed(param).then((res) => {
-          console.log('巡检速度', res, param)
-        })
+           this.speedMode = 1
+        // const param = {
+        //   carrier: this.carID,
+        //   speed: 1000,
+        //   speedMode: 2
+        // }
+        // SetSpeed(param).then((res) => {
+        //   console.log('巡检速度1', res, param)
+        // })
       } else {
-        const param = {
-          carrier: this.carID,
-          speed: 500,
-          speedMode: 1
-        }
-        SetSpeed(param).then((res) => {
-          console.log('应急速度', res, param)
-        })
+        this.speedMode = 2
+        // const param = {
+        //   carrier: this.carID,
+        //   speed: 500,
+        //   speedMode: 1
+        // }
+        // SetSpeed(param).then((res) => {
+        //   console.log('应急速度2', res, param)
+        // })
       }
+    },
+    standby(){
+      if (this.robotOpen == 1) {
+      this.logoutCar()
+    }
+    this.HKlogout()
 
     }
+
   },
 
   methods: {
@@ -725,8 +743,8 @@ export default {
               accessoryID: this.carrierSelected.CarrierAccessoryList[0].AccessoryID,
               sourceHeight: 512,// parseFloat(e.target.clientWidth * 512 / 640)
               sourceWidth: 640, //e.target.clientWidth,//640
-              x: parseFloat(640/e.target.clientWidth*clientX).toFixed(2) ,
-              y: parseFloat(512/e.target.clientHeight*clientY).toFixed(2) ,
+              x: parseInt(640 / e.target.clientWidth * clientX),
+              y: parseInt(512 / e.target.clientHeight * clientY),
             }
             getTemperature(param).then((res) => {
               console.log('调用接口参数', param, res)
@@ -786,6 +804,7 @@ export default {
     },
     async openLocation() {
       this.robotOpen = 1
+      this.HKlogin()
       const time = this.getNowtime()
       const informOpen = await informOpenRobot(this.carrierSelected.CarrierID)
       if (informOpen.code == 20000) {
@@ -922,6 +941,7 @@ export default {
       const buttery = await getChargingStateByCarrierID(this.carrierSelected.CarrierID)
       // console.log('小车具体速度,总运行时间,',res.data.realTimeSpeed,res.data.totalRunTime)
       this.butteryInfo = buttery.data
+      // console.log(buttery)
       // console.log('气体',gas)
       let robot = document.getElementById('robot')
       if (res.code === 20000) {
@@ -941,19 +961,19 @@ export default {
       if (car.data.length > 0) {
         getTaskRemainingMileage(car.data[0].taskID).then((res) => {
           const time = (res.data.time / 60)
-          console.log('查看剩余里程',res.data.mileage,time)
+          console.log('查看剩余里程', res.data.mileage, time)
           if (this.carList.realTimeSpeed > 0 && res.data.mileage > 20000) {
-            this.finishTime = Number( ((res.data.mileage / (this.carList.realTimeSpeed * 60))).toFixed(1)) +time
+            this.finishTime = Number(((res.data.mileage / (this.carList.realTimeSpeed * 60))).toFixed(1)) + time
             this.finishTime = this.finishTime.toFixed(1)
-            console.log('看看时间', typeof this.finishTime ,time)
+            console.log('看看时间', typeof this.finishTime, time)
             if (res.data.mileage = 0) {
               this.finishTime = 0
             }
           }
-          else if (this.carList.realTimeSpeed > 0 &&res.data.mileage <20000  ){
+          else if (this.carList.realTimeSpeed > 0 && res.data.mileage < 20000) {
             this.finishTime = 0.1
           }
-          })
+        })
         this.realTimeTask = car.data[0].planName
       }
       else {
@@ -1057,7 +1077,9 @@ export default {
           patrolPoint: this.locationID,
           count: null,
           voiceBroadcastText: null,
-          exit: this.lowButtery
+          exit: this.lowButtery,
+          speed:this.riskSpeed,
+          speedMode:this.speedMode
         }
         moveToPatrolPoint(param).then((res) => {
           console.log(param)
@@ -1308,14 +1330,14 @@ export default {
         });
       } else {
         if (flag == 1) {
-          moveCar(flag, 1000, 1000000, time).then((res) => {
-            console.log('前进', time, res)
-          })
+            moveCar(flag, 1000, 1000000, time).then((res) => {
+              console.log('前进', time, res)
+            })
         }
         else if (flag == 2) {
-          moveCar(flag, 1000, 1000000, time).then((res) => {
+            moveCar(flag, 1000, 1000000, time).then((res) => {
             console.log('后退', time, res)
-          })
+          })   
         }
         else if (flag == 3) {
           setTimeout(() => {
@@ -1586,11 +1608,11 @@ export default {
       return _this.gettime
     },
 
-    glassCameraSwitch(){
-      let glassAddress = "192.168.20.220"
-      if(this.glassCamera){
+    glassCameraSwitch() {
+      let glassAddress = "192.168.20.2"
+      if (this.glassCamera) {
         this.currentAdvices[0].src = this.glassCameraBak
-      }else {
+      } else {
         this.glassCameraBak = this.currentAdvices[0].src
         this.currentAdvices[0].src = `/static/video.html?data=rtsp://${glassAddress}:8080/h264_pcm.sdp&serve=${this.webRtcIP}`
       }
@@ -1905,12 +1927,12 @@ export default {
       .chart {
         background-color: #64C8C8;
         border-radius: 0.625rem;
-        font-size: 1.125rem;
+        font-size: 1rem;
         width: 6.25rem;
         position: absolute;
         right: 0;
         text-align: center;
-        line-height: 1.875rem;
+        line-height: 1.675rem;
       }
 
       .chart:active {

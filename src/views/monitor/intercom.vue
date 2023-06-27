@@ -17,6 +17,7 @@ import $ from "jquery";
 import { resolve } from 'path';
 import { reject } from 'q';
 import { callbackify } from 'util';
+import { mapGetters, mapState } from 'vuex';
 
 var ws = null; //实现WebSocket
 
@@ -36,14 +37,24 @@ export default {
   mounted() {
     this.init()
     this.beforeunloadHandler()
+    // window.functionForJs = this.functionForJs
   },
   beforeDestroy() {
     this.end()
+  },
+  computed:{
+    ...mapGetters(['closeAll']),
+    standby(){
+      return this.closeAll
+    }
   },
   watch: {
     carID(newV, oldV) {
       // console.log('id改变了',newV)
       return newV
+    },
+    standby(){
+      this.end()
     }
   },
   methods: {
@@ -63,25 +74,45 @@ export default {
      * 开始对讲
      */
     begin() {
-      console.log('查看id', typeof this.carID, this.carID)
-      startTalk(this.carID).then((res) => {
-        if (res.code == 20000) {
-          var iframe = document.getElementById('startTalk')
-          iframe.contentWindow.clickGetAudioInfo()
+      
+      // console.log('查看id', typeof this.carID, this.carID)
 
+       this.openSpeak().then((res)=>{
+ 
+       })
+
+     },
+    openSpeak(){
+      return new Promise((resolve,reject)=>{
+        var iframe = document.getElementById('startTalk')
+          iframe.contentWindow.clickGetAudioInfo()
           setTimeout(() => {
             iframe.contentWindow.clickStartVoiceTalk()
-          }, 2000)
+          }, 1000)
+          startTalk(this.carID).then((res) => {
+          console.log('对讲接口调用',res)
+        if (res.code == 20000) {   
           this.speak = true
         }
+        else{
+          this.stopSpeak()
+        }
       })
+          resolve(20000)
+      })
+
+    },
+    functionForJs(){
+      
+        this.speak = false
 
     },
     /*
      * 关闭对讲
      */
     end() {
-       this.stopSpeak().then((res)=>{
+      if(this.speak){
+        this.stopSpeak().then((res)=>{
          stopTalk(this.carID).then((res)=>{
            console.log('关闭了',res.code)
            if(res.code == 20000){
@@ -89,6 +120,8 @@ export default {
            }
          })
        })
+      }
+
     },
     stopSpeak(){
       return new Promise((resolve,reject)=>{

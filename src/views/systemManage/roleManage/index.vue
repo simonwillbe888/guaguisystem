@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="content-header">
-        <el-button class="headerBtn" icon="el-icon-plus" size="mini" @click="add">新增角色</el-button>
+      <el-button class="headerBtn" icon="el-icon-plus" size="mini" @click="add">新增角色</el-button>
     </div>
     <div class="content-body">
       <template>
@@ -10,8 +10,8 @@
           </el-table-column>
           <el-table-column prop="RoleCode" align="center" label="角色编号">
             <template slot-scope="{ row }">
-            <span>{{ row.RoleCode}}</span>
-          </template>
+              <span>{{ row.RoleCode }}</span>
+            </template>
           </el-table-column>
           <el-table-column prop="RoleName" align="center" label="角色名称">
           </el-table-column>
@@ -22,28 +22,12 @@
               {{ row.CreateTime }}
             </template>
           </el-table-column>
-          <el-table-column
-            fixed="right"
-            align="center"
-            label="操作"
-            width="200"
-          >
+          <el-table-column fixed="right" align="center" label="操作" width="200">
             <template slot-scope="{ row }">
-              <el-button
-                type="primary"
-                @click="edit(row)"
-                icon="el-icon-edit"
-                size="mini"
-                plain
-              >
+              <el-button type="primary" @click="edit(row)" icon="el-icon-edit" size="mini" plain>
                 修改
               </el-button>
-              <el-button
-                @click="delRole(row.ID)"
-                type="danger"
-                icon="el-icon-delete"
-                size="mini"
-              >
+              <el-button @click="delRole(row.ID)" type="danger" icon="el-icon-delete" size="mini">
                 删除
               </el-button>
             </template>
@@ -51,65 +35,36 @@
         </el-table>
       </template>
       <div class="pagination-container">
-        <el-pagination
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-size="10"
-          background
-          layout="total, prev, pager, next, jumper"
-          :total="total"
-          size="mini"
-        >
+        <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" :page-size="10" background
+          layout="total, prev, pager, next, jumper" :total="total" size="mini">
         </el-pagination>
       </div>
     </div>
-    <el-dialog
-      :title="form.isEdit ? '编辑角色' : '新增角色'"
-      :visible.sync="centerDialogVisible"
-      width="500px"
-      :close-on-click-modal="false"
-    >
-      <el-form
-        ref="form"
-        class="form"
-        :rules="rules"
-        :model="form"
-        label-width="80px"
-      >
+    <el-dialog :title="form.isEdit ? '编辑角色' : '新增角色'" :visible.sync="centerDialogVisible" width="500px"
+      :close-on-click-modal="false">
+      <el-form ref="form" class="form" :rules="rules" :model="form" label-width="80px">
         <el-form-item label="角色编号" prop="RoleCode">
-          <el-input
-            :disabled="form.isEdit"
-            placeholder="请输入角色编号"
-            v-model.trim="form.RoleCode"
-          ></el-input>
+          <el-input :disabled="form.isEdit" placeholder="请输入角色编号" v-model.trim="form.RoleCode"></el-input>
         </el-form-item>
+        <el-form-item label="角色权限" prop="RoleLevel">
+          <el-select v-model="form.RoleLevel" placeholder="请选择角色权限" style="width:256px">
+            <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item label="角色名称" prop="RoleName">
-          <el-input
-            placeholder="请输入角色名称"
-            v-model.trim="form.RoleName"
-          ></el-input>
+          <el-input placeholder="请输入角色名称" v-model.trim="form.RoleName"></el-input>
         </el-form-item>
         <el-form-item label="描述信息" prop="RoleDesc">
-          <el-input
-            style="margin:10px 0"
-            type="textarea"
-            maxlength="100"
-            placeholder="请输入描述信息"
-            v-model.trim="form.RoleDesc"
-          ></el-input>
+          <el-input style="margin:10px 0" type="textarea" maxlength="100" placeholder="请输入描述信息"
+            v-model.trim="form.RoleDesc"></el-input>
         </el-form-item>
         <el-form-item label="所属权限" prop="PowerList">
-          <el-tree
-            style="margin-bottom:24px;margin-top:10px"
-            :data="powerList"
-            show-checkbox
-            node-key="ID"
-            ref="tree"
-            @check="nodeCheck"
-            accordion
-            :props="defaultProps"
+          <el-tree :data="powerList" show-checkbox node-key="ID" ref="tree"
+            @check="nodeCheck" accordion :props="defaultProps" 
             :expand-on-click-node="false"
-          >
+             style="margin-bottom:24px;margin-top:10px" >
             <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
           <span>{{ node.label }}</span>
           <span>
@@ -168,9 +123,19 @@ export default {
       currentPage: 1,
       total: 0,
       searchLoding: false,
+      options: [{
+        value: 1,
+        name: '管理员'
+      }, {
+        value: 2,
+        name: '普通用户'
+      }],
       rules: {
         RoleCode: [
           { required: true, message: '请输入角色编号' },
+        ],
+        RoleLevel: [
+          { required: true, message: '请输入角色权限' },
         ],
         RoleName: [
           { required: true, message: '请输入角色名称', trigger: 'blur' },
@@ -183,7 +148,7 @@ export default {
         //     required: true,
         //     trigger: 'change',
         //     // validator: (rule, value, callback) => {
-            //   console.log('cgw33333333', value);
+        //   console.log('cgw33333333', value);
         //     //   if (!value || !value.length) {
         //     //     callback(new Error('请选择全线'));
         //     //   } else {
@@ -266,11 +231,11 @@ export default {
             this.getRoleManageList();
           }
         })
-        .catch(() => {});
+        .catch(() => { });
     },
 
     async addUserRole() {
-      const { isEdit, RoleCode, RoleName, PowerList, RoleDesc, ID } = this.form;
+      const { isEdit, RoleCode, RoleName, PowerList, RoleDesc, ID, RoleLevel } = this.form;
       let res = {};
       const obj = {
         powerList: PowerList,
@@ -278,9 +243,10 @@ export default {
         roleDesc: RoleDesc,
         roleName: RoleName,
         roleID: ID,
+        roleLevel: RoleLevel,
       };
       if (isEdit) {
-        // console.log("查看obj",obj)
+        console.log("查看更新", obj)
         res = await updateRole(obj);
       } else {
         res = await addRole(obj);
@@ -308,15 +274,12 @@ export default {
       this.centerDialogVisible = false;
     },
     async edit(item) {
-      // console.log("查看用户信息",item)
       // this.$nextTick(() => {
       //   this.$refs.form.clearValidate();
       // });
       this.form = { ...item };
       const res = await getPowerListByRoleID(item.ID);
-   
       if (res.code === 20000) {
-        // console.log("查看Eidt",this.form.isEdit)
         this.form.isEdit = true;
         this.centerDialogVisible = true;
         this.$nextTick(() => {
@@ -325,21 +288,33 @@ export default {
           });
           this.form.PowerList = arr || [];
           if (!this.powerList) return;
-          this.powerList.forEach((item) => {
-            if (!item.children || !arr) return;
+          this.powerList.forEach((item) => {         
             item.children.forEach((node) => {
               if (!arr.some((a) => a === node.ID)) {
                 arr = arr.filter((b) => b !== item.ID);
               }
               if (!node.children || !arr) return;
               node.children.forEach((el) => {
-                if (!arr.some((c) => c === node.ID)) {
+                if (!arr.some((a) => a === el.ID)) {
+                  // console.log(arr.filter((d) => d !== node.ID))
                   arr = arr.filter((d) => d !== node.ID);
                 }
               });
+              
             });
+            // arr = arr.filter(item => item != item.ID)
+            // console.log('一级菜单的ID',item.ID)
           });
-          this.$refs.tree.setCheckedKeys(arr);
+          //避免全选
+          arr = arr.filter(item => item !='9760bcad8dacf00df6578a59617ff02d')
+          arr = arr.filter(item => item !='5ad38201e15340124f7762967eb75ca2')
+          arr = arr.filter(item => item !='10192ce6f28b936d6ca47c36ceeceec2')
+          arr = arr.filter(item => item !='123e43b101cfa5876db6501c1b5db60e')
+          arr = arr.filter(item => item !='85c6e4edd4acd192fe4805250b06b759')
+          arr = arr.filter(item => item !='e501bbaa44c82b30967d7217b8eb7363')
+          this.$nextTick(()=>{
+               this.$refs.tree.setCheckedKeys(arr)
+          })
         });
       }
     },
@@ -381,8 +356,8 @@ export default {
             });
           });
         }
-
         this.powerList = onePower;
+        console.log('查看powerList', this.powerList)
       }
     },
     nodeCheck(data, { checkedKeys, halfCheckedKeys }) {
@@ -395,19 +370,27 @@ export default {
 .content-body {
   margin-top: 10px;
 }
+
 .headerBtn {
   width: 8vw;
   background-color: #15B3B4 !important;
 }
+
 .content-header {
   margin-bottom: 10px;
   height: 38px;
 }
+
 .form {
   width: 70%;
   margin-left: 10%;
 }
->>> .el-tree-node__label {
+
+::v-deep .el-select {
+  // width: 16rem;
+}
+
+>>>.el-tree-node__label {
   font-size: 12px;
 }
 </style>

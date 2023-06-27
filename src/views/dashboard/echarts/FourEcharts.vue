@@ -71,6 +71,8 @@ export default {
               break;
               case 1013: self.alarmName.push("火灾烟雾")
               break;
+              case 1014: self.alarmName.push("红外测温")
+              break;
               case 1:
               default: self.alarmName.push('机体')
               }
