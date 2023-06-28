@@ -60,7 +60,7 @@
               <div>当前电量</div>
             </div>
             <div class="microphone">
-              <Intercom :carID="carID"  ></Intercom>
+              <Intercom :carID="carID"></Intercom>
               <div class="speak_detail" style="font-size: 0.875rem;">双向喊话</div>
             </div>
             <div class="broadcast" @click="broadcastVisible = true">
@@ -396,7 +396,7 @@
               <div class="hkMove">
                 <img src="../../assets/img/hkUp.png" @mousedown="setCameraOperate(1)" @mouseup="stopCam()" class="hkUp">
                 <div style="display: flex;">
-                  <img  src="../../assets/img/hkLeft.png" @mousedown="setCameraOperate(5)" @mouseup="stopCam()"
+                  <img src="../../assets/img/hkLeft.png" @mousedown="setCameraOperate(5)" @mouseup="stopCam()"
                     class="hkLeft">
                   <img src="../../assets/img/hkConnect.png" @click="HKlogin()"
                     :class="[YTlogin == true ? 'HKloading' : 'hkConnect']">
@@ -421,7 +421,7 @@
                     <img src="../../assets/img/jujiao.png" alt="">
                   </div>
                 </div>
-                <div  class="hkAction">
+                <div class="hkAction">
                   <div title="缩小" class="action_detail" @mousedown="setCameraOperate(11)" @mouseup="stopCam()">
                     <img src="../../assets/img/suoxiao.png" alt="">
                   </div>
@@ -556,7 +556,7 @@ export default {
         label: "巡检速度"
       }],
       riskSpeed: 1000,
-      speedMode:1,
+      speedMode: 1,
       broadcasting: false,
       lowButtery: false,
       butteryInfo: null,
@@ -570,7 +570,8 @@ export default {
       finishTime: '',
       tranLeft: 100,
       tempicture: null,
-      tempicTimer: null
+      tempicTimer: null,
+      moveSet: null,
     };
   },
   created() {
@@ -614,14 +615,14 @@ export default {
     ...mapState({
       systemConfig: (state) => state.sysConfig.systemConfig,
     }),
-    ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen','closeAll']),
+    ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen', 'closeAll']),
     realTimeAlarminfo() {
       return this.realTimeAlarm[0]
     },
     yuntaiInfo() {
       return this.cameraOut
     },
-    standby(){
+    standby() {
       return this.closeAll
     },
     showTable() {
@@ -669,7 +670,7 @@ export default {
     riskSpeed(newV, oldV) {
       console.log('速度变化了')
       if (newV == 1000) {
-           this.speedMode = 1
+        this.speedMode = 1
         // const param = {
         //   carrier: this.carID,
         //   speed: 1000,
@@ -690,11 +691,11 @@ export default {
         // })
       }
     },
-    standby(){
+    standby() {
       if (this.robotOpen == 1) {
-      this.logoutCar()
-    }
-    this.HKlogout()
+        this.logoutCar()
+      }
+      this.HKlogout()
 
     }
 
@@ -1078,8 +1079,8 @@ export default {
           count: null,
           voiceBroadcastText: null,
           exit: this.lowButtery,
-          speed:this.riskSpeed,
-          speedMode:this.speedMode
+          speed: this.riskSpeed,
+          speedMode: this.speedMode
         }
         moveToPatrolPoint(param).then((res) => {
           console.log(param)
@@ -1320,6 +1321,7 @@ export default {
     },
     //速度执行
     async setRobotMoveCrl(flag) {
+      // console.log('触发了事件')
       const time = this.getNowtime()
       if (this.robotOpen == 2 && flag != 3) {
         Notification({
@@ -1330,17 +1332,29 @@ export default {
         });
       } else {
         if (flag == 1) {
+          this.moveSet = setTimeout(() => {
+            // console.log('前进')
+
             moveCar(flag, 1000, 1000000, time).then((res) => {
               console.log('前进', time, res)
             })
+          }, 1000)
+
         }
         else if (flag == 2) {
+          this.moveSet = setTimeout(() => {
+            // console.log('后退')
+
             moveCar(flag, 1000, 1000000, time).then((res) => {
-            console.log('后退', time, res)
-          })   
+              console.log('后退', time, res)
+            })
+
+          },1000)
         }
         else if (flag == 3) {
+          clearTimeout(this.moveSet)
           setTimeout(() => {
+            // console.log('暂停')
             const time = this.getNowtime()
             stopCar(time).then((res) => {
               console.log('暂停', res)
