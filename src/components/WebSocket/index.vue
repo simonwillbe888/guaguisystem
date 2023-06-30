@@ -1,19 +1,18 @@
 <template>
   <el-badge v-if="warnes" :value="warnes" class="item">
-    <el-button @click="readyAlarm" size="small"
-      ><i class="el-icon-bell"></i
-    ></el-button>
+    <el-button @click="readyAlarm" size="small"><i class="el-icon-bell"></i></el-button>
   </el-badge>
 </template>
 
 <script>
 import { readNoticeBack } from '../../api/user';
 import { mapGetters } from 'vuex';
+import { getAccessoType } from '../../api/robot'
 export default {
   name: 'WebSocket',
   computed: {
-    ...mapGetters(['account', 'webSocketUrl', 'realTimeTasks', 
-    'planTasks','setRealTimeAlarm','setlogoutState','setcameraOut']),
+    ...mapGetters(['account', 'webSocketUrl', 'realTimeTasks',
+      'planTasks', 'setRealTimeAlarm', 'setlogoutState', 'setcameraOut']),
   },
   data() {
     return {
@@ -26,17 +25,64 @@ export default {
       // ws定时器
       wsTimer: null,
       warnes: 0,
+      disConnect: 0,
+      disConnectTimer: null
     };
   },
 
   async mounted() {
     this.wsIsRun = true;
     this.wsInit();
+    this.initTimer()
+    this.checkIdleTime()
   },
-  beforeDestroy(){
-   this.wsDestroy()
+  beforeDestroy() {
+    this.wsDestroy()
+    clearInterval(this.disConnectTimer)
   },
   methods: {
+
+    //浏览器挂起检测退出
+    checkIdleTime() {
+      const IDLE_TIMEOUT = 10800000; // 空闲超时时间，单位为毫秒（这里设置为3小时）
+
+      let idleTimer;
+     let that = this
+      function resetTimer() {
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+          // 在这里执行返回登录界面的操作
+          that.$store.dispatch('user/resetToken').then(() => {
+                location.reload();
+              });
+              that.$notify({
+            message: '断开连接，请重新登录',
+            type: 'error',
+            title: '提示',
+            duration: 10000,
+          });
+        }, IDLE_TIMEOUT);
+      }
+
+      function clearTimer() {
+        clearTimeout(idleTimer);
+      }
+
+      // 监听用户交互事件
+      document.addEventListener('mousemove', resetTimer);
+      document.addEventListener('keypress', resetTimer);
+      document.addEventListener('scroll', resetTimer);
+      document.addEventListener('touchstart', resetTimer);
+
+      // 初始启动计时器
+      resetTimer();
+
+      // 在路由导航守卫中清除计时器
+      // router.beforeEach((to, from, next) => {
+      //   clearTimer();
+      //   next();
+      // });
+    },
     async readyAlarm() {
       const res = await readNoticeBack({
         count: this.warnes,
@@ -46,13 +92,30 @@ export default {
       this.$router.push('/inspection/realAlarm');
       //   }
     },
+    initTimer() {
+      this.disConnectTimer = setInterval(() => {
+        getAccessoType().then((res) => {
+          console.log('查看', res.hasOwnProperty('data'))
+          if (!res.hasOwnProperty('data')) {
+            ++this.disConnect
+            if (this.disConnect >= 10) {
+              this.$store.dispatch('user/resetToken').then(() => {
+                location.reload();
+              });
+            }
+          }
+
+        })
+      }, 6000);
+
+    },
     wsInit() {
+
+
       const username = this.$store.getters.account
       // 通信URL，godlike为用户名，后续可以修改
       if (!this.webSocketUrl || !username) return;
       this.ws = this.webSocketUrl + username;
-      console.log('websocket连接',this.ws)
-
       if (!this.wsIsRun) {
         return;
       }
@@ -75,23 +138,22 @@ export default {
         if (this.webSocket.readyState === 1) {
           clearInterval(this.wsTimer);
         } else {
-          console.log('ws建立连接失败');
+          console.log('ws建立连接失败')
           this.wsInit();
         }
       }, 5000);
     },
     wsOpenHanler(event) {
-        // console.log('ws建立连接成功');
+      console.log('ws建立连接成功');
     },
     wsMessageHanler(e) {
-      // console.log('这是wobsocket消息', JSON.parse(e.data));
       const data = JSON.parse(e.data);
       let n = 1
       let i = 1
       if (data) {
         if (data.code === 1) {
-          if (data.data) {        
-            this.$store.dispatch('global/setRealTimeAlarm',data.data)
+          if (data.data) {
+            this.$store.dispatch('global/setRealTimeAlarm', data.data)
           }
         } else if (data.code === 2) {
           if (data.data) {
@@ -116,7 +178,7 @@ export default {
             this.$store.dispatch('global/setRealTimeTasks', arr || []);
           }
         } else if (data.code === 3) {
-           
+
           if (data.data) {
             let planArr = this.planTasks || [];
             planArr.forEach((item) => {
@@ -129,52 +191,52 @@ export default {
           }
         }
         //云台登出
-        else if(data.code == 4){ 
-          console.log('云台发来登出消息',data.data)       
-          this.$store.dispatch('global/setcameraOut',data.data)
+        else if (data.code == 4) {
+          console.log('云台发来登出消息', data.data)
+          this.$store.dispatch('global/setcameraOut', data.data)
         }
         // 登出状态
-        else if (data.code === 5){
-          console.log('用户退出登录',data)  
-          if(data.data){
+        else if (data.code === 5) {
+          console.log('用户退出登录', data)
+          if (data.data) {
             // this.$store.dispatch('user/remoteLogout')
-            this.$store.dispatch('global/setlogoutState',data.data)
+            this.$store.dispatch('global/setlogoutState', data.data)
           }
         }
         //6 renwu，7计划结束
-        else if(data.code == 8){
-          console.log('巡检点结束',data.data)
-          this.$store.dispatch('global/setLocation',data.data)
+        else if (data.code == 8) {
+          console.log('巡检点结束', data.data)
+          this.$store.dispatch('global/setLocation', data.data)
         }
         //去往巡检点失败
-        else if (data.code == 9){
-          console.log('巡检结束',data)
+        else if (data.code == 9) {
+          console.log('巡检结束', data)
           // this.$store.dispatch('global/setLocationFail')
           this.$notify({
-          message: data.data,
-          type: 'error',
-          title: '提示',
-          duration: 0,
-         });
+            message: data.data,
+            type: 'error',
+            title: '提示',
+            duration: 0,
+          });
         }
-        else if(data.code == 10){
-          console.log('返回待命点',data.data)
-          this.$store.dispatch('global/setLocation',data.data)
+        else if (data.code == 10) {
+          console.log('返回待命点', data.data)
+          this.$store.dispatch('global/setLocation', data.data)
           this.$notify({
-          message: data.data,
-          type: 'success',
-          title: '提示',
-          duration: 5000,
-         });
+            message: data.data,
+            type: 'success',
+            title: '提示',
+            duration: 5000,
+          });
         }
-        else if(data.code == 11){
-          this.$store.dispatch('global/setCloseAll',data.data)
+        else if (data.code == 11) {
+          this.$store.dispatch('global/setCloseAll', data.data)
           this.$notify({
-          message: '回到初始状态',
-          type: 'success',
-          title: '提示',
-          duration: 5000,
-         });
+            message: '回到初始状态',
+            type: 'success',
+            title: '提示',
+            duration: 5000,
+          });
         }
       }
       //   console.log('收到服务端发送的信息');
@@ -183,11 +245,11 @@ export default {
       //   this.$message(e.data);
     },
     wsErrorHanler(event) {
-      //   console.log(event, '通信发生错误');
+      console.log(event, '通信发生错误');
       this.wsInit();
     },
     wsCloseHanler(event) {
-      //   console.log(event, 'ws关闭');
+      console.log(event, 'ws关闭');
       this.wsInit();
     },
     wsDestroy() {

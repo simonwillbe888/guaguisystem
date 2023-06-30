@@ -3,7 +3,7 @@ import { MessageBox, Message, Notification } from 'element-ui';
 import store from '@/store';
 import { getToken } from '@/utils/auth';
 import { blob, timeout } from 'd3';
-
+let disconnect = 0
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -45,17 +45,19 @@ service.interceptors.response.use(
     const res = response.data;
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 20000 && res.code !== undefined  ) {
-      // console.log("查看错误", res)
-      Notification({
-        title: '提示',
-        duration: 1000,
-        message: res.data || 'Error',
-        type: 'error',
-        // duration: 5 * 1000,
-      });
+      console.log("查看错误", res)
+      // Notification({
+      //   title: '提示',
+      //   duration: 1000,
+      //   message: res.data || 'Error',
+      //   type: 'error',
+      //   // duration: 5 * 1000,
+      // });
 
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+        console.log("查看错误", res)
+
         // to re-login
         MessageBox.confirm(
           'You have been logged out, you can cancel to stay on this page, or log in again',
@@ -66,6 +68,7 @@ service.interceptors.response.use(
             type: 'warning',
           }
         ).then(() => {
+          console.log('断开')
           store.dispatch('user/resetToken').then(() => {
             location.reload();
           });
@@ -81,14 +84,17 @@ service.interceptors.response.use(
     //cgw
     // return {}
     //cgw
-    console.log('err' + error); // for debug
+    // console.log('服务器连接失败' + error); // for debug
+    // store.dispatch('global/setlogoutState',++disconnect).then(()=>{
+    //   console.log('失败原因')
+    // })
     Notification({
       title: '提示',
       message: "服务器连接失败",
       type: 'error',
-      duration: 1000,
+      duration: 5000,
     });
-    return Promise.reject(error);
+    return error;
   }
 );
 

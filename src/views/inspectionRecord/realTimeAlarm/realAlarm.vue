@@ -393,7 +393,12 @@ export default {
       if (this.alarmType == 2) {
         console.log("实时", e)
         this.alarm = e
-        this.imageUrl = 'http://192.168.20.44:8888/images/' + e.Image
+        if(e.alarmCode == 1014){
+          this.imageUrl = 'http://192.168.20.6:8888/images/' + e.Image
+        }
+        else{
+          this.imageUrl = 'http://192.168.20.44:8888/images/' + e.Image
+        }
         this.dialogVisible = true
       }
     },

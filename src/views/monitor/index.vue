@@ -865,9 +865,7 @@ export default {
         this.currentAdvices[0].accessoryType = camera.AccessoryType
         this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
       }
-      // console.log('查左侧',this.currentAdvices[0])
       this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
-      // console.log('选中机器人且更改参数', this.currentAdvices[0].configJson)
       this.getVideo()
     },
     getVideo() {
@@ -989,11 +987,14 @@ export default {
       }).then((res) => {
         // console.log('查看巡检计划',res)
         res.data.forEach(element => {
-          // console.log(element.PlanName.includes('巡检点'))
-          this.taskList.push({
-            label: element.PlanName,
-            value: element.PlanID
-          })
+          console.log('查看巡检状态', element)
+          if (element.IsEnable != 2) {
+            this.taskList.push({
+              label: element.PlanName,
+              value: element.PlanID
+            })
+          }
+
         });
       })
     },
@@ -1123,7 +1124,14 @@ export default {
             this.YTlogin = true
           }
           else {
+            this.$notify({
+              message: res.data,
+              type: 'warning',
+              title: '提示',
+              duration: 5000,
+            });
             this.YTlogin = false
+
           }
         })
       }
@@ -1164,7 +1172,12 @@ export default {
     },
     async getDetailMessage(e) {
       console.log("实时", e)
-      this.imageUrl = 'http://192.168.20.44:8888/images/' + e.Image
+      if (e.AlarmCode == 1014) {
+        this.imageUrl = 'http://192.168.20.6:8888/images/' + e.Image
+      }
+      else {
+        this.imageUrl = 'http://192.168.20.44:8888/images/' + e.Image
+      }
       this.alarm = e
       this.dialogVisible = true
     },
@@ -1349,7 +1362,7 @@ export default {
               console.log('后退', time, res)
             })
 
-          },1000)
+          }, 1000)
         }
         else if (flag == 3) {
           clearTimeout(this.moveSet)

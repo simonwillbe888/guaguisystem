@@ -372,10 +372,14 @@ export default {
     },
     async getDetailMessage(e) {
       if (this.alarmType == 2) {
-        console.log("实时", e)
         this.alarm = e
-        this.imageUrl = 'http://192.168.20.44:8888/images/' + e.Image
-        console.log(this.imageUrl)
+        if(e.alarmCode == 1014){
+          this.imageUrl = 'http://192.168.20.6:8888/images/' + e.Image
+        }
+        else{
+          this.imageUrl = 'http://192.168.20.44:8888/images/' + e.Image
+        }
+        console.log('看照片连接',this.imageUrl)
         this.dialogVisible = true
 
       }
