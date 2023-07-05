@@ -850,4 +850,10 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+::v-deep  .el-input__inner
+ {
+  height: 1.875rem;
+  background-color: transparent;
+  color: #fff;
+}
 </style>

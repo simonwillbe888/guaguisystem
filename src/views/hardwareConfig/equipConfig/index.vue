@@ -862,7 +862,12 @@ export default {
     }
   }
 }
-
+::v-deep  .el-input__inner
+ {
+  height: 1.875rem;
+  background-color: transparent;
+  color: #fff;
+}
 .robot-body {
   padding: 0 10px;
   background-color: lightblue;

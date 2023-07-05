@@ -493,7 +493,12 @@ export default {
     float: right;
   }
 }
-
+::v-deep  .el-input__inner
+ {
+  height: 1.875rem;
+  background-color: transparent;
+  color: #fff;
+}
 .el-table::before{
   background-color: none;
 }

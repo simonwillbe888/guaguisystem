@@ -653,6 +653,12 @@ export default {
     margin-left: 20px;
   }
 }
+::v-deep  .el-input__inner
+ {
+  height: 1.875rem;
+  background-color: transparent;
+  color: #fff;
+}
 >>> .dialog-footer {
   .el-button {
     background: #565f65;
