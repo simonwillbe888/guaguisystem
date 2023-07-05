@@ -54,6 +54,22 @@
                 <i class="el-icon-caret-right arrow" @click="changeRobotRight"></i>
               </div>
             </div>
+            <div class="warnL" style="position:absolute;top: 9.2rem;left: 2.7rem;">
+              <div
+                style="border-radius: 0.625rem;;width: 3.1rem;background-color: #66B3B2;display: flex;height: 2rem;line-height: 2rem;align-items: center;justify-items: center;"
+                v-if="warnLightOpen == 0">
+                <svg-icon icon-class="warnLight" style="margin:auto ;"></svg-icon>
+              </div>
+              <div class="warnLight" v-if="warnLightOpen == 1">
+              </div>
+
+              <div style="width: 3.75rem;">
+                  <el-switch style="height: 2rem;margin-left: 6px;" v-model="warnLightOpen" @change="setWarnLight()"
+                  :active-value="1" :inactive-value="0">
+                </el-switch>
+              </div>
+            </div>
+
             <div class="electri">
               <el-progress :width="40" text-color="#fbf9ea" type="circle"
                 :percentage="carList.batteryLevel"></el-progress>
@@ -389,7 +405,7 @@
         </el-col>
         <el-col :span="8">
           <div class="hkControl back-shaodow threeRow">
-            <div class="leftTitle" widht="100px">
+            <div class="leftTitle" widht="6.25rem">
               云台控制器
             </div>
             <div style="display:flex ;">
@@ -481,7 +497,7 @@ import {
   openBroadcast,
   login,
   logOut,
-  connectCar,
+  connectCar, startWarningLight, stopWarningLight,
   moveCar,
   stopCar, CancelCarrierControl, getTemperature,
   startVoiceBroadcast, stopVoiceBroadcast, getIndexCar, getRtsp, getTaskRemainingMileage
@@ -572,6 +588,7 @@ export default {
       tempicture: null,
       tempicTimer: null,
       moveSet: null,
+      warnLightOpen: 0, //0关 1开
     };
   },
   created() {
@@ -601,12 +618,15 @@ export default {
   },
   beforeDestroy() {
     this.HKlogout()
-    this.broadcast()
+    this.stopBroadcast()
     console.log(this.robotOpen == 1)
     if (this.robotOpen == 1) {
       this.logoutCar()
-
     }
+    if (this.warnLightOpen == 1) {
+      // 退出闪光灯
+    }
+
     window.clearInterval(this.carRoller)
     window.clearInterval(this.tempicTimer)
   },
@@ -615,7 +635,8 @@ export default {
     ...mapState({
       systemConfig: (state) => state.sysConfig.systemConfig,
     }),
-    ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen', 'closeAll']),
+    ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen', 
+    'closeAll', 'closeBroadcast','closeWarnL']),
     realTimeAlarminfo() {
       return this.realTimeAlarm[0]
     },
@@ -638,7 +659,10 @@ export default {
     },
     dialogLocationBoolen() {
       return this.locationTips
-    }
+    },
+    // clostCode12(){
+    //   return 
+    // }
   },
   watch: {
     filterText(val) {
@@ -648,7 +672,6 @@ export default {
       if (newv != undefined) {
         this.showTable.unshift(newV)
       }
-
     },
     dialogLocation(newV, old) {
       this.locationAuto = true
@@ -671,33 +694,26 @@ export default {
       console.log('速度变化了')
       if (newV == 1000) {
         this.speedMode = 1
-        // const param = {
-        //   carrier: this.carID,
-        //   speed: 1000,
-        //   speedMode: 2
-        // }
-        // SetSpeed(param).then((res) => {
-        //   console.log('巡检速度1', res, param)
-        // })
       } else {
         this.speedMode = 2
-        // const param = {
-        //   carrier: this.carID,
-        //   speed: 500,
-        //   speedMode: 1
-        // }
-        // SetSpeed(param).then((res) => {
-        //   console.log('应急速度2', res, param)
-        // })
       }
     },
     standby() {
       if (this.robotOpen == 1) {
         this.logoutCar()
       }
-      this.HKlogout()
+      this.stopWarn()
 
+      this.HKlogout()
+    },
+    closeBroadcast(newV, oldV) {
+      console.log('关闭语音对讲了', newV)
+      this.stopBroadcast()
+    },
+    closeWarnL(){
+      this.stopWarn()
     }
+
 
   },
 
@@ -985,9 +1001,7 @@ export default {
         keyWord: '',
         planType: 2,
       }).then((res) => {
-        // console.log('查看巡检计划',res)
         res.data.forEach(element => {
-          console.log('查看巡检状态', element)
           if (element.IsEnable != 2) {
             this.taskList.push({
               label: element.PlanName,
@@ -1319,6 +1333,52 @@ export default {
       }
 
       //关闭后通知
+    },
+    setWarnLight() {
+      const time = this.getNowtime()
+      if (this.warnLightOpen == 0) {
+        //关闭开关            
+        stopWarningLight(this.carID).then((res) => {
+          if (res.code != 20000) {
+            this.warnLightOpen = 1
+            Notification({
+              title: '提示',
+              message: res.data,
+              type: 'error',
+              duration: 5000
+            });
+          }
+        })
+      } else if (this.warnLightOpen == 1) {
+        //打开开关
+        startWarningLight(this.carID).then((res) => {
+          if (res.code != 20000) {
+            this.warnLightOpen = 0
+            Notification({
+              title: '提示',
+              message: res.data,
+              type: 'error',
+              duration: 5000
+            });
+          }
+        })
+      }
+    },
+    stopBroadcast() {
+      if (this.selectedOption != '语音停止播放' && this.selectedOption != '') {
+        this.selectedOption = '语音停止播放'
+        this.broadcast()
+      }
+    },
+    stopWarn() {
+      if (this.warnLightOpen == 1) {
+        stopWarningLight(this.carID).then((res) => {
+          if (res.code == 20000) {
+            this.warnLightOpen = 0
+
+          }
+        })
+      }
     },
     logoutCar() {
       const time = this.getNowtime()
@@ -1741,7 +1801,7 @@ export default {
   .broadcastSelect {
     position: absolute;
     top: 9rem;
-    border-radius: 10px;
+    border-radius: .625rem;
     padding-bottom: 1rem;
     left: 25.3%;
     background-color: #fff;
@@ -1753,7 +1813,7 @@ export default {
     }
 
     // .closeBroad:hover{
-    //   background-color: #15B3B4;
+    //   background-color: #64C8C8;
     // }
 
   }
@@ -1803,7 +1863,7 @@ export default {
       }
 
       .arrow:active {
-        color: #15B3B4;
+        color: #64C8C8;
       }
 
       .onLine {
@@ -1813,6 +1873,41 @@ export default {
         line-height: 1.875rem;
       }
     }
+    .warnL{
+      .warnLight {
+
+width: 3.1rem;
+height: 2rem;
+animation: flashAnimation 1s infinite;
+background: linear-gradient(to right, blue 50%, red 50%);
+}
+
+@keyframes flashAnimation {
+0% {
+  opacity: 0;
+}
+
+50% {
+  opacity: 1;
+}
+
+100% {
+  opacity: 0;
+}
+}
+::v-deep .el-switch__core{
+    width:2.1875rem!important;
+    height:.9375rem;
+}
+::v-deep .el-switch__core::after{
+    width:.875rem;
+    height:.875rem;
+    margin-top:-0.0625rem;
+    margin-bottom: .125rem;
+  }
+
+    }
+
 
     .electri {
       position: absolute;
@@ -1899,7 +1994,7 @@ export default {
 
   .threeRow {
     height: 13.1rem;
-    min-height: 170px;
+    min-height: 10.625rem;
   }
 
   .enviroment {
@@ -1911,7 +2006,7 @@ export default {
       width: 25%;
       min-width: 6rem;
       height: 4.5rem;
-      min-height: 60px;
+      min-height: 3.75rem;
       background: linear-gradient(181deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.00) 100%);
       opacity: 0.9;
       margin: auto;
@@ -2070,11 +2165,11 @@ export default {
 
       .location_Detail {
         width: 12.5rem;
-        min-width: 150px;
+        min-width: 9.375rem;
 
         ::v-deep .el-input__inner {
 
-          padding-left: 52px;
+          padding-left: 3.25rem;
         }
       }
 
@@ -2085,7 +2180,7 @@ export default {
 
       .el-select {
         width: 9.5rem;
-        min-width: 110px;
+        min-width: 6.875rem;
         margin: 0 0.625rem;
       }
 
@@ -2106,6 +2201,13 @@ export default {
 
   // }
 
+ ::v-deep .el-input__inner,
+.el-range-editor.el-input__inner {
+  height: 1.875rem;
+  // background-color: rgba($color: #071828, $alpha: 1);
+  background-color: transparent;
+  color: #fff;
+}
   .hkControl {
     width: 100%;
     background-color: rgba(7, 24, 40, 0.5);
@@ -2170,7 +2272,7 @@ export default {
       width: 3.75rem;
       text-align: center;
     }
-
+ 
     img:active,
     .action_detail:active {
       opacity: 0.5;
@@ -2203,7 +2305,7 @@ export default {
     margin: 0.625rem 1.25rem;
 
     .el-radio__inner {
-      border: 1px solid #000000;
+      border: .0625rem solid #000000;
     }
   }
 
@@ -2282,5 +2384,4 @@ export default {
     }
   }
 
-}
-</style>
+}</style>

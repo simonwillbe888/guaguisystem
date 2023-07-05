@@ -41,7 +41,18 @@ export function getRtsp(id){
 
   })
 }
-
+export function startWarningLight(id){
+  return request({
+    url:'/api/CarrierSet/startWarningLight?carrierID='+id,
+    method:'get',
+  })
+}
+export function stopWarningLight(id){
+  return request({
+    url:'/api/CarrierSet/stopWarningLight?carrierID='+id,
+    method:'get',
+  })
+}
 export function CancelCarrierControl(id){
   return request({
     url:'/api/PatrolPlan/CancelCarrierControl?carrierID='+id,

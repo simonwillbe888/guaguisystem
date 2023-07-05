@@ -99,7 +99,8 @@
           </el-table-column> -->
           <el-table-column
             prop="operate"
-            
+            width="300"
+
             label="操作"
             align="center"
           >
@@ -114,7 +115,7 @@
               >
               <el-button
                 class="process-operate"
-                type="primary"
+                style="background-color:#64C8C8 ;color:#fff"            
                 icon="el-icon-edit"
                 size="mini"
                 plain
@@ -717,7 +718,7 @@ export default {
    
     .inspect-operate {
       width: 9.375rem;
-      background-color: #15B3B4 !important;
+      background-color: #64C8C8 !important;
     }
   }
 }

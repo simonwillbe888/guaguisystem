@@ -2,7 +2,7 @@
   <div>
     <div>
       <div class="content-header" >
-         <el-button type="primary" icon="el-icon-plus"  style="width: 9.375rem;background-color: #15B3B4 !important;" size="mini" @click="addChargingStrategy(1)">
+         <el-button type="primary" icon="el-icon-plus"  style="width: 9.375rem;background-color: #64C8C8 !important;" size="mini" @click="addChargingStrategy(1)">
            新增充电策略
         </el-button>
       </div>

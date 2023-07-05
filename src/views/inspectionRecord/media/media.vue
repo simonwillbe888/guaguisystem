@@ -55,7 +55,7 @@
           </el-checkbox-group>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button size="mini" style="background-color: #15B3B4;color: #fff;" @click="confirm">确 定</el-button>
+          <el-button size="mini" style="background-color: #64C8C8;color: #fff;" @click="confirm">确 定</el-button>
         </span>
       </el-dialog>
       <div>
@@ -355,7 +355,10 @@ export default {
     width: 7.5rem;
   }
 }
-
+::v-deep .el-input__inner,
+.el-range-editor.el-input__inner {
+  color: #fff;
+}
 ::v-deep .el-card__body,
 .el-main {
   padding: 0;
@@ -505,5 +508,7 @@ export default {
 
 ::v-deep .el-input__icon {
   line-height: 1.5625rem;
-}</style>
+}
+
+</style>
   

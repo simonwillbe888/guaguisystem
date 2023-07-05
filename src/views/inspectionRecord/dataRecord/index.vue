@@ -1,7 +1,7 @@
 <template>
   <div style="padding:1%">
     <div class="content-header">
-      <el-button icon="el-icon-download" style="float: right;background-color: #15B3B4 !important;" type="primary" size="mini"
+      <el-button icon="el-icon-download" style="float: right;background-color: #64C8C8 !important;"  size="mini"
         @click="exportAll()">导出列表</el-button>
       <div style="display:inline;float: right;">
         <span>起止时间</span>
@@ -12,7 +12,7 @@
         <el-date-picker v-model="endVal" type="date" :placeholder="$t('comment_vary.end_time_label')"
           style="margin-right: 20px" value-format="yyyy-MM-dd">
         </el-date-picker>
-        <el-button class="commen-button" style="background-color: #15B3B4" size="mini" @click.native="init()">查询</el-button>
+        <el-button class="commen-button" style="background-color: #64C8C8" size="mini" @click.native="init()">查询</el-button>
       </div>
     
     </div>
@@ -268,5 +268,9 @@ export default {
     color: #301d0f;
 
   }
+}
+::v-deep .el-input__inner,
+.el-range-editor.el-input__inner {
+  color: #fff;
 }
 </style>

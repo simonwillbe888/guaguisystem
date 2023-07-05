@@ -7,7 +7,7 @@
         <el-radio v-model="alarmType" label="1">设备告警</el-radio>
       </template>
       <div style="display: inline;">
-        <el-button icon="el-icon-download" style="background-color: #15B3B4 !important;float: right;" type="primary"
+        <el-button icon="el-icon-download" style="background-color: #64C8C8 !important;float: right;" 
           size="mini" @click="exportAll()">导出列表</el-button>
       </div>
       <div style="display:inline;float:right">
@@ -18,7 +18,7 @@
         </el-input>
         <el-input style="width:10vw;margin-left: 0.1vw;" placeholder="请输入告警码" v-model="alarmCode">
         </el-input>
-        <el-button style="background-color: #15B3B4 " size="mini" @click.native="init()">{{
+        <el-button style="background-color: #64C8C8 " size="mini" @click.native="init()">{{
           $t('public_vary.query_label')
         }}</el-button>
       </div>
@@ -26,7 +26,7 @@
       <div style="display: inline-block;">
         <!-- <el-button
           icon="el-icon-download"
-          style="background-color: #15B3B4 !important;"
+          style="background-color: #64C8C8 !important;"
           type="primary"
           size="mini"
           @click="(dialogFormVisible = true)"
@@ -115,9 +115,9 @@
         </el-table-column>
         <el-table-column prop="details" label="操作" v-if="alarmType == 2" align="center" width="120">
           <template slot-scope="{ row }">
-            <el-button v-if="row.statusNum == 0 || row.statusNum == 1" type="primary" icon="el-icon-edit" size="mini"
+            <el-button style="background-color:#64C8C8 ;color:#fff" v-if="row.statusNum == 0 || row.statusNum == 1"  icon="el-icon-edit" size="mini"
               plain @click="showDetail(row)">处理</el-button>
-            <el-button v-else type="primary" icon="el-icon-document" size="mini" plain>详情</el-button>
+            <el-button style="background-color:#64C8C8 ;color:#fff" v-else  icon="el-icon-document" size="mini" plain>详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -728,7 +728,10 @@ export default {
     width: 120px;
   }
 }
-
+::v-deep .el-input__inner,
+.el-range-editor.el-input__inner {
+  color: #fff;
+}
 .equip-body {
   padding: 0 10px;
   background-color: lightblue;

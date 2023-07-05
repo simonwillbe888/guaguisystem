@@ -5,8 +5,8 @@
         <el-result :icon="result.icon" :title="result.title" :subTitle="result.subTitle" >
         </el-result>
         <div style="">
-          <h3 v-if="extra.active" style="margin:0 auto 40px">
-            授权将在 <a style='color: red'>{{Math.floor(((new Date(extra.expire) - new Date()))/(1000*60*60*24))}}天</a> 后到期
+          <h3 v-if="extra.active && extra.period!=-1" style="margin:0 auto 40px">
+            授权将在 <a style='color: red'>{{extra.expire}}天</a> 后到期
           </h3>
           <div v-if="!extra.active" style="margin:0 auto 20px;width: 380px;word-wrap: break-word;">
             <a @click="copySerialNo()"><h3 style="margin-top: 0">{{extra.serialNo}}</h3></a>
@@ -30,7 +30,7 @@
   </div>
 </template>
 <script>
-import { getLicenseStatus, uploadLicense, licenseChecker } from '../../../api/sysCtrl'
+import { getLicenseStatus, licenseChecker } from '../../../api/sysCtrl'
 export default {
   components: {  },
   data() {
@@ -45,6 +45,7 @@ export default {
         msg:"",
         expire:"",
         serialNo:"",
+        period:""
       },
     };
   },
@@ -54,6 +55,7 @@ export default {
   methods: {
     async getLicenseStatus(notify){
         await getLicenseStatus().then((res)=>{
+          console.log(res)
           this.licenseProcess(res,notify)
         }).catch(()=>{})
     },
@@ -61,11 +63,19 @@ export default {
     licenseProcess(res,notify){
       if(res.code === 20000){
         this.extra.active = res.data.active
+        this.extra.period = res.data.period
         if(res.data.active){
+          if(this.$store.roles.vertify == undefined){
+            this.$store.dispatch('user/setVertify','vertify')
+          }
           this.result.icon="success"
           this.result.title="已授权"
-          this.result.subTitle= "许可证有效期为"+res.data.expire
-          this.extra.expire = res.data.expire
+          if(res.data.period == -1){
+            this.result.subTitle= ""
+          }else {
+            this.result.subTitle= "许可证有效期为"+res.data.period+"天"
+            this.extra.expire = res.data.expire
+          }
           if(notify){
             this.$notify({
               title: '已授权',
@@ -78,6 +88,7 @@ export default {
           this.result.title="未授权"
           this.result.subTitle="点击序列号复制 向开发商获取许可证"
           this.extra.serialNo = res.data.serialNo
+
           this.$notify({
             title: '授权失败',
             message: '许可证验证失败',
@@ -114,16 +125,18 @@ export default {
     async licenseChecker(){
       await licenseChecker().then((res)=>{
         this.licenseProcess(res,true)
+        this.$router.go(0);
       }).catch(()=>{})
     },
 
     copySerialNo(){
-        navigator.clipboard.writeText(this.extra.msg)
-        this.$notify({
-          title: '复制成功',
-          message: '已复制序列号到粘贴板',
-          type: 'success'
-        });
+      this.$copyText(this.extra.serialNo).then(()=>{
+          this.$notify({
+            title: '复制成功',
+            message: '已复制序列号到粘贴板',
+            type: 'success'
+          });
+        })
     }
   },
 };

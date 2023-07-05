@@ -78,7 +78,7 @@
           >
             <template slot-scope="{ row }">
               <el-button
-                type="primary"
+              style="background-color:#64C8C8 ;color:#fff"  
                 @click="edit(row)"
                 icon="el-icon-edit"
                 size="mini"
@@ -406,7 +406,7 @@ export default {
 }
 .headerBtn {
   width: 8vw;
-  background-color: #15B3B4 !important;
+  background-color: #64C8C8 !important;
 }
 .content-header {
   margin-bottom: 10px;

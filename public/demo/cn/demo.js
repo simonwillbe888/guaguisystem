@@ -373,7 +373,7 @@ function getChannelInfo() {
 // 获取端口
 function getDevicePort() {
     var szDeviceIdentify = $("#ip").val();
-     console.log('获取端口')
+    //  console.log('获取端口')
     if (null == szDeviceIdentify) {
         return;
     }

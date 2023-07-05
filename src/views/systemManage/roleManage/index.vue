@@ -24,7 +24,7 @@
           </el-table-column>
           <el-table-column fixed="right" align="center" label="操作" width="200">
             <template slot-scope="{ row }">
-              <el-button type="primary" @click="edit(row)" icon="el-icon-edit" size="mini" plain>
+              <el-button style="background-color:#64C8C8 ;color:#fff"   @click="edit(row)" icon="el-icon-edit" size="mini" plain>
                 修改
               </el-button>
               <el-button @click="delRole(row.ID)" type="danger" icon="el-icon-delete" size="mini">
@@ -373,7 +373,7 @@ export default {
 
 .headerBtn {
   width: 8vw;
-  background-color: #15B3B4 !important;
+  background-color: #64C8C8 !important;
 }
 
 .content-header {

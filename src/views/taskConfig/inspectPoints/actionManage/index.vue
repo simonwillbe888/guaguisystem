@@ -24,7 +24,6 @@
         </el-collapse>
         <el-tag class="header-label" style="margin-bottom:10px">动作</el-tag>
         <el-scrollbar>
-          <!-- <el-tag class="next-header">动作</el-tag> -->
           <el-button
             class="common-btn comp"
             icon="el-icon-connection"
@@ -68,7 +67,7 @@
           >{{ $t('process_config.action_list') }}
           <el-button
             size="mini"
-            style="float: right; margin-top: 10px"
+            style="background-color:#64C8C8 ;color:#fff;float: right; margin-top: 10px"
             @click="saveTemplate"
           >
             保存</el-button
@@ -80,20 +79,17 @@
             :key="item.id"
             style="margin: 10px; background: #fff; position: relative; display: flex;"
           >
-            <div class="act-icon">
+            <!-- <div class="act-icon">
               <i class="el-icon-info"></i>
-            </div>
+            </div> -->
             <div
               style="
-                flex:1
-                height: 32px;
-                font-size: 12px;
-                line-height: 32px;
+                flex:1;
               "
             >
-              <div style="width:50%">
+              <div style="width:50%;padding-left: 2.5rem;color: #000000;font-size: 18px;">
                 <el-descriptions>
-                  <el-descriptions-item label="名称">{{
+                  <el-descriptions-item style="margin-left:40px ;" label="名称">{{
                     taskName(item.type)
                   }}</el-descriptions-item>
                   <el-descriptions-item label="顺序">{{
@@ -115,14 +111,14 @@
             >
               <el-button
                 class="edit-btn"
-                type="primary"
+                icon="el-icon-edit"
                 plain
                 @click="editParam(item, index)"
                 >修 改</el-button
               >
               <el-button
                 class="delete-btn"
-                type="primary"
+                icon="el-icon-delete"
                 plain
                 @click="deleteParam(index)"
                 >删 除</el-button
@@ -202,9 +198,9 @@
       :visible.sync="cameraDialogVisible"
       :close-on-click-modal="false"
     >
-      <div class="common-tip">
+      <!-- <div class="common-tip">
         预置点通过在浏览器中输入摄像头IP可登陆摄像头管理系统，查看摄像头预置点ID
-      </div>
+      </div> -->
       <div class="common-sty">
         <!-- <span style="margin: 10px 0; display: inline-block">参数类型</span
         ><br /> -->
@@ -309,9 +305,9 @@
       :visible.sync="thermalCameDialogVisible"
       :close-on-click-modal="false"
     >
-      <div class="common-tip">
+      <!-- <div class="common-tip">
         预置点通过在浏览器中输入摄像头IP可登陆摄像头管理系统，查看摄像头预置点ID
-      </div>
+      </div> -->
       <div class="common-sty">
         <span style="margin: 0.7vh 0; display: inline-block">参数类型</span
         ><br />
@@ -1482,28 +1478,29 @@ export default {
   }
   .page-container {
     // padding: 10px;
-    min-height: calc(100vh - 123px);
+    // min-height: calc(100vh - 123px);
     .page-left {
+      opacity: 0.7;
       font-size: initial;
       // margin-right: 10px;
       background: rgba(43, 69, 125, 0.3);
       padding: 10px;
-      width: 20vw !important;
-      >>> .el-collapse {
+      width: 21rem !important;
+      .el-collapse {
         margin-bottom: 10px;
-        .el-collapse-item__header {
+       ::v-deep .el-collapse-item__header {
           height: 30px;
           line-height: 30px;
-          padding-left: 10px;
-          opacity: 0.6;
+          padding-left: 20px;
         }
-        .el-collapse-item__content {
-          background: rgba(229, 233, 194, 0.5);
+      ::v-deep .el-collapse-item__content {
           padding: 10px;
+          height: 43vh;
+          overflow-y: scroll;
           .list-item {
-            margin-bottom: 5px;
-            padding: 5px;
-            font-size: 12px;
+            padding: 0.3125rem;
+            padding-left: 1.25rem;
+            font-size: 0.75rem;
             background: #fff;
             border-radius: 4px;
             width: 100%;
@@ -1516,6 +1513,7 @@ export default {
       }
     }
     .page-main {
+      opacity: 0.7;
       .header-label {
         border-radius: 0;
         line-height: 40px;
@@ -1564,7 +1562,8 @@ export default {
 
 .common-btn {
   width: 100%;
-  margin: 2px 0;
+  margin: 5px 0;
+  height: 2rem;
   text-align: left;
   color: black;
   font-size: 12px;
@@ -1651,18 +1650,19 @@ export default {
 }
 
 .edit-btn {
-  background-color: rgba(41, 40, 87, 0.5);
+  background-color: #64C8C8;
+  color: #fff;
   margin: 3px 0;
   text-align: left;
-  color: black;
+  color: #fff;
   font-size: 12px;
 }
 
 .delete-btn {
-  background-color: rgba(143, 62, 38, 0.5);
+  background-color: red;
   margin: 3px 0;
   text-align: left;
-  color: black;
+  color: #fff;
   font-size: 12px;
 }
 
@@ -1704,9 +1704,9 @@ export default {
     padding: 7px 15px !important;
   }
 }
->>> .el-descriptions-item__cell {
+::v-deep .el-descriptions-item {
   padding-bottom: 0 !important;
-  font-size: 12px !important;
+  font-size: 1rem !important;
   line-height: 32px !important;
 }
 </style>

@@ -43,62 +43,62 @@ export default {
   methods: {
 
     //浏览器挂起检测退出
-    checkIdleTime() {
-      const IDLE_TIMEOUT = 10800000; // 空闲超时时间，单位为毫秒（这里设置为3小时）
+    // checkIdleTime() {
+    //   const IDLE_TIMEOUT = 10800000; // 空闲超时时间，单位为毫秒（这里设置为3小时）
 
-      let idleTimer;
-     let that = this
-      function resetTimer() {
-        clearTimeout(idleTimer);
-        idleTimer = setTimeout(() => {
-          // 在这里执行返回登录界面的操作
-          that.$store.dispatch('user/resetToken').then(() => {
-                location.reload();
-              });
-              that.$notify({
-            message: '断开连接，请重新登录',
-            type: 'error',
-            title: '提示',
-            duration: 10000,
-          });
-        }, IDLE_TIMEOUT);
-      }
+    //   let idleTimer;
+    //  let that = this
+    //   function resetTimer() {
+    //     clearTimeout(idleTimer);
+    //     idleTimer = setTimeout(() => {
+    //       // 在这里执行返回登录界面的操作
+    //       that.$store.dispatch('user/resetToken').then(() => {
+    //             location.reload();
+    //           });
+    //           that.$notify({
+    //         message: '断开连接，请重新登录',
+    //         type: 'error',
+    //         title: '提示',
+    //         duration: 10000,
+    //       });
+    //     }, IDLE_TIMEOUT);
+    //   }
 
-      function clearTimer() {
-        clearTimeout(idleTimer);
-      }
+    //   function clearTimer() {
+    //     clearTimeout(idleTimer);
+    //   }
 
-      // 监听用户交互事件
-      document.addEventListener('mousemove', resetTimer);
-      document.addEventListener('keypress', resetTimer);
-      document.addEventListener('scroll', resetTimer);
-      document.addEventListener('touchstart', resetTimer);
+    //   // 监听用户交互事件
+    //   document.addEventListener('mousemove', resetTimer);
+    //   document.addEventListener('keypress', resetTimer);
+    //   document.addEventListener('scroll', resetTimer);
+    //   document.addEventListener('touchstart', resetTimer);
 
-      // 初始启动计时器
-      resetTimer();
+    //   // 初始启动计时器
+    //   resetTimer();
 
-      // 在路由导航守卫中清除计时器
-      // router.beforeEach((to, from, next) => {
-      //   clearTimer();
-      //   next();
-      // });
-    },
-    async readyAlarm() {
-      const res = await readNoticeBack({
-        count: this.warnes,
-      });
-      this.warnes = 0;
-      //   if (res.code === 20000) {
-      this.$router.push('/inspection/realAlarm');
-      //   }
-    },
+    //   // 在路由导航守卫中清除计时器
+    //   // router.beforeEach((to, from, next) => {
+    //   //   clearTimer();
+    //   //   next();
+    //   // });
+    // },
+    // async readyAlarm() {
+    //   const res = await readNoticeBack({
+    //     count: this.warnes,
+    //   });
+    //   this.warnes = 0;
+    //   //   if (res.code === 20000) {
+    //   this.$router.push('/inspection/realAlarm');
+    //   //   }
+    // },
     initTimer() {
       this.disConnectTimer = setInterval(() => {
         getAccessoType().then((res) => {
           console.log('查看', res.hasOwnProperty('data'))
           if (!res.hasOwnProperty('data')) {
             ++this.disConnect
-            if (this.disConnect >= 10) {
+            if (this.disConnect >= 5) {
               this.$store.dispatch('user/resetToken').then(() => {
                 location.reload();
               });
@@ -106,7 +106,7 @@ export default {
           }
 
         })
-      }, 6000);
+      }, 1000);
 
     },
     wsInit() {
@@ -235,7 +235,34 @@ export default {
             message: '回到初始状态',
             type: 'success',
             title: '提示',
-            duration: 5000,
+            duration: 0,
+          });
+        }
+        else if (data.code == 12) {
+          this.$store.dispatch('global/setcloseBroadcast', data.data)
+          this.$notify({
+            message: '关闭语音播放',
+            type: 'success',
+            title: '提示',
+            duration: 0,
+          });
+        }
+        else if (data.code == 13) {
+          this.$store.dispatch('global/setCloseSpeak', data.data)
+          this.$notify({
+            message: '关闭对讲',
+            type: 'success',
+            title: '提示',
+            duration: 0,
+          });
+        }
+        else if (data.code == 14) {
+          this.$store.dispatch('global/setWarnLight', data.data)
+          this.$notify({
+            message: '关闭警示灯',
+            type: 'success',
+            title: '提示',
+            duration: 0,
           });
         }
       }

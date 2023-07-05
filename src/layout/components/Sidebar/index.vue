@@ -10,7 +10,7 @@
     mode="horizontal"
     background-color="#031B31"
     text-color="#fff"
-    active-text-color="#15B3B4"
+    active-text-color="#64C8C8"
     v-if="sonManue && sonManue.children"
   >
     <sidebar-item
