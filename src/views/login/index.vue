@@ -123,6 +123,7 @@ export default {
     $route: {
       handler: function(route) {
         this.redirect = route.query && route.query.redirect;
+        console.log('查看路由表',this.redirect)
       },
       immediate: true,
     },
@@ -173,7 +174,6 @@ export default {
                 // console.log('查看res',res.data)
                 this.$store.dispatch('sysConfig/setSystemConfig', res.data);
               }
-
             })
             .catch(() => {
               this.loading = false;
@@ -397,6 +397,10 @@ input:-ms-input-placeholder {
   100% {
     transform: translate(-50%, -40%);
   }
+}
+::v-deep .el-input__inner,
+.el-range-editor.el-input__inner {
+  color: #fff;
 }
 >>> .el-form-item__error {
   margin-left: 2.5rem;

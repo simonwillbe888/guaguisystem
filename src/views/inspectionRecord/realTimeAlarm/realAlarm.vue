@@ -19,14 +19,14 @@
         <el-radio v-model="alarmType" label="2">巡检告警</el-radio>
         <el-radio v-model="alarmType" label="1">设备告警</el-radio>
       </template>
-      <el-button icon="el-icon-download" style="background-color: #15B3B4 !important;float: right;" type="primary"
+      <el-button icon="el-icon-download" style="float: right;" 
         size="mini" @click="exportAll()">导出列表</el-button>
       <div style="display:inline;float:right">
         <el-input style="width:10vw;margin-left: 0.1vw;" v-if="alarmType == 2" placeholder="请输入告警名称" v-model="alarmName">
         </el-input>
         <el-input style="width:10vw;margin-left: 0.1vw;" placeholder="请输入告警码" v-model="alarmCode">
         </el-input>
-        <el-button type="primary" style="background-color: #15B3B4" plain size="mini"
+        <el-button  style="background-color: #64C8C8" size="mini"
           @click.native="init()">查询</el-button>
       </div>
 
@@ -666,6 +666,10 @@ export default {
   }
 }
 
+::v-deep .el-input__inner,
+.el-range-editor.el-input__inner {
+  color: #fff;
+}
 .head-condition {
   display: inline-block;
 

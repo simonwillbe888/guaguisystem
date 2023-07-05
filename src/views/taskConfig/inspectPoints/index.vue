@@ -97,7 +97,7 @@
             </el-button> -->
             <!-- </router-link> -->
             <el-button
-              type="primary"
+              style="background-color:#64C8C8 ;color:#fff"
               icon="el-icon-edit"
               @click="editInspect(row)"
               size="mini"
@@ -530,7 +530,7 @@ export default {
   }
   .robot-operate {
       width: 150px;
-      background-color: #15B3B4 !important;
+      background-color: #64C8C8 !important;
     }
   .inspec-setting-inquire {
     display: inline;

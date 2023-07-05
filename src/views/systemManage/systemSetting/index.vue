@@ -17,7 +17,7 @@
         </el-form> -->
       </div>
       <!-- <div class="btn">
-        <el-button style="background-color:  #15B3B4; color: #fff;border: none;" :loading="saveBtnLoding" size="mini" @click="saveSetting" type="primary">确定</el-button>
+        <el-button style="background-color:  #64C8C8; color: #fff;border: none;" :loading="saveBtnLoding" size="mini" @click="saveSetting" type="primary">确定</el-button>
         <el-button :loading="saveBtnLoding" size="mini" @click="download = true" type="primary">下载</el-button>
       </div> -->
       <el-dialog title="下载视频图片" :visible.sync="download">

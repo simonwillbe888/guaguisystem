@@ -35,16 +35,21 @@ const mutations = {
   SET_WEB_SOCKET_URL: (state, webSocketUrl) => {
     state.webSocketUrl = webSocketUrl;
   },
+  SET_vertify:(state,roles)=>{
+    state.roles.push(roles)
+  }
 };
 
 const actions = {
   // user login
+  setVertify({commit},data){
+    commit('SET_vertify',data)
+  },
   login({ commit }, userInfo) {
     return new Promise((resolve, reject) => {
       login(userInfo)
         .then((response) => {
           // console.log('登录结果',response)
-     
           if (response.code === 20000) {
             // getInfo()
             const { data } = response;

@@ -80,7 +80,8 @@
               >
               <el-button
                 icon="el-icon-edit"
-                type="primary"
+                style="background-color:#64C8C8 ;color:#fff"    
+
                 @click="edit(row, false)"
                 size="mini"
                 plain
@@ -616,7 +617,7 @@ export default {
 }
 .headerBtn {
   width: 9.375rem;
-  background-color: #15B3B4 !important;
+  background-color: #64C8C8 !important;
 }
   .content-header {
 

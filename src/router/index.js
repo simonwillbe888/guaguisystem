@@ -23,9 +23,13 @@ export const constantRoutes = [
       },
     ],
   },
-  {
+  // {
+  //   path: '/',
+  //   redirect: '/dashboard/monitor',
+  // },
+    {
     path: '/',
-    redirect: '/dashboard/monitor',
+    redirect: '/system/licenseSetting',
   },
   {
     path: '/login',
@@ -58,6 +62,8 @@ export const asyncRoutes = [
       icon: 'sys_info',
       id: 1,
       // roles: ['SystemInfo'],
+      // roles: ['vertify'],
+
     },
     children: [
       {
@@ -67,6 +73,8 @@ export const asyncRoutes = [
           title: 'menu.sys_monitor',
           parent_id: 1,
           // roles: ['SystemMonitor'],
+          // roles: ['vertify'],
+
         },
         component: () => import('@/views/monitor/index'),
       },
@@ -77,6 +85,7 @@ export const asyncRoutes = [
           title: 'menu.sys_run',
           parent_id: 1,
           // roles: ['SystemRun'],
+          
 
         },
         component: () => import('@/views/dashboard/index'),
@@ -90,6 +99,7 @@ export const asyncRoutes = [
           title: 'menu.sys_map',
           parent_id: 1,
           // roles: ['SystemMap'],
+          
         },
         component: () => import('@/views/map/index'),
         hidden:true,
@@ -107,6 +117,9 @@ export const asyncRoutes = [
       icon: 'yingjian_setting',
       id: 4,
       // roles: ['HardwareSetting'],
+      // roles: ['vertify'],
+
+      
     },
     children: [
       //   {
@@ -130,6 +143,7 @@ export const asyncRoutes = [
           icon: 'carrier_type',
           parent_id: 4,
           // roles: ['AreaSetting'],
+          
         },
       },
       {
@@ -140,6 +154,7 @@ export const asyncRoutes = [
           title: 'menu.equip_config_label',
           parent_id: 4,
           // roles: ['EquipSetting'],
+          
         },
       },
       {
@@ -151,6 +166,7 @@ export const asyncRoutes = [
           icon: 'people',
           parent_id: 4,
           // roles: ['RobotSetting'],
+          
         },
       },
       {
@@ -162,6 +178,7 @@ export const asyncRoutes = [
           title: 'menu.video_record_config_label',
           parent_id: 4,
           // roles: ['videoRecordSetting'],
+          
         },
       },
       {
@@ -172,6 +189,7 @@ export const asyncRoutes = [
           title: 'menu.charging_station_label',
           parent_id: 4,
           // roles: ['ChargingStation'],
+          
         },
       },
 
@@ -184,6 +202,7 @@ export const asyncRoutes = [
           title: 'menu.charging_strategy_label',
           parent_id: 4,
           // roles: ['ChargingStrategy'],
+          
         },
       },
     ],
@@ -199,6 +218,8 @@ export const asyncRoutes = [
       icon: 'xunjian_setting',
       id: 2,
       // roles: ['PatrolSetting'],
+      // roles: ['vertify'],
+
     },
     children: [
       {
@@ -210,6 +231,7 @@ export const asyncRoutes = [
           icon: 'excel',
           parent_id: 2,
           // roles: ['PointSetting'],
+          
         },
       },
       {
@@ -223,6 +245,7 @@ export const asyncRoutes = [
           // activeMenu: '/taskConfig/inspectPoints'
           parent_id: 2,
           // roles: ['inspectTaskEdit'],
+          
         },
         hidden: true,
       },
@@ -235,6 +258,7 @@ export const asyncRoutes = [
           icon: 'skill',
           parent_id: 2,
           // roles: ['ProcessSetting'],
+          
         },
       },
       {
@@ -246,6 +270,7 @@ export const asyncRoutes = [
           icon: 'list',
           parent_id: 2,
           // roles: ['PlanSetting'],
+          
         },
       },
     ],
@@ -259,6 +284,8 @@ export const asyncRoutes = [
       icon: 'alarm_setting',
       id: 3,
       // roles: ['AlarmSetting'],
+      // roles: ['vertify'],
+
     },
     children: [
       {
@@ -270,6 +297,7 @@ export const asyncRoutes = [
           icon: 'list',
           parent_id: 3,
           // roles: ['AlarmSetting'],
+          
         },
       },
     ],
@@ -285,6 +313,8 @@ export const asyncRoutes = [
       icon: 'shuju_jilu',
       id: 5,
       // roles: ['DataRecord'],
+      // roles: ['vertify'],
+
     },
     children: [
       {
@@ -297,6 +327,7 @@ export const asyncRoutes = [
           icon: 'battery',
           parent_id: 5,
           // roles: ['RealAlarm'],
+          
         },
       },
       {
@@ -308,6 +339,7 @@ export const asyncRoutes = [
           icon: 'battery',
           parent_id: 5,
           // roles: ['HistoryAlarm'],
+          
         },
       },
       {
@@ -317,6 +349,7 @@ export const asyncRoutes = [
         meta: {
           title: 'menu.real_alarm_task',
           // roles: ['AlarmTask'],
+          
           parent_id: 5,
         },
       },
@@ -330,6 +363,7 @@ export const asyncRoutes = [
           icon: 'guide',
           parent_id: 5,
           // roles: ['PatrolData'],
+          
         },
       },
       {
@@ -341,6 +375,7 @@ export const asyncRoutes = [
           icon: 'guide',
           parent_id: 5,
           // roles: ['OperationLog'],
+          
         },
       },
       {
@@ -352,6 +387,7 @@ export const asyncRoutes = [
           icon: 'battery',
           parent_id: 5,
           // roles: ['MediaFiles'],
+          
         },
       },
     ],
@@ -366,6 +402,7 @@ export const asyncRoutes = [
       icon: '系统管理',
       id: 6,
       // roles: ['SystemManage'],
+      
     },
     children: [
       {

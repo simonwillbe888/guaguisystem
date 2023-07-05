@@ -295,7 +295,7 @@ export default {
         }
       }
       .active {
-        color: #15B3B4;
+        color: #64C8C8;
       }
     }
     >>> .right {

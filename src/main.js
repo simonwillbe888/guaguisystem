@@ -14,7 +14,7 @@ import App from './App';
 import store from './store';
 import router from './router';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
-
+import VueClipboard from 'vue-clipboard2'
 import '@/icons'; // icon
 import '@/permission'; // permission control
 import i18n from './langs/index';
@@ -62,6 +62,7 @@ Vue.use(ElementUI, {
   enLocale,
   zhLocale,
 });
+Vue.use(VueClipboard)
 Vue.use(Vcomp);
 Vue.use(dataV);
 Vue.use(VueAwesomeSwiper);

@@ -55,6 +55,7 @@ export default {
   methods: {
     async getLicenseStatus(notify){
         await getLicenseStatus().then((res)=>{
+          console.log(res)
           this.licenseProcess(res,notify)
         }).catch(()=>{})
     },
@@ -64,6 +65,9 @@ export default {
         this.extra.active = res.data.active
         this.extra.period = res.data.period
         if(res.data.active){
+          if(this.$store.roles.vertify == undefined){
+            this.$store.dispatch('user/setVertify','vertify')
+          }
           this.result.icon="success"
           this.result.title="已授权"
           if(res.data.period == -1){
@@ -84,6 +88,7 @@ export default {
           this.result.title="未授权"
           this.result.subTitle="点击序列号复制 向开发商获取许可证"
           this.extra.serialNo = res.data.serialNo
+
           this.$notify({
             title: '授权失败',
             message: '许可证验证失败',
@@ -120,11 +125,12 @@ export default {
     async licenseChecker(){
       await licenseChecker().then((res)=>{
         this.licenseProcess(res,true)
+        this.$router.go(0);
       }).catch(()=>{})
     },
 
     copySerialNo(){
-        navigator.clipboard.writeText(this.extra.serialNo).then(()=>{
+      this.$copyText(this.extra.serialNo).then(()=>{
           this.$notify({
             title: '复制成功',
             message: '已复制序列号到粘贴板',

@@ -9,6 +9,9 @@ const state = {
   locationFail:false,
   locationBoolen:false,
   closeAll:false,
+  closeBroadcast:false,
+  clostSpeak:false,
+  closeWarnL:false,
 };
 
 const mutations = {
@@ -41,7 +44,16 @@ const mutations = {
   },
   setClose:(state)=>{
      state.closeAll = !state.closeAll
-  }
+  },
+  setBroadcast:()=>{
+    state.closeBroadcast = !state.closeBroadcast
+  },
+  setSpeak:()=>{
+    state.clostSpeak = !state.clostSpeak
+  },
+  setWarn:()=>{
+    state.closeWarnL = !state.closeWarnL
+  },
 
 };
 
@@ -72,7 +84,16 @@ const actions = {
   },
   setCloseAll({commit},data){
     commit('setClose',data)
-  }
+  },
+  setcloseBroadcast({commit},data){
+    commit('setBroadcast',data)
+  },
+  setCloseSpeak({commit},data){
+    commit('setSpeak',data)
+  },
+  setWarnLight({commit},data){
+    commit('setWarn',data)
+  },
 };
 
 export default {

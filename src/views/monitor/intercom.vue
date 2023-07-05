@@ -43,9 +43,9 @@ export default {
     this.end()
   },
   computed:{
-    ...mapGetters(['closeAll']),
+    ...mapGetters(['clostSpeak']),
     standby(){
-      return this.closeAll
+      return this.clostSpeak
     }
   },
   watch: {

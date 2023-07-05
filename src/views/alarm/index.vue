@@ -3,7 +3,7 @@
     <div class="robot-header content-header">
       <!-- <h3 class="alarm-setting-title">{{ $t('alarm_setting.alarm_standard_settings') }}</h3> -->
       <el-button
-          style="width: 8vw;background-color: #15B3B4;"
+          style="width: 8vw;background-color: #64C8C8;"
           class="robot-operate"
           icon="el-icon-plus"
           type="success"
@@ -159,7 +159,7 @@
               >详情配置</el-button
             > -->
             <el-button
-              type="primary"
+            style="background-color:#64C8C8 ;color:#fff"
               icon="el-icon-edit"
               size="mini"
               plain
@@ -426,11 +426,11 @@ export default {
         { required: true, message: '请输入告警区域', trigger: 'change' },
         ],
         OccurThreshold: [
-          {  message: '请输入告警产生门限', trigger: 'change' },
+          // {  message: '请输入告警产生门限', trigger: 'change' },
           { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确的格式,可保留两位小数' }
         ],
         RecoveryThreshold: [
-          {  message: '请输入告警修复门限', trigger: 'change' },
+          // {  message: '请输入告警修复门限' },
           { pattern: /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/, message: '请输入正确的格式,可保留两位小数' }
         ],
       },
@@ -679,6 +679,14 @@ export default {
                 this.$notify({
                   type: 'success',
                   message: '修改成功！',
+                  title: '提示',
+                  duration: 1000,
+                });
+              }
+              else{
+                this.$notify({
+                  type: 'error',
+                  message: response.data,
                   title: '提示',
                   duration: 1000,
                 });

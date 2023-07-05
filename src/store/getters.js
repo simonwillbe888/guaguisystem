@@ -18,6 +18,9 @@ const getters = {
   locationTips:(state)=>state.global.locationTips,
   locationFail:(state)=>state.global.locationFail,
   locationBoolen:(state)=>state.global.locationBoolen,
-  closeAll:(state)=>state.global.closeAll
+  closeAll:(state)=>state.global.closeAll,
+  closeBroadcast:(state)=>state.global.closeBroadcast,
+  clostSpeak:(state)=>state.global.clostSpeak,
+  closeWarnL:(state)=>state.global.closeWarnL,
 }; 
 export default getters;

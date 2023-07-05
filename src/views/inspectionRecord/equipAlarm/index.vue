@@ -5,8 +5,8 @@
         {{ $t("inspect_record.equip_alarm_statics") }}
       </h3> -->
       <div class="robot-setting-inquire">
-        <el-button icon="el-icon-download" style="background-color: #15B3B4 !important;float: right;border-radius: 10px;"
-          type="primary" size="mini" @click="exportAll()">导出列表</el-button>
+        <el-button icon="el-icon-download" style="float: right;border-radius: 10px;"
+          size="mini" @click="exportAll()">导出列表</el-button>
         <span>{{ $t('comment_vary.default_time_label') }}</span>
         <el-date-picker v-model="startVal" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
           :placeholder="$t('comment_vary.start_time_label')">
@@ -21,12 +21,12 @@
             <el-option v-for="item in filterOption" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </div>
-        <el-button style="background-color: #15B3B4;border-radius: 10px;" size="mini" @click.native="init">查询</el-button>
+        <el-button size="mini" @click.native="init">查询</el-button>
       </div>
 
       <!-- <el-button
           icon="el-icon-download"
-          style="background-color: #15B3B4 !important;"
+          style="background-color: #64C8C8 !important;"
           type="primary"
           size="mini"
           @click="(dialogFormVisible = true)"
@@ -78,7 +78,7 @@
         </el-table-column>
         <el-table-column prop="details" label="详细信息" align="center" width="160">
           <template slot-scope="{ row }">
-            <el-button type="primary" icon="el-icon-document" size="mini"
+            <el-button  style="background-color:#64C8C8 ;color:#fff"  icon="el-icon-document" size="mini"
               :disabled="row.operateType === 7 ? true : row.operateType === 14 ? true : false" @click="showDetail(row)">{{
                 $t('plan_config.inqireDetail_label') }}</el-button>
           </template>
@@ -89,7 +89,10 @@
       </div>
     </div>
     <el-dialog :title="'巡检记录详情'" :visible.sync="dialogDetailFlag" class="detail-dialog">
-      <div class="el-dialog__header">
+      <div style="  width: 100%;
+  padding: 20px;
+  display: flex;
+  margin-bottom: 1vh;">
         <div class="name">
           计划名称：{{ planDetail.PlanName }}
         </div>
@@ -99,7 +102,7 @@
         <div class="name">
           结束时间：{{ planDetail.EndTime }}
         </div>
-        <div style="margin-left: calc(100% - 65%);">
+        <div style="margin-left: auto;">
           告警数量：{{ planDetail.AlarmCount }}
         </div>
       </div>
@@ -474,10 +477,13 @@ export default {
     }
   }
 }
-
+::v-deep .el-input__inner,
+.el-range-editor.el-input__inner {
+  color: #fff;
+}
 .equip-body {
   padding: 0 10px;
-  background-color: lightblue;
+  // background-color: lightblue;
   border: 1px solid #fff;
 
   .equip-data {
@@ -488,12 +494,16 @@ export default {
 }
 
 .detail-dialog {
-  >>>.el-dialog {
-    width: 1200px;
+  
+  ::v-deep .el-dialog {
+    background-color: #132B41 !important;
+
   }
 
-  >>>.el-dialog__body {
+  ::v-deep .el-dialog__body {
     margin-left: 0px;
+    background-color: #132B41 !important;
+
   }
 }
 
@@ -542,21 +552,26 @@ export default {
   padding: 20px;
   display: flex;
   margin-bottom: 1vh;
-  background-color: lightgray;
-
-  .name {
-    margin-left: 1%;
-  }
-
+  background-color: #1E3B54 !important;
   .countData {
     margin-top: 10vh;
   }
 
+
 }
+  .name {
+    margin-left: 2%;
+    color: #fff;
+  }
+
 
 ::v-deep.el-dialog__body {
   padding: 20px;
   margin-left: 90px;
+}
+.el-dialog{
+  background-color: #132B41 !important;
+
 }
 
 .detail-form {
