@@ -52,7 +52,7 @@ img {
   width: 100%;
   text-align: center;
   margin-top: 10px;
-  
+
   .el-form-item__content {
     margin-left: 0 !important;
   }
@@ -133,9 +133,9 @@ img {
 
 .back-shaodow {
   background-color: rgba($color: #071828, $alpha: 0.5);
-  border: 1px solid #ffffff;
+  border: 1px solid transparent;
   border-radius: 10px;
-  box-shadow: 1px 1px 2px 1px rgba(255, 255, 255, 0.50) inset;
+  box-shadow: 1px 1px 2px 1px rgba(255, 255, 255, 0.2) inset;
 }
 
 .myTable {
@@ -213,7 +213,7 @@ img {
         border-radius: 10px;
         color: #fff;
       }
- 
+
       .el-button:active {
         opacity: 0.5;
       }

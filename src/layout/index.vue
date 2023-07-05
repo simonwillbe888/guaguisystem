@@ -26,9 +26,9 @@
           </div>
         </template>
       </div>
-      <screenfull id="screenfull" class="right-menu-item hover-effect" style="margin-right: 1.875rem;"/>
+      <screenfull id="screenfull" class="right-menu-item hover-effect" style="margin-right: 1.875rem;color: white"/>
       <div class="right">
-        
+
         <el-dropdown class="avatar-container" trigger="click">
           <div class="avatar-wrapper">
             <!-- <img
@@ -239,7 +239,7 @@ export default {
     .el-menu-item{
       width: 10rem;
     height: 3rem;
-     margin: auto; 
+     margin: auto;
     }
     ::v-deep .el-menu {
       justify-content: center;
@@ -254,7 +254,7 @@ export default {
     background: #021E37;
     display: flex;
     align-items: center;
-    
+
     .changeRoad{
       font-size: 1.25rem;
       display: flex;
@@ -318,7 +318,7 @@ export default {
     }
   }
   >>> .manue {
- 
+
     .el-submenu,
     .el-submenu__title {
       height: 2rem;
@@ -345,7 +345,7 @@ export default {
 .main {
   flex: 1;
   margin: 0rem .625rem .625rem;
-  
+
 }
 >>> .warnes {
   position: fixed;

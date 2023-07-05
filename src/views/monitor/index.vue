@@ -56,10 +56,11 @@
             </div>
             <div class="warnL" style="position:absolute;top: 9.2rem;left: 2.7rem;">
               <div
-                style="border-radius: 0.625rem;;width: 3.1rem;background-color: #66B3B2;display: flex;height: 2rem;line-height: 2rem;align-items: center;justify-items: center;"
+                style="border-radius: 0.625rem;;width: 3.1rem;background-color: #66B3B2;display: flex;height: 3rem;line-height: 2rem;align-items: center;justify-items: center;"
                 v-if="warnLightOpen == 0">
-                <svg-icon icon-class="warnLight" style="margin:auto ;"></svg-icon>
+                <svg-icon icon-class="warnLight" style="margin:auto;width: 40px;height: 40px"></svg-icon>
               </div>
+              <div class="warning_light" style="font-size: 0.875rem;margin-top: 0.5rem">警示灯</div>
               <div class="warnLight" v-if="warnLightOpen == 1">
               </div>
 
@@ -73,7 +74,7 @@
             <div class="electri">
               <el-progress :width="40" text-color="#fbf9ea" type="circle"
                 :percentage="carList.batteryLevel"></el-progress>
-              <div>当前电量</div>
+              <div style="font-size: 0.8rem;margin-left: 0.5rem">当前电量</div>
             </div>
             <div class="microphone">
               <Intercom :carID="carID"></Intercom>
@@ -189,7 +190,7 @@
         </el-col>
         <el-col :span="10">
           <div class="map back-shaodow">
-            <img src="../../assets/img/suidao.png" class="backgroundIm">
+            <img src="../../assets/img/route.png" class="backgroundIm">
             <div class="nowPosition">
               <span style="margin:0.125rem 0.625rem 0  0.625rem ;font-size: 1.25rem;">巡检地图</span>
               <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }}机器人当前位置：{{ carList.vertexNumber == 0 ?
@@ -198,12 +199,12 @@
               }}</span>
             </div>
 
-            <div id="robot" style="position:relative;width: 3.125rem;bottom: 9rem;margin-left: 0.3rem;">
+            <div id="robot" style="position:relative;width: 3.125rem;bottom: 5.3rem;margin-left: 0rem;">
               <img src="../../assets/img/robot1.png" style="width:2.5rem;height: 1.875rem;opacity: 1;">
             </div>
             <div class="goLocation">
-              选择速度
-              <el-select v-model="riskSpeed" placeholder="请选择巡检速度">
+<!--              选择速度-->
+              <el-select size='mini' v-model="riskSpeed" placeholder="请选择巡检速度" style="width: 6rem">
                 <el-option v-for="item in speedList" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select>
@@ -211,11 +212,11 @@
                 <el-option v-for="item in locationList" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
               </el-select> -->
-              <span style="margin:0 0.625rem ;">去往</span>
+<!--              <span style="margin:0 0.625rem ;"></span>-->
               <el-input
                 oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
-                class="location_Detail" v-model="locationID" placeholder="如:101">
-                <template slot="prefix">K100</template>
+                class="location_Detail" v-model="locationID" placeholder="K100+19">
+                <template slot="prefix">去往</template>
               </el-input>
               <el-popconfirm title="确定去往巡检点?" @confirm="goLocation">
                 <div class="goYes" slot="reference">确定</div>
@@ -266,7 +267,7 @@
               <div class="enviroDetail">
                 <div class="detail_icon">
                   <svg-icon icon-class="tempicture" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
-                  <div style="color:#66B3B2 ;">温度</div>
+                  <div style="color:rgba(102,179,178,0.5) ;">温度</div>
                 </div>
                 <div class="gasDetail">
                   {{ (gasList.Temperature / 100).toFixed(1) }}℃
@@ -309,7 +310,7 @@
                 <div style="color:#66B3B2;margin: 1.25rem 0 0 0.375rem;">甲烷</div>
                 <div class="gasDetail">
                   {{ gasList.CH4 == null ? '0' : (gasList.CH4 / 100).toFixed(1) }} <span
-                    style="font-size: 0.625rem;">%</span>
+                    style="font-size: 0.625rem;">ppm</span>
                 </div>
               </div>
             </div>
@@ -635,7 +636,7 @@ export default {
     ...mapState({
       systemConfig: (state) => state.sysConfig.systemConfig,
     }),
-    ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen', 
+    ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen',
     'closeAll', 'closeBroadcast','closeWarnL']),
     realTimeAlarminfo() {
       return this.realTimeAlarm[0]
@@ -661,7 +662,7 @@ export default {
       return this.locationTips
     },
     // clostCode12(){
-    //   return 
+    //   return
     // }
   },
   watch: {
@@ -964,7 +965,7 @@ export default {
         //  console.log('小车速度',this.carList.realTimeSpeed)
         if (this.carList.x >= 1) {
           const left = (93 / 46072) * this.carList.x
-          robot.style.left = left + '%'
+          robot.style.left = left * 0.95 + '%'
         }
       }
       //气体
@@ -1337,7 +1338,7 @@ export default {
     setWarnLight() {
       const time = this.getNowtime()
       if (this.warnLightOpen == 0) {
-        //关闭开关            
+        //关闭开关
         stopWarningLight(this.carID).then((res) => {
           if (res.code != 20000) {
             this.warnLightOpen = 1
@@ -1940,6 +1941,14 @@ background: linear-gradient(to right, blue 50%, red 50%);
       text-align: center;
     }
 
+    .warning_light {
+      color: #fff;
+      // position: fixed;
+      font-size: 0.8em;
+      text-align: left;
+      width: 6.5rem;
+    }
+
     .speak_detail {
       color: #fff;
       // position: fixed;
@@ -2007,7 +2016,7 @@ background: linear-gradient(to right, blue 50%, red 50%);
       min-width: 6rem;
       height: 4.5rem;
       min-height: 3.75rem;
-      background: linear-gradient(181deg, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0.00) 100%);
+      background: linear-gradient(181deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.00) 100%);
       opacity: 0.9;
       margin: auto;
       border-radius: 0.2081rem;
@@ -2141,31 +2150,31 @@ background: linear-gradient(to right, blue 50%, red 50%);
 
     .backgroundIm {
       border: transparent;
-      width: 103%;
-      height: 10.2rem;
+      width: 100%;
+      height: 100%;
       position: relative;
-      right: 1.5625rem;
-      bottom: 0.8rem;
-      opacity: 0.5;
+      //right: 1.5625rem;
+      //bottom: 0.8rem;
+      opacity: 1;
     }
 
     .nowPosition {
       display: flex;
       position: relative;
-      bottom: 10.25rem;
+      bottom: 8.25rem;
     }
 
     .goLocation {
       display: flex;
       position: relative;
-      bottom: 8.3rem;
-      left: 1.25rem;
-      font-size: 1.125rem;
+      bottom: 12rem;
+      left: 24.25rem;
+      font-size: 0.8rem;
       line-height: 1.875rem;
 
       .location_Detail {
-        width: 12.5rem;
-        min-width: 9.375rem;
+        width: 8.5rem;
+        min-width: 8.375rem;
 
         ::v-deep .el-input__inner {
 
@@ -2191,7 +2200,7 @@ background: linear-gradient(to right, blue 50%, red 50%);
         background-color: #64C8C8;
         border-radius: 0.1875rem;
         text-align: center;
-        margin-left: 2.5rem;
+        margin-left: 0.8rem;
       }
     }
   }
@@ -2214,7 +2223,7 @@ background: linear-gradient(to right, blue 50%, red 50%);
     border-radius: 0.625rem;
     margin: 0 0 0.875rem 0;
     color: #fff;
-    border: 0.0625rem solid rgba($color: #fff, $alpha: 0.5);
+    border: 0.0625rem solid transparent;
 
     .leftTitle {
       padding-bottom: 0.3125rem;
@@ -2272,7 +2281,7 @@ background: linear-gradient(to right, blue 50%, red 50%);
       width: 3.75rem;
       text-align: center;
     }
- 
+
     img:active,
     .action_detail:active {
       opacity: 0.5;
@@ -2325,7 +2334,7 @@ background: linear-gradient(to right, blue 50%, red 50%);
     background-color: rgba(7, 24, 40, 0.5);
     color: #fff;
     height: 8.5rem;
-    border: 0.0625rem solid rgba($color: #fff, $alpha: 0.5);
+    border: 0.0625rem solid transparent;
 
     .leftTitle {
       // padding-bottom: 0.5rem;
