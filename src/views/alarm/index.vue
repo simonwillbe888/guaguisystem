@@ -982,7 +982,12 @@ export default {
   padding: 20px;
   background-color: lightgray;
 }
-
+::v-deep  .el-input__inner
+ {
+  height: 1.875rem;
+  background-color: transparent;
+  color: #fff;
+}
 >>> .el-dialog__body {
   padding: 20px;
 }

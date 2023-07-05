@@ -1162,7 +1162,12 @@ export default {
 .el-table tr {
   background-color: transparent;
 }
-
+::v-deep  .el-input__inner
+ {
+  height: 1.875rem;
+  background-color: transparent;
+  color: #fff;
+}
 >>> .header-row-class {
   background-color: transparent;
 }

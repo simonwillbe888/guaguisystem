@@ -584,7 +584,12 @@ export default {
 >>> .el-input {
   width: 200px;
 }
-
+::v-deep  .el-input__inner
+ {
+  height: 1.875rem;
+  background-color: transparent;
+  color: #fff;
+}
 >>> .el-table th,
 .el-table tr {
   background-color: transparent;

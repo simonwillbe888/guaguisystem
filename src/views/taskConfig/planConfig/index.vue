@@ -759,6 +759,9 @@ export default {
           isDetail: true,
           ...item,
         };
+        console.log('查看详情',this.taskForm)
+        this.taskAi = this.taskForm.DetectionTypeList
+
       } else {
         this.taskForm.isDetail = false;
       }
@@ -936,18 +939,18 @@ export default {
     cancelOperate(taskForm) {
       //   this.$refs.taskForm.resetFields();
       this.dialogFormVisible = false;
-      this.taskForm = {
-        timedName: '',
-        robotName: '',
-        processName: '',
-        executeWay: '',
-        mapShowName: '',
-        enableType: false,
-        excutes: '',
-        cycle: '',
-        endTime: '',
-        openTime: '',
-      };
+      // this.taskForm = {
+      //   timedName: '',
+      //   robotName: '',
+      //   processName: '',
+      //   executeWay: '',
+      //   mapShowName: '',
+      //   enableType: false,
+      //   excutes: '',
+      //   cycle: '',
+      //   endTime: '',
+      //   openTime: '',
+      // };
     },
     deleteTimedTask(obj) {
       let self = this;
@@ -1121,7 +1124,6 @@ color: #fff;
 ::v-deep  .el-input__inner
  {
   height: 1.875rem;
-  // background-color: rgba($color: #071828, $alpha: 1);
   background-color: transparent;
   color: #fff;
 }

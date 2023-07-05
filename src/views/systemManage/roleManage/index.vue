@@ -393,4 +393,10 @@ export default {
 >>>.el-tree-node__label {
   font-size: 12px;
 }
+::v-deep  .el-input__inner
+ {
+  height: 1.875rem;
+  background-color: transparent;
+  color: #fff;
+}
 </style>
