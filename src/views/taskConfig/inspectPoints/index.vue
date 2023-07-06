@@ -10,7 +10,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="plusInspects()"
-          >{{ $t('inspection_setting.addInspec_label') }}</el-button
+          >新增巡检点</el-button
         >
       <div class="inspec-setting-inquire">
         <!-- {{ $t("inspection_setting.inspecName_label") }} -->
@@ -529,7 +529,7 @@ export default {
     display: inline;
   }
   .robot-operate {
-      width: 150px;
+      // width: 9.375rem;
       background-color: #64C8C8 !important;
     }
   .inspec-setting-inquire {

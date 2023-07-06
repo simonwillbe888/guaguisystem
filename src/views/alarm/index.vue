@@ -109,7 +109,10 @@
         >
           <template slot-scope="{ row }">
             <span>{{ row.AlarmType ==1001?"行人告警": row.AlarmType ==1002?"非机动车告警": row.AlarmType ==1003?"异物告警": row.AlarmType ==1004?"温度告警": 
-            row.AlarmType ==1005?"湿度告警": row.AlarmType ==1006?"气体告警":row.AlarmType ==1007?"灯光告警": row.AlarmType ==1008?"违停逆行告警": row.AlarmType ==1009?"超速告警":row.AlarmType ==1010?"动物告警":row.AlarmType ==1012?"消防设备告警": row.AlarmType ==1011?"井盖异常告警":row.AlarmType ==1013?"火灾烟雾告警":row.AlarmType ==1014?"红外测温告警":"机体告警" }}</span>
+            row.AlarmType ==1005?"湿度告警": row.AlarmType ==1006?"气体告警":row.AlarmType ==1007?"照明告警"
+            : row.AlarmType ==1008?"违停逆行告警": row.AlarmType ==1009?"超速告警":row.AlarmType ==1010?"动物告警":row.AlarmType ==1012?"消防设备告警":
+             row.AlarmType ==1011?"井盖异常告警":row.AlarmType ==1013?"火灾烟雾告警":row.AlarmType ==1014?"红外测温告警":
+             row.AlarmType ==1015?"算法异常告警":row.AlarmType ==1016?"逆行告警":row.AlarmType ==1017?"风机告警":row.AlarmType ==1018?"指示灯告警":"机体告警" }}</span>
           </template>
         </el-table-column>
         <el-table-column

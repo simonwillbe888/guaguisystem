@@ -58,14 +58,14 @@
               <div
                 style="border-radius: 0.625rem;;width: 3.1rem;background-color: #66B3B2;display: flex;height: 3rem;line-height: 2rem;align-items: center;justify-items: center;"
                 v-if="warnLightOpen == 0">
-                <svg-icon icon-class="warnLight" style="margin:auto;width: 40px;height: 40px"></svg-icon>
+                <svg-icon icon-class="warnLight" style="margin:auto;width: 2.5rem;height: 2.5rem"></svg-icon>
               </div>
               <div class="warning_light" style="font-size: 0.875rem;margin-top: 0.5rem">警示灯</div>
               <div class="warnLight" v-if="warnLightOpen == 1">
               </div>
 
               <div style="width: 3.75rem;">
-                  <el-switch style="height: 2rem;margin-left: 6px;" v-model="warnLightOpen" @change="setWarnLight()"
+                  <el-switch style="height: 2rem;margin-left: .375rem;" v-model="warnLightOpen" @change="setWarnLight()"
                   :active-value="1" :inactive-value="0">
                 </el-switch>
               </div>
@@ -204,10 +204,10 @@
             </div>
             <div class="goLocation">
 <!--              选择速度-->
-              <el-select size='mini' v-model="riskSpeed" placeholder="请选择巡检速度" style="width: 6rem">
+              <!-- <el-select size='mini' v-model="riskSpeed" placeholder="请选择巡检速度" style="width: 6rem">
                 <el-option v-for="item in speedList" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
-              </el-select>
+              </el-select> -->
               <!-- <el-select v-model="locationID" placeholder="请选择巡检点">
                 <el-option v-for="item in locationList" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
@@ -615,7 +615,7 @@ export default {
     }
     this.carRoller = setInterval(() => {
       this.getcarList()
-    }, 500)
+    }, 1000)
   },
   beforeDestroy() {
     this.HKlogout()
@@ -1095,8 +1095,8 @@ export default {
           count: null,
           voiceBroadcastText: null,
           exit: this.lowButtery,
-          speed: this.riskSpeed,
-          speedMode: this.speedMode
+          speed: 6000,
+          speedMode: 2
         }
         moveToPatrolPoint(param).then((res) => {
           console.log(param)

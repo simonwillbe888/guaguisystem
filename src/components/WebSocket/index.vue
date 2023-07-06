@@ -8,6 +8,8 @@
 import { readNoticeBack } from '../../api/user';
 import { mapGetters } from 'vuex';
 import { getAccessoType } from '../../api/robot'
+import { MessageBox, Message, Notification } from 'element-ui';
+
 export default {
   name: 'WebSocket',
   computed: {
@@ -99,14 +101,21 @@ export default {
           if (!res.hasOwnProperty('data')) {
             ++this.disConnect
             if (this.disConnect >= 5) {
-              this.$store.dispatch('user/resetToken').then(() => {
-                location.reload();
-              });
+              // this.wsInit
+              // Notification({
+              //   title: '提示',
+              //   message: "服务器连接失败",
+              //   type: 'error',
+              //   duration: 5000,
+              // });
+              // this.$store.dispatch('user/resetToken').then(() => {
+              //   location.reload();
+              // });
             }
           }
 
         })
-      }, 1000);
+      }, 12000);
 
     },
     wsInit() {

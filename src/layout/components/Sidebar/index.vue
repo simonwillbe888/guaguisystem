@@ -87,7 +87,7 @@ export default {
 </script>
 <style scoped>
 .el-menu-demo {
-  margin: 20px auto;
+  margin: 1.25rem auto;
   display: flex;
   text-align: center;
 }
