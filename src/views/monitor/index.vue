@@ -1095,7 +1095,7 @@ export default {
           count: null,
           voiceBroadcastText: null,
           exit: this.lowButtery,
-          speed: 6000,
+          speed: 5000,
           speedMode: 2
         }
         moveToPatrolPoint(param).then((res) => {

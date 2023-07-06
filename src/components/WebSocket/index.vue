@@ -36,7 +36,7 @@ export default {
     this.wsIsRun = true;
     this.wsInit();
     this.initTimer()
-    this.checkIdleTime()
+    // this.checkIdleTime()
   },
   beforeDestroy() {
     this.wsDestroy()
@@ -100,22 +100,26 @@ export default {
           console.log('查看', res.hasOwnProperty('data'))
           if (!res.hasOwnProperty('data')) {
             ++this.disConnect
+            //断开五秒后重连websocket
             if (this.disConnect >= 5) {
-              // this.wsInit
+              this.wsInit()
+            }
+            //断开60秒返回登录页
+            if(this.disConnect >=60){
               // Notification({
               //   title: '提示',
               //   message: "服务器连接失败",
               //   type: 'error',
               //   duration: 5000,
               // });
-              // this.$store.dispatch('user/resetToken').then(() => {
-              //   location.reload();
-              // });
+              this.$store.dispatch('user/resetToken').then(() => {
+                location.reload();
+              });
             }
           }
 
         })
-      }, 12000);
+      }, 1000);
 
     },
     wsInit() {
