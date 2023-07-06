@@ -28,19 +28,19 @@
               <div>
                 当前速度
                 <div>
-                  {{ carList.realTimeSpeed == null ? '0' : Math.abs((carList.realTimeSpeed / 1000).toFixed(1)) }}m/s
+                  {{ carList.realTimeSpeed == null ? '0' : Math.abs((carList.realTimeSpeed / 1000).toFixed(1)) }} m/s
                 </div>
               </div>
               <div style="margin-left:10% ;">
                 累计运行里程
                 <div>
-                  {{ carList.totalDistance == null ? '0' : (carList.totalDistance / 100000).toFixed(2) }}Km
+                  {{ carList.totalDistance == null ? '0' : (carList.totalDistance / 100000).toFixed(2) }} Km
                 </div>
               </div>
               <div>
                 累计运行时间
                 <div>
-                  {{ carList.totalRunTime == null ? '0' : (carList.totalRunTime / 1440).toFixed(1) }}天
+                  {{ carList.totalRunTime == null ? '0' : (carList.totalRunTime / 1440).toFixed(1) }} Day
                 </div>
               </div>
             </div>
@@ -57,18 +57,18 @@
             <div class="warnL" style="position:absolute;top: 9.2rem;left: 2.7rem;">
               <div
                 style="border-radius: 0.625rem;;width: 3.1rem;background-color: #66B3B2;display: flex;height: 3rem;line-height: 2rem;align-items: center;justify-items: center;"
-                v-if="warnLightOpen == 0">
-                <svg-icon icon-class="warnLight" style="margin:auto;width: 40px;height: 40px"></svg-icon>
+                @click="setWarnLight()" :class="{'warning_light_active':warnLightOpen == 1}">
+                <svg-icon icon-class="warnLight" style="margin:auto;width: 40px;height: 40px;"></svg-icon>
               </div>
-              <div class="warning_light" style="font-size: 0.875rem;margin-top: 0.5rem">警示灯</div>
-              <div class="warnLight" v-if="warnLightOpen == 1">
-              </div>
+              <div class="warning_light" style="font-size: 0.875rem;margin: 0.5rem 0.2rem"> 警示灯</div>
+<!--              <div class="warnLight" v-if="warnLightOpen == 1">-->
+<!--              </div>-->
 
-              <div style="width: 3.75rem;">
-                  <el-switch style="height: 2rem;margin-left: 6px;" v-model="warnLightOpen" @change="setWarnLight()"
-                  :active-value="1" :inactive-value="0">
-                </el-switch>
-              </div>
+<!--              <div style="width: 3.75rem;">-->
+<!--                  <el-switch style="height: 2rem;margin-left: 6px;" v-model="warnLightOpen" @change="setWarnLight()"-->
+<!--                  :active-value="1" :inactive-value="0">-->
+<!--                </el-switch>-->
+<!--              </div>-->
             </div>
 
             <div class="electri">
@@ -78,7 +78,7 @@
             </div>
             <div class="microphone">
               <Intercom :carID="carID"></Intercom>
-              <div class="speak_detail" style="font-size: 0.875rem;">双向喊话</div>
+              <div class="speak_detail" style="font-size: 0.875rem;">语音对讲</div>
             </div>
             <div class="broadcast" @click="broadcastVisible = true">
               <svg-icon icon-class="broadcast"></svg-icon>
@@ -108,7 +108,7 @@
               <el-button
                 style="position:absolute;margin-left: 0; top:1rem;background-color:transparent;border-color: transparent"
                 size="mini" @click="glassCameraSwitch">
-                <svg-icon icon-class="ar-glass" style="font-size: 2rem"></svg-icon>
+                <svg-icon icon-class="cameraSwitch" style="font-size: 2rem"></svg-icon>
               </el-button>
             </div>
           </div>
@@ -238,12 +238,12 @@
 
             <div style="display:flex;margin: 0.75rem 0;">
               <div class="robotDirec" @mousedown="setRobotMoveCrl(2)" @mouseup="setRobotMoveCrl(3)">
-                <img src="../../assets/img/robotLeft.png">
-                <span style="position: relative;;bottom: 0.3125rem;">后退</span>
+                <img src="../../assets/img/back.png" style="width:3rem" alt="">
+<!--                <span style="position: relative;;bottom: 0.3125rem;">后退</span>-->
               </div>
               <div class="robotDirec" @mousedown="setRobotMoveCrl(1)" @mouseup="setRobotMoveCrl(3)">
-                <span style="position: relative;;bottom: 0.3125rem;">前进</span> <img src="../../assets/img/robotRight.png"
-                  alt="">
+<!--                <span style="position: relative;;bottom: 0.3125rem;">前进</span> -->
+                <img src="../../assets/img/front.png" style="width:3rem" alt="">
               </div>
               <div class="speed">
                 <div @click="robotSpeed = 1000" :class="robotSpeed == 1000 ? 'speed_detail_active' : 'speed_detail'">
@@ -267,7 +267,7 @@
               <div class="enviroDetail">
                 <div class="detail_icon">
                   <svg-icon icon-class="tempicture" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
-                  <div style="color:rgba(102,179,178,0.5) ;">温度</div>
+                  <div style="color:rgba(100 200 200) ;">温度</div>
                 </div>
                 <div class="gasDetail">
                   {{ (gasList.Temperature / 100).toFixed(1) }}℃
@@ -276,7 +276,7 @@
               <div class="enviroDetail">
                 <div class="detail_icon">
                   <svg-icon icon-class="shidu" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
-                  <div style="color:#66B3B2 ;">湿度</div>
+                  <div style="color:rgba(100 200 200) ;">湿度</div>
                 </div>
                 <div class="gasDetail">
                   {{ gasList.Humidity == null ? '0' : (gasList.Humidity / 100).toFixed(1) }}<span
@@ -284,7 +284,7 @@
                 </div>
               </div>
               <div class="enviroDetail">
-                <div style="color:#66B3B2;margin: 1.25rem 0 0 0.375rem;">烟雾</div>
+                <div style="color:rgba(100 200 200);margin: 1.25rem 0 0 0.375rem;">烟雾</div>
                 <div class="gasDetail">
                   {{ gasList.Smoke == null ? '0' : (gasList.Smoke / 100).toFixed(1) }}<span
                     style="font-size: 0.625rem;">ppm</span>
@@ -293,21 +293,21 @@
             </div>
             <div style="display:flex;margin-top: 0.625rem;">
               <div class="enviroDetail">
-                <div style="color:#66B3B2;margin: 0.625rem 0 0 0.375rem;">硫化氢</div>
+                <div style="color:rgba(100 200 200);margin: 0.625rem 0 0 0.375rem;">硫化氢</div>
                 <div class="gasDetail">
                   {{ gasList.H2S == null ? '0' : (gasList.H2S / 100).toFixed(1) }}<span
                     style="font-size: 0.625rem;">ppm</span>
                 </div>
               </div>
               <div class="enviroDetail">
-                <div class="gas">一氧化碳</div>
+                <div class="gas" style="color:rgba(100 200 200);">一氧化碳</div>
                 <div class="gasDetail">
                   {{ gasList.CO == null ? '0' : (gasList.CO / 100).toFixed(1) }}<span
                     style="font-size: 0.625rem;">ppm</span>
                 </div>
               </div>
               <div class="enviroDetail">
-                <div style="color:#66B3B2;margin: 1.25rem 0 0 0.375rem;">甲烷</div>
+                <div style="color:rgba(100 200 200);margin: 1.25rem 0 0 0.375rem;">甲烷</div>
                 <div class="gasDetail">
                   {{ gasList.CH4 == null ? '0' : (gasList.CH4 / 100).toFixed(1) }} <span
                     style="font-size: 0.625rem;">ppm</span>
@@ -977,11 +977,11 @@ export default {
       if (car.data.length > 0) {
         getTaskRemainingMileage(car.data[0].taskID).then((res) => {
           const time = (res.data.time / 60)
-          console.log('查看剩余里程', res.data.mileage, time)
+          // console.log('查看剩余里程', res.data.mileage, time)
           if (this.carList.realTimeSpeed > 0 && res.data.mileage > 20000) {
             this.finishTime = Number(((res.data.mileage / (this.carList.realTimeSpeed * 60))).toFixed(1)) + time
             this.finishTime = this.finishTime.toFixed(1)
-            console.log('看看时间', typeof this.finishTime, time)
+            // console.log('看看时间', typeof this.finishTime, time)
             if (res.data.mileage = 0) {
               this.finishTime = 0
             }
@@ -1336,6 +1336,13 @@ export default {
       //关闭后通知
     },
     setWarnLight() {
+      if (this.warnLightOpen == 0){
+        this.warnLightOpen = 1
+      }else {
+        this.warnLightOpen = 0
+      }
+      console.log(this.warnLightOpen)
+      return
       const time = this.getNowtime()
       if (this.warnLightOpen == 0) {
         //关闭开关
@@ -1949,6 +1956,11 @@ background: linear-gradient(to right, blue 50%, red 50%);
       width: 6.5rem;
     }
 
+    .warning_light_active {
+      background-color: forestgreen !important;
+      background-image: linear-gradient(to bottom left, forestgreen 50%, #eee, forestgreen 51%);
+    }
+
     .speak_detail {
       color: #fff;
       // position: fixed;
@@ -2019,7 +2031,7 @@ background: linear-gradient(to right, blue 50%, red 50%);
       background: linear-gradient(181deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.00) 100%);
       opacity: 0.9;
       margin: auto;
-      border-radius: 0.2081rem;
+      border-radius: 0.5rem;
       font-size: 1rem;
       word-break: break-all;
 
@@ -2057,7 +2069,7 @@ background: linear-gradient(to right, blue 50%, red 50%);
 
       .chart {
         background-color: #64C8C8;
-        border-radius: 0.625rem;
+        border-radius: 0.2rem;
         font-size: 1rem;
         width: 6.25rem;
         position: absolute;
@@ -2168,7 +2180,7 @@ background: linear-gradient(to right, blue 50%, red 50%);
       display: flex;
       position: relative;
       bottom: 12rem;
-      left: 24.25rem;
+      left: 20vw;
       font-size: 0.8rem;
       line-height: 1.875rem;
 
