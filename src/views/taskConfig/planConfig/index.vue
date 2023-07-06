@@ -284,18 +284,18 @@
         <el-form-item label="算法启动" prop="Ai">
           <el-checkbox-group v-model="taskAi">
             <div>
-              <el-checkbox 	 label="1">行人</el-checkbox>
-              <el-checkbox label="2">非机动车</el-checkbox>
-              <el-checkbox label="3">照明</el-checkbox>
-              <el-checkbox style="width: 60px;" label="4">井盖</el-checkbox>
-              <el-checkbox label="5">违停</el-checkbox>
+              <el-checkbox 	 label="1001">行人</el-checkbox>
+              <el-checkbox label="1002">非机动车</el-checkbox>
+              <el-checkbox label="1007">照明</el-checkbox>
+              <el-checkbox style="width: 60px;" label="1011">井盖</el-checkbox>
+              <el-checkbox label="1008">违停</el-checkbox>
             </div>
             <div>
-              <el-checkbox label="6">逆行</el-checkbox>
-              <el-checkbox label="7">消防设备</el-checkbox>
-              <el-checkbox label="8">风机</el-checkbox>
-              <el-checkbox style="width: 60px;" label="9">指示灯</el-checkbox>
-              <el-checkbox label="10">火灾烟雾</el-checkbox>
+              <el-checkbox label="1016">逆行</el-checkbox>
+              <el-checkbox label="1012">消防设备</el-checkbox>
+              <el-checkbox label="1017">风机</el-checkbox>
+              <el-checkbox style="width: 60px;" label="1018">指示灯</el-checkbox>
+              <el-checkbox label="1013">火灾烟雾</el-checkbox>
             </div>
           </el-checkbox-group>
         </el-form-item>

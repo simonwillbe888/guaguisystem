@@ -41,7 +41,7 @@ img {
 }
 .el-radio,
 .el-radio__input.is-disabled.is-checked{
-  color: #409EFF;
+  color: #fff;
 }
 .el-radio__input.is-disabled.is-checked .el-radio__inner::after {
   background-color: #409EFF;
@@ -52,7 +52,7 @@ img {
   width: 100%;
   text-align: center;
   margin-top: 10px;
-
+  
   .el-form-item__content {
     margin-left: 0 !important;
   }
@@ -133,9 +133,9 @@ img {
 
 .back-shaodow {
   background-color: rgba($color: #071828, $alpha: 0.5);
-  border: 1px solid transparent;
+  border: 1px solid #ffffff;
   border-radius: 10px;
-  box-shadow: 1px 1px 2px 1px rgba(255, 255, 255, 0.2) inset;
+  box-shadow: 1px 1px 2px 1px rgba(255, 255, 255, 0.50) inset;
 }
 
 .myTable {
@@ -210,10 +210,11 @@ img {
         border: none;
         margin-left: 0.625rem;
         height: 1.8125rem;
+        line-height: 0.5125rem;
         border-radius: 10px;
         color: #fff;
       }
-
+ 
       .el-button:active {
         opacity: 0.5;
       }
@@ -357,8 +358,9 @@ img {
 
   .el-menu-item {
     margin: 0 auto;
-    height: 50px;
-    font-size: 20px;
+    height: 3.125rem;
+    line-height: 3.125rem;
+    font-size: 1.25rem;
     border-bottom: 1px solid;
 
   }

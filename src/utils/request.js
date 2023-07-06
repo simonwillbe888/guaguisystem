@@ -88,12 +88,7 @@ service.interceptors.response.use(
     // store.dispatch('global/setlogoutState',++disconnect).then(()=>{
     //   console.log('失败原因')
     // })
-    Notification({
-      title: '提示',
-      message: "服务器连接失败",
-      type: 'error',
-      duration: 5000,
-    });
+
     return error;
   }
 );

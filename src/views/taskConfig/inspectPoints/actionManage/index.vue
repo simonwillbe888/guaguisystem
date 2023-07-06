@@ -1709,4 +1709,11 @@ export default {
   font-size: 1rem !important;
   line-height: 32px !important;
 }
+::v-deep  .el-input__inner
+ {
+  height: 1.875rem;
+  background-color: transparent;
+  color: #fff;
+}
+
 </style>

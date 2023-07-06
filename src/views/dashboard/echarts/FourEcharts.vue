@@ -57,7 +57,7 @@ export default {
               break;
               case 1006: self.alarmName.push("气体")
               break;
-              case 1007: self.alarmName.push("灯光")
+              case 1007: self.alarmName.push("照明")
               break;
               case 1008: self.alarmName.push("违停逆行")
               break;
@@ -72,6 +72,14 @@ export default {
               case 1013: self.alarmName.push("火灾烟雾")
               break;
               case 1014: self.alarmName.push("红外测温")
+              break;
+              case 1015: self.alarmName.push("算法启动")
+              break;
+              case 1016: self.alarmName.push("逆行")
+              break;
+              case 1017: self.alarmName.push("风机")
+              break;
+              case 1018: self.alarmName.push("指示灯")
               break;
               case 1:
               default: self.alarmName.push('机体')

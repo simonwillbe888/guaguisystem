@@ -204,10 +204,10 @@
             </div>
             <div class="goLocation">
 <!--              选择速度-->
-              <el-select size='mini' v-model="riskSpeed" placeholder="请选择巡检速度" style="width: 6rem">
+              <!-- <el-select size='mini' v-model="riskSpeed" placeholder="请选择巡检速度" style="width: 6rem">
                 <el-option v-for="item in speedList" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
-              </el-select>
+              </el-select> -->
               <!-- <el-select v-model="locationID" placeholder="请选择巡检点">
                 <el-option v-for="item in locationList" :key="item.value" :label="item.label" :value="item.value">
                 </el-option>
@@ -615,7 +615,7 @@ export default {
     }
     this.carRoller = setInterval(() => {
       this.getcarList()
-    }, 500)
+    }, 1000)
   },
   beforeDestroy() {
     this.HKlogout()
@@ -977,11 +977,11 @@ export default {
       if (car.data.length > 0) {
         getTaskRemainingMileage(car.data[0].taskID).then((res) => {
           const time = (res.data.time / 60)
-          // console.log('查看剩余里程', res.data.mileage, time)
+          console.log('查看剩余里程', res.data.mileage, time)
           if (this.carList.realTimeSpeed > 0 && res.data.mileage > 20000) {
             this.finishTime = Number(((res.data.mileage / (this.carList.realTimeSpeed * 60))).toFixed(1)) + time
             this.finishTime = this.finishTime.toFixed(1)
-            // console.log('看看时间', typeof this.finishTime, time)
+            console.log('看看时间', typeof this.finishTime, time)
             if (res.data.mileage = 0) {
               this.finishTime = 0
             }
@@ -1095,8 +1095,8 @@ export default {
           count: null,
           voiceBroadcastText: null,
           exit: this.lowButtery,
-          speed: this.riskSpeed,
-          speedMode: this.speedMode
+          speed: 6000,
+          speedMode: 2
         }
         moveToPatrolPoint(param).then((res) => {
           console.log(param)
@@ -1336,13 +1336,6 @@ export default {
       //关闭后通知
     },
     setWarnLight() {
-      if (this.warnLightOpen == 0){
-        this.warnLightOpen = 1
-      }else {
-        this.warnLightOpen = 0
-      }
-      console.log(this.warnLightOpen)
-      return
       const time = this.getNowtime()
       if (this.warnLightOpen == 0) {
         //关闭开关
@@ -2069,7 +2062,7 @@ background: linear-gradient(to right, blue 50%, red 50%);
 
       .chart {
         background-color: #64C8C8;
-        border-radius: 0.2rem;
+        border-radius: 0.625rem;
         font-size: 1rem;
         width: 6.25rem;
         position: absolute;
