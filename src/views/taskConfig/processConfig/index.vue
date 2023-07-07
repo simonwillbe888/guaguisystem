@@ -11,7 +11,7 @@
           type="success"
           size="mini"
           @click="addInspectTask()"
-          >{{ $t('process_config.addInspectTask_label') }}</el-button
+          >添加巡检流程</el-button
         >
         <!-- <el-button
           type="success"
@@ -211,7 +211,7 @@
         </el-transfer>
       </div>
       <div class="dialog-footer">
-        <el-button type="primary" @click="add()">{{
+        <el-button  @click="add()">{{
           $t('process_config.sure_add_label')
         }}</el-button>
         <el-button type="primary" plain @click="dialogFormVisible = false">{{
@@ -717,7 +717,6 @@ export default {
     height: 4vh;
    
     .inspect-operate {
-      width: 9.375rem;
       background-color: #64C8C8 !important;
     }
   }

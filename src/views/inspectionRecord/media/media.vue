@@ -11,7 +11,7 @@
         <el-date-picker v-model="endVal" type="datetime" :placeholder="$t('comment_vary.end_time_label')"
           style="margin-right: 1.25rem" value-format="yyyy-MM-dd HH:mm:ss">
         </el-date-picker>
-        <el-button size="mini" @click.native="init()">{{
+        <el-button  @click.native="init()">{{
           $t('public_vary.query_label')
         }}</el-button>
         <el-button icon="el-icon-download" size="mini" @click.native="downLoadRole">批量下载</el-button>

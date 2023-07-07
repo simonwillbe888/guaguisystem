@@ -4,8 +4,8 @@
       <!-- <h3 class="inspection-setting-title">
         {{ $t("plan_config.robotTask_manage") }}
       </h3> -->
-      <el-button style="  width: 9.375rem;background-color: #64C8C8 !important;" icon="el-icon-plus" type="success"
-        size="mini" @click="addTimedTask(null, 1)">{{ $t('plan_config.addTimedTask_label') }}</el-button>
+      <el-button  icon="el-icon-plus" type="success" style="text-align: center;line-height:0.1rem"
+        size="mini" @click="addTimedTask(null, 1)">添加巡检计划</el-button>
       <div class="inspec-setting-inquire">
         <el-input placeholder="请输入关键字" size="mini" clearable v-model="keyWord"
           style="width:150px;margin-right:10px"></el-input>
@@ -13,7 +13,7 @@
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
-        <el-button type="success" @click="initPlanList" size="mini">
+        <el-button type="success" @click="initPlanList"  >
           查询</el-button>
 
 

@@ -55,7 +55,6 @@ export default {
   methods: {
     async getLicenseStatus(notify){
         await getLicenseStatus().then((res)=>{
-          console.log(res)
           this.licenseProcess(res,notify)
         }).catch(()=>{})
     },
@@ -65,7 +64,8 @@ export default {
         this.extra.active = res.data.active
         this.extra.period = res.data.period
         if(res.data.active){
-          if(this.$store.roles.vertify == undefined){
+          console.log('vertify',this.$store.roles)
+          if(this.$store.roles == undefined){
             this.$store.dispatch('user/setVertify','vertify')
           }
           this.result.icon="success"

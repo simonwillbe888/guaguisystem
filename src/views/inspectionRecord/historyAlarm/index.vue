@@ -6,33 +6,18 @@
         <el-radio v-model="alarmType" label="2">巡检告警</el-radio>
         <el-radio v-model="alarmType" label="1">设备告警</el-radio>
       </template>
-      <div style="display: inline;">
-        <el-button icon="el-icon-download" style="background-color: #64C8C8 !important;float: right;" 
-          size="mini" @click="exportAll()">导出列表</el-button>
-      </div>
+    
       <div style="display:inline;float:right">
-        <el-select clearable size="mini" placeholder="请选择告警状态" v-model="alarmState">
-          <el-option v-for="item in alarmStateOptions" :key="item.value" :label="item.label" :value="item.value" />
-        </el-select>
-        <el-input style="width:10vw;margin-left: 0.1vw;" placeholder="请输入告警名称" v-model="alarmName" v-if="alarmType == 2">
+        <el-input style="width:10vw;margin-left: 0.1vw;" v-if="alarmType == 2" placeholder="请输入告警名称" v-model="alarmName">
         </el-input>
         <el-input style="width:10vw;margin-left: 0.1vw;" placeholder="请输入告警码" v-model="alarmCode">
         </el-input>
-        <el-button style="background-color: #64C8C8 " size="mini" @click.native="init()">{{
-          $t('public_vary.query_label')
-        }}</el-button>
+        <el-button  style="background-color: #64C8C8"  
+          @click.native="init()">查询</el-button>
+          <el-button icon="el-icon-download" 
+        size="mini" @click="exportAll()">导出列表</el-button>
       </div>
 
-      <div style="display: inline-block;">
-        <!-- <el-button
-          icon="el-icon-download"
-          style="background-color: #64C8C8 !important;"
-          type="primary"
-          size="mini"
-          @click="(dialogFormVisible = true)"
-          >导出本页</el-button
-        > -->
-      </div>
       <el-dialog class="export-sty" :title="$t('inspect_record.export_alarm_data')" :visible.sync="dialogFormVisible">
         <el-form label-position="left" label-width="100px">
           <el-form-item :label="$t('inspect_record.file_name')" style="margin-left:80px">
@@ -154,7 +139,7 @@
               事件描述：{{ alarm.Description }}
             </div>
             <div style="margin: 3vh 0;">
-              告警位置：{{ alarm.X }},{{ alarm.Y }}
+              告警位置：{{ alarm.location }}
             </div>
             <div style="margin: 3vh  0;">
               发生时间：{{ alarm.happenTime }}
@@ -349,6 +334,7 @@ export default {
               vertexNumber: alarmArr[i].VertexNumber,
               locationID: alarmArr[i].LocationID,
               edgeNumber: alarmArr[i].EdgeNumber,
+              location:alarmArr[i].Location,
               alarmType: alarmArr[i].AlarmType,
 
             };
@@ -379,7 +365,7 @@ export default {
         else{
           this.imageUrl = 'http://192.168.20.44:8888/images/' + e.Image
         }
-        console.log('看照片连接',this.imageUrl)
+        console.log('看详情',e)
         this.dialogVisible = true
 
       }
@@ -671,7 +657,7 @@ export default {
   // padding: 20px 10px;
   // background-color: lightblue;
   border: 1px solid #fff;
-
+  align-items: center;
   >>>.el-collapse-item__content {
     padding-bottom: 10px !important;
   }
@@ -838,7 +824,7 @@ export default {
   color: black;
 
   ::v-deep .el-input {
-    width: 200px;
+    // width: 200px;
   }
 }
 

@@ -33,7 +33,7 @@
         size="mini"
         placeholder="请输入ip地址"
       ></el-input>
-      <el-button style="width: 5vw;text-align: center;" size="mini" @click="getVideoRecords"
+      <el-button style=" text-align: center;"  @click="getVideoRecords"
         >查询</el-button
       >
     </div>
@@ -616,7 +616,6 @@ export default {
   margin-top: 10px;
 }
 .headerBtn {
-  width: 9.375rem;
   background-color: #64C8C8 !important;
 }
   .content-header {

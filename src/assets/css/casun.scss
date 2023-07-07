@@ -133,7 +133,6 @@ img {
 
 .back-shaodow {
   background-color: rgba($color: #071828, $alpha: 0.5);
-  border: 1px solid #ffffff;
   border-radius: 10px;
   box-shadow: 1px 1px 2px 1px rgba(255, 255, 255, 0.50) inset;
 }
@@ -209,9 +208,11 @@ img {
         background-color: #64C8C8;
         border: none;
         margin-left: 0.625rem;
-        height: 1.8125rem;
-        line-height: 0.5125rem;
-        border-radius: 10px;
+        // height: 1.5rem;
+        font-size: 0.7rem;
+        overflow: hidden;
+        line-height: 0.125rem;
+        border-radius: 0.1rem;
         color: #fff;
       }
  

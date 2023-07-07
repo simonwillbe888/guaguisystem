@@ -35,7 +35,7 @@ const mutations = {
   },
   setLocationTips:(state,data)=>{
    state.locationTips = data
-   if(data.includes('机器人到达巡检点')){
+   if(data.includes('机器人到达')){
     state.locationBoolen = !state.locationBoolen
    }
   },

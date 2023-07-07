@@ -25,7 +25,7 @@ export default {
     if(newValue !== ''){
     this.init()
     }
-   } 
+   }
   },
   methods: {
     init() {
@@ -37,14 +37,14 @@ export default {
       };
       getCountByCode(param)
         .then((response) => {
-          console.log('查看',response.data.length == true)
+          // console.log('查看',response.data.length == true)
           if (response && response.data.length) {
             self.count = [];
             self.alarmName = [];
             if (response.data.length > 0){
               response.data.forEach((item) => {
             //   self.alarmName.push(item.alarmName);
-              switch (item.alarmType)  {          
+              switch (item.alarmType)  {
               case 1001: self.alarmName.push("行人")
               break;
               case 1002: self.alarmName.push("非机动车")

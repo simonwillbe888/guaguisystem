@@ -372,7 +372,7 @@ export default {
 }
 
 .headerBtn {
-  width: 8vw;
+  // width: 8vw;
   background-color: #64C8C8 !important;
 }
 

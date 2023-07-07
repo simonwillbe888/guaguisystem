@@ -7,7 +7,7 @@
 <script>
 import { readNoticeBack } from '../../api/user';
 import { mapGetters } from 'vuex';
-import { getAccessoType } from '../../api/robot'
+import { systemStatusDetection } from '../../api/robot'
 import { MessageBox, Message, Notification } from 'element-ui';
 
 export default {
@@ -96,8 +96,13 @@ export default {
     // },
     initTimer() {
       this.disConnectTimer = setInterval(() => {
-        getAccessoType().then((res) => {
-          console.log('查看', res.hasOwnProperty('data'))
+        systemStatusDetection().then((res) => {
+          console.log('查看', res)
+          if(res.code == 20005){
+            this.$store.dispatch('user/resetToken').then(() => {
+                location.reload();
+              });
+          }
           if (!res.hasOwnProperty('data')) {
             ++this.disConnect
             //断开五秒后重连websocket

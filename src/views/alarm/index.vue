@@ -3,8 +3,8 @@
     <div class="robot-header content-header">
       <!-- <h3 class="alarm-setting-title">{{ $t('alarm_setting.alarm_standard_settings') }}</h3> -->
       <el-button
-          style="width: 8vw;background-color: #64C8C8;"
-          class="robot-operate"
+      style="margin: 0px"
+
           icon="el-icon-plus"
           type="success"
           size="mini"
@@ -63,7 +63,6 @@
         <el-button
           style="margin: 0px"
           type="success"
-          size="mini"
           @click="init()"
           >查询</el-button
         >

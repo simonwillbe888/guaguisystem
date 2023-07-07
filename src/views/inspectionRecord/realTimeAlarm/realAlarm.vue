@@ -19,15 +19,16 @@
         <el-radio v-model="alarmType" label="2">巡检告警</el-radio>
         <el-radio v-model="alarmType" label="1">设备告警</el-radio>
       </template>
-      <el-button icon="el-icon-download" style="float: right;" 
-        size="mini" @click="exportAll()">导出列表</el-button>
+
       <div style="display:inline;float:right">
         <el-input style="width:10vw;margin-left: 0.1vw;" v-if="alarmType == 2" placeholder="请输入告警名称" v-model="alarmName">
         </el-input>
         <el-input style="width:10vw;margin-left: 0.1vw;" placeholder="请输入告警码" v-model="alarmCode">
         </el-input>
-        <el-button  style="background-color: #64C8C8" size="mini"
+        <el-button   
           @click.native="init()">查询</el-button>
+          <el-button icon="el-icon-download"  
+        size="mini" @click="exportAll()">导出列表</el-button>
       </div>
 
       <el-dialog class="export-sty" :title="$t('inspect_record.export_alarm_data')" :visible.sync="dialogFormVisible">
@@ -164,7 +165,7 @@
               事件描述：{{ alarm.Description }}
             </div>
             <div style="margin: 3vh 0;">
-              告警位置：{{ alarm.X }},{{ alarm.Y }}
+              告警位置：{{ alarm.location }}
             </div>
             <div style="margin: 3vh  0;">
               发生时间：{{ alarm.happenTime }}
@@ -353,6 +354,7 @@ export default {
                 patrolRecordID: alarmArr[i].PatrolRecordID,
                 vertexNumber: alarmArr[i].VertexNumber,
                 locationID: alarmArr[i].LocationID,
+                location: alarmArr[i].Location,
                 edgeNumber: alarmArr[i].EdgeNumber,
                 alarmType: alarmArr[i].AlarmType,
 

@@ -22,7 +22,7 @@
           clearable
         ></el-input>
 
-        <el-button type="success" size="mini" @click="inquireInspect()">{{
+        <el-button type="success"  @click="inquireInspect()">{{
           $t('inspection_setting.inquire_label')
         }}</el-button>
       </div>
@@ -529,7 +529,6 @@ export default {
     display: inline;
   }
   .robot-operate {
-      // width: 9.375rem;
       background-color: #64C8C8 !important;
     }
   .inspec-setting-inquire {

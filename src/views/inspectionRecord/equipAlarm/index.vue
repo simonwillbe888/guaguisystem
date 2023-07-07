@@ -5,8 +5,7 @@
         {{ $t("inspect_record.equip_alarm_statics") }}
       </h3> -->
       <div class="robot-setting-inquire">
-        <el-button icon="el-icon-download" style="float: right;border-radius: 10px;"
-          size="mini" @click="exportAll()">导出列表</el-button>
+ 
         <span>{{ $t('comment_vary.default_time_label') }}</span>
         <el-date-picker v-model="startVal" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
           :placeholder="$t('comment_vary.start_time_label')">
@@ -21,7 +20,9 @@
             <el-option v-for="item in filterOption" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </div>
-        <el-button size="mini" @click.native="init">查询</el-button>
+        <el-button  @click.native="init">查询</el-button>
+        <el-button icon="el-icon-download" 
+          size="mini" @click="exportAll()">导出列表</el-button>
       </div>
 
       <!-- <el-button
@@ -283,7 +284,7 @@ export default {
       };
       getPageList(params)
         .then((response) => {
-          // console.log("查看记录",response.data.records)
+          console.log("查看记录",response.data.records)
           let recordArr = response.data.records;
           if (response.data.total) {
             self.total = response.data.total;

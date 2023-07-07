@@ -139,7 +139,12 @@ export function getAccessoType() {
     method: 'get',
   });
 }
-
+export function systemStatusDetection() {
+  return request({
+    url: '/api/System/systemStatusDetection',
+    method: 'get',
+  });
+}
 export function getAccessoriesByType(typeId) {
   return request({
     url: '/api/Accessory/getAccessoryListByType?accessoryType=' + typeId,

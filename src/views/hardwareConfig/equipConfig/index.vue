@@ -856,10 +856,7 @@ export default {
       margin-right: 10px;
     }
 
-    .robot-operate {
-      width: 8vw;
-      background-color: #64C8C8 !important;
-    }
+
   }
 }
 ::v-deep  .el-input__inner

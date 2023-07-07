@@ -45,7 +45,7 @@ service.interceptors.response.use(
     const res = response.data;
     // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 20000 && res.code !== undefined  ) {
-      console.log("查看错误", res)
+      // console.log("查看错误", res)
       Notification({
         title: '提示',
         duration: 1000,

@@ -976,10 +976,6 @@ export default {
   .inspec-setting-inquire {
     display: inline;
 
-    .robot-operate {
-      width: 8vw;
-      background-color: #64C8C8 !important;
-    }
   }
 }
 

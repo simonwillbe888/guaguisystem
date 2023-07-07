@@ -11,7 +11,7 @@
           placeholder="请输入机器人名称关键字"
           clearable
         ></el-input>
-        <el-button type="success" @click="initRobot" size="mini">查询</el-button>
+        <el-button type="success" @click="initRobot" >查询</el-button>
       </div>
       <el-button
           class="robot-operate"
@@ -1124,10 +1124,7 @@ export default {
   .el-input--mini .el-input__inner {
     width: 180px !important;
   }
-  .robot-operate {
-      width: 8vw;
-      background-color: #64C8C8 !important;
-    }
+ 
   .robot-setting-inquire {
     // margin-left: 30px;
     display: inline;

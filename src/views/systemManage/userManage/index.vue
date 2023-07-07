@@ -22,7 +22,7 @@
         >
         </el-option>
       </el-select>
-      <el-button :loading="searchLoding" size="mini" @click="searchBtn"
+      <el-button :loading="searchLoding"  @click="searchBtn"
         >查询</el-button
       >
     </div>
@@ -405,7 +405,7 @@ export default {
   margin-top: 10px;
 }
 .headerBtn {
-  width: 8vw;
+  // width: 8vw;
   background-color: #64C8C8 !important;
 }
 .content-header {

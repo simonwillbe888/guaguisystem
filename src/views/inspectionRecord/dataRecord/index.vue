@@ -1,8 +1,6 @@
 <template>
   <div style="padding:1%">
     <div class="content-header">
-      <el-button icon="el-icon-download" style="float: right;background-color: #64C8C8 !important;"  size="mini"
-        @click="exportAll()">导出列表</el-button>
       <div style="display:inline;float: right;">
         <span>起止时间</span>
         <el-date-picker v-model="startVal" type="date" value-format="yyyy-MM-dd"
@@ -12,7 +10,9 @@
         <el-date-picker v-model="endVal" type="date" :placeholder="$t('comment_vary.end_time_label')"
           style="margin-right: 20px" value-format="yyyy-MM-dd">
         </el-date-picker>
-        <el-button class="commen-button" style="background-color: #64C8C8" size="mini" @click.native="init()">查询</el-button>
+        <el-button style="background-color: #64C8C8"   @click.native="init()">查询</el-button>
+        <el-button icon="el-icon-download" style="background-color: #64C8C8" size="mini" @click.native="exportAll()">导出列表</el-button>
+
       </div>
     
     </div>
