@@ -88,7 +88,7 @@
                 currentCamera.accessoryID === currentAdvices.accessoryID
                   ? 'active'
                   : '', 'back-shaodow'
-              ]" :ref="'iframe0'" :myData="currentAdvices[0]" style="width: 100%;height:27.5rem;" marginwidth="0"
+              ]" :ref="'iframe0'" :myData="currentAdvices[0]" style="width: 100%;height:27.5rem;border: 1px solid transparent;" marginwidth="0"
                 marginheight="0" name="ddddd" :id="'iframes0'" control="" scrolling="auto" :src="currentAdvices[0].src">
               </iframe>
               <!-- <iframe v-for="(item, index) in currentAdvices" allow="fullscreen" :class="[
@@ -110,7 +110,7 @@
           <div class="right">
             <iframe :class="[
               'infrared', 'back-shaodow'
-            ]" :ref="'iframe1'" :myData="currentAdvices[1]" style="" name="ddddd" marginwidth="0" marginheight="0"
+            ]" :ref="'iframe1'" :myData="currentAdvices[1]" style="border: 1px solid transparent" name="ddddd" marginwidth="0" marginheight="0"
               :id="'infrared'" scrolling="auto" :src="currentAdvices[1].src">
             </iframe>
             <div class="tempicture" id="tempicture">{{ tempicture }}</div>
@@ -158,9 +158,9 @@
               <div>
                 当前任务 ：<span style="color:#66B3B2 ;">{{ realTimeTask == '' ? '空闲状态' : realTimeTask }} </span>
               </div>
-             
+
               <span style="margin-left: 1.875rem;">
-              
+
               预计完成：<span style="color:#66B3B2 ;"></span>{{ finishTime ==
                 '' ? '0' : Math.abs(finishTime) }}分钟 </span>
             </div>
@@ -376,7 +376,7 @@
                                     == 1014 ? "红外测温告警" :alarm.AlarmCode
                                     == 1015 ? "算法异常告警" : alarm.AlarmCode
                                     == 1016 ? "逆行告警" : alarm.AlarmCode
-                                    == 1017 ? "风机告警" : 
+                                    == 1017 ? "风机告警" :
                                     alarm.AlarmCode
                                     == 1018 ? "指示灯告警" :  "机体告警" }} </div>
                     <div style="margin: 1.875rem 0;">
@@ -1697,7 +1697,7 @@ export default {
       //             message: '请输入正确的巡检位置如K100+103',
       //             type: 'error',
       //             duration: 5000
-      //           });        
+      //           });
       //           this.locationID = ''
       //   this.locationID = this.locationID.replace(/[^A-Za-z0-9\+]/g, '');
       // }else{
@@ -1974,8 +1974,8 @@ background: linear-gradient(to right, blue 50%, red 50%);
 
     .warning_light_active {
       animation: flashAnimation 1s infinite;
-   background: linear-gradient(to right, blue 50%, red 50%);     
- background-image: linear-gradient(to bottom left, blue 50%, #eee, red 51%);
+      background: linear-gradient(to right, blue 50%, red 50%);
+      background-image: linear-gradient(to bottom left, blue 50%, #eee, red 51%);
     }
 
     .speak_detail {
@@ -2152,7 +2152,6 @@ background: linear-gradient(to right, blue 50%, red 50%);
     // height: 84;
     .video {
       display: flex;
-
       // .active {
       //   border: 0.1875rem solid #f3caba;
       // }
