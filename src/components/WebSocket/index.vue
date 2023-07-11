@@ -97,7 +97,7 @@ export default {
     initTimer() {
       this.disConnectTimer = setInterval(() => {
         systemStatusDetection().then((res) => {
-          console.log('查看', res)
+          // console.log('查看', res)
           if(res.code == 20005){
             this.$store.dispatch('user/resetToken').then(() => {
                 location.reload();

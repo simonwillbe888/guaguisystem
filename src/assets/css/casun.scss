@@ -130,6 +130,9 @@ img {
 .el-checkbox {
   color: rgb(230, 255, 255);
 }
+.el-checkbox is-disabled is-checked{
+  color: #409EFF !important;
+}
 
 .back-shaodow {
   background-color: rgba($color: #071828, $alpha: 0.5);

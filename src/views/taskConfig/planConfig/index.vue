@@ -4,8 +4,8 @@
       <!-- <h3 class="inspection-setting-title">
         {{ $t("plan_config.robotTask_manage") }}
       </h3> -->
-      <el-button  icon="el-icon-plus" type="success" style="text-align: center;line-height:0.1rem"
-        size="mini" @click="addTimedTask(null, 1)">添加巡检计划</el-button>
+      <el-button icon="el-icon-plus" type="success" style="text-align: center;line-height:0.1rem" size="mini"
+        @click="addTimedTask(null, 1)">添加巡检计划</el-button>
       <div class="inspec-setting-inquire">
         <el-input placeholder="请输入关键字" size="mini" clearable v-model="keyWord"
           style="width:150px;margin-right:10px"></el-input>
@@ -13,7 +13,7 @@
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
           </el-option>
         </el-select>
-        <el-button type="success" @click="initPlanList"  >
+        <el-button type="success" @click="initPlanList">
           查询</el-button>
 
 
@@ -28,9 +28,9 @@
               <span>{{ row.id }}</span>
             </template>
           </el-table-column> -->
-          <el-table-column type="index"  label="序号" align="center" width="60">
+          <el-table-column type="index" label="序号" align="center" width="60">
           </el-table-column>
-          <el-table-column prop="PlanName" label="计划名称" align="center" >
+          <el-table-column prop="PlanName" label="计划名称" align="center">
           </el-table-column>
           <el-table-column prop="TaskName" label="流程模板" align="center">
           </el-table-column>
@@ -124,7 +124,7 @@
                 >{{ $t('plan_config.inqireDetail_label') }}</el-button
               > -->
               <el-dropdown>
-                <el-button size="mini" type="primary">
+                <el-button size="mini" type="primary"> 
                   更多<i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
@@ -162,8 +162,7 @@
     </div>
     <el-dialog :title="taskDialog[dialogType]" :visible.sync="dialogFormVisible" :close-on-click-modal="false"
       @close="cancelOperate()" width="750px">
-      <el-form style="margin:0 auto" label-width="120px" :model="taskForm" 
-      ref="taskForm" :rules="rules" :inline="true">
+      <el-form style="margin:0 auto" label-width="120px" :model="taskForm" ref="taskForm" :rules="rules" :inline="true">
         <el-form-item label="计划名称" prop="PlanName">
           <el-input style="width:12vw" placeholder="请输入计划名称" :disabled="taskForm.isDetail"
             v-model="taskForm.PlanName"></el-input>
@@ -176,12 +175,14 @@
           </el-select>
         </el-form-item>
         <el-form-item label="初始水平角度" prop="YunPAngle">
-          <el-input style="width:12vw" placeholder="请输入初始水平角度" :disabled="taskForm.isDetail"
+          <el-input style="width:12vw" placeholder="请输入初始水平角度" 
+          :disabled="taskForm.isDetail" @blur="handleYunA()"
             v-model="taskForm.YunPAngle"></el-input>
         </el-form-item>
         <el-form-item label="初始垂直角度" prop="YunTAngle">
-          <el-input style="width:12vw" placeholder="请输入初始垂直角度" :disabled="taskForm.isDetail"
-            v-model="taskForm.YunTAngle"></el-input>
+          <el-input style="width:12vw" placeholder="请输入初始垂直角度" 
+          :disabled="taskForm.isDetail" @blur="handleYunT()"
+            v-model="taskForm.YunTAngle" ></el-input>
         </el-form-item>
         <el-form-item label="巡检计划模板" prop="TaskTemplateID">
           <el-select style="width:12vw" :disabled="taskForm.isDetail" v-model="taskForm.TaskTemplateID"
@@ -255,7 +256,7 @@
         <template v-else>
           <el-form-item label="执行间隔(分钟)" prop="ExecuteSpace">
             <!-- oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}" -->
-            <el-input v-model.number="taskForm.ExecuteSpace" :disabled="taskForm.isDetail"></el-input>
+            <el-input style="width:12vw"  v-model.number="taskForm.ExecuteSpace" :disabled="taskForm.isDetail"></el-input>
           </el-form-item>
           <el-form-item label="开始时间" prop="StartTime">
             <el-date-picker style="width:12vw" :disabled="taskForm.isDetail" v-model="taskForm.StartTime"
@@ -263,13 +264,8 @@
             </el-date-picker>
           </el-form-item>
           <el-form-item label="结束时间" prop="EndTime">
-            <el-date-picker style="width:12vw" 
-            :disabled="taskForm.isDetail" 
-            v-model="taskForm.EndTime"
-              placeholder="请选择结束时间"
-               type="datetime" 
-               value-format="yyyy-MM-dd HH:mm:ss" 
-               format="yyyy-MM-dd HH:mm:ss">
+            <el-date-picker style="width:12vw" :disabled="taskForm.isDetail" v-model="taskForm.EndTime"
+              placeholder="请选择结束时间" type="datetime" value-format="yyyy-MM-dd HH:mm:ss" format="yyyy-MM-dd HH:mm:ss">
             </el-date-picker>
           </el-form-item>
 
@@ -281,21 +277,25 @@
             <el-radio :disabled="taskForm.isDetail" :label="2">否</el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="算法启动" prop="Ai">
-          <el-checkbox-group v-model="taskAi">
-            <div>
-              <el-checkbox 	 label="1001">行人</el-checkbox>
-              <el-checkbox label="1002">非机动车</el-checkbox>
-              <el-checkbox label="1007">照明</el-checkbox>
-              <el-checkbox style="width: 60px;" label="1011">井盖</el-checkbox>
-              <el-checkbox label="1008">违停</el-checkbox>
+        <el-form-item label="算法启动" prop="DetectionClass">
+          <el-radio-group v-model="taskForm.DetectionClass" :disabled="taskForm.isDetail" >
+            <el-radio  :label="1">道路检测</el-radio>
+            <el-radio  :label="2">照明检测</el-radio>
+            <el-radio  :label="3">设备检测</el-radio>
+            <el-radio  :label="4">井盖检测</el-radio>
+            <el-radio  :label="5">火灾烟雾</el-radio>
+          </el-radio-group>
+          <el-checkbox-group v-model="taskAi" >
+          <div v-if="taskForm.DetectionClass == 1">
+              <el-checkbox 	 label="1001" style="width: 70px;">行人</el-checkbox>
+              <el-checkbox label="1002" style="width: 75px;">非机动车</el-checkbox>
+              <el-checkbox label="1008" style="width: 75px;">违停</el-checkbox>
+              <el-checkbox  label="1011" style="width: 70px;">逆行</el-checkbox>
             </div>
-            <div>
-              <el-checkbox label="1016">逆行</el-checkbox>
-              <el-checkbox label="1012">消防设备</el-checkbox>
-              <el-checkbox label="1017">风机</el-checkbox>
-              <el-checkbox style="width: 60px;" label="1018">指示灯</el-checkbox>
-              <el-checkbox label="1013">火灾烟雾</el-checkbox>
+            <div v-if="taskForm.DetectionClass == 3">
+              <el-checkbox 	 label="1012" style="width: 70px;">消防设备</el-checkbox>
+              <el-checkbox label="1017" style="width: 75px;">风机</el-checkbox>
+              <el-checkbox label="1018" style="width: 75px;">指示灯</el-checkbox>
             </div>
           </el-checkbox-group>
         </el-form-item>
@@ -395,7 +395,7 @@ export default {
           label: '周日',
         },
       ],
-      taskAi:[],
+      taskAi: [],
       taskForm: {
         PlanName: '',
         PlanType: '',
@@ -410,8 +410,8 @@ export default {
         FrequencyCount: 1,
         StartTime: '',
         EndTime: '',
-        Ai:[],
-
+        Ai: [],
+        DetectionClass:'',
       },
       rules: {
         PlanName: [
@@ -421,7 +421,7 @@ export default {
           { required: true, message: '请输入初始水平角度', trigger: 'blur' },
         ],
         YunTAngle: [
-          { required: true, message: '初始垂直角度', trigger: 'blur' },
+          { required: true, message: '请输入初始垂直角度', trigger: 'blur' },
         ],
         TaskTemplateID: [
           { required: true, message: '请选择任务选择', trigger: 'change' },
@@ -457,7 +457,7 @@ export default {
           { required: true, message: '请输入结束时间', trigger: 'change' },
         ],
         Ai: [
-          { type:'array',required: true, message: '选择算法', trigger: 'change' },
+          { type: 'array', required: true, message: '选择算法', trigger: 'change' },
         ],
 
 
@@ -494,9 +494,11 @@ export default {
       deep: true,
       immediate: true,
     },
-    taskAi(newV,oldV){
-     this.taskForm.Ai = newV
-    }
+
+    taskAi(newV, oldV) {
+      this.taskForm.Ai = newV
+      },
+
   },
   async mounted() {
     await this.init();
@@ -750,8 +752,7 @@ export default {
           ...item,
         };
         this.taskAi = this.taskForm.DetectionTypeList
-
-        console.log("查看详情",this.taskForm,this.taskAi)
+        console.log("查看修改", this.taskForm, this.taskAi)
       }
       if (flag === 3) {
         this.dialogType = 'detail';
@@ -759,9 +760,8 @@ export default {
           isDetail: true,
           ...item,
         };
-        console.log('查看详情',this.taskForm)
+        console.log('查看详情', this.taskForm)
         this.taskAi = this.taskForm.DetectionTypeList
-
       } else {
         this.taskForm.isDetail = false;
       }
@@ -795,6 +795,7 @@ export default {
             residueCount,
             executeState,
             state,
+            DetectionClass
           } = self.taskForm;
           let time = self.taskForm.OpenTime;
           // console.log("查看执行时间",time)
@@ -825,8 +826,22 @@ export default {
             residueCount,
             executeState,
             state,
-            detectionTypeList:self.taskAi,
+            detectionTypeList: self.taskAi,
+            detectionClass:DetectionClass,
           };
+          if(obj.detectionClass == 2){
+            obj.detectionTypeList = ['1007']
+          }else if(obj.detectionClass == 4){
+            obj.detectionTypeList = ['1011']
+          }else if(obj.detectionClass == 5){
+            obj.detectionTypeList = ['1013']
+          }else{
+            obj.detectionTypeList = []
+            const arr = self.taskAi
+            const elementsToRemove = ['1007', '1011', '1013'];
+            const filteredArr = arr.filter(item => !elementsToRemove.includes(item));
+            obj.detectionTypeList = filteredArr
+          }
           // Date.parse(this.taskForm.EndTime)>Date.parse(this.taskForm.StartTime)
           // console.log("查看时间")
           if (this.taskForm.StartTime !== null && obj.startTime !== ':00') {
@@ -852,7 +867,7 @@ export default {
           if (!isEdit) {
             addPatrolPlan(obj)
               .then((response) => {
-                console.log("查看参数",obj)
+                console.log("查看参数", obj)
                 if (response.code === 20000) {
                   // this.dialogFormVisible = false;
                   self.initPlanList();
@@ -892,7 +907,7 @@ export default {
             obj.planID = PlanID;
             updatePatrolPlan(obj)
               .then((response) => {
-                console.log("查看修改的参数",obj)
+                console.log("查看参数", obj)
                 let data = response.data;
                 if (response.code === 20000) {
                   self.initPlanList();
@@ -1064,6 +1079,31 @@ export default {
 
       }
     },
+    handleYunA(){
+      const  validPattern = /^([0-9]|[1-9][0-9]?|1[0-9]{2}|2[0-9]{2}|3[0-5][0-9]|360)$/
+      if (!validPattern.test(this.taskForm.yunPAngle)) {
+        const parsedValue = parseInt(this.taskForm.YunPAngle);
+        if (isNaN(parsedValue) || parsedValue < 0) {
+          this.taskForm.YunPAngle = '0';
+        } else if (parsedValue > 360) {
+          this.taskForm.YunPAngle = '360';
+        } else {
+          this.taskForm.YunPAngle = String(parsedValue);
+        }
+      }
+    },
+    handleYunT(){
+      let value = this.taskForm.YunTAngle;
+      if (value === '') {
+        return; // 允许空值
+      }
+      const intValue = parseInt(value);
+      if (isNaN(intValue) || value.includes('.')) {
+        this.taskForm.YunTAngle = '';
+      } else {
+        this.taskForm.YunTAngle = Math.min(90, Math.max(-90, intValue)).toString();
+      }
+    }
   },
 };
 </script>
@@ -1089,6 +1129,7 @@ export default {
 ::v-deep .el-table::before {
   height: 0;
 }
+
 ::v-deep .el-input::before {
   height: 0;
 }
@@ -1115,18 +1156,14 @@ export default {
     padding: 10px;
   }
 }
-::v-deep .el-input.is-disabled .el-input__inner {
 
-height: 32px;
-background-color: transparent !important;
-color: #fff;
-}
-::v-deep  .el-input__inner
- {
+
+::v-deep .el-input__inner {
   height: 1.875rem;
   background-color: transparent;
   color: #fff;
 }
+
 .dialog-header {
   background: lightgreen;
   border: 1px solid green;
@@ -1191,9 +1228,11 @@ color: #fff;
   padding: 20px;
   margin-left: 10px;
 }
-::v-deep .el-checkbox{
+
+::v-deep .el-checkbox {
   margin-left: 5px;
 }
+
 >>>.el-dialog {
   width: 540px;
 }

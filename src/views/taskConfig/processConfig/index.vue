@@ -211,7 +211,7 @@
         </el-transfer>
       </div>
       <div class="dialog-footer">
-        <el-button  @click="add()">{{
+        <el-button type="primary" @click="add()">{{
           $t('process_config.sure_add_label')
         }}</el-button>
         <el-button type="primary" plain @click="dialogFormVisible = false">{{

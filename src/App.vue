@@ -7,7 +7,13 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  created(){
+    const targetRoute = sessionStorage.getItem('sessionRoles');
+    if(targetRoute == '/system/licenseSetting'){
+      this.$router.push('system/licenseSetting')
+    }
+  }
 }
 resizeWeb();
 window.addEventListener('resize',(e)=>{

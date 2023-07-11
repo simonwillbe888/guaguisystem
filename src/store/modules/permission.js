@@ -1,5 +1,7 @@
 import { asyncRoutes, constantRoutes } from '@/router';
+import {setRouterRoles } from '@/utils/auth'
 
+import Cookies from 'js-cookie'
 /**
  * Use meta.role to determine if the current user has permission
  * @param roles
@@ -7,6 +9,7 @@ import { asyncRoutes, constantRoutes } from '@/router';
  */
 function hasPermission(roles, route) {
   if (route.meta && route.meta.roles) {
+    console.log('查看问题',roles.some((role) => route.meta.roles.includes(role)))
     return roles.some((role) => route.meta.roles.includes(role));
   } else {
     return true;
@@ -42,6 +45,7 @@ const mutations = {
   SET_ROUTES: (state, routes) => {
     state.addRoutes = routes;
     state.routes = constantRoutes.concat(routes);
+    const routeRoles = state.routes
   },
 };
 

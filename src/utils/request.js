@@ -88,7 +88,13 @@ service.interceptors.response.use(
     // store.dispatch('global/setlogoutState',++disconnect).then(()=>{
     //   console.log('失败原因')
     // })
-
+    Notification({
+      title: '提示',
+      duration: 1000,
+      message: res.data || 'Error',
+      type: 'error',
+      // duration: 5 * 1000,
+    });
     return error;
   }
 );

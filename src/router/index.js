@@ -29,7 +29,7 @@ export const constantRoutes = [
   // },
     {
     path: '/',
-    redirect: '/dashboard/monitor',
+    redirect: '/system/licenseSetting',
   },
   {
     path: '/login',

@@ -3,7 +3,7 @@ import store from './store';
 import { Message, Notification } from 'element-ui';
 import NProgress from 'nprogress'; // progress bar
 import 'nprogress/nprogress.css'; // progress bar style
-import { getToken } from '@/utils/auth'; // get token from cookie
+import { getToken,getRouterRoles } from '@/utils/auth'; // get token from cookie
 import getPageTitle from '@/utils/get-page-title';
 
 NProgress.configure({
@@ -40,9 +40,13 @@ router.beforeEach(async (to, from, next) => {
     } else {
       // determine whether the user has obtained his permission roles through getInfo
       const hasRoles = store.getters.roles && store.getters.roles.length > 0;
+      const roling =   sessionStorage.getItem('sessionRoles')
+
+      console.log('查看hasroles',store.getters.roles)
       if (hasRoles) {
         next();
       } else {
+
         try {
           // get user info
           // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
@@ -53,7 +57,6 @@ router.beforeEach(async (to, from, next) => {
             'permission/generateRoutes',
             roles
           );
-
           // dynamically add accessible routes
           router.addRoutes(accessRoutes);
 
