@@ -290,7 +290,7 @@
               <el-checkbox 	 label="1001" style="width: 70px;">行人</el-checkbox>
               <el-checkbox label="1002" style="width: 75px;">非机动车</el-checkbox>
               <el-checkbox label="1008" style="width: 75px;">违停</el-checkbox>
-              <el-checkbox  label="1011" style="width: 70px;">逆行</el-checkbox>
+              <el-checkbox  label="1016" style="width: 70px;">逆行</el-checkbox>
             </div>
             <div v-if="taskForm.DetectionClass == 3">
               <el-checkbox 	 label="1012" style="width: 70px;">消防设备</el-checkbox>
@@ -456,8 +456,8 @@ export default {
         EndTime: [
           { required: true, message: '请输入结束时间', trigger: 'change' },
         ],
-        Ai: [
-          { type: 'array', required: true, message: '选择算法', trigger: 'change' },
+        DetectionClass: [
+          {  required: true, message: '请选择算法', trigger: 'change' },
         ],
 
 
@@ -836,10 +836,17 @@ export default {
           }else if(obj.detectionClass == 5){
             obj.detectionTypeList = ['1013']
           }else{
-            obj.detectionTypeList = []
             const arr = self.taskAi
             const elementsToRemove = ['1007', '1011', '1013'];
-            const filteredArr = arr.filter(item => !elementsToRemove.includes(item));
+            let filteredArr = arr.filter(item => !elementsToRemove.includes(item));
+            if(obj.detectionClass == 1){
+              const device = ['1012','1017','1018']
+              filteredArr = filteredArr.filter(item => !device.includes(item))  
+            }
+            if(obj.detectionClass == 3){
+              const roadDetect = ['1001','1002','1008','1016']
+              filteredArr = filteredArr.filter(item => !roadDetect.includes(item))  
+            }
             obj.detectionTypeList = filteredArr
           }
           // Date.parse(this.taskForm.EndTime)>Date.parse(this.taskForm.StartTime)
