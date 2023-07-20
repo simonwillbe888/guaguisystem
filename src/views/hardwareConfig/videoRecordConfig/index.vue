@@ -1,14 +1,14 @@
 <template>
   <div>
     <div class="content-header">
-      <el-button class="headerBtn" size="mini" @click="add" icon="el-icon-plus">新增相机配置</el-button>
+      <el-button class="headerBtn" size="mini" @click="add" icon="el-icon-plus">新增录像机配置</el-button>
 
       <div class="inquireCamera">
       <el-input
         v-model="form1.dvrname"
         style="width:160px;"
         size="mini"
-        placeholder="请输入摄像机名称"
+        placeholder="请输入录像机名称"
       ></el-input>
       <!-- <span style="margin:0 10px">品牌:</span> -->
       <el-select
@@ -44,9 +44,9 @@
           <el-table-column type="index" label="序号" align="center" width="150">
           </el-table-column>
           <!-- <el-table-column prop="dvrbrand" label="配件ID"> </el-table-column> -->
-          <el-table-column prop="dvrname" align="center" label="相机名称">
+          <el-table-column prop="dvrname" align="center" label="录像机名称">
           </el-table-column>
-          <el-table-column prop="dvrcode" align="center" label="相机编号">
+          <el-table-column prop="dvrcode" align="center" label="录像机编号">
             <template slot-scope="{ row }">
             <span>{{ row.dvrcode }}</span>
           </template>
@@ -80,7 +80,7 @@
               >
               <el-button
                 icon="el-icon-edit"
-                style="background-color:#64C8C8 ;color:#fff"    
+                style="background-color:#64C8C8 ;color:#fff"
 
                 @click="edit(row, false)"
                 size="mini"
@@ -118,8 +118,8 @@
         form.isDetail
           ? '硬盘录像机配置详情'
           : form.isEdit
-          ? '修改相机配置'
-          : '新增相机配置'
+          ? '修改录像机配置'
+          : '新增录像机配置'
       "
       :visible.sync="centerDialogVisible"
       width="820px"
@@ -132,12 +132,12 @@
         :model="form"
         label-width="100px"
       >
-        <el-form-item label="相机品牌" prop="dvrbrand">
+        <el-form-item label="录像机品牌" prop="dvrbrand">
           <el-select
             size="mini"
             style="width:100%"
             v-model="form.dvrbrand"
-            placeholder="请选择相机"
+            placeholder="请选择录像机品牌"
             :disabled="form.isDetail"
             clearable
           >
@@ -150,16 +150,16 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="相机名称" prop="dvrname">
+        <el-form-item label="相录像机名称" prop="dvrname">
           <el-input
-            placeholder="请输入相机名称"
+            placeholder="请输入录像机名称"
             v-model="form.dvrname"
             :disabled="form.isDetail"
           ></el-input>
         </el-form-item>
-        <el-form-item label="相机编号" prop="dvrcode">
+        <el-form-item label="录像机编号" prop="dvrcode">
           <el-input
-            placeholder="请输入相机编号"
+            placeholder="请输入录像机编号"
             v-model="form.dvrcode"
             :disabled="form.isDetail"
           ></el-input>
@@ -630,7 +630,7 @@ export default {
   .el-select {
     margin-right: 10px;
   }
-  
+
 }
 ::v-deep .el-table__fixed-right::before{
   height: 0;

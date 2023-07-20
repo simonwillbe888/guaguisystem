@@ -1126,6 +1126,7 @@ export default {
       }
       this.lowButtery = false
     },
+
     async HKlogin() {
       if (!this.YTlogin) {
         let param = {
@@ -1136,17 +1137,17 @@ export default {
         }
         console.log("连接云台", param)
         login(param).then((res) => {
-          console.log("连接云台", param)
+          console.log("连接云台请求响应", res)
           if (res.code == '20000') {
             this.YTlogin = true
           }
           else {
-            this.$notify({
-              message: res.data,
-              type: 'warning',
-              title: '提示',
-              duration: 5000,
-            });
+            // this.$notify({
+            //   message: res.data,
+            //   type: 'warning',
+            //   title: '提示',
+            //   duration: 5000,
+            // });
             this.YTlogin = false
 
           }
