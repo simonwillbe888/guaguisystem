@@ -2,19 +2,20 @@
   <div style="padding: 1%">
     <div class="equip-header content-header">
       <!-- <h3 class="equip-setting-title">{{ $t('inspect_record.real_alarm_list') }}</h3> -->
-      <template>
-        <el-radio v-model="alarmType" label="2">巡检告警</el-radio>
-        <el-radio v-model="alarmType" label="1">设备告警</el-radio>
-      </template>
-    
+<!--      <template>-->
+<!--        <el-radio v-model="alarmType" label="2">巡检告警</el-radio>-->
+<!--        <el-radio v-model="alarmType" label="1">设备告警</el-radio>-->
+<!--      </template>-->
+      <toggleSwitch style="margin-left: 1rem" :labelChecked="'设备告警'" :labelUnchecked="'巡检告警'" @switchAlarm="switchAlarm" ></toggleSwitch>
+
       <div style="display:inline;float:right">
         <el-input style="width:10vw;margin-left: 0.1vw;" v-if="alarmType == 2" placeholder="请输入告警名称" v-model="alarmName">
         </el-input>
         <el-input style="width:10vw;margin-left: 0.1vw;" placeholder="请输入告警码" v-model="alarmCode">
         </el-input>
-        <el-button  style="background-color: #64C8C8"  
+        <el-button  style="background-color: #64C8C8"
           @click.native="init()">查询</el-button>
-          <el-button icon="el-icon-download" 
+          <el-button icon="el-icon-download"
         size="mini" @click="exportAll()">导出列表</el-button>
       </div>
 
@@ -212,8 +213,9 @@ import {
 
 import Pagination from '@/components/Pagination';
 import { mapGetters, mapState } from 'vuex';
+import ToggleSwitch from '@/views/inspectionRecord/realTimeAlarm/toggleSwitch.vue'
 export default {
-  components: { Pagination },
+  components: { ToggleSwitch, Pagination },
   data() {
     return {
       formLabelWidth: '110px',
@@ -319,7 +321,6 @@ export default {
               alarmName: alarmArr[i].AlarmName,
               maxAlarmLevel: alarmArr[i].MaxLevel,
               maxAlarmValue: alarmArr[i].HighValue,
-              alarmCode: alarmArr[i].AlarmCode,
               machineName: alarmArr[i].CarrierName,
               equipmentName: alarmArr[i].CarrierName,
               alarmStatus: statusArr,
@@ -370,6 +371,13 @@ export default {
 
       }
 
+    },
+    switchAlarm(e){
+      if(e){
+        this.alarmType = 2
+      }else {
+        this.alarmType = 1
+      }
     },
     // 告警状态
     initAlarmState() {
@@ -721,7 +729,7 @@ export default {
 .equip-body {
   padding: 0 10px;
   background-color: lightblue;
-  border: 1px solid #fff;
+  //border: 1px solid #fff;
 
   .equip-data {
     font-size: 13px;
@@ -855,4 +863,7 @@ export default {
 
 ::v-deep .el-dialog {
   width: 540px;
-}</style>
+}
+
+
+</style>

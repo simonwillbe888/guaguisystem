@@ -69,7 +69,7 @@
         <el-table-column prop="operate" label="操作" align="center" >
           <template slot-scope="{ row }">
             <el-button
-              style="background-color:#64C8C8 ;color:#fff"    
+              style="background-color:#64C8C8 ;color:#fff"
               icon="el-icon-edit"
               size="mini"
               plain
@@ -137,7 +137,7 @@
             placeholder="请选择父区域"
             v-model="accessoForm.bigAreaName"
             clearable
-            
+
           >
             <el-option
               v-for="item in bigAreaOptions"
@@ -501,7 +501,7 @@ export default {
       margin-right: 10px;
     }
 
- 
+
   }
 }
 ::v-deep  .el-input__inner

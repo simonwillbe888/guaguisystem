@@ -22,7 +22,7 @@
               {{ row.CreateTime }}
             </template>
           </el-table-column>
-          <el-table-column fixed="right" align="center" label="操作" width="200">
+          <el-table-column fixed="right" align="center" label="操作" width="auto">
             <template slot-scope="{ row }">
               <el-button style="background-color:#64C8C8 ;color:#fff"   @click="edit(row)" icon="el-icon-edit" size="mini" plain>
                 修改
@@ -40,30 +40,44 @@
         </el-pagination>
       </div>
     </div>
-    <el-dialog :title="form.isEdit ? '编辑角色' : '新增角色'" :visible.sync="centerDialogVisible" width="500px"
+    <el-dialog :title="form.isEdit ? '编辑角色' : '新增角色'" :visible.sync="centerDialogVisible" width="1000px"
       :close-on-click-modal="false">
-      <el-form ref="form" class="form" :rules="rules" :model="form" label-width="80px">
-        <el-form-item label="角色编号" prop="RoleCode">
-          <el-input :disabled="form.isEdit" placeholder="请输入角色编号" v-model.trim="form.RoleCode"></el-input>
-        </el-form-item>
-        <el-form-item label="角色权限" prop="RoleLevel">
-          <el-select v-model="form.RoleLevel" placeholder="请选择角色权限" style="width:256px">
-            <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
 
-        <el-form-item label="角色名称" prop="RoleName">
-          <el-input placeholder="请输入角色名称" v-model.trim="form.RoleName"></el-input>
-        </el-form-item>
+      <el-form ref="form" class="form" :rules="rules" :model="form" label-width="80px" >
+
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="角色编号" prop="RoleCode" >
+              <el-input :disabled="form.isEdit" placeholder="请输入角色编号" v-model.trim="form.RoleCode"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="8">
+            <el-form-item label="角色权限" prop="RoleLevel">
+              <el-select v-model="form.RoleLevel" placeholder="请选择角色权限" >
+                <el-option v-for="item in options" :key="item.value" :label="item.name" :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="8">
+            <el-form-item label="角色名称" prop="RoleName">
+              <el-input placeholder="请输入角色名称" v-model.trim="form.RoleName"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+
         <el-form-item label="描述信息" prop="RoleDesc">
-          <el-input style="margin:10px 0" type="textarea" maxlength="100" placeholder="请输入描述信息"
+          <el-input style="margin:10px 0" type="textarea" maxlength="100" placeholder="请输入角色描述"
             v-model.trim="form.RoleDesc"></el-input>
         </el-form-item>
+
         <el-form-item label="所属权限" prop="PowerList">
           <el-tree :data="powerList" show-checkbox node-key="ID" ref="tree"
-            @check="nodeCheck" accordion :props="defaultProps" 
-            :expand-on-click-node="false"
+            @check="nodeCheck" accordion :props="defaultProps"
+            :expand-on-click-node="true"
              style="margin-bottom:24px;margin-top:10px" >
             <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
           <span>{{ node.label }}</span>
@@ -91,7 +105,7 @@
         </span> -->
           </el-tree>
         </el-form-item>
-        <el-form-item>
+        <el-form-item style="display: flex;justify-content: center;">
           <el-button type="primary" @click="save">{{
             form.isEdit ? '保存编辑' : '立即新增'
           }}</el-button>
@@ -288,7 +302,7 @@ export default {
           });
           this.form.PowerList = arr || [];
           if (!this.powerList) return;
-          this.powerList.forEach((item) => {         
+          this.powerList.forEach((item) => {
             item.children.forEach((node) => {
               if (!arr.some((a) => a === node.ID)) {
                 arr = arr.filter((b) => b !== item.ID);
@@ -300,7 +314,7 @@ export default {
                   arr = arr.filter((d) => d !== node.ID);
                 }
               });
-              
+
             });
             // arr = arr.filter(item => item != item.ID)
             // console.log('一级菜单的ID',item.ID)
@@ -396,7 +410,8 @@ export default {
 ::v-deep  .el-input__inner
  {
   height: 1.875rem;
-  background-color: transparent;
   color: #fff;
+  background-color: #021627!important;
+  border: 1px solid transparent;
 }
 </style>

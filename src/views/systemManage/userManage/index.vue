@@ -78,7 +78,7 @@
           >
             <template slot-scope="{ row }">
               <el-button
-              style="background-color:#64C8C8 ;color:#fff"  
+              style="background-color:#64C8C8 ;color:#fff"
                 @click="edit(row)"
                 icon="el-icon-edit"
                 size="mini"
@@ -131,7 +131,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="账号" prop="UserName">
-      
+
           <el-input
             placeholder="请输入账号"
             :disabled="addForm.isEdit"
@@ -419,7 +419,8 @@ export default {
 ::v-deep  .el-input__inner
  {
   height: 1.875rem;
-  background-color: transparent;
+  background-color: #021627!important;
+  border: 1px solid transparent;
   color: #fff;
 }
 </style>

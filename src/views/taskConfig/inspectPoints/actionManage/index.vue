@@ -2,10 +2,11 @@
   <div class="page">
     <div class="page-title">
       配置流程
-      <span class="right-btn" @click="$router.back()"
-        ><svg-icon icon-class="fanhui"
-      /></span>
+<!--      <span class="right-btn" @click="$router.back()"-->
+<!--        ><svg-icon icon-class="fanhui"-->
+<!--      /></span>-->
     </div>
+
     <el-container class="page-container">
       <el-aside class="page-left">
         <el-collapse v-model="activeName" accordion>
@@ -65,28 +66,35 @@
       <el-main class="page-main">
         <el-tag class="header-label"
           >{{ $t('process_config.action_list') }}
+
           <el-button
-            size="mini"
-            style="background-color:#64C8C8 ;color:#fff;float: right; margin-top: 10px"
-            @click="saveTemplate"
-          >
-            保存</el-button
-          >
+            size="small"
+            style="background-color:#64C8C8 ;color:#fff;float: right;margin-left: 1rem; margin-top: 10px;font-size: 20px"
+            @click="$router.back()">
+            <svg-icon icon-class="goback" />
+            返回
+          </el-button>
+
+          <el-button
+            size="small"
+            style="background-color:#64C8C8 ;color:#fff;float: right; margin-top: 10px;font-size: 20px"
+            @click="saveTemplate">
+            <svg-icon icon-class="save" />
+            保存
+          </el-button>
+
         </el-tag>
+
         <el-scrollbar>
           <div
             v-for="(item, index) in actionsList"
             :key="item.id"
-            style="margin: 10px; background: #fff; position: relative; display: flex;"
+            style="margin: 15px;height: 2.5rem; background: rgba(255,255,255,0.8); position: relative; display: flex;border-radius: 5px;align-items: center;"
           >
             <!-- <div class="act-icon">
               <i class="el-icon-info"></i>
             </div> -->
-            <div
-              style="
-                flex:1;
-              "
-            >
+            <div style="flex:1;">
               <div style="width:50%;padding-left: 2.5rem;color: #000000;font-size: 18px;">
                 <el-descriptions>
                   <el-descriptions-item style="margin-left:40px ;" label="名称">{{
@@ -412,7 +420,7 @@
       :visible.sync="roboticDialogVisible"
       :close-on-click-modal="false"
       center
-      
+
     >
       <div class="common-photo" style="width: 25vw;">
         <el-form
@@ -451,7 +459,7 @@
               v-model="moveForm.vertexID"
               filterable
               clearable
-              
+
             >
               <el-option
                 v-for="item in pointOptions"
@@ -591,7 +599,7 @@
         <el-row :gutter="10">
            <el-col :span="12">
             <el-form-item label="播报内容" prop="readText">
-            <el-input       
+            <el-input
               v-model.number="broadcast.readText"
             ></el-input>
           </el-form-item>
@@ -601,7 +609,7 @@
             <el-form-item label="播报音量(0~100)" prop="volume">
             <!-- oninput="if(value.length==1){value=value.replace(/[^0-100]/g,'')}else{value=value.replace(/\D/g,'')}" -->
             <el-input
-              
+
               v-model.number="broadcast.volume"
             ></el-input>
           </el-form-item>
@@ -612,14 +620,14 @@
             <el-form-item label="播报速度(-10~10)" prop="rate">
             <!-- oninput="if(value.length==1){value=value.replace(/[^-10-10]/g,'')}else{value=value.replace(/\D/g,'')}" -->
             <el-input
-             
+
               v-model.number="broadcast.rate"
             ></el-input>
           </el-form-item>
 
            </el-col>
            <el-col :span="12">
-             
+
           <el-form-item label="执行顺序" prop="sequence">
             <el-input
               v-model.number="broadcast.sequence"
@@ -630,14 +638,14 @@
         <el-row :gutter="10">
            <el-col :span="12">
             <el-form-item label="播报次数" prop="count">
-            <el-input         
+            <el-input
               oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
               v-model.number="broadcast.count"
             ></el-input>
           </el-form-item>
            </el-col>
            <el-col :span="12">
-             
+
           <el-form-item label="巡检点" prop="locationID">
             <el-select
               clearable
@@ -1167,7 +1175,7 @@ export default {
           this.cameraDialogVisible = false;
           break;
         case 3:
-         
+
           this.$refs.photoForm.validate((status) => {
             valid = status;
           });
@@ -1255,7 +1263,7 @@ export default {
             rate:Number(broadcast.rate) ,
             duration: Number(broadcast.duration),
             presetNo: Number(broadcast.presetNo),
-            
+
             sequence: Number(broadcast.sequence),
           });
           this.fireDialogVisible = false;
@@ -1338,8 +1346,8 @@ export default {
           isEdite: true,
           index,
         };
-        
-      } 
+
+      }
       else if (obj.type === 65535) {
         this.sonTemplateDialogTitle = '修改子模版';
         this.sonTemplateDialogVisible = true;
@@ -1485,15 +1493,27 @@ export default {
       // margin-right: 10px;
       background: rgba(43, 69, 125, 0.3);
       padding: 10px;
-      width: 21rem !important;
+      width: 24rem !important;
       .el-collapse {
         margin-bottom: 10px;
-       ::v-deep .el-collapse-item__header {
+        border-bottom: none;
+        border-top: none;
+
+        ::v-deep .el-collapse-item__wrap{
+          border-bottom-left-radius: 15px;
+          border-bottom-right-radius: 15px;
+        }
+
+        ::v-deep .el-collapse-item__header {
           height: 30px;
           line-height: 30px;
           padding-left: 20px;
+          border-top-left-radius: 15px;
+          border-top-right-radius: 15px;
+          border-top: none;
         }
-      ::v-deep .el-collapse-item__content {
+        ::v-deep .el-collapse-item__content {
+        border-radius: 15px;
           padding: 10px;
           height: 43vh;
           overflow-y: scroll;
@@ -1604,7 +1624,7 @@ export default {
     margin: auto;
   ::v-deep .el-input {
    width: 13vw;
-   
+
   }
   .common-slider {
     width: 200px;
@@ -1613,17 +1633,17 @@ export default {
 
   .form-sty {
     text-align: left;
-    
+
   }
 }
 
 .common-photo {
   font-size: 0.8vw;
   margin: auto;
-  
+
   //   text-align: center;
-  
- 
+
+
   ::v-deep  .el-input {
     width: 13vw;
   }
@@ -1654,8 +1674,7 @@ export default {
   color: #fff;
   margin: 3px 0;
   text-align: left;
-  color: #fff;
-  font-size: 12px;
+  font-size: 15px;
 }
 
 .delete-btn {
@@ -1663,7 +1682,7 @@ export default {
   margin: 3px 0;
   text-align: left;
   color: #fff;
-  font-size: 12px;
+  font-size: 15px;
 }
 
 .act-icon {
@@ -1704,6 +1723,10 @@ export default {
     padding: 7px 15px !important;
   }
 }
+::v-deep .el-descriptions__body{
+  background-color: transparent;
+}
+
 ::v-deep .el-descriptions-item {
   padding-bottom: 0 !important;
   font-size: 1rem !important;

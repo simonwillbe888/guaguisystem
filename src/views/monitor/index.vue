@@ -2250,7 +2250,7 @@ background: linear-gradient(to right, blue 50%, red 50%);
   .hkControl {
     width: 100%;
     background-color: rgba(7, 24, 40, 0.5);
-    border-radius: 0.625rem;
+    //border-radius: 0.625rem;
     margin: 0 0 0.875rem 0;
     color: #fff;
     border: 0.0625rem solid transparent;
@@ -2368,7 +2368,6 @@ background: linear-gradient(to right, blue 50%, red 50%);
 
     .leftTitle {
       // padding-bottom: 0.5rem;
-
     }
 
     .robotDirec {

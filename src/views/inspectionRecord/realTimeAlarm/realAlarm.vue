@@ -15,19 +15,21 @@
           :value="item.value"
         />
       </el-select> -->
-      <template>
-        <el-radio v-model="alarmType" label="2">巡检告警</el-radio>
-        <el-radio v-model="alarmType" label="1">设备告警</el-radio>
-      </template>
+<!--      <template>-->
+<!--        <el-radio v-model="alarmType" label="2">巡检告警</el-radio>-->
+<!--        <el-radio v-model="alarmType" label="1">设备告警</el-radio>-->
+<!--      </template>-->
+
+      <toggleSwitch style="margin-left: 1rem" :labelChecked="'设备告警'" :labelUnchecked="'巡检告警'" @switchAlarm="switchAlarm" ></toggleSwitch>
 
       <div style="display:inline;float:right">
         <el-input style="width:10vw;margin-left: 0.1vw;" v-if="alarmType == 2" placeholder="请输入告警名称" v-model="alarmName">
         </el-input>
         <el-input style="width:10vw;margin-left: 0.1vw;" placeholder="请输入告警码" v-model="alarmCode">
         </el-input>
-        <el-button   
+        <el-button
           @click.native="init()">查询</el-button>
-          <el-button icon="el-icon-download"  
+          <el-button icon="el-icon-download"
         size="mini" @click="exportAll()">导出列表</el-button>
       </div>
 
@@ -72,15 +74,15 @@
               >{{ $t('public_vary.query_label') }}</el-button
             >
           </template>
-          <div class="head-condition"> 
-              
+          <div class="head-condition">
+
           </div>
         </el-collapse-item>
       </el-collapse> -->
     </div>
     <div class="equip-body content-body">
       <el-table @row-click="getDetailMessage" class="equip-data" :data="alarmInfoArr" :empty-text="'暂无数据'"
-        height="36.5rem" header-row-class-name="header-row-class" row-class-name="row-class" fit highlight-current-row
+        height="38rem" header-row-class-name="header-row-class" row-class-name="row-class" fit highlight-current-row
         size="small">
         <el-table-column type="index" label="序号" align="center" width="100">
         </el-table-column>
@@ -236,8 +238,9 @@ import {
 } from '@/api/inspectRecord';
 import Pagination from '@/components/Pagination';
 import { mapGetters, mapState } from 'vuex';
+import ToggleSwitch from '@/views/inspectionRecord/realTimeAlarm/toggleSwitch.vue'
 export default {
-  components: { Pagination },
+  components: { ToggleSwitch, Pagination },
   data() {
     return {
       activeName: '1',
@@ -340,7 +343,6 @@ export default {
                 alarmName: alarmArr[i].AlarmName,
                 maxAlarmLevel: alarmArr[i].MaxLevel,
                 maxAlarmValue: alarmArr[i].HighValue,
-                alarmCode: alarmArr[i].AlarmCode,
                 machineName: alarmArr[i].CarrierName,
                 equipmentName: alarmArr[i].EquipmentName,
                 alarmStatus: alarmArr[i].Status,
@@ -402,6 +404,13 @@ export default {
           this.imageUrl = 'http://192.168.20.44:8888/images/' + e.Image
         }
         this.dialogVisible = true
+      }
+    },
+    switchAlarm(e){
+      if(e){
+        this.alarmType = 2
+      }else {
+        this.alarmType = 1
       }
     },
     // 告警状态
