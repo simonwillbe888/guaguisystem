@@ -286,16 +286,16 @@
             <el-radio  :label="5">火灾烟雾</el-radio>
           </el-radio-group>
           <el-checkbox-group v-model="taskAi" >
-          <div v-if="taskForm.DetectionClass == 1">
-              <el-checkbox 	 label="1001" style="width: 70px;">行人</el-checkbox>
-              <el-checkbox label="1002" style="width: 75px;">非机动车</el-checkbox>
-              <el-checkbox label="1008" style="width: 75px;">违停</el-checkbox>
-              <el-checkbox  label="1016" style="width: 70px;">逆行</el-checkbox>
+          <div v-if="taskForm.DetectionClass == 1" >
+              <el-checkbox :disabled="taskForm.isDetail" 	 label="1001" style="width: 70px;">行人</el-checkbox>
+              <el-checkbox :disabled="taskForm.isDetail"  label="1002" style="width: 75px;">非机动车</el-checkbox>
+              <el-checkbox :disabled="taskForm.isDetail"  label="1008" style="width: 75px;">违停</el-checkbox>
+              <el-checkbox :disabled="taskForm.isDetail"  label="1016" style="width: 70px;">逆行</el-checkbox>
             </div>
             <div v-if="taskForm.DetectionClass == 3">
-              <el-checkbox 	 label="1012" style="width: 70px;">消防设备</el-checkbox>
-              <el-checkbox label="1017" style="width: 75px;">风机</el-checkbox>
-              <el-checkbox label="1018" style="width: 75px;">指示灯</el-checkbox>
+              <el-checkbox 	:disabled="taskForm.isDetail"  label="1012" style="width: 70px;">消防设备</el-checkbox>
+              <el-checkbox :disabled="taskForm.isDetail"  label="1017" style="width: 75px;">风机</el-checkbox>
+              <el-checkbox :disabled="taskForm.isDetail"  label="1018" style="width: 75px;">指示灯</el-checkbox>
             </div>
           </el-checkbox-group>
         </el-form-item>
@@ -1263,6 +1263,10 @@ export default {
   .el-input {
     width: 98px;
   }
+}
+::v-deep .el-checkbox__input.is-disabled.is-checked .el-checkbox__inner::after {
+    // background-color: #1890ff;
+    border-color: #1890ff;
 }
 
 >>>.el-table__body-wrapper {
