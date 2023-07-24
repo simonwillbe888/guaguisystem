@@ -58,7 +58,8 @@
               <div
                 style="border-radius: 0.625rem;;width: 3.1rem;background-color: #66B3B2;display: flex;height: 3rem;line-height: 2rem;align-items: center;justify-items: center;"
                 @click="setWarnLight()" :class="{'warning_light_active':warnLightOpen == 1}">
-                <svg-icon icon-class="warnLight" style="margin:auto;width: 2.5rem;height: 2.5rem;"></svg-icon>
+                <img src="../../assets/img/warnLight.png" style="margin: auto;width: 2.3rem">
+<!--                <svg-icon icon-class="warnLight" style="margin:auto;width: 2.5rem;height: 2.5rem;"></svg-icon>-->
               </div>
               <div class="warning_light" style="font-size: 0.875rem;margin: 0.5rem 0.2rem"> 警示灯</div>
 
@@ -168,8 +169,8 @@
               任务下发
             </div>
             <div class="taskDetail">
-              <span style="width: 7rem;line-height: 2rem;">任务模板 ：</span>
-              <span style="color:#66B3B2 ;">
+              <span style="width: 6rem;line-height: 2rem;">任务模板 ：</span>
+              <span style="color:#66B3B2;width: 7rem">
                 <el-select v-model="taskID" placeholder="请选择">
                   <el-option v-for="item in taskList" :key="item.value" :label="item.label" :value="item.value">
                   </el-option>
@@ -180,7 +181,7 @@
                   @click="startPlan()">执行</el-button> -->
               <el-popconfirm title="确定执行任务吗?" @confirm="startPlan()">
                 <div
-                  style="background-color:#66B3B2 ; color:#ffffff;margin-left: 2.5rem;width: 3.75rem; text-align: center; height: 1.875rem;line-height: 1.875rem;"
+                  style="background-color:#66B3B2 ; color:#ffffff;margin-left: 7.5rem;width: 3.75rem; text-align: center; height: 1.875rem;line-height: 1.875rem;"
                   slot="reference">执行</div>
               </el-popconfirm>
             </div>
@@ -299,9 +300,9 @@
                 </div>
               </div>
               <div class="enviroDetail">
-                <div style="color:rgba(100 200 200);margin: 1.25rem 0 0 0.375rem;">甲烷</div>
+                <div class="gas" style="color:rgba(100 200 200);margin: 1.25rem 0 0 0.375rem;">甲烷</div>
                 <div class="gasDetail">
-                  {{ gasList.CH4 == null ? '0' : (gasList.CH4 / 100).toFixed(1) }} <span
+                  {{ gasList.CH4 == null ? '0' : (gasList.CH4 / 100).toFixed(1) }}<span
                     style="font-size: 0.625rem;">ppm</span>
                 </div>
               </div>
@@ -420,7 +421,7 @@
                 <img src="../../assets/img/hkDown.png" @mousedown="setCameraOperate(3)" @mouseup="stopCam()"
                   class="hkDown">
               </div>
-              <div style="margin-left: 8.125rem;width:18.75rem;position: relative;bottom: 1rem;">
+              <div style="margin-left: 4.125rem;width:18.75rem;position: relative;">
                 <div class="hkAction">
                   <div title="放大" class="action_detail" @mousedown="setCameraOperate(9)" @mouseup="stopCam()">
                     <img src="../../assets/img/fangda.png" alt="">
@@ -451,16 +452,17 @@
                     <img title="远焦" src="../../assets/img/yuanjiao.png" alt="">
                   </div>
                 </div>
-                <div style="margin-top:1.5rem;padding-left: 1.25rem;">
+                <div style="margin-top:1rem;padding-left: 1rem;font-size: 0.8rem">
                   云台速度
                   <!-- <el-input disabled v-model="speed" ></el-input> -->
-                  <span
-                    style="width: 3.75rem;float: right;margin-right: 1.25rem;background-color: #071828;text-align: center; border: 0.0625rem #ffffff solid;">{{
-                      speed }}</span>
-                </div>
-                <div class="speed" style="margin: 0.625rem;">
-                  <el-slider :max="7" v-model="speed" style="margin: 0 1.25rem;">
+                <div class="speed" style="margin:0.625rem 0;width: 17rem;display: flex;position: relative;align-items: center;">
+                  <el-slider :max="7" v-model="speed" style="margin: 0 1.25rem 0 -0.5rem;width: 12rem">
                   </el-slider>
+                  <el-input-number size="mini" :min=0 :max=7 v-model="speed" :step="1" :controls="false" style="width: 5rem"></el-input-number>
+<!--                  <span-->
+<!--                    style="width: 2.75rem;float: right;background-color: #071828;text-align: center; border: 0.0625rem #ffffff solid;">{{-->
+<!--                      speed }}</span>-->
+                </div>
                 </div>
               </div>
             </div>
@@ -1871,7 +1873,7 @@ export default {
     }
 
     .robotPic {
-      width: 17vh;
+      width: 10rem;
       height: 10.625rem;
       margin-left: 33%;
       margin-top: 2.6rem;
@@ -2024,7 +2026,7 @@ background: linear-gradient(to right, blue 50%, red 50%);
 
       ::v-deep .el-input__inner {
         background-color: rgba($color: #071828, $alpha: 0.5);
-        width: 8rem;
+        width: 14rem;
         height: 1.875rem;
       }
     }
@@ -2060,7 +2062,8 @@ background: linear-gradient(to right, blue 50%, red 50%);
 
       .gasDetail {
         margin: 1.625rem 0 0 0.5rem;
-        width: 3.75rem;
+        width: 4rem;
+        word-break: keep-all;
       }
 
       div {
@@ -2070,6 +2073,7 @@ background: linear-gradient(to right, blue 50%, red 50%);
       .detail_icon {
         margin-left: 0.375rem;
         margin-top: 0.625rem;
+        word-break: keep-all;
       }
 
     }

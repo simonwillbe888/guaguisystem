@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 1%">
+  <div style="padding: 1%; background: rgb(6,30,51);">
     <div class="robot-header content-header">
       <!-- <h3 class="robot-setting-title">
         {{ $t("equip_setting.equip_list_label") }}
@@ -31,62 +31,63 @@
       </div>
     </div>
     <div class="robot-body content-body">
-      <el-table
-        class="robot-data"
-        ref="singleTable"
-        :data="accessoInfoArr"
-        header-row-class-name="header-row-class"
-        row-class-name="row-class"
-        fit
-        highlight-current-row
-        size="small"
-        @current-change="handleCurrentChange"
-        :empty-text="'暂无数据'"
-        height="36.5rem"
-      >
-        <el-table-column type="index" label="序号" align="center" width="150" >
-        </el-table-column>
-        <el-table-column prop="code" label="区域编码" align="center">
-          <template slot-scope="{ row }">
-            <span>{{ row.code}}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="name" label="区域名称" align="center">
-          <template slot-scope="{ row }">
-            <span>{{ row.name }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="parentID" label="是否为子区域" align="center">
-          <template slot-scope="{ row }">
-            <span>{{ row.parentID ? '是' : '否' }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="createTime" label="创建时间" align="center">
-          <template slot-scope="{ row }">
-            <span>{{ row.createTime }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column prop="operate" label="操作" align="center" >
-          <template slot-scope="{ row }">
-            <el-button
-              style="background-color:#64C8C8 ;color:#fff"
-              icon="el-icon-edit"
-              size="mini"
-              plain
-              @click="editList(row)"
-              >修改</el-button
-            >
-            <el-button
-              class="robot-operate"
-              type="danger"
-              icon="el-icon-delete"
-              size="mini"
-              @click="deleteList(row)"
-              >{{ $t('equip_setting.deleteAccesso_label') }}</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
+        <el-table
+          class="robot-data"
+          ref="singleTable"
+          :data="accessoInfoArr"
+          header-row-class-name="header-row-class"
+          row-class-name="row-class"
+          fit
+          height="37rem"
+          highlight-current-row
+          size="small"
+          @current-change="handleCurrentChange"
+          :empty-text="'暂无数据'"
+        >
+          <el-table-column type="index" label="序号" align="center" width="150" >
+          </el-table-column>
+          <el-table-column prop="code" label="区域编码" align="center">
+            <template slot-scope="{ row }">
+              <span>{{ row.code}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="name" label="区域名称" align="center">
+            <template slot-scope="{ row }">
+              <span>{{ row.name }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="parentID" label="是否为子区域" align="center">
+            <template slot-scope="{ row }">
+              <span>{{ row.parentID ? '是' : '否' }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="createTime" label="创建时间" align="center">
+            <template slot-scope="{ row }">
+              <span>{{ row.createTime }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="operate" label="操作" align="center" >
+            <template slot-scope="{ row }">
+              <el-button
+                style="background-color:#64C8C8 ;color:#fff"
+                icon="el-icon-edit"
+                size="mini"
+                plain
+                @click="editList(row)"
+                >修改</el-button
+              >
+              <el-button
+                class="robot-operate"
+                type="danger"
+                icon="el-icon-delete"
+                size="mini"
+                @click="deleteList(row)"
+                >{{ $t('equip_setting.deleteAccesso_label') }}</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+<!--      </div>-->
       <div>
         <pagination
           v-show="total > 0"

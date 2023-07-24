@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 1%">
+  <div style="padding: 1%; background: rgb(6,30,51);">
     <div class="inspection-header content-header">
       <!-- <h3 class="inspection-setting-title">
         {{ $t("inspection_setting.inspecPoint_list") }}
@@ -29,7 +29,7 @@
     </div>
     <div class="robot-body content-body">
       <!-- <video width="320" height="240" controls>
-        <source src="http://192.168.0.101:9096/api/PatrolData/stream" 
+        <source src="http://192.168.0.101:9096/api/PatrolData/stream"
               type="video/mp4">
       </video> -->
       <el-table
@@ -38,6 +38,7 @@
         header-row-class-name="header-row-class"
         row-class-name="row-class"
         fit
+        height="39rem"
         highlight-current-row
         size="small"
         @current-change="handleCurrentChange"
@@ -53,7 +54,7 @@
           prop="number"
           label="导航点编号"
           align="center"
-         
+
         >
           <template slot-scope="{ row }">
             <span>{{ row.VertexID }}</span>
@@ -63,7 +64,7 @@
           prop="areaName"
           label="区域名称"
           align="center"
-          
+
         >
           <template slot-scope="{ row }">
             <span>{{ row.AreaName }}</span>
@@ -73,7 +74,7 @@
           prop="annotation"
           label="地图标注名称"
           align="center"
-          
+
         >
           <template slot-scope="{ row }">
             <span>{{ row.MapDisplayName }}</span>
@@ -83,7 +84,7 @@
           prop="group"
           label="所属组别"
           align="center"
-         
+
         >
           <template slot-scope="{ row }">
             <span>{{ row.GroupID }}</span>
@@ -405,7 +406,7 @@ export default {
       });
     },
     editSuccess(inspectFormData, inspectData) {
-      
+
       let self = this;
       this.$refs[inspectFormData].validate((valid) => {
         if (valid) {

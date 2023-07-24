@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 1%">
+  <div style="padding: 1%; background: rgb(6,30,51);">
     <div class="robot-header content-header">
       <!-- <h3 class="robot-setting-title">{{ $t('robot_setting.robot_list') }}</h3> -->
       <div class="robot-setting-inquire">
@@ -24,7 +24,7 @@
     </div>
     <div class="robot-body content-body">
       <el-table
-        height="550"
+        height="39rem"
         class="robot-data"
         ref="singleTable"
         :data="robotInfoArr"
@@ -49,7 +49,7 @@
           prop="number"
           label="机器人编码"
           align="center"
-         
+
         >
           <template slot-scope="{ row }">
             <span>{{ row.number }}</span>
@@ -59,7 +59,7 @@
           prop="name"
           label="机器人名称"
           align="center"
-         width="100"
+         width="110"
         >
           <template slot-scope="{ row }">
             <span>{{ row.name }}</span>
@@ -69,7 +69,7 @@
           prop="type"
           label="机器人类型"
           align="center"
-          
+
         >
           <template slot-scope="{ row }">
             <span>{{ row.type }}</span>
@@ -80,7 +80,7 @@
           prop="ip"
           label="机器人IP地址"
           align="center"
-         
+
         >
           <template slot-scope="{ row }">
             <span>{{ row.ip }}</span>
@@ -91,12 +91,24 @@
             <span>{{ row.area }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="details"
-          label="机器人详情"
-          align="center"
-          
-        >
+<!--        <el-table-column-->
+<!--          prop="details"-->
+<!--          label="机器人详情"-->
+<!--          align="center"-->
+
+<!--        >-->
+<!--          <template slot-scope="{ row }">-->
+<!--            <el-button-->
+<!--              type="primary"-->
+<!--              icon="el-icon-document"-->
+<!--              size="mini"-->
+<!--              plain-->
+<!--              @click="editRobot(row, 1)"-->
+<!--              >详情</el-button-->
+<!--            >-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+        <el-table-column prop="operate" label="操作" align="center" width="400" >
           <template slot-scope="{ row }">
             <el-button
               type="primary"
@@ -104,12 +116,8 @@
               size="mini"
               plain
               @click="editRobot(row, 1)"
-              >详情</el-button
+            >详情</el-button
             >
-          </template>
-        </el-table-column>
-        <el-table-column prop="operate" label="操作" align="center" width="300" >
-          <template slot-scope="{ row }">
             <el-button
               class="robot-operate"
               type="primary"
@@ -120,7 +128,7 @@
             >
             <el-button
               class="robot-operate"
-              style="background-color:#64C8C8 ;color:#fff"    
+              style="background-color:#64C8C8 ;color:#fff"
               icon="el-icon-edit"
               size="mini"
               plain
@@ -157,7 +165,7 @@
             prop="robotID"
           >
             <el-input
-              placeholder="请输入机器人ID"           
+              placeholder="请输入机器人ID"
               v-model.number="robotForm.robotID"
             ></el-input>
           </el-form-item>
@@ -230,17 +238,17 @@
             :label="$t('robot_setting.ifBind_standby_label')"
             prop="stand"
           >
-            <el-checkbox            
+            <el-checkbox
               :label="$t('robot_setting.bind_standby_label')"
-              v-model="standByChecked"             
-            ></el-checkbox>         
-              <el-select v-if="standByChecked" :disabled="robotForm.isEdit" v-model="vertex" placeholder="请选择">  
-                <el-option  
-                v-for="item in StationVertex"  
+              v-model="standByChecked"
+            ></el-checkbox>
+              <el-select v-if="standByChecked" :disabled="robotForm.isEdit" v-model="vertex" placeholder="请选择">
+                <el-option
+                v-for="item in StationVertex"
                 :key="item.value"
-                :label="item.label"  
+                :label="item.label"
                 :value="item.value">
-              </el-option>  
+              </el-option>
             </el-select>
           </el-form-item>
           <el-form-item v-if="!robotForm.isEdit" class="common-form-footer">
@@ -400,7 +408,7 @@ import {
   saveAccessory,
   deleteAccessory,
   getAccessory,
- 
+
 } from '@/api/robot';
 import { getArea , GetMapData} from '@/api/areaConfig.js';
 import { getCarrierTypeByDic } from '@/api/taskConfig';
@@ -459,7 +467,7 @@ export default {
           //   message: '请输入机器人编码',
           //   trigger: 'blur',
           // },
-         
+
         ],
         siteName: [
           {
@@ -498,7 +506,7 @@ export default {
       currentRow: null,
       standByChecked: false,
       standByPoint: '',
-     
+
       simuStarts: '',
       dialogDetailFlag: false,
       detailForm: {
@@ -615,7 +623,7 @@ export default {
         const obj = []
         res.data.stations.forEach(element => {
           console.log(element.type)
-          if(element.type == 2){      
+          if(element.type == 2){
             obj.push({
               label:element.vertex.number,
               value:element.vertex.number
@@ -624,12 +632,12 @@ export default {
           }
           self.StationVertex= obj
         });
-        
+
       })
       getArea()
         .then((response) => {
           let accessTypeArr = response.data;
-         
+
           for (let i = 0, len = accessTypeArr.length; i < len; i++) {
             let optionObj = {
               value: accessTypeArr[i].id,
@@ -746,7 +754,7 @@ export default {
     },
     addSuccess(robotForm, robotParam) {
       let self = this;
-     
+
       this.$refs[robotForm].validate((valid) => {
         if (valid) {
           let param = {
@@ -838,7 +846,7 @@ export default {
         this.dialogType = 'detail';
       }
       this.robotForm.isEdit = flag === 1;
-      
+
       this.$nextTick(() => {
         this.$refs.robotForm.clearValidate();
       });
@@ -1124,7 +1132,7 @@ export default {
   .el-input--mini .el-input__inner {
     width: 180px !important;
   }
- 
+
   .robot-setting-inquire {
     // margin-left: 30px;
     display: inline;
@@ -1142,7 +1150,7 @@ export default {
   padding: 0 10px;
   background-color: lightblue;
   border: 1px solid #fff;
-   
+
   .robot-data {
     font-size: 13px;
     width: 100%;

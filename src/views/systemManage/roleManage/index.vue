@@ -1,11 +1,11 @@
 <template>
-  <div>
+  <div style=" background: rgb(6,30,51);">
     <div class="content-header">
       <el-button class="headerBtn" icon="el-icon-plus" size="mini" @click="add">新增角色</el-button>
     </div>
     <div class="content-body">
       <template>
-        <el-table :data="roleList" style="width: 100%">
+        <el-table :data="roleList" style="width: 100%" height="36.5rem">
           <el-table-column type="index" label="序号" align="center" width="80">
           </el-table-column>
           <el-table-column prop="RoleCode" align="center" label="角色编号">
@@ -22,7 +22,7 @@
               {{ row.CreateTime }}
             </template>
           </el-table-column>
-          <el-table-column fixed="right" align="center" label="操作" width="auto">
+          <el-table-column align="center" label="操作" width="auto">
             <template slot-scope="{ row }">
               <el-button style="background-color:#64C8C8 ;color:#fff"   @click="edit(row)" icon="el-icon-edit" size="mini" plain>
                 修改
@@ -75,10 +75,24 @@
         </el-form-item>
 
         <el-form-item label="所属权限" prop="PowerList">
-          <el-tree :data="powerList" show-checkbox node-key="ID" ref="tree"
-            @check="nodeCheck" accordion :props="defaultProps"
-            :expand-on-click-node="true"
-             style="margin-bottom:24px;margin-top:10px" >
+          <div style="background: #021627;">
+            <el-collapse>
+              <el-checkbox-group v-model="powerListArray" @change="collapseChange">
+                <el-collapse-item v-for="p in powerList" style="margin: 0.5rem">
+                  <template #title>
+                    <el-checkbox style="margin-left: 1rem" :label="p.ID" @change="checkboxClick(p)">{{p.PowerName}}</el-checkbox>
+                  </template>
+                  <span v-for="c in p.children">
+                    <el-checkbox style="margin-left: 1rem" :label="c.ID" >{{c.PowerName}}</el-checkbox>
+                  </span>
+                </el-collapse-item>
+              </el-checkbox-group>
+            </el-collapse>
+          </div>
+<!--          <el-tree :data="powerList" show-checkbox node-key="ID" ref="tree"-->
+<!--            @check="nodeCheck" accordion :props="defaultProps"-->
+<!--            :expand-on-click-node="true"-->
+<!--             style="margin-bottom:24px;margin-top:10px" >-->
             <!-- <span class="custom-tree-node" slot-scope="{ node, data }">
           <span>{{ node.label }}</span>
           <span>
@@ -103,13 +117,11 @@
             </el-button>
           </span>
         </span> -->
-          </el-tree>
+<!--          </el-tree>-->
         </el-form-item>
-        <el-form-item style="display: flex;justify-content: center;">
-          <el-button type="primary" @click="save">{{
-            form.isEdit ? '保存编辑' : '立即新增'
-          }}</el-button>
-          <el-button type="primary" @click="cancel">取消</el-button>
+        <el-form-item style="display: flex;justify-content: center;margin: 2rem 0">
+          <el-button type="primary" style="background-color: #FFFFFF;color: #000000" @click="cancel">取消</el-button>
+          <el-button type="primary" style="background-color: #64c8c8" @click="save">确认</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -133,6 +145,7 @@ export default {
         PowerList: null,
       },
       powerList: [],
+      powerListArray: [],
       roleList: [],
       currentPage: 1,
       total: 0,
@@ -200,6 +213,7 @@ export default {
       }
     },
     add() {
+      this.powerListArray = []
       this.form.isEdit = false;
       this.form = {
         RoleName: '',
@@ -211,7 +225,7 @@ export default {
 
       this.$nextTick(() => {
         this.$refs.form.clearValidate();
-        this.$refs.tree.setCheckedKeys([]);
+        // this.$refs.tree.setCheckedKeys([]);
       });
     },
     // async getRoles() {
@@ -252,7 +266,8 @@ export default {
       const { isEdit, RoleCode, RoleName, PowerList, RoleDesc, ID, RoleLevel } = this.form;
       let res = {};
       const obj = {
-        powerList: PowerList,
+        // powerList: PowerList,
+        powerList: this.powerListArray,
         roleCode: RoleCode,
         roleDesc: RoleDesc,
         roleName: RoleName,
@@ -288,9 +303,9 @@ export default {
       this.centerDialogVisible = false;
     },
     async edit(item) {
-      // this.$nextTick(() => {
-      //   this.$refs.form.clearValidate();
-      // });
+      this.$nextTick(() => {
+        this.$refs.form.clearValidate();
+      });
       this.form = { ...item };
       const res = await getPowerListByRoleID(item.ID);
       if (res.code === 20000) {
@@ -301,6 +316,8 @@ export default {
             return item.id;
           });
           this.form.PowerList = arr || [];
+          console.log("arr",arr)
+          this.powerListArray = arr
           if (!this.powerList) return;
           this.powerList.forEach((item) => {
             item.children.forEach((node) => {
@@ -314,7 +331,6 @@ export default {
                   arr = arr.filter((d) => d !== node.ID);
                 }
               });
-
             });
             // arr = arr.filter(item => item != item.ID)
             // console.log('一级菜单的ID',item.ID)
@@ -326,9 +342,9 @@ export default {
           arr = arr.filter(item => item !='123e43b101cfa5876db6501c1b5db60e')
           arr = arr.filter(item => item !='85c6e4edd4acd192fe4805250b06b759')
           arr = arr.filter(item => item !='e501bbaa44c82b30967d7217b8eb7363')
-          this.$nextTick(()=>{
-               this.$refs.tree.setCheckedKeys(arr)
-          })
+          // this.$nextTick(()=>{
+          //      this.$refs.tree.setCheckedKeys(arr)
+          // })
         });
       }
     },
@@ -374,9 +390,36 @@ export default {
         console.log('查看powerList', this.powerList)
       }
     },
-    nodeCheck(data, { checkedKeys, halfCheckedKeys }) {
-      this.form.PowerList = [...checkedKeys, ...halfCheckedKeys];
+    // nodeCheck(data, { checkedKeys, halfCheckedKeys }) {
+      // console.log(data,checkedKeys,halfCheckedKeys)
+    //   this.form.PowerList = [...checkedKeys, ...halfCheckedKeys];
+    // },
+    collapseChange(e){
+      // console.log('powerList',this.powerList)
+      // console.log('collapseChange',e)
+      // this.powerList.forEach(i=>{
+      //   console.log("powerList",i.children)
+      // })
     },
+
+    checkboxClick(e){
+      console.log('checkboxClick',e)
+      console.log('this.powerListArray.includes(e)',this.powerListArray.includes(e.ID))
+      if(this.powerListArray.includes(e.ID)){
+        e.children.forEach(c=>{
+          if(!this.powerListArray.includes(c.ID)){
+            this.powerListArray.push(c.ID)
+          }
+        })
+      }else {
+        // e.children.forEach(c=>{
+        //   if(this.powerListArray.includes(c.ID)){
+        //     this.powerListArray.filter(item => item !== c.ID)
+        //   }
+        // })
+      }
+    }
+
   },
 };
 </script>
@@ -387,6 +430,7 @@ export default {
 
 .headerBtn {
   // width: 8vw;
+  margin-top: 0.5rem;
   background-color: #64C8C8 !important;
 }
 

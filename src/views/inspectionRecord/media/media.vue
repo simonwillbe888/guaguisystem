@@ -1,9 +1,9 @@
 <template>
-  <div style="padding: 1%;min-width: 75rem;">
+  <div style="padding: 1%;min-width: 75rem; background: rgb(6,30,51);">
     <div class="equip-header content-header">
       <!-- <h3 class="equip-setting-title">{{ $t('inspect_record.real_alarm_list') }}</h3> -->
       <div style="display:inline;float:right">
-
+        <span>{{ $t('comment_vary.default_time_label') }}</span>
         <el-date-picker v-model="startVal" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
           :placeholder="$t('comment_vary.start_time_label')">
         </el-date-picker>
@@ -19,24 +19,24 @@
     </div>
     <div class="equip-body content-body">
       <div class="container" style="background-color: rgba(7, 24, 40, 0.5)">
-        <el-row style="height: 36rem;overflow-y:scroll">
+        <el-row style="height: 37rem">
           <el-col :xs="24" :sm="12" :md="6" v-for="(item, index) in list" :key="index">
-            <el-card class="box" :style="{ width: '20.625rem', height: '21.25rem' }">
+            <el-card class="box" :style="{ width: '21.625rem', height: '17rem', background: '#fff'}">
               <div class="box-content">
                 <div>
                   <div class="download" @click="download(item)">
                     <svg-icon icon-class="download"></svg-icon>
                   </div>
                   <!-- @click="largerPic(item.FilePath)" -->
-                  <el-image :src="item.FilePath" style="width: 20.625rem;height: 14.0625rem;" v-if="item.fileType == 1"
+                  <el-image :src="item.FilePath" style="width: 22rem;height: 11rem;" v-if="item.fileType == 1"
                     :preview-src-list="imgaeList"></el-image>
                   <!-- <img @click="largerPic(item.FilePath)" :src="item.FilePath" style="width: 20.625rem;height: 14.0625rem;" v-if="item.fileType == 1"> -->
                   <!-- <video ></video>     -->
-                  <iframe :src="item.FilePath" style="width: 20.625rem;height: 14.0625rem;" v-if="item.fileType == 4"
+                  <iframe :src="item.FilePath" style="width: 22rem;height: 11rem;" v-if="item.fileType == 4"
                     allowfullscreen="true" frameborder="0"></iframe>
                 </div>
                 <div class="box-content-detail">
-                  <div class="line" style="margin-top: .9375rem;">媒体内容：{{ item.fileType == 1 ? '图片' : item.fileType == 4 ?
+                  <div class="line" style="margin-top: 0.2rem;">媒体内容：{{ item.fileType == 1 ? '图片' : item.fileType == 4 ?
                     '视频' : '其他'
                   }}</div>
                   <div class="line">记录时间：{{ item.createTime }}</div>
@@ -66,7 +66,7 @@
 
   </div>
 </template>
-  
+
 <script>
 import {
   getPatrolFileList, GetPhotoData, GetVideoData, GetPTZFile, downLoadPTZFile
@@ -292,7 +292,7 @@ export default {
 }
 
 </script>
-  
+
 <style lang="scss" scoped>
 .equip-header {
   // padding: 1.25rem .625rem;
@@ -380,13 +380,15 @@ export default {
   }
 
   .box-content {
-    width: 20.625rem;
+    width: 21.625rem;
     height: 100%;
 
     .download {
       position: absolute;
-      margin-left: 18.75rem;
+      margin: 0.5rem 0 0 19rem;
       // top: .625rem;
+      width: 2rem;
+      height: 1.5rem;
       z-index: 999;
 
     }
@@ -395,12 +397,17 @@ export default {
       opacity: 0.5;
     }
 
+    .svg-icon {
+      width: 2em;
+      height: 1.5em;
+    }
+
     .box-content-detail {
       border: .0313rem solid #fff;
       height: 7.1875rem;
 
       .line {
-        color: #fff;
+        color: #000;
         margin-left: 1.625rem;
         margin-top: .625rem;
         font-size: 1rem;
@@ -511,4 +518,3 @@ export default {
 }
 
 </style>
-  

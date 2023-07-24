@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 1%">
+  <div style="padding: 1%; background: rgb(6,30,51);">
     <div class="inspection-header content-header">
       <!-- <h3 class="inspection-setting-title">
         {{ $t("process_config.taskProcess_manage_label") }}
@@ -43,12 +43,11 @@
           fit
           highlight-current-row
           size="small"
-          height="71vh"
+          height="39rem"
         >
           <el-table-column
             type="index"
             label="序号"
-            fixed="left"
             align="center"
             width="60"
           >
@@ -109,13 +108,12 @@
                 type="primary"
                 icon="el-icon-s-tools"
                 size="mini"
-                plain
                 @click="configInspectPoint(row)"
                 >配置流程</el-button
               >
               <el-button
                 class="process-operate"
-                style="background-color:#64C8C8 ;color:#fff"            
+                style="background-color:#64C8C8 ;color:#fff"
                 icon="el-icon-edit"
                 size="mini"
                 plain
@@ -137,7 +135,7 @@
     </div>
     <div class="dialog-sty" >
       <el-dialog style="width:50%;margin-left: 25%;"
-        
+
         :title="taskDialog[dialogType]"
         :visible.sync="processDialogVisible"
         :close-on-click-modal="false"
@@ -715,7 +713,7 @@ export default {
   }
   .inspec-setting-inquire {
     height: 4vh;
-   
+
     .inspect-operate {
       background-color: #64C8C8 !important;
     }
@@ -730,7 +728,7 @@ export default {
     // border-right: 3px solid rgba(44, 181, 171, 0.9);
     // border-bottom: 3px solid rgba(44, 181, 171, 0.9);
     // padding: 40px 20px 20px;
- 
+
     .inspect-task {
       font-size: 13px;
       width: 100%;
@@ -743,7 +741,7 @@ export default {
      height: 0 !important;
    }
 >>> .el-dialog {
-  
+
 }
 
 .dialog-sty {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style=" background: rgb(6,30,51);">
     <div class="power-container">
       <div class="content-header">
         <!-- <el-button type="primary" size="mini" @click="getTaskList">
@@ -8,7 +8,7 @@
       </div>
       <div class="content-body">
         <template>
-          <el-table :data="realTimeTasks" style="width: 100%"  >
+          <el-table :data="realTimeTasks" style="width: 100%" height="39rem"  >
             <el-table-column
               type="index"
               label="序号"
@@ -50,7 +50,6 @@
             <!-- <el-table-column prop="residueCount" align="center" label="剩余次数">
             </el-table-column> -->
             <el-table-column
-              fixed="right"
               align="center"
               label="操作"
               width="100"

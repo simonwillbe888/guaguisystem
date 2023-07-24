@@ -22,6 +22,7 @@
       </div> -->
       <el-dialog title="下载视频图片" :visible.sync="download">
         <div>
+          <span>{{ $t('comment_vary.default_time_label') }}</span>
           <el-date-picker v-model="startVal" type="date" value-format="yyyy-MM-dd"
             :placeholder="$t('comment_vary.start_time_label')">
           </el-date-picker>
@@ -79,7 +80,7 @@ export default {
       },
       confirm(){
         let that = this
-        that.actions = null 
+        that.actions = null
         if(this.Checked.length == 2){
           that.actions = 0
         }
@@ -110,7 +111,7 @@ export default {
           title: '提示',
           duration: 1000,
         });
-        
+
 
         let blob = new Blob([res], { type: "application/zip" });
         // let blob = new Blob([res]);//response.data为后端传的流文件
@@ -135,7 +136,7 @@ export default {
       }).finally(function () {
 
       })
-      
+
       },
     saveSetting() {
       this.$refs.form.validate(async (valid) => {
@@ -184,7 +185,7 @@ export default {
   .btn {
     text-align: center;
     font-size: 1vh;
-  
+
 
 
   }

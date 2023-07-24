@@ -1,16 +1,15 @@
 <template>
-  <div style="padding: 1%">
+  <div style="padding: 1%; background: rgb(6,30,51);">
     <div class="robot-header content-header">
       <!-- <h3 class="alarm-setting-title">{{ $t('alarm_setting.alarm_standard_settings') }}</h3> -->
       <el-button
-      style="margin: 0px"
-
+          style="margin:0"
           icon="el-icon-plus"
           type="success"
           size="mini"
           @click="addAlarmWindow()"
           >添加告警</el-button
-        > 
+        >
       <div class="alarm-setting-inquire">
         <!-- <span>{{ $t('alarm_setting.alarm_type_label') }}：</span> -->
         <el-select
@@ -78,7 +77,7 @@
         fit
         size="small"
         :empty-text="'暂无数据'"
-        height="36.5rem"
+        height="37rem"
       >
         <el-table-column type="index" label="序号" align="center" width="150">
         </el-table-column>
@@ -107,7 +106,7 @@
           align="center"
         >
           <template slot-scope="{ row }">
-            <span>{{ row.AlarmType ==1001?"行人告警": row.AlarmType ==1002?"非机动车告警": row.AlarmType ==1003?"异物告警": row.AlarmType ==1004?"温度告警": 
+            <span>{{ row.AlarmType ==1001?"行人告警": row.AlarmType ==1002?"非机动车告警": row.AlarmType ==1003?"异物告警": row.AlarmType ==1004?"温度告警":
             row.AlarmType ==1005?"湿度告警": row.AlarmType ==1006?"气体告警":row.AlarmType ==1007?"照明告警"
             : row.AlarmType ==1008?"违停逆行告警": row.AlarmType ==1009?"超速告警":row.AlarmType ==1010?"动物告警":row.AlarmType ==1012?"消防设备告警":
              row.AlarmType ==1011?"井盖异常告警":row.AlarmType ==1013?"火灾烟雾告警":row.AlarmType ==1014?"红外测温告警":
@@ -644,7 +643,7 @@ export default {
       });
     },
     editAlarm(obj) {
-  
+
       if (obj) {
         this.dialogFormVisible = true;
         this.dialogType = 'editAlarmTask';
@@ -657,7 +656,7 @@ export default {
     // 修改成功
     editSuccess(alarmData) {
       let self = this;
-      
+
       this.$refs.alarmForm.validate((valid) => {
         if (valid) {
           let param = {
@@ -741,7 +740,7 @@ export default {
         });
       }
     },
-  
+
     // 明细中的添加
     addDetail() {
       if (

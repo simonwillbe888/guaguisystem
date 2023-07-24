@@ -255,7 +255,7 @@
           <div style="position:absolute;left:27rem; top:15.5rem;">
             <div style="margin-left: 0.8rem">
               <i class="el-icon-turn-off" style="color:white;font-size: 3rem" v-if="controlManager" @click="()=>{controlManager = false}"></i>
-              <i class="el-icon-open" style="color:#15B3B4;font-size: 3rem" v-if="!controlManager" @click="()=>{controlManager = true}"></i>
+              <i class="el-icon-open" style="color:#64c8c8;font-size: 3rem" v-if="!controlManager" @click="()=>{controlManager = true}"></i>
             </div>
             <div style="color: white;">控制管理</div>
           </div>
@@ -454,7 +454,7 @@
       <el-col :span="6">
         <div class="alarm-list back-shaodow">
           <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0.5rem;display: inline-block;">告警列表</div>
-          <div style="color:#15B3B4;margin-left: 15rem; padding-top: 0.5rem;padding-bottom: 0.5rem;display: inline-block;cursor: pointer" @click="goRealAlarm()">更多</div>
+          <div style="color:#64c8c8;margin-left: 15rem; padding-top: 0.5rem;padding-bottom: 0.5rem;display: inline-block;cursor: pointer" @click="goRealAlarm()">更多</div>
 
           <div class="alarm">
             <div class="myTable">
@@ -2554,7 +2554,7 @@ export default {
     }
 
     // .closeBroad:hover{
-    //   background-color: #15B3B4;
+    //   background-color: #64c8c8;
     // }
 
   }
@@ -2623,7 +2623,7 @@ export default {
       }
 
       .arrow:active {
-        color: #15B3B4;
+        color: #64c8c8;
       }
 
       .onLine {

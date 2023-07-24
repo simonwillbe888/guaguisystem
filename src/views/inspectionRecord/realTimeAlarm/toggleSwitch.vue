@@ -128,7 +128,7 @@ export default {
       left: 0;
       //z-index: 3;
       transform: translate3d(0, 0, 0);
-      background-color: #15B3B4;
+      background-color: #64c8c8;
     }
   }
 }

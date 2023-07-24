@@ -192,7 +192,7 @@ img {
     }
 
     .content-header {
-      margin: 0px 10px;
+      margin: 0px 10px 0.5rem;
       height: 50px;
       padding: 10px 0;
       background-color: rgba($color: #071828, $alpha: 0.5);
@@ -246,7 +246,7 @@ img {
       }
 
       .el-table thead .el-table__cell {
-        background-color: #031B31;
+        //background-color: #031B31;
         font-size: 16px;
         height: 40px;
         font-weight: normal;
@@ -273,12 +273,15 @@ img {
     }
 
     .pagination-container {
+      display: flex;
       background: transparent;
-      height: 42px;
+      height: 48px;
+      justify-content: right;
+      align-items: center;
 
       .el-pagination {
         position: absolute;
-        bottom: 10px;
+        //bottom: 10px;
       }
 
       .el-pagination__total,

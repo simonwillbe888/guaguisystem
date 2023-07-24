@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div style=" background: rgb(6,30,51);">
     <div>
       <div class="content-header">
-        <el-button type="primary" icon="el-icon-plus"   size="mini" @click="addChargingStrategy(1)">
+        <el-button type="primary" icon="el-icon-plus" style="margin-top: 0.5rem"  size="mini" @click="addChargingStrategy(1)">
           新增充电站
         </el-button>
       </div>
       <div class="content-body">
         <template>
-          <el-table :data="strategyList" style="width: 100%"   :empty-text="'暂无数据'">
+          <el-table :data="strategyList" style="width: 100%"  height="39rem" :empty-text="'暂无数据'">
             <el-table-column
               type="index"
               align="center"
@@ -17,7 +17,7 @@
             >
             </el-table-column>
             <el-table-column
-             
+
               prop="chargePileCode"
               label="充电站编码"
               align="center"
@@ -42,7 +42,7 @@
  -->
             <!-- <el-table-column
               prop="maxChargingSecondTime"
-             
+
               align="center"
               label="最大充电时长(分钟)"
             >
@@ -50,7 +50,7 @@
             <el-table-column
               prop="mapID"
               align="center"
-              
+
               label="地图ID"
             >
             </el-table-column>
@@ -63,27 +63,26 @@
             </el-table-column> -->
             <el-table-column
               prop="station"
-              
+
               label="活动站点编号"
               align="center"
             >
             </el-table-column>
             <el-table-column
-              prop="parameter1"      
+              prop="parameter1"
               label="充电状态"
               align="center"
             >
             <template slot-scope="{row}"> <span>{{ row.parameter1==0?"未充电":"充电中" }}</span></template>
             </el-table-column>
             <el-table-column
-              prop="active"      
+              prop="active"
               label="锁定状态"
               align="center"
             >
             <template slot-scope="{row}"> <span>{{ row.active==false?"锁定":"空闲" }}</span></template>
             </el-table-column>
             <el-table-column
-              fixed="right"
               align="center"
               label="操作"
               width="150"

@@ -3,6 +3,7 @@
     <div class="selectDate">
       <div style="margin:.625rem ;flex: 1;display: flex;position: relative;i">
         <div class="block">
+          <span>{{ $t('comment_vary.default_time_label') }}</span>
           <el-date-picker v-model="date"   value-format="yyyy-MM-dd"   type="daterange" align="right" unlink-panels range-separator="至"
             start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
           </el-date-picker>
@@ -112,7 +113,7 @@ export default {
     console.log('查询日期')
     this.time = this.date;
    }
- 
+
 
   },
 }

@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 1%">
+  <div style="padding: 1%; background: rgb(6,30,51);">
     <div class="equip-header content-header">
       <!-- <h3 class="equip-setting-title">{{ $t('inspect_record.real_alarm_list') }}</h3> -->
 <!--      <template>-->
@@ -47,7 +47,7 @@
     </div>
     <div class="equip-body content-body">
       <el-table @row-click="getDetailMessage" class="equip-data" :data="alarmInfoArr"
-        header-row-class-name="header-row-class" row-class-name="row-class" fit height="36.5rem" highlight-current-row
+        header-row-class-name="header-row-class" row-class-name="row-class" fit height="35.5rem" highlight-current-row
         size="small" :empty-text="'暂无数据'">
         <el-table-column type="index" label="序号" align="center" width="80">
         </el-table-column>

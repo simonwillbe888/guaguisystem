@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 1%">
+  <div style="padding: 1%; background: rgb(6,30,51);">
     <div class="inspection-header content-header">
       <!-- <h3 class="inspection-setting-title">
         {{ $t("plan_config.robotTask_manage") }}
@@ -22,7 +22,7 @@
     <div class="robot-body content-body">
       <div class="inspectTask-table">
         <el-table class="inspect-task" ref="singleTable" :data="planTasks" header-row-class-name="header-row-class"
-          row-class-name="row-class" style="width:100%" size="small" height="70vh">
+          row-class-name="row-class" style="width:100%" size="small" height="39rem">
           <!-- <el-table-column prop="id" label="计划编号" align="center" width="70">
             <template slot-scope="{ row }">
               <span>{{ row.id }}</span>
@@ -90,7 +90,7 @@
             prop="ResidueCount"
             label="剩余次数"
             align="center"
-            
+
           >
             <template slot-scope="{ row }">
               {{ row.ResidueCount === row.ExecuteCount ? 0 : row.ResidueCount }}
@@ -100,7 +100,7 @@
             prop="type"
             label="任务详情"
             align="center"
-            
+
           >
             <template slot-scope="{ row }">
               <el-button
@@ -124,7 +124,7 @@
                 >{{ $t('plan_config.inqireDetail_label') }}</el-button
               > -->
               <el-dropdown>
-                <el-button size="mini" type="primary"> 
+                <el-button size="mini" type="primary">
                   更多<i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown">
@@ -175,12 +175,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="初始水平角度" prop="YunPAngle">
-          <el-input style="width:12vw" placeholder="请输入初始水平角度" 
+          <el-input style="width:12vw" placeholder="请输入初始水平角度"
           :disabled="taskForm.isDetail" @blur="handleYunA()"
             v-model="taskForm.YunPAngle"></el-input>
         </el-form-item>
         <el-form-item label="初始垂直角度" prop="YunTAngle">
-          <el-input style="width:12vw" placeholder="请输入初始垂直角度" 
+          <el-input style="width:12vw" placeholder="请输入初始垂直角度"
           :disabled="taskForm.isDetail" @blur="handleYunT()"
             v-model="taskForm.YunTAngle" ></el-input>
         </el-form-item>
@@ -841,11 +841,11 @@ export default {
             let filteredArr = arr.filter(item => !elementsToRemove.includes(item));
             if(obj.detectionClass == 1){
               const device = ['1012','1017','1018']
-              filteredArr = filteredArr.filter(item => !device.includes(item))  
+              filteredArr = filteredArr.filter(item => !device.includes(item))
             }
             if(obj.detectionClass == 3){
               const roadDetect = ['1001','1002','1008','1016']
-              filteredArr = filteredArr.filter(item => !roadDetect.includes(item))  
+              filteredArr = filteredArr.filter(item => !roadDetect.includes(item))
             }
             obj.detectionTypeList = filteredArr
           }

@@ -9,42 +9,49 @@
 
     <el-container class="page-container">
       <el-aside class="page-left">
-        <el-collapse v-model="activeName" accordion>
-          <el-collapse-item title="任务模板列表" name="1">
-            <div
-              class="list-item oneLine"
-              v-for="item in templateList"
-              :key="item.id"
-            >
-              模板ID：{{ item.id }}
-              <span style="margin-left: 5px"
-                >模板名称：{{ item.taskName }}</span
-              >
-            </div>
-          </el-collapse-item>
-        </el-collapse>
+        <div style="border-radius: 15px;background-color: #7f93a6;height: 26rem">
+          <el-tree
+            :data="templateList"
+            :props="templateList"
+            :default-expand-all="true"
+            @node-click=""></el-tree>
+        </div>
+<!--        <el-collapse v-model="activeName" accordion>-->
+<!--          <el-collapse-item title="任务模板列表" name="1">-->
+<!--            <div-->
+<!--              class="list-item oneLine"-->
+<!--              v-for="item in templateList"-->
+<!--              :key="item.id"-->
+<!--            >-->
+<!--              模板ID：{{ item.id }}-->
+<!--              <span style="margin-left: 5px"-->
+<!--                >模板名称：{{ item.taskName }}</span-->
+<!--              >-->
+<!--            </div>-->
+<!--          </el-collapse-item>-->
+<!--        </el-collapse>-->
         <el-tag class="header-label" style="margin-bottom:10px">动作</el-tag>
         <el-scrollbar>
           <el-button
             class="common-btn comp"
-            icon="el-icon-connection"
+            icon="el-icon-rank"
             plain
             @click="operateRobotic()"
             >移动</el-button
           >
           <el-button
             class="common-btn comp"
-            icon="el-icon-video-camera-solid"
-            plain
-            @click="operateCamera()"
-            >录像</el-button
-          >
-          <el-button
-            class="common-btn comp"
             icon="el-icon-camera"
             plain
             @click="operateThermalCame()"
-            >拍照</el-button
+          >拍照</el-button
+          >
+          <el-button
+            class="common-btn comp"
+            icon="el-icon-video-camera-solid"
+            plain
+            @click="operateCamera()"
+          >录像</el-button
           >
           <!-- <el-button
             class="common-btn comp"
@@ -115,21 +122,24 @@
                 float: right;
                 height: 32px;
                 line-height: 32px;
+                margin-right: 1rem;
               "
             >
               <el-button
                 class="edit-btn"
                 icon="el-icon-edit"
+                size="mini"
                 plain
                 @click="editParam(item, index)"
-                >修 改</el-button
+                >修改</el-button
               >
               <el-button
                 class="delete-btn"
                 icon="el-icon-delete"
+                size="mini"
                 plain
                 @click="deleteParam(index)"
-                >删 除</el-button
+                >删除</el-button
               >
             </div>
           </div>
@@ -940,7 +950,7 @@ export default {
         ],
       },
       activeName: '1',
-      templateList: [],
+      templateList: [{id:0,label: '任务模板列表',children:[]}],
       patrolLocationList: [],
       sonTemplateDialogTitle: '',
     };
@@ -950,6 +960,30 @@ export default {
     this.getTemplates();
     this.getAllPatrolLocationList();
     this.initInspectOpt();
+    this.$nextTick(()=>{
+      const menuItems = document.querySelectorAll('.el-menu-item');
+      menuItems.forEach(menuItem => {
+        if (menuItem.querySelector('span').textContent == '巡检流程配置') {
+          menuItem.classList.toggle('is-active')
+          menuItem.style = 'color: rgb(100, 200, 200); border-bottom-color: rgb(100, 200, 200); background-color: rgb(3, 27, 49);'
+        }
+      });
+    })
+  },
+  beforeDestroy() {
+    // console.log('route',this.$route.path)
+    if(this.$route.path != '/taskConfig/processTask'){
+      this.$nextTick(()=>{
+        const menuItems = document.querySelectorAll('.el-menu-item');
+        menuItems.forEach(menuItem => {
+          if (menuItem.querySelector('span').textContent == '巡检流程配置') {
+            menuItem.classList.toggle('is-active')
+            menuItem.style = 'color: rgb(255, 255, 255); border-bottom-color: transparent; background-color: rgb(3, 27, 49);'
+          }
+        });
+      })
+    }
+
   },
   methods: {
     initInspectOpt() {
@@ -1020,9 +1054,14 @@ export default {
       const res = await getAllPatrolTemplate();
       if (res.code === 20000) {
         let arr = res.data;
-        // console.log("查看巡检流程列表",arr)
+        console.log("查看巡检流程列表",arr)
         if (arr && arr.length) {
-          this.templateList = arr.filter((item) => item.id != id) || [];
+          // this.templateList = arr.filter((item) => item.id != id) || [];
+          arr.forEach(i => {
+            this.templateList[0].children.push({
+              label: '任务ID:'+i.id+'  模板名称:'+i.taskName
+            })
+          })
         }
       }
       // } catch (error) {}
@@ -1467,16 +1506,17 @@ export default {
 
 <style lang="scss" scoped>
 .page {
+  background: rgb(6,30,51);
   .page-title {
     line-height: 28px;
     font-size: 13px;
     font-weight: 700;
     color: rgb(243, 239, 239);
     padding-left: 15px;
-    background: rgb(46, 80, 104);
+    //background: rgb(46, 80, 104);
     // border-bottom: 1px solid rgb(4, 114, 141);
     z-index: 99;
-    box-shadow: 0 2px 6px 0 rgba(209, 207, 207, 0.1);
+    //box-shadow: 0 2px 6px 0 rgba(209, 207, 207, 0.1);
     .right-btn {
       float: right;
       margin-right: 10px;
@@ -1491,7 +1531,7 @@ export default {
       opacity: 0.7;
       font-size: initial;
       // margin-right: 10px;
-      background: rgba(43, 69, 125, 0.3);
+      background: transparent;
       padding: 10px;
       width: 24rem !important;
       .el-collapse {
@@ -1526,7 +1566,7 @@ export default {
             width: 100%;
             cursor: pointer;
             &:hover {
-              background: rgba(69, 173, 243, 0.2);
+              //background: rgba(69, 173, 243, 0.2);
             }
           }
         }
@@ -1538,7 +1578,7 @@ export default {
         border-radius: 0;
         line-height: 40px;
         height: 40px;
-        background: rgba(43, 69, 125, 0.3);
+        //background: rgba(43, 69, 125, 0.3);
       }
     }
   }
@@ -1557,8 +1597,8 @@ export default {
   width: 100%;
   height: 34px;
   line-height: 34px;
-  background-color: rgba(6, 60, 122, 0.6);
-  color: rgba(229, 255, 255, 0.8);
+  background-color: transparent;
+  color: #FFFFFF;
   font-size: 14px;
   font-weight: bold;
   border: none;
@@ -1590,7 +1630,7 @@ export default {
 }
 
 .comp {
-  background-color: lightyellow;
+  background-color: #b3bfca;
 }
 
 .file {
@@ -1737,6 +1777,16 @@ export default {
   height: 1.875rem;
   background-color: transparent;
   color: #fff;
+}
+
+::v-deep .el-tree{
+  top: 1rem;
+  background: transparent;
+}
+
+::v-deep .el-tree-node__content{
+  background-color: transparent;
+  color: #000000;
 }
 
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 1%">
+  <div style="padding: 1%; background: rgb(6,30,51);">
     <div class="robot-header content-header">
       <!-- <h3 class="robot-setting-title">
         {{ $t("equip_setting.equip_list_label") }}
@@ -20,14 +20,14 @@
           size="mini"
           @click="plusAccesso()"
           >{{ $t('equip_setting.add_equip_label') }}</el-button>
-        
+
         <!-- <el-button
           type="success"
           class="robot-operate"
           size="mini"
           @click="init"
           >{{ $t('equip_setting.inquire_label') }}</el-button >-->
-        
+
       </div>
     </div>
     <div class="robot-body content-body">
@@ -38,6 +38,7 @@
         header-row-class-name="header-row-class"
         row-class-name="row-class"
         fit
+        height="39rem"
         highlight-current-row
         size="small"
         @current-change="handleCurrentChange"
@@ -79,12 +80,24 @@
             <span>{{ text(row.state, 3) }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="details"
-          label="配件详情"
-          align="center"
-          
-        >
+<!--        <el-table-column-->
+<!--          prop="details"-->
+<!--          label="配件详情"-->
+<!--          align="center"-->
+
+<!--        >-->
+<!--          <template slot-scope="{ row }">-->
+<!--            <el-button-->
+<!--              type="primary"-->
+<!--              icon="el-icon-document"-->
+<!--              size="mini"-->
+<!--              plain-->
+<!--              @click="editAccessoed(row, 1)"-->
+<!--              >{{ $t('plan_config.inqireDetail_label') }}</el-button-->
+<!--            >-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+        <el-table-column prop="operate" label="操作" width="300"  align="center">
           <template slot-scope="{ row }">
             <el-button
               type="primary"
@@ -92,15 +105,11 @@
               size="mini"
               plain
               @click="editAccessoed(row, 1)"
-              >{{ $t('plan_config.inqireDetail_label') }}</el-button
+            >{{ $t('plan_config.inqireDetail_label') }}</el-button
             >
-          </template>
-        </el-table-column>
-        <el-table-column prop="operate" label="操作"           width="200"  align="center">
-          <template slot-scope="{ row }">
             <el-button
               class="robot-operate"
-              style="background-color:#64C8C8 ;color:#fff"    
+              style="background-color:#64C8C8 ;color:#fff"
 
               icon="el-icon-edit"
               size="mini"
@@ -558,7 +567,7 @@ export default {
               rtsp: accessoArr[i].configJson.rtsp,
             };
             self.accessoInfoArr.push(rowObj);
-        
+
           }
         })
         .catch((error) => {
@@ -595,7 +604,7 @@ export default {
           message: '当前配件使用中，是否进行修改',
           duration: 0
         });
-      }   
+      }
     },
 
     plusAccesso() {
@@ -873,7 +882,7 @@ export default {
   .robot-data {
     font-size: 13px;
     width: 100%;
-    background: rgba(1, 10, 53, 0);
+    //background: rgba(1, 10, 53, 0);
     color: #301d0f;
   }
 }

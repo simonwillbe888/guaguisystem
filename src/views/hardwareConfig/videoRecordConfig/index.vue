@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="background: rgb(3 27 49);">
     <div class="content-header">
       <el-button class="headerBtn" size="mini" @click="add" icon="el-icon-plus">新增录像机配置</el-button>
 
@@ -40,7 +40,7 @@
     </div>
     <div class="content-body">
       <template>
-        <el-table :data="videoRecordList" style="width: 100%"  height="36.5rem" :empty-text="'暂无数据'">
+        <el-table :data="videoRecordList" style="width: 100%"  height="39rem" :empty-text="'暂无数据'">
           <el-table-column type="index" label="序号" align="center" width="150">
           </el-table-column>
           <!-- <el-table-column prop="dvrbrand" label="配件ID"> </el-table-column> -->
@@ -54,7 +54,6 @@
           <el-table-column prop="ip" align="center" label="IP地址">
           </el-table-column>
           <el-table-column
-            fixed="right"
             align="center"
             label="操作"
             width="400"
@@ -275,7 +274,7 @@
               </template>
             </el-table-column>
             <el-table-column prop="channel" label="通道号"> </el-table-column>
-            <el-table-column fixed="right" label="操作" width="70">
+            <el-table-column label="操作" width="70">
               <template slot-scope="{ row }">
                 <el-button type="danger" @click="delDetail(row)" size="mini">
                   删除

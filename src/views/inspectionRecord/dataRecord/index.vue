@@ -1,8 +1,8 @@
 <template>
-  <div style="padding:1%">
+  <div style="padding:1%; background: rgb(6,30,51);">
     <div class="content-header">
       <div style="display:inline;float: right;">
-        <span>起止时间</span>
+        <span>{{ $t('comment_vary.default_time_label') }}</span>
         <el-date-picker v-model="startVal" type="date" value-format="yyyy-MM-dd"
           :placeholder="$t('comment_vary.start_time_label')">
         </el-date-picker>
@@ -14,10 +14,10 @@
         <el-button icon="el-icon-download" style="background-color: #64C8C8" size="mini" @click.native="exportAll()">导出列表</el-button>
 
       </div>
-    
+
     </div>
     <div class="equip-body content-body">
-      <el-table class="equip-data" :data="alarmInfoArr" header-row-class-name="header-row-class" height="36.5rem"
+      <el-table class="equip-data" :data="alarmInfoArr" header-row-class-name="header-row-class" height="35.5rem"
         row-class-name="row-class" fit highlight-current-row size="small" :empty-text="'暂无数据'"><el-table-column
           type="index" label="序号" align="center" width="100">
         </el-table-column>
@@ -234,7 +234,7 @@ export default {
           duration: 2000,
         });
       }
-      
+
 
     },
     setPage() {

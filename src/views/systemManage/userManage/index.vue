@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style=" background: rgb(6,30,51);">
     <div class="content-header">
       <div style="display:inline;float: right;">
       <el-input
@@ -31,7 +31,7 @@
     </div>
     <div class="content-body">
       <template>
-        <el-table :data="userList" style="width: 100%">
+        <el-table :data="userList" style="width: 100%" height="36.5rem">
           <el-table-column type="index" label="序号" align="center" width="80">
           </el-table-column>
           <el-table-column
@@ -72,7 +72,6 @@
           </el-table-column>
           <el-table-column
             align="center"
-            fixed="right"
             label="操作"
             width="200"
           >
@@ -189,10 +188,8 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" @click="save">{{
-            addForm.isEdit ? '保存编辑' : '立即新增'
-          }}</el-button>
-          <el-button type="primary" @click="cancel">取消</el-button>
+          <el-button type="primary" style="background-color: #FFFFFF;color: #000000" @click="cancel">取消</el-button>
+          <el-button type="primary" style="background-color: #64C8C8FF" @click="save">确认</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -406,6 +403,7 @@ export default {
 }
 .headerBtn {
   // width: 8vw;
+  margin-top: 0.5rem;
   background-color: #64C8C8 !important;
 }
 .content-header {
@@ -416,11 +414,11 @@ export default {
   width: 70%;
   margin-left: 10%;
 }
-::v-deep  .el-input__inner
+::v-deep .el-input__inner
  {
   height: 1.875rem;
   background-color: #021627!important;
-  border: 1px solid transparent;
+  //border: 1px solid transparent;
   color: #fff;
 }
 </style>

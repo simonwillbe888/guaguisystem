@@ -1,14 +1,14 @@
 <template>
-  <div>
+  <div style=" background: rgb(6,30,51);">
     <div>
       <div class="content-header" >
-         <el-button type="primary" icon="el-icon-plus"  size="mini" @click="addChargingStrategy(1)">
+         <el-button type="primary" icon="el-icon-plus" style="margin-top: 0.5rem"  size="mini" @click="addChargingStrategy(1)">
            新增充电策略
         </el-button>
       </div>
       <div class="content-body">
         <template>
-          <el-table :data="strategyList" style="width: 100%"   :empty-text="'暂无数据'">
+          <el-table :data="strategyList" style="width: 100%"  height="39rem"  :empty-text="'暂无数据'">
             <el-table-column
               type="index"
               label="序号"
@@ -66,7 +66,6 @@
               </template>
             </el-table-column>
             <el-table-column
-              fixed="right"
               align="center"
               label="操作"
               width="140"
@@ -194,7 +193,7 @@
                 format="HH:mm:ss"
           >
           </el-time-picker>
-          
+
         </el-form-item>
         <el-form-item prop="endTime" label="策略失效时间">
           <el-time-picker
@@ -335,7 +334,7 @@ export default {
         this.form = {
           ...item,
         };
-        
+
       }
       this.$nextTick(() => {
         this.$refs.form.clearValidate();
@@ -402,7 +401,7 @@ export default {
         this.form.startTime = '1111-10-10T' + this.form.startTime
         this.form.endTime = '9999-10-10T' + this.form.endTime
         console.log("查看参数",this.form)
-        
+
         const res = await addNormalStrategy(this.form);
         // console.log("查看新增的策略",res)
         if (res.code === 20000) {
@@ -415,7 +414,7 @@ export default {
           });
           this.getChargeStrategyList();
         }else{
-          this.form.startTime = null 
+          this.form.startTime = null
           this.form.endTime = null
         }
       }
@@ -424,7 +423,7 @@ export default {
         this.form.endTime = '9999-10-10T'  + this.form.endTime
         console.log("查看参数",this.form)
         const res = await updateNormalStrategy(this.form);
-      
+
         if (res.code === 20000) {
           this.centerDialogVisible = false;
           this.$notify({
@@ -435,7 +434,7 @@ export default {
           });
           this.getChargeStrategyList()
         }else{
-          this.form.startTime = null 
+          this.form.startTime = null
           this.form.endTime = null
         }
       }

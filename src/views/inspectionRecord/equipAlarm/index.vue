@@ -1,11 +1,11 @@
 <template>
-  <div style="padding: 1%">
+  <div style="padding: 1%; background: rgb(6,30,51);">
     <div class="equip-header content-header">
       <!-- <h3 class="equip-setting-title">
         {{ $t("inspect_record.equip_alarm_statics") }}
       </h3> -->
-      <div class="robot-setting-inquire">
- 
+      <div class="robot-setting-inquire" style="float: right">
+
         <span>{{ $t('comment_vary.default_time_label') }}</span>
         <el-date-picker v-model="startVal" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
           :placeholder="$t('comment_vary.start_time_label')">
@@ -21,7 +21,7 @@
           </el-select>
         </div>
         <el-button  @click.native="init">查询</el-button>
-        <el-button icon="el-icon-download" 
+        <el-button icon="el-icon-download"
           size="mini" @click="exportAll()">导出列表</el-button>
       </div>
 
@@ -38,7 +38,7 @@
 
     <div class="equip-body content-body">
       <el-table class="equip-data" :data="alarmInfoArr" header-row-class-name="header-row-class"
-        row-class-name="row-class" fit height="36.5rem" highlight-current-row size="small"
+        row-class-name="row-class" fit height="37rem" highlight-current-row size="small"
         :empty-text="'暂无数据'"><el-table-column type="index" label="序号" align="center" width="100">
         </el-table-column>
         <el-table-column prop="PlanName" label="计划名称" align="center">
@@ -246,9 +246,10 @@ export default {
         endTime: self.endVal,
         isExitAlarm: self.condition,
       };
+      console.log('params',params)
       getPageList(params)
         .then((response) => {
-          console.log("查看response", response, params)
+          console.log("查看response", response)
           let recordArr = response.data.records;
           self.total = response.data.total;
           if (response.data.total > 0) {
@@ -430,10 +431,13 @@ export default {
       console.log('告警信息', e)
     },
     async getTaskType() {
-      const res = await getTaskTypeList();
-      if (res.code === 20000) {
-        this.taskTypes = res.data;
-      }
+      await getTaskTypeList().then(res=>{
+        console.log('getTaskTypeList',res)
+        if (res.code === 20000) {
+          this.taskTypes = res.data;
+        }
+      })
+
     },
   },
 };
@@ -495,7 +499,7 @@ export default {
 }
 
 .detail-dialog {
-  
+
   ::v-deep .el-dialog {
     background-color: #132B41 !important;
 

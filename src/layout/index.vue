@@ -286,15 +286,15 @@ export default {
         color: #fff;
 
         .svg-icon {
-          font-size: 1.25rem;
+          font-size: 1rem;
           // margin-bottom: .5rem;
           margin-top: .25rem;
         }
 
         .name {
-          font-size: 1.25rem;
+          font-size: 1rem;
           // height: 3.75rem;
-          line-height: 2.1875rem;
+          line-height: 1.5rem;
           width: 100%;
           overflow: hidden;
         }
