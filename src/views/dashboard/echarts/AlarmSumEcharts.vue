@@ -45,7 +45,7 @@ export default {
           textStyle: {//设置主标题样式
             fontSize: 40,
             color: '#666',
-            backroung: 'blue'
+            background: 'blue'
           },
           subtextStyle: {//设置副标题样式
             fontSize: 20,
@@ -67,6 +67,7 @@ export default {
           right: '20',//图标在前文字在后，图例靠右居中显示 （也可以是: left || center || right || 百分比：xx% || xx(默认单位px)  ）
           y: 'center',//图例y轴居中（也可以是: top || center || bottom || 百分比：xx% || xx(默认单位px)  ）
           itemStyle: {},//设置图例前面的图标样式
+          itemWrap: false,
           textStyle: {//设置图例文字样式
             fontSize: 14,
             color: '#ffffff'

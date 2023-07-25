@@ -1,13 +1,9 @@
 <template>
-  <div style="">
-    <!-- <el-button class="el-icon-phone-outline" v-if="!speak" @click="begin" size="mini" type="primary">开始对讲</el-button>
-    <el-button class="el-icon-phone-outline" v-if="speak" @click="end"  size="mini" type="primary">关闭对讲</el-button> 
-  -->
-    <i class="el-icon-microphone" v-if="!speak" @click="begin"></i>
-    <div @click="end">
-      <svg-icon icon-class="closeMic" v-if="speak"></svg-icon>
-    </div>
-    <iframe id="startTalk" src="/demo/cn/demo.html" frameborder="0" style="display: none;"></iframe>
+  <div>
+
+    <iframe id="startTalk" hidden="hidden" src="/demo/cn/demo.html" frameborder="0" style="width: 0;height: 0;" ></iframe>
+    <i class="el-icon-microphone" style="border: solid white;border-radius: 20px;color:white;font-size: 2rem" v-if="!speak" @click="begin()"></i>
+    <i class="el-icon-turn-off-microphone" style="border: solid #15B3B4;border-radius: 20px;color:#15B3B4;font-size: 2rem" v-if="speak" @click="end()"></i>
 
   </div>
 </template>
@@ -74,11 +70,11 @@ export default {
      * 开始对讲
      */
     begin() {
-      
+
       // console.log('查看id', typeof this.carID, this.carID)
 
        this.openSpeak().then((res)=>{
- 
+
        })
 
      },
@@ -91,7 +87,7 @@ export default {
           }, 1000)
           startTalk(this.carID).then((res) => {
           console.log('对讲接口调用',res)
-        if (res.code == 20000) {   
+        if (res.code == 20000) {
           this.speak = true
         }
         else{
@@ -103,7 +99,7 @@ export default {
 
     },
     functionForJs(){
-      
+
         this.speak = false
 
     },

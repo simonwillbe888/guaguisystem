@@ -183,6 +183,7 @@
              ref="vue3dLoaderDiv">
 
           <vue3dLoader
+            style="overflow:hidden;"
             id="vue3dLoader"
             ref="model"
             :height="vue3dLoaderHeight"
@@ -1006,13 +1007,23 @@ export default {
       const vue3dLoader = document.getElementById('vue3dLoader');
       vue3dLoader.classList.toggle("iframe-fullScreen")
     },
+
     judgeIsFullScreen() {
       window.onresize = () => {
         // 可视区域的高度
         // const clientHeight = document.documentElement.clientHeight || document.body.clientHeight
         // screen是window的属性方法，window.screen可省略window，指的是窗口
         // screen.height == clientHeight
-        this.vue3dLoaderHeight = this.$refs.vue3dLoaderDiv.offsetHeight
+        this.$nextTick(()=>{
+          // this.vue3dLoaderHeight = this.$refs.vue3dLoaderDiv.offsetHeight
+          const menuItems = document.querySelectorAll('.viewer-canvas');
+          console.log('viewer-canvas',menuItems,document.documentElement.clientHeight)
+          menuItems.forEach(menuItem => {
+              // menuItem.height = document.documentElement.clientHeight/3
+              // menuItem.offsetHeight = document.documentElement.clientHeight/3
+              menuItem.style = "height: "+document.documentElement.clientHeight/3+"px;width:"+document.documentElement.clientWidth/2+"px;"
+          });
+        })
       }
     },
 
