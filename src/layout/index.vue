@@ -33,6 +33,7 @@
               class="user-avatar"
             /> -->
             <i style="font-size: 1.5vw; color: #fdfdfd" class="el-icon-user-solid" />
+            <span style="color:#fff;font-size: 1vw;" >{{ nickName }}</span>
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dropdown">
             <el-dropdown-item @click.native="DialogVisible = true">
@@ -98,6 +99,7 @@ export default {
       },
       DialogVisible: false,
       interValTime: '',
+      nickName:'',
     };
   },
   created() {
@@ -106,14 +108,13 @@ export default {
   },
   mounted() {
     // this.permission_routes=  sessionStorage.getItem('sessionRoles')
-    // console.log('查看cookie',this.permission_routes)
+    this.nickName = this.$store.getters.name
     const { permission_routes } = this;
     let route = this.$route;
     if (permission_routes && permission_routes.length && route.meta) {
       permission_routes.forEach((item) => {
         if (item.meta && item.meta.id === route.meta.parent_id) {
           this.currentManue = item;
-          // console.log("导航子菜单",permission_routes)
         }
       });
       this.currentManue.currentPath = route.path;
@@ -225,7 +226,7 @@ export default {
   background: rgb(8, 46, 80);
   min-height: 100%;
   // max-width: 100%;
-  min-width: 80rem;
+  min-width: 1180px;
   // min-height: 60rem;
   overflow: hidden;
 

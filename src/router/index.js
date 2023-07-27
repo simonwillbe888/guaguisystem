@@ -434,28 +434,28 @@ export const asyncRoutes = [
         },
 
       },
-      // {
-      //   path: 'purviewManage',
-      //   name: 'system_purview_manage',
-      //   component: () => import('@/views/systemManage/purviewManage/index'),
-      //   meta: {
-      //     title: 'menu.sys_purview_mg',
-      //     //   icon: 'battery',
-      //     parent_id: 6,
-      //     roles: ['PowerSetting'],
-      //   },
-      // },
-      // {
-      //   path: 'systemSetting',
-      //   name: 'system_setting',
-      //   component: () => import('@/views/systemManage/systemSetting/index'),
-      //   meta: {
-      //     title: 'menu.system_setting',
-      //     //   icon: 'battery',
-      //     parent_id: 6,
-      //     roles: ['SysSetting'],
-      //   },
-      // },
+      {
+        path: 'purviewManage',
+        name: 'system_purview_manage',
+        component: () => import('@/views/systemManage/purviewManage/index'),
+        meta: {
+          title: 'menu.sys_purview_mg',
+          //   icon: 'battery',
+          parent_id: 6,
+          roles: ['PowerSetting'],
+        },
+      },
+      {
+        path: 'systemSetting',
+        name: 'system_setting',
+        component: () => import('@/views/systemManage/systemSetting/index'),
+        meta: {
+          title: 'menu.system_setting',
+          //   icon: 'battery',
+          parent_id: 6,
+          roles: ['SysSetting'],
+        },
+      },
       {
         path: 'licenseSetting',
         name: 'license_setting',

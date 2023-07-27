@@ -1484,7 +1484,7 @@ export default {
               EndIrisClose(this.currentAdvices[0].accessoryID)
               break;
           }
-        }, 500)
+        }, 300)
       }
     },
     async setCameraOperate(val) {

@@ -79,7 +79,6 @@ const actions = {
             commit('SET_NAME', response.data.nickName);
             commit('SET_ROLE', response.data.roleName);
             commit('SET_ROLES', response.data.powerList);
-            // console.log('路由表',state.roles)
             commit('SET_WEB_SOCKET_URL', response.data.socketURL);
             resolve(response.data);
           } else {

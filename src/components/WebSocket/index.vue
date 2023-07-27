@@ -109,8 +109,8 @@ export default {
             if (this.disConnect >= 5) {
               this.wsInit()
             }
-            //断开60秒返回登录页
-            if(this.disConnect >=60){
+            //断开一小时秒返回登录页
+            if(this.disConnect >=3660){
               // Notification({
               //   title: '提示',
               //   message: "服务器连接失败",

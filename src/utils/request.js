@@ -88,13 +88,13 @@ service.interceptors.response.use(
     // store.dispatch('global/setlogoutState',++disconnect).then(()=>{
     //   console.log('失败原因')
     // })
-    Notification({
-      title: '提示',
-      duration: 1000,
-      message:  '服务器连接失败',
-      type: 'error',
-      // duration: 5 * 1000,
-    });
+    // Notification({
+    //   title: '提示',
+    //   duration: 1000,
+    //   message:  '服务器连接失败',
+    //   type: 'error',
+    //   // duration: 5 * 1000,
+    // });
     return error;
   }
 );
