@@ -10,10 +10,10 @@
         <screenfull id="screenfull"
                     class="right-menu-item hover-effect" />
         <lang-switch class="right-menu-item hover-effect" />
-        <!-- <theme-picker class="right-menu-item hover-effect"
+        <theme-picker class="right-menu-item hover-effect"
                       style="padding-top:10px;"
                       @change="themeChange" /> -->
-      </template>
+<!--      </template>-->
       <!-- <el-dropdown class="avatar-container"
                    trigger="click">
         <div class="avatar-wrapper">
@@ -28,9 +28,9 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown> -->
-    </div>
-  </div>
-</template>
+<!--    </div>-->
+<!--  </div>-->
+<!--</template>-->
 
 <script>
 import { mapGetters } from 'vuex'

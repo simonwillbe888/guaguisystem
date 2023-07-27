@@ -52,7 +52,16 @@ export default {
             color: "#666"
           }
         },
-
+        label: {
+          //文本样式
+          textStyle: {
+            fontSize: 12, // 改变标示文字的大小
+            color: "#fff",
+          },
+          formatter: "{c}", //提示文本内容 d代表百分比，b代表name文本
+          position: "outside",//控制文字显示的位置，center居中显示
+          show: true,//由于要单独显示（已使用）的数值，所以得先隐藏label
+        },
         // 鼠标滑过显示悬浮框
         tooltip: {
           show:true,//鼠标滑过是否显示悬浮框 （默认为true开启 false为关闭）
@@ -64,7 +73,7 @@ export default {
         // 设置图例
         legend: {
           orient: 'vertical',//图例的排列方式 （默认 horizontal：水平方向排列 vertical：垂直方向排列）
-          right: '20',//图标在前文字在后，图例靠右居中显示 （也可以是: left || center || right || 百分比：xx% || xx(默认单位px)  ）
+          left: '20',//图标在前文字在后，图例靠右居中显示 （也可以是: left || center || right || 百分比：xx% || xx(默认单位px)  ）
           y: 'center',//图例y轴居中（也可以是: top || center || bottom || 百分比：xx% || xx(默认单位px)  ）
           itemStyle: {},//设置图例前面的图标样式
           itemWrap: false,
@@ -80,8 +89,8 @@ export default {
             name: '', //echarts图名字
             type: 'pie',//echarts 类型
             minAngle: 5,//echarts数据value为0时默认为value为5
-            radius: ['30%', '40%'],//设置环形图 （ radius: ['设置内圆大小', '设置外圆大小']  不折设置默认为实心圆饼图）
-            center: ['35%', '50%'],//设置饼图位置 （center:['x轴位置','y轴位置']不设置默认在中间）
+            radius: ['35%', '45%'],//设置环形图 （ radius: ['设置内圆大小', '设置外圆大小']  不折设置默认为实心圆饼图）
+            center: ['75%', '60%'],//设置饼图位置 （center:['x轴位置','y轴位置']不设置默认在中间）
             label:{
               show: true,
               color: '#ffffff',

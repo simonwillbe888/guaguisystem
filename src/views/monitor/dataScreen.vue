@@ -1,11 +1,35 @@
 <template>
-  <div style="height:100%">
+  <div class="screen">
     <div class="content">
+      <div style="height: 6rem;margin-bottom: 1rem;background-color: transparent;display: flex;position: relative;justify-content: center;">
+        <div style="position: absolute;left: 0;">
+          <el-select v-model="tunnel" placeholder="请选择" style="width: 8rem;margin: 2.5rem 3rem;">
+            <el-option
+              v-for="item in tunnelList"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </div>
+        <div>
+          <h1 style="color: white;" class="screenTitle">应急巡检机器人管理系统</h1>
+        </div>
+        <div style="position: absolute;right: 0;top: 2rem">
+          <div >
+            <span style="color: white;font-size: 0.8rem;">{{ this.$store.getters.account }}，您好</span>
+          </div>
+          <div style="display: flex;margin-right: 2rem;align-items: center;">
+            <Clock style="color: #5ea19f;margin-right: 1rem;font-size: 1.5rem"></Clock>
+            <span  @click="$router.back()"><svg-icon icon-class="exit" style="width: 2rem;margin: auto"/></span>
+          </div>
+        </div>
+      </div>
       <el-col :span="6">
         <!--隧道环境信息-->
         <div style="margin-bottom: 0.5rem">
-          <div class="enviroment back-shaodow threeRow" style="height: 10rem">
-            <div class="leftTitle" style="padding-bottom: 0">隧道环境信息</div>
+          <div class="enviroment back-shaodow threeRow" style="height: 9rem">
+            <div class="leftTitle" style="padding-bottom: 0">环境信息</div>
             <div style="display:flex">
               <div class="enviroDetail">
                 <div class="detail_icon">
@@ -21,7 +45,7 @@
                   <svg-icon icon-class="shidu" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
                   <div style="color:#0FB1CBFF;width: 3rem">湿度</div>
                 </div>
-                <div class="gasDetail" style="margin-left: 1.2rem;">
+                <div class="gasDetail" style="margin-left: 0.5rem;">
                   {{ gasList.Humidity == null ? '0' : (gasList.Humidity / 100).toFixed(1) }}
                   <span style="font-size: 0.625rem;">%</span>
                 </div>
@@ -37,23 +61,24 @@
                 </div>
               </div>
             </div>
-            <div style="display:flex;margin-top: 0.625rem;">
+            <div style="display:flex;margin-top: 0.325rem;">
               <div class="enviroDetail">
-                <div class="environInfo" style="width: 3.5rem">CO<br>一氧化碳</div>
-                <div class="gasDetail">
-                  {{ gasList.CO == null ? '0' : (gasList.CO / 100).toFixed(1) }}
-                  <span style="font-size: 0.625rem;">ppm</span>
-                </div>
-              </div>
-              <div class="enviroDetail">
-                <div style="color:#0FB1CBFF;margin: 1rem 0 0 0.375rem;width: 3.5rem">H₂S<br>硫化氢</div>
+<!--                <div style="color:#0FB1CBFF;margin: 1rem 0 0 0.375rem;width: 3.5rem">H₂S<br>硫化氢</div>-->
+                <div style="color:#0FB1CBFF;margin-left:0.375rem;width: 3.5rem"><br>硫化氢</div>
                 <div class="gasDetail">
                   {{ gasList.H2S == null ? '0' : (gasList.H2S / 100).toFixed(1) }}
                   <span style="font-size: 0.625rem;">ppm</span>
                 </div>
               </div>
               <div class="enviroDetail">
-                <div style="color:#0FB1CBFF;margin: 1rem 0 0 0.375rem;width: 3.5rem">CH₄甲烷</div>
+                <div style="color:#0FB1CBFF;margin-left:0.375rem;width: 3.5rem"><br>一氧化碳</div>
+                <div class="gasDetail">
+                  {{ gasList.CO == null ? '0' : (gasList.CO / 100).toFixed(1) }}
+                  <span style="font-size: 0.625rem;">ppm</span>
+                </div>
+              </div>
+              <div class="enviroDetail">
+                <div style="color:#0FB1CBFF;margin: 1.5rem 0 0 0.375rem;width: 3.5rem">甲烷</div>
                 <div class="gasDetail">
                   {{ gasList.CH4 == null ? '0' : (gasList.CH4 / 100).toFixed(1) }}
                   <span style="font-size: 0.625rem;">ppm</span>
@@ -67,10 +92,13 @@
         <div style="margin-bottom: 0.5rem">
 
           <div class="robot back-shaodow">
-            <div class="leftTitle"> 机器人信息
-              <!--              <span v-if="butteryInfo">({{ butteryInfo }})</span>-->
+            <div class="leftTitle" > 机器人信息
               <div style="color:#67B3B2;display: inline-block;" v-if="butteryInfo">
                 <svg-icon icon-class="battery" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>{{ butteryInfo }}
+              </div>
+              <div style="float: right;margin-right: 3rem">
+                <span style="color: #0fa3bd;font-size: 0.8rem">控制</span>
+                <el-switch v-model="controlManager" :active-value=false :inactive-value=true ></el-switch>
               </div>
             </div>
 
@@ -88,35 +116,36 @@
                 </div>
               </div>
 
-              <div style="display: inline-block;position: relative">
+              <div style="display: inline-block;position: relative;margin-top: 1rem;">
                 <div style="display: flex;position: relative;margin: -1.5rem 0 0 1rem;justify-items: center;align-items: flex-end;">
-                  <div class="electri">
-                    <el-progress :width="40" text-color="#fbf9ea" type="circle"
-                                 :percentage="carList.batteryLevel"></el-progress>
-                    <div style="font-size: 1rem;color: #0FB1CBFF;white-space: nowrap;">当前电量</div>
-                  </div>
 
                   <div class="runtimeinfo-first">
-                    <div style="margin-bottom: 0.5rem;white-space: nowrap;">
-                      {{carList.totalRunTime == null?'0': (carList.totalRunTime/1440).toFixed(1) }} 天
+                    <div style="font-size: 0.8rem;color: #0FB1CBFF;white-space: nowrap;">运行里程</div>
+                    <div style="margin-top: 0.5rem;white-space: nowrap;">
+                      {{carList.totalDistance == null?'0':(carList.totalDistance/100000).toFixed(2) }} Km
                     </div>
-                    <div style="font-size: 1rem;color: #0FB1CBFF;white-space: nowrap;">运行时间</div>
+                  </div>
+
+                  <div class="runtimeinfo-second">
+                    <div style="font-size: 0.8rem;color: #0FB1CBFF;white-space: nowrap;">运行时间</div>
+                    <div style="margin-top: 0.5rem;white-space: nowrap;">
+                      {{carList.totalRunTime == null?'0': (carList.totalRunTime/1440).toFixed(1) }} Day
+                    </div>
                   </div>
                 </div>
 
                 <div style="display: flex;position: relative;margin: 0.5rem 0 0 1rem;justify-items: center">
-                  <div class="runtimeinfo-second">
-                    <div style="margin-bottom: 0.5rem;white-space: nowrap;">
+                  <div class="runtimeinfo-third">
+                    <div style="font-size: 0.8rem;color: #0FB1CBFF;white-space: nowrap;">当前速度</div>
+                    <div style="margin-top: 0.5rem;white-space: nowrap;">
                       {{ carList.realTimeSpeed == null ? '0' : (carList.realTimeSpeed/1000).toFixed(1) }} m/s
                     </div>
-                    <div style="font-size: 1rem;color: #0FB1CBFF;white-space: nowrap;">当前速度</div>
                   </div>
 
-                  <div class="runtimeinfo-third">
-                    <div style="margin-bottom: 0.5rem;white-space: nowrap;">
-                      {{carList.totalDistance == null?'0':(carList.totalDistance/100000).toFixed(2) }} Km
-                    </div>
-                    <div style="font-size: 1rem;color: #0FB1CBFF;white-space: nowrap;">运行里程</div>
+                  <div class="electri">
+                    <div style="font-size: 0.8rem;color: #0FB1CBFF;white-space: nowrap;">剩余电量</div>
+                    <el-progress :width="40" text-color="#fbf9ea" type="circle" style="margin-top: 0.5rem"
+                                 :percentage="carList.batteryLevel"></el-progress>
                   </div>
                 </div>
               </div>
@@ -126,14 +155,21 @@
           </div>
         </div>
 
-        <div class="back-shaodow" style="height: 14rem; margin-bottom: 0.5rem;width: auto">
+        <div class="back-shaodow" style="height: 13rem; margin-bottom: 0.5rem;width: auto">
           <div style="display:flex;position: relative">
             <div class="leftTitle" style="display: inline-block;width: auto;white-space: nowrap;"> 告警数据统计 </div>
-            <el-button-group class="title-button-group">
-              <el-button :class="{buttonInactive:alarmSumButtonActive !== 'day',buttonActive:alarmSumButtonActive === 'day'}" size="mini" round @click="alarmSumButton('day')">今日</el-button>
-              <el-button :class="{buttonInactive:alarmSumButtonActive !== 'week',buttonActive:alarmSumButtonActive === 'week'}" size="mini" @click="alarmSumButton('week')">近一周</el-button>
-              <el-button :class="{buttonInactive:alarmSumButtonActive !== 'month',buttonActive:alarmSumButtonActive === 'month'}" size="mini" round @click="alarmSumButton('month')">近30天</el-button>
-            </el-button-group>
+            <div style="margin: 1rem 0 0 8rem">
+              <span :class="{buttonInactive:alarmSumButtonActive !== 'day',buttonActive:alarmSumButtonActive === 'day'}"  style="font-size: 0.8rem" @click="alarmSumButton('day')">今日</span>
+              <span style="color:#67B3B2"> | </span>
+              <span :class="{buttonInactive:alarmSumButtonActive !== 'week',buttonActive:alarmSumButtonActive === 'week'}" style="font-size: 0.8rem"  @click="alarmSumButton('week')">近一周</span>
+              <span style="color:#67B3B2"> | </span>
+              <span :class="{buttonInactive:alarmSumButtonActive !== 'month',buttonActive:alarmSumButtonActive === 'month'}" style="font-size: 0.8rem"  @click="alarmSumButton('month')">近30天</span>
+            </div>
+<!--            <el-button-group class="title-button-group">-->
+<!--              <el-button :class="{buttonInactive:alarmSumButtonActive !== 'day',buttonActive:alarmSumButtonActive === 'day'}" size="mini" round @click="alarmSumButton('day')">今日</el-button>-->
+<!--              <el-button :class="{buttonInactive:alarmSumButtonActive !== 'week',buttonActive:alarmSumButtonActive === 'week'}" size="mini" @click="alarmSumButton('week')">近一周</el-button>-->
+<!--              <el-button :class="{buttonInactive:alarmSumButtonActive !== 'month',buttonActive:alarmSumButtonActive === 'month'}" size="mini" round @click="alarmSumButton('month')">近30天</el-button>-->
+<!--            </el-button-group>-->
           </div>
           <div style="height: 10rem;">
             <AlarmSumEcharts :alarmData="alarmSumData" style="width: 100%;"></AlarmSumEcharts>
@@ -143,11 +179,13 @@
         <div class="back-shaodow" style="height: 13.5rem;width: auto">
           <div style="display:flex;position: relative">
             <div class="leftTitle" style="display: inline-block;width: auto;white-space: nowrap;"> 告警数据分析 </div>
-            <el-button-group class="title-button-group" >
-              <el-button :class="{buttonInactive:alarmAnalysisButtonActive !== 'day',buttonActive:alarmAnalysisButtonActive === 'day'}" size="mini" round @click="alarmAnalysisButton('day')">今日</el-button>
-              <el-button :class="{buttonInactive:alarmAnalysisButtonActive !== 'week',buttonActive:alarmAnalysisButtonActive === 'week'}" size="mini" @click="alarmAnalysisButton('week')">近一周</el-button>
-              <el-button :class="{buttonInactive:alarmAnalysisButtonActive !== 'month',buttonActive:alarmAnalysisButtonActive === 'month'}" size="mini" round @click="alarmAnalysisButton('month')">近30天</el-button>
-            </el-button-group>
+            <div style="margin: 1rem 0 0 8rem;z-index: 10">
+              <span :class="{buttonInactive:alarmAnalysisButtonActive !== 'day',buttonActive:alarmAnalysisButtonActive === 'day'}"  style="font-size: 0.8rem" @click="alarmAnalysisButton('day')">今日</span>
+              <span style="color:#67B3B2"> | </span>
+              <span :class="{buttonInactive:alarmAnalysisButtonActive !== 'week',buttonActive:alarmAnalysisButtonActive === 'week'}" style="font-size: 0.8rem"  @click="alarmAnalysisButton('week')">近一周</span>
+              <span style="color:#67B3B2"> | </span>
+              <span :class="{buttonInactive:alarmAnalysisButtonActive !== 'month',buttonActive:alarmAnalysisButtonActive === 'month'}" style="font-size: 0.8rem"  @click="alarmAnalysisButton('month')">近30天</span>
+            </div>
           </div>
           <div style="height: 8rem;">
             <AlarmAnalysisEcharts :alarmData="alarmAnalData"  style="width: 100%;"></AlarmAnalysisEcharts>
@@ -172,7 +210,7 @@
               :src="currentAdvices[0].src">
             </iframe>
 
-            <el-button style="position:absolute;margin-left: 0; top:1rem;background-color:transparent;border-color: transparent" size="mini"
+            <el-button style="position:absolute;margin-left: 0; top:7rem;background-color:transparent;border-color: transparent" size="mini"
                        @click="glassCameraSwitch">
               <svg-icon icon-class="cameraSwitch" style="font-size: 2rem"></svg-icon>
             </el-button>
@@ -207,6 +245,7 @@
           <!--                       @click="vue3dLoaderFullScreen()">-->
           <!--              <svg-icon icon-class="fullscreen" style="font-size: 1rem"></svg-icon>-->
           <!--            </el-button>-->
+
           <el-button style=";position:absolute;margin-left: 0; top:0.5rem;background-color:transparent;border-color: transparent" size="mini"
                      @click="topVision()">
             <svg-icon icon-class="top-vision" style="font-size: 1.7rem"></svg-icon>
@@ -216,173 +255,106 @@
             <svg-icon icon-class="follow" style="font-size: 2rem"></svg-icon>
           </el-button>
 
-          <!--            <el-button style="position:absolute;margin-left: 0; top:4.5rem;background-color:transparent;border-color: transparent" size="mini"-->
-          <!--                       @click="locationAgv()">-->
-          <!--              <svg-icon icon-class="location" style="font-size: 2rem"></svg-icon>-->
-          <!--            </el-button>-->
+<!--          <div style="position: absolute;left:1rem;top:15.5rem">-->
+<!--              <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }} 机器人位置  {{ carList.vertexNumber == 0 ?-->
+<!--                carList.x / 1000 :-->
+<!--                '站点' + (carList.vertexNumber?carList.vertexNumber:'')-->
+<!--                }}</span>-->
+<!--          </div>-->
 
-          <div v-if="!controlManager" class="goLocation" style="position:absolute;left:14rem; top:1rem;">
-            <el-select v-model="riskSpeed" placeholder="请选择巡检速度">
-              <el-option v-for="item in speedList" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select>
-            <!-- <el-select v-model="locationID" placeholder="请选择巡检点">
-              <el-option v-for="item in locationList" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>
-            </el-select> -->
-            <span style="margin:0 0.625rem;color: #FFFFFF">前往</span>
-            <el-input
-              oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
-              class="location_Detail" style="width: 5rem" v-model="locationID" placeholder="如:101">
-              <template slot="prefix">K100</template>
-            </el-input>
-            <el-popconfirm title="确定去往巡检点?" @confirm="goLocation">
-              <div class="goYes" slot="reference">确定</div>
-            </el-popconfirm>
-          </div>
-
-          <div style="position: absolute;left:1rem;top:17.5rem">
-              <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }} 机器人位置  {{ carList.vertexNumber == 0 ?
-                carList.x / 1000 :
-                '站点' + (carList.vertexNumber?carList.vertexNumber:'')
-                }}</span>
-          </div>
-          <div style="position:absolute;left:21rem; top:15.5rem;">
-            <div style="margin-left: 1.3rem">
-              <Intercom></Intercom>
-            </div>
-            <div style="color: white;margin-top: 0.6rem">语音对讲</div>
-          </div>
-          <div style="position:absolute;left:27rem; top:15.5rem;">
-            <div style="margin-left: 0.8rem">
-              <i class="el-icon-turn-off" style="color:white;font-size: 3rem" v-if="controlManager" @click="()=>{controlManager = false}"></i>
-              <i class="el-icon-open" style="color:#64c8c8;font-size: 3rem" v-if="!controlManager" @click="()=>{controlManager = true}"></i>
-            </div>
-            <div style="color: white;">控制管理</div>
-          </div>
+<!--          <div style="position:absolute;left:21rem; top:15.5rem;">-->
+<!--            <div style="margin-left: 1.3rem">-->
+<!--              <Intercom></Intercom>-->
+<!--            </div>-->
+<!--            <div style="color: white;margin-top: 0.6rem">语音对讲</div>-->
+<!--          </div>-->
+<!--          <div style="position:absolute;left:27rem; top:15.5rem;">-->
+<!--            <div style="margin-left: 0.8rem">-->
+<!--              <i class="el-icon-turn-off" style="color:white;font-size: 3rem" v-if="controlManager" @click="()=>{controlManager = false}"></i>-->
+<!--              <i class="el-icon-open" style="color:#64c8c8;font-size: 3rem" v-if="!controlManager" @click="()=>{controlManager = true}"></i>-->
+<!--            </div>-->
+<!--            <div style="color: white;">控制管理</div>-->
+<!--          </div>-->
           <div style="position:relative;" v-if="!controlManager">
             <div class="button-box" v-drag draggable="false">
-              <div class="hkControl back-shaodow">
-                <!--                    <div class="leftTitle" style="padding-top: 1rem;padding-bottom: 0.5rem;">-->
-                <!--                      任务信息-->
-                <!--                    </div>-->
-                <div class="taskDetail" style="margin-left: 1rem;margin-top: 1rem">
-                  任务 <span style="color:#66B3B2 ;">{{ realTimeTask == '' ? '空闲状态' : realTimeTask }} </span>
-                  <span style="margin-left: 1.875rem;">作业时长 <span style="color:#66B3B2 ;"></span>{{ finishTime == ''?'0':finishTime }}分钟 </span>
-                </div>
-                <!--                    <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0rem;">-->
-                <!--                      任务下发-->
-                <!--                    </div>-->
-                <div class="taskDetail" style="margin-left: 1rem;margin-top: 1rem;margin-bottom: 1rem">
-                  <!--                      <span style="width: 7rem;line-height: 2rem;">任务模板 ：</span>-->
-                  <div style="color:#66B3B2;">
-                    <div style="display: inline-block;">
-                      <el-select v-model="taskID" placeholder="请选择任务">
-                        <el-option v-for="item in taskList" :key="item.value" :label="item.label" :value="item.value">
-                        </el-option>
-                      </el-select>
+              <div class="hkControl back-shaodow" style="width: 54rem;height: 12rem;display: flex;">
+                <div style="margin:1rem">
+                  <div>
+                    <svg-icon icon-class="mark" style="width: 1rem;margin: auto"/>
+                    <span style="font-size: 0.8rem;color: #0cbebd">运动模式：</span>
+                    <el-radio-group v-model="moveMode" :disabled="!carID" @input="setOpen(moveMode)">
+                      <el-radio style="margin-left:1rem;color: white" :label=2>自动模式</el-radio>
+                      <el-radio style="margin-left:1rem;color: white" :label=1>手动模式</el-radio>
+                    </el-radio-group>
+                  </div>
+
+                  <div style="margin-top:0.5rem">
+                    <svg-icon icon-class="voice" style="width: 1rem;margin: auto"/>
+                    <span style="font-size: 0.8rem;color: #0cbebd">语音对讲：</span>
+                    <Intercom hidden="hidden" :intercomControl="intercomControl"></Intercom>
+                    <el-switch v-model="intercomControl" style="margin-left: 0.5rem"></el-switch>
+
+
+                    <span style="font-size: 0.8rem;margin-left: 4rem;color: #0cbebd">
+                      <svg-icon icon-class="warnLight2" style="width: 1.5rem;"/>
+                      设备警灯：
+                    </span>
+                    <el-switch style="margin-left: 0.5rem" v-model="warnLightOpen" :active-value=1 :inactive-value=0 @change="setWarnLight()"></el-switch>
+                  </div>
+
+                  <div style="margin-top:1rem;display: flex;align-items: center">
+                    <svg-icon icon-class="broadcast2" style="width: 1rem;margin-right:0.3rem"/>
+                    <span style="font-size: 0.8rem;color: #0cbebd">语音播报：</span>
+                    <el-select v-model="broadcastSelect" placeholder="请选择" style="width: 22rem;" @input="broadcast(broadcastSelect)">
+                      <el-option
+                        v-for="item in broadcastList"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+
+                  </div>
+
+                  <div style="margin-top:1rem;display: flex;align-items: center">
+                    <svg-icon icon-class="p" style="width: 0.8rem;margin: auto"/>
+                    <span style="font-size: 0.8rem;color: #0cbebd;width: 4rem;margin-left: 0.5rem">定点移动：</span>
+                    <div @click="locationInput">
+                      <el-input ref="locationIdInput" type="text" class="location_Detail" style="width: 10rem;" v-model="locationID" @input="$forceUpdate()" placeholder="K100+90">
+                        <template slot="prefix">K</template>
+                      </el-input>
                     </div>
-                    <div style="display: inline-block;">
-                      <el-popconfirm title="确定执行任务吗?" @confirm="startPlan()">
-                        <div
-                          style="background-color:#66B3B2 ; color:#ffffff;margin-left: 2.5rem;width: 3.75rem; text-align: center; height: 1.875rem;line-height: 1.875rem;"
-                          slot="reference">执行</div>
+                    <el-select v-model="riskSpeed" style="width: 10rem;margin-left: 1rem">
+                      <el-option v-for="item in speedList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                    <el-button size="mini" style="margin-left: 1rem">
+                      <el-popconfirm title="确定去往巡检点?" @confirm="goLocation">
+                        <div class="goYes" slot="reference">确定</div>
                       </el-popconfirm>
-                    </div>
-                  </div>
-                </div>
-                <hr style="border:1px dotted rgba(255,255,255,0.5)" />
-                <!--                    <div>-->
-                <!--                      <el-switch :disabled="!carID" style="height: 1.25rem;margin-left:1rem ;" v-model="robotOpen"-->
-                <!--                        active-text="开" inactive-text="关" @change="setOpen()" :active-value="1" :inactive-value="2">-->
-                <!--                      </el-switch>-->
-                <!--                    </div>-->
-                <div style="margin-top: 1rem">
-                  <controlSwitch style="display: inline-block;margin-left: 2rem;margin-bottom: 1rem" @switchEvent="setOpen()"></controlSwitch>
-                  <div style="margin-left: 6vw;display: inline-block">机器人速度{{ robotSpeed / 1000 }}m/s</div>
-                </div>
-                <div style="display:flex;margin: 0.75rem 0;">
-                  <div class="robotDirec" @mousedown="setRobotMoveCrl(2)" @mouseup="setRobotMoveCrl(3)">
-                    <img src="../../assets/img/back.png" alt="">
-                    <!--                        <span style="position: relative;bottom: 0.3125rem;"></span>-->
-                  </div>
-                  <div class="robotDirec" @mousedown="setRobotMoveCrl(1)" @mouseup="setRobotMoveCrl(3)">
-                    <!--                        <span style="position: relative;bottom: 0.3125rem;"></span>-->
-                    <img src="../../assets/img/front.png" alt="">
-                  </div>
-                  <div class="speed">
-                    <div @click="robotSpeed = 1000" :class="robotSpeed == 1000 ? 'speed_detail_active' : 'speed_detail'">
-                      巡检速度
-                    </div>
-                    <div style="margin-top:0.4375rem ;" @click="robotSpeed = 6000"
-                         :class="robotSpeed == 6000 ? 'speed_urgency_active' : 'speed_urgency'">
-                      应急速度
-                    </div>
-                  </div>
-                </div>
-
-                <hr style="border:1px dotted rgba(255,255,255,0.5)" />
-                <!--                    <div class="leftTitle" widht="100px">-->
-                <!--                      云台控制器-->
-                <!--                    </div>-->
-                <div style="display:flex ;">
-                  <div class="hkMove">
-                    <img src="../../assets/img/hkUp.png" @mousedown="setCameraOperate(1)" @mouseup="stopCam()" class="hkUp">
-                    <div style="display: flex;">
-                      <img src="../../assets/img/hkLeft.png" @mousedown="setCameraOperate(5)" @mouseup="stopCam()"
-                           class="hkLeft">
-                      <img src="../../assets/img/hkConnect.png" @click="HKlogin()"
-                           :class="[YTlogin == true ? 'HKloading' : 'hkConnect']">
-                      <img src="../../assets/img/hkRight.png" @mousedown="setCameraOperate(7)" @mouseup="stopCam()"
-                           class="hkRight">
-                    </div>
-                    <img src="../../assets/img/hkDown.png" @mousedown="setCameraOperate(3)" @mouseup="stopCam()"
-                         class="hkDown">
+                    </el-button>
                   </div>
 
-                  <div style="margin-left: 3.125rem;width:18.75rem;position: relative;bottom: 1rem;margin-top: 1rem;">
-                    <div class="hkAction">
-                      <div class="action_detail" @mousedown="setCameraOperate(9)" @mouseup="stopCam()">
-                        <img src="../../assets/img/fangda.png" alt="">
-                      </div>
-                      <div class="action_detail">
-                        <img src="../../assets/img/takephoto.png" @click="setCameraOperate(20)">
-                      </div>
-                      <div class="action_detail" @mousedown="setCameraOperate(16)" @mouseup="stopCam()">
-                        <img src="../../assets/img/clean.png" alt="">
-                      </div>
-                      <div class="action_detail" @mousedown="setCameraOperate(13)" @mouseup="stopCam()">
-                        <img src="../../assets/img/jujiao.png" alt="">
-                      </div>
+                </div>
+                <div style="margin:5rem 1rem">
+
+                  <div style="display:flex;margin: 1rem 0">
+                    <div class="robotMoveDirect" @mousedown="setRobotMoveCrl(2)" @mouseup="setRobotMoveCrl(3)">
+                      <svg-icon icon-class="go" style="width: 3rem;height:2rem;margin: auto;rotate: 180deg"/>
                     </div>
-                    <div class="hkAction">
-                      <div class="action_detail" @mousedown="setCameraOperate(11)" @mouseup="stopCam()">
-                        <img src="../../assets/img/suoxiao.png" alt="">
-                      </div>
-                      <div class="action_detail">
-                        <img src="../../assets/img/video.png" v-if="!videoOn" @click="setCameraOperate(21)">
-                        <img src="../../assets/img/closeVideo.png" v-if="videoOn" @click="setCameraOperate(23)">
-                      </div>
-                      <div class="action_detail">
-                        <img src="../../assets/img/light.png" v-if="!lightOn" @click="setCameraOperate(12)">
-                        <img src="../../assets/img/closeLiht.png" v-if="lightOn" @click="setCameraOperate(14)">
-                      </div>
-                      <div class="action_detail" @mousedown="setCameraOperate(15)" @mouseup="stopCam()">
-                        <img src="../../assets/img/yuanjiao.png" alt="">
-                      </div>
-                    </div>
-                    <div style="margin-top:1.5rem;padding-left: 1.25rem;">
-                      云台速度
-                      <!-- <el-input disabled v-model="speed" ></el-input> -->
-                      <span
-                        style="width: 3.75rem;float: right;margin-right: 1.25rem;background-color: #071828;text-align: center; border: 0.0625rem #ffffff solid;">{{
-                          speed }}</span>
-                    </div>
-                    <div class="speed" style="margin: 0.625rem;">
-                      <el-slider :max="7" v-model="speed" style="margin: 0 1.25rem;">
-                      </el-slider>
+                    <el-select v-model="riskSpeed" style="width: 10rem;margin:0 0.5rem 0 2rem">
+                      <el-option v-for="item in speedList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    </el-select>
+                    <div class="robotMoveDirect" @mousedown="setRobotMoveCrl(1)" @mouseup="setRobotMoveCrl(3)">
+                      <svg-icon icon-class="go" style="width: 3rem;height:2rem;margin: auto"/>
                     </div>
                   </div>
+
+                  <div style="margin:1rem 0 0 2rem;font-size: 0.8rem">
+                    <span>后退</span>
+                    <span style="margin: 0 4rem">推荐速度</span>
+                    <span >前进</span>
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -399,7 +371,7 @@
           <!--            : '', 'back-shaodow']"-->
           <iframe
             :myData="currentAdvices[1]"
-            style="width:100%; height:22.5rem; border-color: #0D5487FF; border-style: double;"
+            style="width:100%; height:20.5rem; border: none; "
             name="infrared"
             :id="'infrared'"
             :src="currentAdvices[1].src">
@@ -455,27 +427,27 @@
       <el-col :span="6">
         <div class="alarm-list back-shaodow">
           <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0.5rem;display: inline-block;">告警列表</div>
-          <div style="color:#64c8c8;margin-left: 15rem; padding-top: 0.5rem;padding-bottom: 0.5rem;display: inline-block;cursor: pointer" @click="goRealAlarm()">更多</div>
+          <div style="color:#64c8c8;margin-left: 14rem; padding-top: 0.5rem;padding-bottom: 0.5rem;display: inline-block;cursor: pointer" @click="goRealAlarm()">更多》</div>
 
           <div class="alarm">
             <div class="myTable">
-              <el-table :data="showTable" @row-click="(e)=>getDetailMessage(e,true)" style="width: 100%" height="10rem">
-                <!--                  <el-table-column width="60" label="序号" type="index" align="center">-->
-                <!--                  </el-table-column>-->
+              <el-table :data="showTable" @row-click="(e)=>getDetailMessage(e,true)" style="width: 100%;" height="10rem">
+                <el-table-column width="60" label="序号" type="index" align="center">
+                </el-table-column>
                 <!--                  <el-table-column prop="AlarmCode" :label="'告警码'" width="80" align="center">-->
                 <!--                  </el-table-column>-->
-                <el-table-column prop="ReportTime" :label="$t('alarm_dealWith.happen_time')" align="center">
+                <el-table-column width="200" prop="ReportTime" label="时间" align="center">
                 </el-table-column>
-                <el-table-column prop="AlarmName" :label="$t('alarm_dealWith.alarm_name_label')" align="center">
+                <el-table-column width="100" prop="AlarmName" label="事件类型" align="center">
                   <template slot-scope="scope">
                     {{ scope.row.AlarmName.slice(0, -2) }}
                   </template>
                 </el-table-column>
-                <el-table-column prop="MaxLevel" width="100" :label="'告警级别'" align="center">
+                <el-table-column prop="MaxLevel" width="100" :label="'告警等级'" align="center">
                   <template slot-scope="scope">
-                    <span v-if="scope.row.MaxLevel === 4" class="first">致命</span>
-                    <span v-else-if="scope.row.MaxLevel === 3" class="two">严重</span>
-                    <span v-else-if="scope.row.MaxLevel === 2" class="three">一般</span>
+                    <span v-if="scope.row.MaxLevel != undefined && scope.row.MaxLevel === 4" class="first">致命</span>
+                    <span v-else-if="scope.row.MaxLevel != undefined && scope.row.MaxLevel === 3" class="two">严重</span>
+                    <span v-else-if="scope.row.MaxLevel != undefined && scope.row.MaxLevel === 2" class="three">一般</span>
                     <span v-else class="four">提示</span>
 
                     <!-- {{ scope.row.MaxLevel ==0?'默认':scope.row.MaxLevel ==1?'提示':scope.row.MaxLevel ==2?'一般':scope.row.MaxLevel ==3?'严重':'致命' }} -->
@@ -537,10 +509,7 @@
           <div style="display:flex;">
             <!--              <img :src="imageUrl" alt="" style="width:70%">-->
             <div style="margin:0 1.0rem">
-              <div style="width: 23rem; height: 3rem;
-                    border-color: red;
-                    border-style: solid;
-                    border-radius: 15px;
+              <div style="width: 23rem; height: 2rem;
                     color: red;
                     display: flex;
                     justify-content:center;
@@ -550,20 +519,15 @@
                   {{this.alarmJudge(alarm.AlarmCode)}}
                 </div>
               </div>
-              <div>
-                <div style="margin: 0.875rem 0 0 0; display: inline-block;width: 11.5rem;height: 2.5rem;vertical-align:top;" >
-                  <div style="color:#0FB0CAFF;font-size: 15px">告警时间 </div>
-                  <div style="color:#FFFFFFFF;font-size: 20px">{{ alarm.ReportTime }}</div>
-                </div>
-                <div style="margin: 0.875rem 0 0 0; display: inline-block;width: 11rem;height: 2.5rem;vertical-align:top;">
-                  <div style="color:#0FB0CAFF;font-size: 15px">告警位置 </div>
-                  <div style="color:#FFFFFFFF;font-size: 20px">{{ alarm.Location }}</div>
-                </div>
-              </div>
 
-              <div style="margin: 0.875rem 0 0 0;">
-                <div style="color:#0FB0CAFF;font-size: 15px">告警描述 </div>
-                <div style="color:#FFFFFFFF;font-size: 20px">{{ alarm.Description }}</div>
+              <div style="margin: 0.5rem 0 0 0;vertical-align:top;" >
+                <div style="color:#0FB0CAFF;font-size: 15px">告警时间： <span style="color: #FFFFFF">{{ alarm.ReportTime }}</span></div>
+              </div>
+              <div style="margin: 1rem 0 0 0; vertical-align:top;">
+                <div style="color:#0FB0CAFF;font-size: 15px">告警位置： <span style="color: #FFFFFF">{{ alarm.Location }}</span></div>
+              </div>
+              <div style="margin: 1rem 0 0 0;">
+                <div style="color:#0FB0CAFF;font-size: 15px">告警描述： <span style="color: #FFFFFF">{{ alarm.Description }}</span></div>
               </div>
 
             </div>
@@ -585,7 +549,8 @@ import {
 } from '../../api/map';
 import { debounce } from '../../utils/debounce';
 import {
-  getEquipmentList, SetSpeed,
+  getEquipmentList,
+  SetSpeed,
   moveToPatrolPoint,
   getAllCarrierDetailInfo,
   getChargingStateByCarrierID,
@@ -600,9 +565,17 @@ import {
   logOut,
   connectCar,
   moveCar,
-  stopCar, CancelCarrierControl, getTemperature,
-  startVoiceBroadcast, stopVoiceBroadcast, getIndexCar, getRtsp, getTaskRemainingMileage
-} from '../../api/robot';
+  stopCar,
+  CancelCarrierControl,
+  getTemperature,
+  startVoiceBroadcast,
+  stopVoiceBroadcast,
+  getIndexCar,
+  getRtsp,
+  getTaskRemainingMileage,
+  startWarningLight,
+  stopWarningLight
+} from '../../api/robot'
 import { getAllPatrolPlan, startPatrolPlan } from '../../api/taskConfig';
 import {
   StartLight, EndLight, StartWiper, EndWiper, startPanLeft, endPanLeft, startPanRight, endPanRight, startTiltUp, endTiltUp, startTiltDown, endTiltDown,
@@ -621,9 +594,11 @@ import controlSwitch from '@/views/monitor/controlSwitch.vue'
 import moment from 'moment'
 import { getCountByCode, getCountByDate, getCountByLevelAndStatus } from '@/api/homepageAlarm'
 import item from '@/layout/components/Sidebar/Item.vue'
+import Clock from '@/layout/components/Sidebar/Clock.vue'
 
 export default {
   components: {
+    Clock,
     controlSwitch,
     AlarmAnalysisEcharts,
     AlarmSumEcharts,
@@ -658,7 +633,7 @@ export default {
       alarmSumButtonActive: 'day',
       alarmAnalysisButtonActive: 'day',
       controlManager: true,
-      vue3dLoaderHeight: 340,
+      vue3dLoaderHeight: 300,
       alarmAnalData: {},
       alarmSumData: [],
       tempicture: null,
@@ -697,6 +672,9 @@ export default {
       lightOn: false,
       YTlogin: false,
       HKloading: false,
+      moveMode: 2,
+      intercomControl: false,
+      warnLightOpen: 0,
       pageNum: 1,
       pageSize: 15,
       carList: [],
@@ -731,6 +709,30 @@ export default {
       finishTime: '',
       tranLeft: 100,
       moveSet: null,
+      tunnelList: [{
+        value:'qifu',
+        key:'qifu',
+        label:'祈福隧道'
+      }],
+      tunnel: 'qifu',
+      broadcastList: [{
+        key:1,
+        value:'语音停止播放',
+        label:'语音停止播放'
+      },{
+        key:2,
+        value:'前方事故，请注意绕行',
+        label:'前方事故，请注意绕行'
+      },{
+        key:3,
+        value:'道路路滑，请谨慎驾驶',
+        label:'道路路滑，请谨慎驾驶'
+      },{
+        key:4,
+        value:'路面异物，请谨慎驾驶',
+        label:'路面异物，请谨慎驾驶'
+      }],
+      broadcastSelect: '语音停止播放'
     };
   },
   created() {
@@ -1021,7 +1023,7 @@ export default {
           menuItems.forEach(menuItem => {
               // menuItem.height = document.documentElement.clientHeight/3
               // menuItem.offsetHeight = document.documentElement.clientHeight/3
-              menuItem.style = "height: "+document.documentElement.clientHeight/3+"px;width:"+document.documentElement.clientWidth/2+"px;"
+              menuItem.style = "height: "+document.documentElement.clientHeight*300/955+"px;"
           });
         })
       }
@@ -1165,17 +1167,24 @@ export default {
       // console.log('实时告警', res)
       if (res.code === 20000) {
         if (res.data) {
-          res.data.records.forEach(element => {
-
+          res.data.records.forEach((element,index) => {
+            element.index = index + 1
             this.alarmList.push(element)
           });
-          this.alarmList.forEach((item, index) => {
-            item.index = index + 1;
-          });
+          if(this.alarmList.length > 0){
+            this.alarm = this.alarmList[0]
+          }
+          // console.log('this.alarmList',this.alarmList)
+          // this.alarmList.forEach((item, index) => {
+          //   item.index = index + 1;
+          // });
         }
       }
     },
     async getcarList() {
+      if(this.carrierSelected == null){
+        return
+      }
       const res = await getCarrierDetailInfo(this.carrierSelected.CarrierID);
       const gas = await GetMonitorData()
       const buttery = await getChargingStateByCarrierID(this.carrierSelected.CarrierID)
@@ -1202,7 +1211,7 @@ export default {
       }
       const car = await getRealPatrolTaskList()
       // console.log('里程任务id',car)
-      if (car.data.length > 0) {
+      if (car.data != null && car.data.length > 0) {
         getTaskRemainingMileage(car.data[0].taskID).then((res)=>{
           const time = (res.data.time / 60)
           // console.log('查看剩余里程',res.data.mileage,time)
@@ -1249,7 +1258,12 @@ export default {
         }
       });
     },
-    broadcast() {
+    locationInput(){
+      console.log('locationInput')
+      this.$refs.locationIdInput.focus()
+      this.$forceUpdate()
+    },
+    broadcast(e) {
       this.broadcastVisible = false
       if (this.selectedOption != '语音停止播放' && this.selectedOption != '') {
         startVoiceBroadcast({
@@ -1279,6 +1293,7 @@ export default {
     goRealAlarm(){
       this.$router.push('/inspection/realAlarm');
     },
+
     controlManagerSwitch(data){
       if(data){
         this.controlManager = false
@@ -1286,6 +1301,43 @@ export default {
       }else {
         this.controlManager = true
         //TODO 开启控制弹窗
+      }
+    },
+
+    setWarnLight() {
+      const time = this.getNowtime()
+      if (this.warnLightOpen == 0) {
+        //警示灯closed
+        startWarningLight(this.carID).then((res) => {
+          if (res.code != 20000) {
+            this.warnLightOpen = 0
+            Notification({
+              title: '提示',
+              message: res.data,
+              type: 'error',
+              duration: 5000
+            });
+          }
+          else{this.warnLightOpen = 1}
+        })
+      } else if (this.warnLightOpen == 1) {
+        //警示灯ing
+        stopWarningLight(this.carID).then((res) => {
+          console.log(res)
+          if (res.code != 20000) {
+            this.warnLightOpen = 1
+            Notification({
+              title: '提示',
+              message: res.data,
+              type: 'error',
+              duration: 5000
+            });
+          }
+          else{
+            this.warnLightOpen = 0
+          }
+        })
+
       }
     },
 
@@ -1379,6 +1431,9 @@ export default {
         agvRotation.y = Math.PI/2
       }
 
+      if(this.$refs.model.controls == undefined){
+        return
+      }
       let lastTarget = this.$refs.model.controls.target
       // console.log("lastTarget---",lastTarget)
 
@@ -1465,6 +1520,7 @@ export default {
     },
 
     alarmAnalysisButton(data){
+      console.log('alarmAnalysisButton',data)
       let searchUnit;
       switch (data) {
         case 'day':{
@@ -1552,12 +1608,13 @@ export default {
                 {
                   name: this.alarmJudge(i), //echarts图名字
                   type: 'line',//echarts 类型
+                  smooth: true,
                   minAngle: 0,//echarts数据value为0时默认为value为5
                   label:{
                     color: '#FFFFFF',
                   },
                   data: tempData,
-                  areaStyle: {},
+                  // areaStyle: {}, //曲线背景填充
                   stack: 'x',
                 }
               )
@@ -1718,23 +1775,26 @@ export default {
     },
     //报警判断
     alarmJudge(alarmCode){
-      switch (alarmCode) {
-        case 1001: return '行人告警'
-        case 1002: return '非机动车告警'
-        case 1003: return '异物告警'
-        case 1004: return '温度告警'
-        case 1005: return '湿度告警'
-        case 1006: return '气体告警'
-        case 1007: return '灯光告警'
-        case 1008: return '违停逆行告警'
-        case 1009: return '超速告警'
-        case 1010: return '动物告警'
-        case 1011: return '井盖异常告警'
-        case 1012: return '消防设备告警'
-        case 1013: return '火灾烟雾告警'
-        case 1014: return '红外测温告警'
-        default: return '机体告警'
+      if(alarmCode != null && alarmCode != undefined){
+        switch (alarmCode) {
+          case 1001: return '行人告警'
+          case 1002: return '非机动车告警'
+          case 1003: return '异物告警'
+          case 1004: return '温度告警'
+          case 1005: return '湿度告警'
+          case 1006: return '气体告警'
+          case 1007: return '灯光告警'
+          case 1008: return '违停逆行告警'
+          case 1009: return '超速告警'
+          case 1010: return '动物告警'
+          case 1011: return '井盖异常告警'
+          case 1012: return '消防设备告警'
+          case 1013: return '火灾烟雾告警'
+          case 1014: return '红外测温告警'
+          default: return '机体告警'
+        }
       }
+
     },
     chart() {
       this.$router.push({
@@ -1872,11 +1932,12 @@ export default {
       return data.label.indexOf(value) !== -1;
     },
     async setOpen(e) {
-      if(e){
-        this.robotOpen = 2
-      }else {
-        this.robotOpen = 1
-      }
+      this.robotOpen = e
+      // if(e){
+      //   this.robotOpen = 2
+      // }else {
+      //   this.robotOpen = 1
+      // }
       const time = this.getNowtime()
       //通知后台再开遥控
       if (this.robotOpen == 1) {
@@ -2405,6 +2466,14 @@ export default {
 
 </script>
 <style lang="scss" scoped>
+
+.screen {
+  background-image: url(../../assets/img/screenBackground.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 56.25rem;
+}
+
 .page-title {
   line-height: 1.75rem;
   font-size: 0.875rem;
@@ -2450,9 +2519,14 @@ export default {
   right: 0;
 }
 
+
 .content {
+
+  .screenTitle{
+    font-style: italic;
+  }
+
   font-size: 1.25rem;
-  padding-top: 1vh;
 
   >.el-row {
     height: 100%;
@@ -2465,7 +2539,7 @@ export default {
   .visibleLight{
     width: 100%;
     height: 30.5rem;
-    border: solid #0D5487FF;
+    border: none;
   }
 
   .iframe-fullScreen{
@@ -2479,11 +2553,12 @@ export default {
   }
 
   .button-box {
-    width: 10rem;
+    //width: 20rem;
     border-radius: 50%;
     position: fixed;
     bottom: 1rem;
-    right: 19rem;
+    //right: 10rem;
+    left: 25%;
     padding-left: 1rem;
     padding-top: 1.5rem;
     cursor: pointer;
@@ -2501,12 +2576,39 @@ export default {
     text-align: center;
   }
 
+  .el-table{
+    background-color: #031b31!important;
+  }
+
+  .back-shaodow {
+    background-color: rgba($color: #071828, $alpha: 0.9);
+  }
+
+  ::v-deep .el-input__prefix{
+    left:7px;
+    top: 7px;
+  }
+
   .el-table::before {
     left: 0;
     bottom: 0;
     width: 100%;
     height: 0;
   }
+
+  ::v-deep .el-dialog{
+    background: #0b1d35;
+  }
+
+  ::v-deep .el-input__inner{
+    color: #FFFFFF;
+  }
+
+  //::v-deep .el-select-dropdown,
+  //::v-deep .el-select-dropdown__item.hover{
+  //  background-color: transparent!important;
+  //}
+
   //筛选框
   // .selectAdvice {
   //   height: 80;
@@ -2579,13 +2681,17 @@ export default {
   }
 
   .buttonActive {
-    color: #FFFFFF;
-    background-color:#67B3B2;
+    //color: #FFFFFF;
+    //background-color:#67B3B2;
+    color:#67B3B2;
+    margin-top: 0.5rem;
   }
 
   .buttonInactive {
+    //color: #FFFFFF;
+    //background-color: rgba(103, 179, 178, 0.20);
     color: #FFFFFF;
-    background-color: rgba(103, 179, 178, 0.20);
+    margin-top: 0.5rem;
   }
 
   //机器人信息2.0
@@ -2596,7 +2702,7 @@ export default {
   }
 
   .robot {
-    height: 12rem; //27.5rem
+    height: 11rem; //27.5rem
     // min-height: 40.7vh;
 
     .robotMessage {
@@ -2617,8 +2723,8 @@ export default {
 
     .robotPic {
       //width: 14vh;
-      height: 6rem;
-      margin-left: 20%;
+      height: 5rem;
+      margin-left: 25%;
       //margin-top: 1rem;
     }
 
@@ -2651,11 +2757,11 @@ export default {
     .electri {
       //position: absolute;
       color: #fff;
-      margin-left: 1.0125rem;
-      //margin-top: 0.375rem;
+      margin-top: 0.8rem;
+      margin-left: 0;
 
       .el-progress {
-        margin-left: 1rem;
+        margin-left: 0.5rem;
       }
 
       ::v-deep .el-progress__text {
@@ -2665,8 +2771,9 @@ export default {
 
     .runtimeinfo-first {
       //position: absolute;
+      width: 8rem;
       color: #fff;
-      margin-left: 1.0125rem;
+      //margin-left: 1.0125rem;
       margin-top: 0.6rem;
 
       ::v-deep .el-progress__text {
@@ -2677,7 +2784,7 @@ export default {
     .runtimeinfo-second {
       //position: absolute;
       color: #fff;
-      margin-left: 1.0125rem;
+      margin-left: 0;
       margin-top: 0.8rem;
 
       ::v-deep .el-progress__text {
@@ -2687,8 +2794,9 @@ export default {
 
     .runtimeinfo-third {
       //position: absolute;
+      width: 8rem;
       color: #fff;
-      margin-left: 1.0125rem;
+      //margin-left: 1.0125rem;
       margin-top: 0.8rem;
 
       ::v-deep .el-progress__text {
@@ -2942,7 +3050,7 @@ export default {
   .map {
     // margin: 0.625rem;
     margin: 0.5rem 0; //1.25rem
-    height: 22.5rem;
+    height: 20.5rem;
     background-size: 100%;
     background-repeat: no-repeat;
     color: #fff;
@@ -2977,7 +3085,6 @@ export default {
         min-width: 150px;
 
         ::v-deep .el-input__inner {
-
           padding-left: 52px;
         }
       }
@@ -3009,6 +3116,10 @@ export default {
   //   width: 19.375rem;
 
   // }
+
+  ::v-deep .el-table--scrollable-y .el-table__body-wrapper{
+    overflow-y: hidden;
+  }
 
   .hkControl {
     //width: 100%;
@@ -3101,6 +3212,18 @@ export default {
           margin-top: 0.125rem;
         }
       }
+    }
+
+    .robotMoveDirect{
+      width: 2rem;
+      height:1.5rem;
+      margin: 0 0.5rem;
+      border-radius: 0.625rem;
+      text-align: center;
+    }
+
+    .robotMoveDirect:active{
+        opacity: 0.5;
     }
 
     .robotDirec {

@@ -21,6 +21,8 @@
           </div>
         </template>
       </div>
+      <i class="el-icon-sort" style="rotate:90deg;color: white;margin-right: 2rem" @click="()=>{this.$router.push('/dataScreen')}"></i>
+
       <screenfull id="screenfull" class="right-menu-item hover-effect" style="margin-right: 1.875rem;color: white" />
       <div class="right">
 

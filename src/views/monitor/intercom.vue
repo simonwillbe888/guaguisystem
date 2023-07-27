@@ -21,7 +21,8 @@ export default {
   name: 'intercom',
   props: {
     carID: Number,
-    required: true
+    required: true,
+    intercomControl: false,
   },
   data() {
     return {
@@ -51,6 +52,13 @@ export default {
     },
     standby(){
       this.end()
+    },
+    intercomControl(newValue, oldValue){
+      if(newValue){
+        this.begin()
+      }else {
+        this.end()
+      }
     }
   },
   methods: {

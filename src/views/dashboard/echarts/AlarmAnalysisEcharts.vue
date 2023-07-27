@@ -56,17 +56,23 @@ export default {
           },
           axisLine: {
             lineStyle: {
-              color: '#fff'
+              color: '#fff',
             }
           },
-
         },
         yAxis: {
           axisLine: {
             lineStyle: {
-              color: '#fff'
+              color: '#fff',
             }
-          },},
+          },
+          splitLine:{
+            show:true,
+            lineStyle:{
+              type: 'dashed',
+            }
+          }
+        },
         // 鼠标滑过显示悬浮框
         tooltip: {
           show:true,//鼠标滑过是否显示悬浮框 （默认为true开启 false为关闭）
@@ -124,7 +130,7 @@ export default {
 <style scoped >
 #alarmAnalysisEcharts {
   width: auto;
-  height: 15rem;
+  height: 13rem;
   //height: 100%;
   top: -2.5rem;
 }
