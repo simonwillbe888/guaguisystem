@@ -31,7 +31,7 @@
           <div class="enviroment back-shaodow threeRow" style="height: 9rem">
             <div class="leftTitle" style="padding-bottom: 0;display: flex">
               <div style="z-index: 10;margin-left: 0.5rem">环境信息</div>
-              <div style="display: flex;position: fixed;margin-top: 0.7rem;z-index: 9">
+              <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
                 <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
                 <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
                 <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
@@ -110,7 +110,7 @@
                   <el-switch v-model="controlManager" :active-value=false :inactive-value=true ></el-switch>
                 </div>
               </div>
-              <div style="display: flex;position: fixed;margin-top: 0.7rem;z-index: 9">
+              <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
                 <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
                 <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
                 <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
@@ -181,7 +181,7 @@
                 <span :class="{buttonInactive:alarmSumButtonActive !== 'month',buttonActive:alarmSumButtonActive === 'month'}" style="cursor: pointer;font-size: 0.8rem"  @click="alarmSumButton('month')">近30天</span>
               </div>
             </div>
-            <div style="display: flex;position: fixed;margin-top: 0.7rem;z-index: 9">
+            <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
               <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
               <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
               <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
@@ -209,7 +209,7 @@
                 <span :class="{buttonInactive:alarmAnalysisButtonActive !== 'month',buttonActive:alarmAnalysisButtonActive === 'month'}" style="cursor: pointer;font-size: 0.8rem"  @click="alarmAnalysisButton('month')">近30天</span>
               </div>
             </div>
-            <div style="display: flex;position: fixed;margin-top: 0.7rem;z-index: 9">
+            <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
               <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
               <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
               <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
@@ -460,7 +460,7 @@
               告警列表
               <div style="float:right;color:#64c8c8;margin-right: 2rem;cursor: pointer" @click="goRealAlarm()">更多》</div>
             </div>
-            <div style="display: flex;position: fixed;margin-top: 0.7rem;z-index: 9">
+            <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
               <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
               <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
               <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
@@ -545,7 +545,7 @@
 
           <div class="leftTitle" style="display:flex;padding-top: 0.5rem;padding-bottom: 0.5rem;">
             <div style="z-index: 10;margin-left: 0.5rem">告警信息</div>
-            <div style="display: flex;position: fixed;margin-top: 0.7rem;z-index: 9">
+            <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
               <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
               <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
               <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
