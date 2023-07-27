@@ -29,7 +29,14 @@
         <!--隧道环境信息-->
         <div style="margin-bottom: 0.5rem">
           <div class="enviroment back-shaodow threeRow" style="height: 9rem">
-            <div class="leftTitle" style="padding-bottom: 0">环境信息</div>
+            <div class="leftTitle" style="padding-bottom: 0;display: flex">
+              <div style="z-index: 10;margin-left: 0.5rem">环境信息</div>
+              <div style="display: flex;position: fixed;margin-top: 0.7rem;z-index: 9">
+                <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
+                <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+                <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+              </div>
+            </div>
             <div style="display:flex">
               <div class="enviroDetail">
                 <div class="detail_icon">
@@ -92,13 +99,21 @@
         <div style="margin-bottom: 0.5rem">
 
           <div class="robot back-shaodow">
-            <div class="leftTitle" > 机器人信息
-              <div style="color:#67B3B2;display: inline-block;" v-if="butteryInfo">
-                <svg-icon icon-class="battery" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>{{ butteryInfo }}
+            <div class="leftTitle" style="display:flex">
+              <div style="z-index: 10;margin-left: 0.5rem;width: 100%">
+                机器人信息
+                <div style="color:#67B3B2;display: inline-block;z-index: 10;" v-if="butteryInfo">
+                  <svg-icon icon-class="battery" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>{{ butteryInfo }}
+                </div>
+                <div style="float: right;z-index: 10;margin-right: 3rem">
+                  <span style="color: #0fa3bd;font-size: 0.8rem">控制</span>
+                  <el-switch v-model="controlManager" :active-value=false :inactive-value=true ></el-switch>
+                </div>
               </div>
-              <div style="float: right;margin-right: 3rem">
-                <span style="color: #0fa3bd;font-size: 0.8rem">控制</span>
-                <el-switch v-model="controlManager" :active-value=false :inactive-value=true ></el-switch>
+              <div style="display: flex;position: fixed;margin-top: 0.7rem;z-index: 9">
+                <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
+                <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+                <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
               </div>
             </div>
 
@@ -156,13 +171,20 @@
         </div>
 
         <div class="back-shaodow" style="height: 13rem; margin-bottom: 0.5rem;width: auto">
-          <div class="leftTitle" style="width: auto;white-space: nowrap;"> 告警数据统计
-            <div style="float: right;margin-right: 3rem">
-              <span :class="{buttonInactive:alarmSumButtonActive !== 'day',buttonActive:alarmSumButtonActive === 'day'}"  style="cursor: pointer;font-size: 0.8rem" @click="alarmSumButton('day')">今日</span>
-              <span style="color:#67B3B2"> | </span>
-              <span :class="{buttonInactive:alarmSumButtonActive !== 'week',buttonActive:alarmSumButtonActive === 'week'}" style="cursor: pointer;font-size: 0.8rem"  @click="alarmSumButton('week')">近一周</span>
-              <span style="color:#67B3B2"> | </span>
-              <span :class="{buttonInactive:alarmSumButtonActive !== 'month',buttonActive:alarmSumButtonActive === 'month'}" style="cursor: pointer;font-size: 0.8rem"  @click="alarmSumButton('month')">近30天</span>
+          <div class="leftTitle" style="white-space: nowrap;display: flex">
+            <div style="z-index: 10;margin-left: 0.5rem;width: 100%;">告警数据统计
+              <div style="float: right;margin-right: 3rem;z-index: 10">
+                <span :class="{buttonInactive:alarmSumButtonActive !== 'day',buttonActive:alarmSumButtonActive === 'day'}"  style="cursor: pointer;font-size: 0.8rem" @click="alarmSumButton('day')">今日</span>
+                <span style="color:#67B3B2"> | </span>
+                <span :class="{buttonInactive:alarmSumButtonActive !== 'week',buttonActive:alarmSumButtonActive === 'week'}" style="cursor: pointer;font-size: 0.8rem"  @click="alarmSumButton('week')">近一周</span>
+                <span style="color:#67B3B2"> | </span>
+                <span :class="{buttonInactive:alarmSumButtonActive !== 'month',buttonActive:alarmSumButtonActive === 'month'}" style="cursor: pointer;font-size: 0.8rem"  @click="alarmSumButton('month')">近30天</span>
+              </div>
+            </div>
+            <div style="display: flex;position: fixed;margin-top: 0.7rem;z-index: 9">
+              <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
+              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
             </div>
           </div>
 
@@ -177,7 +199,8 @@
         </div>
 
         <div class="back-shaodow" style="height: 13.5rem;width: auto">
-            <div class="leftTitle" style="width: auto;white-space: nowrap;z-index: 20;position: relative;"> 告警数据分析
+          <div class="leftTitle" style="white-space: nowrap;display: flex;z-index: 20;position: relative;">
+            <div style="z-index: 10;margin-left: 0.5rem;width: 100%;">告警数据分析
               <div style="margin-right: 3rem;float: right">
                 <span :class="{buttonInactive:alarmAnalysisButtonActive !== 'day',buttonActive:alarmAnalysisButtonActive === 'day'}"  style="cursor: pointer;font-size: 0.8rem" @click="alarmAnalysisButton('day')">今日</span>
                 <span style="color:#67B3B2"> | </span>
@@ -186,6 +209,12 @@
                 <span :class="{buttonInactive:alarmAnalysisButtonActive !== 'month',buttonActive:alarmAnalysisButtonActive === 'month'}" style="cursor: pointer;font-size: 0.8rem"  @click="alarmAnalysisButton('month')">近30天</span>
               </div>
             </div>
+            <div style="display: flex;position: fixed;margin-top: 0.7rem;z-index: 9">
+              <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
+              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+            </div>
+          </div>
 
           <div style="height: 8rem;">
             <AlarmAnalysisEcharts :alarmData="alarmAnalData"  style="width: 100%;"></AlarmAnalysisEcharts>
@@ -426,8 +455,16 @@
       <!--      <el-row :gutter="10">-->
       <el-col :span="6">
         <div class="alarm-list back-shaodow">
-          <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0.5rem;">告警列表
-            <div style="float:right;color:#64c8c8;margin-right: 2rem;cursor: pointer" @click="goRealAlarm()">更多》</div>
+          <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0.5rem;display: flex">
+            <div style="z-index: 10;margin-left: 0.5rem;width: 100%;">
+              告警列表
+              <div style="float:right;color:#64c8c8;margin-right: 2rem;cursor: pointer" @click="goRealAlarm()">更多》</div>
+            </div>
+            <div style="display: flex;position: fixed;margin-top: 0.7rem;z-index: 9">
+              <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
+              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+            </div>
           </div>
 
           <div class="alarm">
@@ -506,7 +543,15 @@
             </el-dialog>
           </div>
 
-          <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0.5rem;">告警信息</div>
+          <div class="leftTitle" style="display:flex;padding-top: 0.5rem;padding-bottom: 0.5rem;">
+            <div style="z-index: 10;margin-left: 0.5rem">告警信息</div>
+            <div style="display: flex;position: fixed;margin-top: 0.7rem;z-index: 9">
+              <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
+              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+            </div>
+          </div>
+
           <div style="display:flex;">
             <!--              <img :src="imageUrl" alt="" style="width:70%">-->
             <div style="margin:0 1.0rem">
@@ -522,13 +567,22 @@
               </div>
 
               <div style="margin: 0.5rem 0 0 0;vertical-align:top;" >
-                <div style="color:#0FB0CAFF;font-size: 15px">告警时间： <span style="color: #FFFFFF">{{ alarm.ReportTime }}</span></div>
+                <div style="color:#0FB0CAFF;font-size: 15px">
+                  <i class="el-icon-time" style="margin-right: 0.5rem"></i>告警时间：
+                  <span style="color: #FFFFFF">{{ alarm.ReportTime }}</span>
+                </div>
               </div>
               <div style="margin: 1rem 0 0 0; vertical-align:top;">
-                <div style="color:#0FB0CAFF;font-size: 15px">告警位置： <span style="color: #FFFFFF">{{ alarm.Location }}</span></div>
+                <div style="color:#0FB0CAFF;font-size: 15px">
+                  <i class="el-icon-location" style="margin-right: 0.5rem"></i>告警位置：
+                  <span style="color: #FFFFFF">{{ alarm.Location }}</span>
+                </div>
               </div>
               <div style="margin: 1rem 0 0 0;">
-                <div style="color:#0FB0CAFF;font-size: 15px">告警描述： <span style="color: #FFFFFF">{{ alarm.Description }}</span></div>
+                <div style="color:#0FB0CAFF;font-size: 15px">
+                  <i class="el-icon-document" style="margin-right: 0.5rem"></i>告警描述：
+                  <span style="color: #FFFFFF">{{ alarm.Description }}</span>
+                </div>
               </div>
 
             </div>
@@ -2585,8 +2639,10 @@ export default {
   }
 
   ::v-deep .el-input__prefix{
-    left:7px;
-    top: 7px;
+    left: 10px;
+    display: flex;
+    position: absolute;
+    align-items: center;
   }
 
   .el-table::before {
