@@ -156,37 +156,37 @@
         </div>
 
         <div class="back-shaodow" style="height: 13rem; margin-bottom: 0.5rem;width: auto">
-          <div style="display:flex;position: relative">
-            <div class="leftTitle" style="display: inline-block;width: auto;white-space: nowrap;"> 告警数据统计 </div>
-            <div style="margin: 1rem 0 0 8rem">
-              <span :class="{buttonInactive:alarmSumButtonActive !== 'day',buttonActive:alarmSumButtonActive === 'day'}"  style="font-size: 0.8rem" @click="alarmSumButton('day')">今日</span>
+          <div class="leftTitle" style="width: auto;white-space: nowrap;"> 告警数据统计
+            <div style="float: right;margin-right: 3rem">
+              <span :class="{buttonInactive:alarmSumButtonActive !== 'day',buttonActive:alarmSumButtonActive === 'day'}"  style="cursor: pointer;font-size: 0.8rem" @click="alarmSumButton('day')">今日</span>
               <span style="color:#67B3B2"> | </span>
-              <span :class="{buttonInactive:alarmSumButtonActive !== 'week',buttonActive:alarmSumButtonActive === 'week'}" style="font-size: 0.8rem"  @click="alarmSumButton('week')">近一周</span>
+              <span :class="{buttonInactive:alarmSumButtonActive !== 'week',buttonActive:alarmSumButtonActive === 'week'}" style="cursor: pointer;font-size: 0.8rem"  @click="alarmSumButton('week')">近一周</span>
               <span style="color:#67B3B2"> | </span>
-              <span :class="{buttonInactive:alarmSumButtonActive !== 'month',buttonActive:alarmSumButtonActive === 'month'}" style="font-size: 0.8rem"  @click="alarmSumButton('month')">近30天</span>
+              <span :class="{buttonInactive:alarmSumButtonActive !== 'month',buttonActive:alarmSumButtonActive === 'month'}" style="cursor: pointer;font-size: 0.8rem"  @click="alarmSumButton('month')">近30天</span>
             </div>
+          </div>
+
 <!--            <el-button-group class="title-button-group">-->
 <!--              <el-button :class="{buttonInactive:alarmSumButtonActive !== 'day',buttonActive:alarmSumButtonActive === 'day'}" size="mini" round @click="alarmSumButton('day')">今日</el-button>-->
 <!--              <el-button :class="{buttonInactive:alarmSumButtonActive !== 'week',buttonActive:alarmSumButtonActive === 'week'}" size="mini" @click="alarmSumButton('week')">近一周</el-button>-->
 <!--              <el-button :class="{buttonInactive:alarmSumButtonActive !== 'month',buttonActive:alarmSumButtonActive === 'month'}" size="mini" round @click="alarmSumButton('month')">近30天</el-button>-->
 <!--            </el-button-group>-->
-          </div>
           <div style="height: 10rem;">
             <AlarmSumEcharts :alarmData="alarmSumData" style="width: 100%;"></AlarmSumEcharts>
           </div>
         </div>
 
         <div class="back-shaodow" style="height: 13.5rem;width: auto">
-          <div style="display:flex;position: relative">
-            <div class="leftTitle" style="display: inline-block;width: auto;white-space: nowrap;"> 告警数据分析 </div>
-            <div style="margin: 1rem 0 0 8rem;z-index: 10">
-              <span :class="{buttonInactive:alarmAnalysisButtonActive !== 'day',buttonActive:alarmAnalysisButtonActive === 'day'}"  style="font-size: 0.8rem" @click="alarmAnalysisButton('day')">今日</span>
-              <span style="color:#67B3B2"> | </span>
-              <span :class="{buttonInactive:alarmAnalysisButtonActive !== 'week',buttonActive:alarmAnalysisButtonActive === 'week'}" style="font-size: 0.8rem"  @click="alarmAnalysisButton('week')">近一周</span>
-              <span style="color:#67B3B2"> | </span>
-              <span :class="{buttonInactive:alarmAnalysisButtonActive !== 'month',buttonActive:alarmAnalysisButtonActive === 'month'}" style="font-size: 0.8rem"  @click="alarmAnalysisButton('month')">近30天</span>
+            <div class="leftTitle" style="width: auto;white-space: nowrap;z-index: 20;position: relative;"> 告警数据分析
+              <div style="margin-right: 3rem;float: right">
+                <span :class="{buttonInactive:alarmAnalysisButtonActive !== 'day',buttonActive:alarmAnalysisButtonActive === 'day'}"  style="cursor: pointer;font-size: 0.8rem" @click="alarmAnalysisButton('day')">今日</span>
+                <span style="color:#67B3B2"> | </span>
+                <span :class="{buttonInactive:alarmAnalysisButtonActive !== 'week',buttonActive:alarmAnalysisButtonActive === 'week'}" style="cursor: pointer;font-size: 0.8rem"  @click="alarmAnalysisButton('week')">近一周</span>
+                <span style="color:#67B3B2"> | </span>
+                <span :class="{buttonInactive:alarmAnalysisButtonActive !== 'month',buttonActive:alarmAnalysisButtonActive === 'month'}" style="cursor: pointer;font-size: 0.8rem"  @click="alarmAnalysisButton('month')">近30天</span>
+              </div>
             </div>
-          </div>
+
           <div style="height: 8rem;">
             <AlarmAnalysisEcharts :alarmData="alarmAnalData"  style="width: 100%;"></AlarmAnalysisEcharts>
           </div>
@@ -426,8 +426,9 @@
       <!--      <el-row :gutter="10">-->
       <el-col :span="6">
         <div class="alarm-list back-shaodow">
-          <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0.5rem;display: inline-block;">告警列表</div>
-          <div style="color:#64c8c8;margin-left: 14rem; padding-top: 0.5rem;padding-bottom: 0.5rem;display: inline-block;cursor: pointer" @click="goRealAlarm()">更多》</div>
+          <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0.5rem;">告警列表
+            <div style="float:right;color:#64c8c8;margin-right: 2rem;cursor: pointer" @click="goRealAlarm()">更多》</div>
+          </div>
 
           <div class="alarm">
             <div class="myTable">
@@ -1021,9 +1022,8 @@ export default {
           const menuItems = document.querySelectorAll('.viewer-canvas');
           console.log('viewer-canvas',menuItems,document.documentElement.clientHeight)
           menuItems.forEach(menuItem => {
-              // menuItem.height = document.documentElement.clientHeight/3
-              // menuItem.offsetHeight = document.documentElement.clientHeight/3
-              menuItem.style = "height: "+document.documentElement.clientHeight*300/955+"px;"
+              // menuItem.style = "height: "+document.documentElement.clientHeight*300/955+"px;"
+              menuItem.style = "height: "+document.documentElement.clientHeight*290/955+"px;width:"+document.documentElement.clientWidth*943/1920+"px;"
           });
         })
       }
