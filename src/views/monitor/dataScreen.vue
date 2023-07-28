@@ -159,7 +159,7 @@
 
                   <div class="electri">
                     <div style="font-size: 0.8rem;color: #0FB1CBFF;white-space: nowrap;">剩余电量</div>
-                    <el-progress :width="40" text-color="#fbf9ea" type="circle" style="margin-top: 0.5rem"
+                    <el-progress :width="40" text-color="#fbf9ea" type="circle" style="margin-top: 0.2rem"
                                  :percentage="carList.batteryLevel"></el-progress>
                   </div>
                 </div>
@@ -254,6 +254,7 @@
             id="vue3dLoader"
             ref="model"
             :height="vue3dLoaderHeight"
+            :width="vue3dLoaderWidth"
             :enableDamping="true"
             :filePath="filePath"
             :mtlPath="mtlPath"
@@ -261,6 +262,7 @@
             :backgroundAlpha="1"
             :backgroundColor="'#a0a0a0'"
             outputEncoding="sRGB"
+            :dampingFactor="0.05"
             :cameraPosition="cameraPosition"
             :cameraLookAt="cameraLookAt"
             :cameraUp="cameraUp"
@@ -270,19 +272,20 @@
           ></vue3dLoader>
 
           <!--            <div :id="'ht'" ref="htView" style="width:500px;height:500px;"></div>-->
-          <!--            <el-button style="position:absolute;margin-left: 0.5rem; top:0.5rem;background-color:transparent;border-color: transparent" size="mini"-->
-          <!--                       @click="vue3dLoaderFullScreen()">-->
-          <!--              <svg-icon icon-class="fullscreen" style="font-size: 1rem"></svg-icon>-->
-          <!--            </el-button>-->
-
-          <el-button style=";position:absolute;margin-left: 0; top:0.5rem;background-color:transparent;border-color: transparent" size="mini"
-                     @click="topVision()">
-            <svg-icon icon-class="top-vision" style="font-size: 1.7rem"></svg-icon>
-          </el-button>
-          <el-button style="position:absolute;margin-left: 0; top:2.5rem;background-color:transparent;border-color: transparent" size="mini"
-                     @click="followAgv()">
-            <svg-icon icon-class="follow" style="font-size: 2rem"></svg-icon>
-          </el-button>
+          <div style="position: absolute;top: 0;left: 0;width: 100%;z-index: 889;" :class="{'loaderFSB':loaderFS}">
+            <el-button style="position:absolute;margin-left: 0; top:0.5rem;background-color:transparent;border-color: transparent;z-index: 101" size="mini"
+                       @click="topVision()">
+              <svg-icon icon-class="top-vision" style="font-size: 1.7rem"></svg-icon>
+            </el-button>
+            <el-button style="position:absolute;margin-left: 0; top:2.5rem;background-color:transparent;border-color: transparent;z-index: 101" size="mini"
+                       @click="followAgv()">
+              <svg-icon icon-class="follow" style="font-size: 2rem"></svg-icon>
+            </el-button>
+            <el-button style="margin-top:0.5rem;float: right;background-color:transparent;border-color: transparent;z-index: 101" size="mini"
+                       @click="vue3dLoaderFullScreen()">
+              <svg-icon icon-class="fullscreen" style="font-size: 1rem"></svg-icon>
+            </el-button>
+          </div>
 
 <!--          <div style="position: absolute;left:1rem;top:15.5rem">-->
 <!--              <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }} 机器人位置  {{ carList.vertexNumber == 0 ?-->
@@ -474,9 +477,9 @@
                 </el-table-column>
                 <!--                  <el-table-column prop="AlarmCode" :label="'告警码'" width="80" align="center">-->
                 <!--                  </el-table-column>-->
-                <el-table-column width="200" prop="ReportTime" label="时间" align="center">
+                <el-table-column prop="ReportTime" label="时间" align="center">
                 </el-table-column>
-                <el-table-column width="100" prop="AlarmName" label="事件类型" align="center">
+                <el-table-column width="120" prop="AlarmName" label="事件类型" align="center">
                   <template slot-scope="scope">
                     {{ scope.row.AlarmName.slice(0, -2) }}
                   </template>
@@ -689,6 +692,8 @@ export default {
       alarmAnalysisButtonActive: 'day',
       controlManager: true,
       vue3dLoaderHeight: 300,
+      vue3dLoaderWidth: 943,
+      loaderFS: false,
       alarmAnalData: {},
       alarmSumData: [],
       tempicture: null,
@@ -1061,8 +1066,18 @@ export default {
 
     },
     vue3dLoaderFullScreen(){
-      const vue3dLoader = document.getElementById('vue3dLoader');
-      vue3dLoader.classList.toggle("iframe-fullScreen")
+      const vue3dLoader = document.getElementById('vue3dLoader')
+      this.loaderFS = vue3dLoader.classList.toggle("iframe-fullScreen")
+      if(this.loaderFS){
+        this.$nextTick(()=>{
+          this.vue3dLoaderWidth = document.documentElement.clientWidth
+          this.vue3dLoaderHeight = document.documentElement.clientHeight
+        })
+      }else {
+        this.vue3dLoaderWidth = 943
+        this.vue3dLoaderHeight = 300
+      }
+      this.$refs.model.$forceUpdate()
     },
 
     judgeIsFullScreen() {
@@ -1071,15 +1086,24 @@ export default {
         // const clientHeight = document.documentElement.clientHeight || document.body.clientHeight
         // screen是window的属性方法，window.screen可省略window，指的是窗口
         // screen.height == clientHeight
-        this.$nextTick(()=>{
-          // this.vue3dLoaderHeight = this.$refs.vue3dLoaderDiv.offsetHeight
-          const menuItems = document.querySelectorAll('.viewer-canvas');
-          console.log('viewer-canvas',menuItems,document.documentElement.clientHeight)
-          menuItems.forEach(menuItem => {
-              // menuItem.style = "height: "+document.documentElement.clientHeight*300/955+"px;"
-              menuItem.style = "height: "+document.documentElement.clientHeight*290/955+"px;width:"+document.documentElement.clientWidth*943/1920+"px;"
-          });
-        })
+        if(!this.loaderFS){
+          this.$nextTick(()=>{
+            this.vue3dLoaderWidth = document.documentElement.clientWidth*943/1920
+            this.vue3dLoaderHeight = document.documentElement.clientHeight*290/955
+
+            // const menuItems = document.querySelectorAll('.viewer-canvas');
+            // console.log('viewer-canvas',menuItems,document.documentElement.clientHeight)
+            // menuItems.forEach(menuItem => {
+            //   menuItem.style = "height: "+document.documentElement.clientHeight*290/955+"px;width:"+document.documentElement.clientWidth*943/1920+"px;"
+            // });
+          })
+        }else {
+          this.$nextTick(()=>{
+            this.vue3dLoaderWidth = document.documentElement.clientWidth
+            this.vue3dLoaderHeight = document.documentElement.clientHeight
+          })
+        }
+
       }
     },
 
@@ -2342,7 +2366,8 @@ export default {
         this.currentAdvices[0].src = this.glassCameraBak
       } else {
         this.glassCameraBak = this.currentAdvices[0].src
-        this.currentAdvices[0].src = `/static/video.html?data=rtsp://${glassAddress}:8080/h264_pcm.sdp&serve=${this.webRtcIP}`
+        // this.currentAdvices[0].src = `/static/video.html?data=rtsp://${glassAddress}:8080/h264_pcm.sdp&serve=${this.webRtcIP}`
+        this.currentAdvices[0].src = `/static/video.html?data=rtsp://admin:jiaqi2023@192.168.20.66:554/Streaming/Channels/101&serve=${this.webRtcIP}`
       }
       this.glassCamera = !this.glassCamera
       console.log(this.currentAdvices[0].src)
@@ -2603,7 +2628,11 @@ export default {
     width: 100% !important;
     height: 100% !important;
     background-color: rgba(0, 0, 0, 0.5) !important;
-    z-index: 888 !important;
+    z-index: 100 !important;
+  }
+
+  .loaderFSB{
+    position: fixed!important;
   }
 
   .button-box {
@@ -3173,9 +3202,9 @@ export default {
 
   // }
 
-  ::v-deep .el-table--scrollable-y .el-table__body-wrapper{
-    overflow-y: hidden;
-  }
+  //::v-deep .el-table--scrollable-y .el-table__body-wrapper{
+  //  overflow-y: hidden;
+  //}
 
   .hkControl {
     //width: 100%;
