@@ -198,7 +198,7 @@
           </div>
         </div>
 
-        <div class="back-shaodow" style="height: 13.5rem;width: auto">
+        <div class="back-shaodow" style="height: 14rem;width: auto">
           <div class="leftTitle" style="white-space: nowrap;display: flex;z-index: 20;position: relative;">
             <div style="z-index: 10;margin-left: 0.5rem;width: 100%;">告警数据分析
               <div style="margin-right: 3rem;float: right">
@@ -1088,7 +1088,7 @@ export default {
         // screen.height == clientHeight
         if(!this.loaderFS){
           this.$nextTick(()=>{
-            this.vue3dLoaderWidth = document.documentElement.clientWidth*943/1920
+            this.vue3dLoaderWidth = document.documentElement.clientWidth*950/1920
             this.vue3dLoaderHeight = document.documentElement.clientHeight*290/955
 
             // const menuItems = document.querySelectorAll('.viewer-canvas');
@@ -2665,7 +2665,37 @@ export default {
 
   .back-shaodow {
     background-color: rgba($color: #071828, $alpha: 0.9);
+    background: linear-gradient(135deg, transparent 15px, rgba(7, 23, 38, 0.8) 0) top left,
+                linear-gradient(-135deg, transparent 0, rgba(7, 23, 38, 0.8) 0) top right,
+                linear-gradient(-45deg, rgb(103, 178, 177) 10px, transparent 11px,transparent 15px, rgba(7, 23, 38, 0.8) 0) bottom right,
+                linear-gradient(45deg, rgb(103, 178, 177) 10px, transparent 11px,transparent 15px, rgba(7, 23, 38, 0.8) 0) bottom left;
+    background-size: 50% 50%;
+    background-repeat: no-repeat;
+    //border: 1px solid rgba(255, 255, 255, 0.5);
   }
+
+  //.back-shaodow::before {
+  //  content: '';
+  //  position: absolute;
+  //  width: 0;
+  //  height: 0;
+  //  right: 0;
+  //  bottom: 0;
+  //  border: 5px solid #fff;
+  //  border-top-color: transparent;
+  //  border-left-color: transparent;
+  //}
+  //.back-shaodow::after{
+  //  content: '';
+  //  position: absolute;
+  //  width: 0;
+  //  height: 0;
+  //  left: 0;
+  //  top: 0;
+  //  border: 5px solid #fff;
+  //  border-bottom-color: transparent;
+  //  border-right-color: transparent;
+  //}
 
   ::v-deep .el-input__prefix{
     left: 10px;

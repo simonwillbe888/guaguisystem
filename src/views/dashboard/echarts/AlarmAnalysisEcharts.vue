@@ -130,7 +130,7 @@ export default {
 <style scoped >
 #alarmAnalysisEcharts {
   width: auto;
-  height: 13rem;
+  height: 13.5rem;
   //height: 100%;
   top: -2.5rem;
 }
