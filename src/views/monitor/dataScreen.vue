@@ -3240,6 +3240,7 @@ export default {
     //width: 100%;
     width: 27rem;
     height: 28rem;
+    background: none;
     background-color: rgba(7, 24, 40, 0.7);
     border-radius: 0.625rem;
     //margin: 0 0 0.875rem 0;
