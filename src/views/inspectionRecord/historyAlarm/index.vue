@@ -46,7 +46,7 @@
       </el-collapse> -->
     </div>
     <div class="equip-body content-body">
-      <el-table @row-click="getDetailMessage" class="equip-data" :data="alarmInfoArr"
+      <el-table @row-click="getDetailMessage"    class="equip-data" :data="alarmInfoArr"
         header-row-class-name="header-row-class" row-class-name="row-class" fit height="35.5rem" highlight-current-row
         size="small" :empty-text="'暂无数据'">
         <el-table-column type="index" label="序号" align="center" width="80">
@@ -102,7 +102,7 @@
         <el-table-column prop="details" label="操作" v-if="alarmType == 2" align="center" width="120">
           <template slot-scope="{ row }">
             <el-button style="background-color:#64C8C8 ;color:#fff" v-if="row.statusNum == 0 || row.statusNum == 1"  icon="el-icon-edit" size="mini"
-              plain @click="showDetail(row)">处理</el-button>
+              plain @click.stop="showDetail(row)">处理</el-button>
             <el-button style="background-color:#64C8C8 ;color:#fff" v-else  icon="el-icon-document" size="mini" plain>详情</el-button>
           </template>
         </el-table-column>
@@ -151,7 +151,11 @@
           </div>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          <template>
+            <el-button v-if="alarm.statusNum == 0 || alarm.statusNum == 1"  type="primary" @click="showDetail(alarm)">处 理</el-button>
+            <el-button v-else type="primary" @click="dialogVisible = false">确 定</el-button>
+          </template>
+
         </span>
       </el-dialog>
       <div>
@@ -500,6 +504,7 @@ export default {
                   title: '提示',
                   duration: 1000,
                 });
+                self.dialogVisible = false
                 self.cancel();
                 self.init();
               }

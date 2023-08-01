@@ -178,7 +178,10 @@
           </div>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          <template>
+            <el-button v-if="alarm.statusNum == 0 || alarm.statusNum == 1"  type="primary" @click="showDetail(alarm)">处 理</el-button>
+            <el-button v-else type="primary" @click="dialogVisible = false">确 定</el-button>
+          </template>
         </span>
       </el-dialog>
       <div>
@@ -467,6 +470,7 @@ export default {
                 });
                 self.cancel();
                 self.init();
+                self.dialogVisible = false
               }
             })
             .catch((error) => {
