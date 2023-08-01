@@ -454,7 +454,10 @@ export const asyncRoutes = [
           //   icon: 'battery',
           parent_id: 6,
           roles: ['SysSetting'],
+          
         },
+        hidden: true,
+
       },
       {
         path: 'licenseSetting',

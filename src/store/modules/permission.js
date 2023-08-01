@@ -9,7 +9,6 @@ import Cookies from 'js-cookie'
  */
 function hasPermission(roles, route) {
   if (route.meta && route.meta.roles) {
-    console.log('查看问题',roles.some((role) => route.meta.roles.includes(role)))
     return roles.some((role) => route.meta.roles.includes(role));
   } else {
     return true;

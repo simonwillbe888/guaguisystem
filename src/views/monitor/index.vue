@@ -201,7 +201,7 @@
              <div class="goLocation">
               <el-input
                 @blur="handleInput()"
-                class="location_Detail" v-model="locationID" placeholder="K100+19">
+                class="location_Detail" v-model="locationID" :placeholder="areaName">
                 <template slot="prefix">去往</template>
               </el-input>
               <el-popconfirm title="确定去往桩号?" @confirm="goLocation">
@@ -482,6 +482,7 @@ import { getSystemXmlConfig } from '../../api/sysCtrl';
 import {
   getCarrierDetailInfo, getMapData
 } from '../../api/map';
+import {getAllPatrolLocation} from '@/api/taskConfig'
 import { debounce } from '../../utils/debounce';
 import {
   getEquipmentList, SetSpeed,
@@ -588,6 +589,7 @@ export default {
       tempicture: null,
       tempicTimer: null,
       moveSet: null,
+      areaName:'',
       warnLightOpen: 0, //0关 1开
     };
   },
@@ -720,6 +722,10 @@ export default {
 
   methods: {
     async init() {
+      //获取巡检点 
+      getAllPatrolLocation().then((res)=>{
+        this.areaName = res.data[0].MapDisplayName
+      })
       const res = await getAllCarrierDetailInfo()
       //机器人列表
       const robotInfo = await getIndexCar()
@@ -737,7 +743,7 @@ export default {
       const iframe = document.getElementById('iframes0');
       iframe.onload = () => {
         iframe.contentDocument.onclick = (e) => {
-          console.log("查看摄像机信息", this.currentAdvices[0].src)
+          // console.log("查看摄像机信息", this.currentAdvices[0].src)
           this.currentCamera = this.currentAdvices[0]
         };
       };
@@ -799,7 +805,6 @@ export default {
 
     },
     getInfrared() {
-      console.log('点击事件')
       const iframe1 = document.getElementById('infrared');
 
     },
@@ -813,7 +818,7 @@ export default {
     },
     cancelLocation() {
       CancelCarrierControl(this.carID).then((res) => {
-        console.log('取消回到返回', res)
+        // console.log('取消回到返回', res)
         if (res.code == '20000') {
           this.locationAuto = false
           this.$store.dispatch('global/setLocation', '返回待命点')
@@ -827,7 +832,6 @@ export default {
       const informOpen = await informOpenRobot(this.carrierSelected.CarrierID)
       if (informOpen.code == 20000) {
         connectCar(this.robotOpen, time).then((res) => {
-          console.log("开关状态", res)
           if (res.code == 20000) {
             Notification({
               title: '提示',
@@ -973,7 +977,7 @@ export default {
         this.gasList = gas.data
       }
       else{
-        console.log('查看气体',gas)
+        // console.log('查看气体',gas)
         this.gasList = []
       }
       const car = await getRealPatrolTaskList()
@@ -981,11 +985,11 @@ export default {
       if (car.data.length > 0) {
         getTaskRemainingMileage(car.data[0].taskID).then((res) => {
           const time = (res.data.time / 60)
-          console.log('查看剩余里程', res.data.mileage, time)
+          // console.log('查看剩余里程', res.data.mileage, time)
           if (this.carList.realTimeSpeed > 0 && res.data.mileage > 20000) {
             this.finishTime = Number(((res.data.mileage / (this.carList.realTimeSpeed * 60))).toFixed(1)) + time
             this.finishTime = this.finishTime.toFixed(1)
-            console.log('看看时间', typeof this.finishTime, time)
+            // console.log('看看时间', typeof this.finishTime, time)
             if (res.data.mileage = 0) {
               this.finishTime = 0
             }
@@ -1103,7 +1107,7 @@ export default {
           speedMode: 2
         }
         moveToPatrolPoint(param).then((res) => {
-          console.log(param)
+          // console.log(param)
           if (res.code === 20000) {
             Notification({
               title: '提示',
@@ -1137,9 +1141,9 @@ export default {
           accessoryType: this.currentAdvices[0].accessoryType,
           configJson: this.currentAdvices[0].configJson
         }
-        console.log("连接云台", param)
+        // console.log("连接云台", param)
         login(param).then((res) => {
-          console.log("连接云台请求响应", res)
+          // console.log("连接云台请求响应", res)
           if (res.code == '20000') {
             this.YTlogin = true
           }
@@ -1191,7 +1195,7 @@ export default {
       }
     },
     async getDetailMessage(e) {
-      console.log("实时", e)
+      // console.log("实时", e)
       if (e.AlarmCode == 1014) {
         this.imageUrl = 'http://192.168.20.6:8888/images/' + e.Image
       }
@@ -1310,7 +1314,7 @@ export default {
         const informOpen = await informOpenRobot(this.carrierSelected.CarrierID)
         if (informOpen.code == 20000) {
           connectCar(this.robotOpen, time).then((res) => {
-            console.log("开关状态", res)
+            // console.log("开关状态", res)
             if (res.code == 20000) {
               Notification({
                 title: '提示',
@@ -1334,7 +1338,7 @@ export default {
           this.robotOpen = 2
         }
       } else if (this.robotOpen == 2) {
-        console.log('关闭切换')
+        // console.log('关闭切换')
         this.logoutCar()
       }
 
@@ -1359,7 +1363,7 @@ export default {
       } else if (this.warnLightOpen == 1) {
         //警示灯ing
         stopWarningLight(this.carID).then((res) => {
-          console.log(res)
+          // console.log(res)
           if (res.code != 20000) {
             this.warnLightOpen = 1
             Notification({
@@ -1421,7 +1425,7 @@ export default {
             // console.log('前进')
 
             moveCar(flag, 1000, 1000000, time).then((res) => {
-              console.log('前进', time, res)
+              // console.log('前进', time, res)
             })
           }, 1000)
 
@@ -1431,7 +1435,7 @@ export default {
             // console.log('后退')
 
             moveCar(flag, 1000, 1000000, time).then((res) => {
-              console.log('后退', time, res)
+              // console.log('后退', time, res)
             })
 
           }, 1000)
@@ -1442,7 +1446,7 @@ export default {
             // console.log('暂停')
             const time = this.getNowtime()
             stopCar(time).then((res) => {
-              console.log('暂停', res)
+              // console.log('暂停', res)
             })
           }, 300)
         }
@@ -1491,7 +1495,7 @@ export default {
       // console.log( this.speed)
       this.camState = val
       if (this.YTlogin == false) {
-        console.log('点击了')
+        // console.log('点击了')
         Notification({
           title: '提示',
           message: '请先登录设备',
@@ -1503,23 +1507,19 @@ export default {
         switch (val) {
           case 1:
             this.camState = val
-            console.log('点击了')
             startTiltUp(this.speed, this.currentAdvices[0].accessoryID).then((res) => {
             })
             break;
           case 3:
             startTiltDown(this.speed, this.currentAdvices[0].accessoryID).then((res) => {
-              // console.log("点击向下",res)
             })
             break;
           case 5:
             startPanLeft(this.speed, this.currentAdvices[0].accessoryID).then((res) => {
-              console.log("左移动", res)
             })
             break;
           case 7:
             startPanRight(this.speed, this.currentAdvices[0].accessoryID).then((res) => {
-              // console.log("右移动",res)
             })
             break;
           case 9:
@@ -1553,7 +1553,6 @@ export default {
             break;
           case 16:
             StartWiper(this.speed, this.currentAdvices[0].accessoryID).then((res) => {
-              console.log(res)
             })
             break;
           case 17:
@@ -1566,7 +1565,6 @@ export default {
             StartIrisClose(this.speed, this.currentAdvices[0].accessoryID)
             break;
           case 20:
-            // console.log("点击拍照")
             takePhoto(this.currentAdvices[0].accessoryID).then((res) => {
               if (res.code == 20000) {
                 this.$notify({
@@ -1731,7 +1729,6 @@ export default {
         this.currentAdvices[0].src = `/static/video.html?data=rtsp://${glassAddress}:8080/h264_pcm.sdp&serve=${this.webRtcIP}`
       }
       this.glassCamera = !this.glassCamera
-      console.log(this.currentAdvices[0].src)
     },
   },
 
@@ -2054,10 +2051,12 @@ background: linear-gradient(to right, blue 50%, red 50%);
       border-radius: 0.5rem;
       font-size: 1rem;
       word-break: break-all;
+      overflow: hidden;
 
       .gas {
         color: #66B3B2;
         margin: 0.625rem 0 0 0.375rem;
+        
       }
 
       .gasDetail {

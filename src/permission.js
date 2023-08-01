@@ -42,7 +42,7 @@ router.beforeEach(async (to, from, next) => {
       const hasRoles = store.getters.roles && store.getters.roles.length > 0;
       const roling =   sessionStorage.getItem('sessionRoles')
 
-      console.log('查看hasroles',store.getters.roles)
+      // console.log('查看hasroles',store.getters.roles)
       if (hasRoles) {
         next();
       } else {
