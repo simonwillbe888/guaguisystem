@@ -66,7 +66,7 @@
             </div>
 
             <div class="electri">
-              <el-progress :width="40" text-color="#fbf9ea" type="circle"
+              <el-progress :width="40" color="#66b3b2" type="circle"
                 :percentage="carList.batteryLevel"></el-progress>
               <div style="font-size: 0.8rem;margin-left: 0.5rem">当前电量</div>
             </div>
@@ -263,7 +263,7 @@
                   <div style="color:rgba(100 200 200) ;">温度</div>
                 </div>
                 <div class="gasDetail">
-                  {{ (gasList.Temperature / 100).toFixed(1) }}℃
+                  {{ parseFloat( (gasList.Temperature / 100).toFixed(1) )}}℃
                 </div>
               </div>
               <div class="enviroDetail">
@@ -323,7 +323,7 @@
                   </el-table-column>
                   <el-table-column prop="AlarmName" :label="$t('alarm_dealWith.alarm_name_label')" align="center">
                     <template slot-scope="scope">
-                      {{ scope.row.AlarmName.slice(0, -2) }}
+                      {{ scope.row.AlarmName}}
                     </template>
                   </el-table-column>
                   <el-table-column prop="MaxLevel" width="100" :label="'告警级别'" align="center">
@@ -876,6 +876,7 @@ export default {
       this.carID = this.carrierSelected.CarrierID
       this.carrierName = this.carrierSelected.CarrierName
       const camera = this.carrierSelected.CarrierAccessoryList[0]
+      this.getCarTask()
       if (camera == undefined) {
         this.currentAdvices[0].accessoryID = null
         this.currentAdvices[0].accessoryType = null
@@ -916,7 +917,7 @@ export default {
       this.carID = this.carrierSelected.CarrierID
       this.carrierName = this.carrierSelected.CarrierName
       const camera = this.carrierSelected.CarrierAccessoryList[0]
-
+this.getCarTask()
       if (camera == undefined) {
         this.currentAdvices[0].accessoryID = null
         this.currentAdvices[0].accessoryType = null
@@ -981,7 +982,6 @@ export default {
         this.gasList = []
       }
       const car = await getRealPatrolTaskList()
-      // console.log('里程任务id',car)
       if (car.data.length > 0) {
         getTaskRemainingMileage(car.data[0].taskID).then((res) => {
           const time = (res.data.time / 60)
@@ -1006,16 +1006,21 @@ export default {
       }
     },
     async getCarTask() {
+      this.taskList = []
+      this.taskID = ''
       getAllPatrolPlan({
         keyWord: '',
         planType: 2,
       }).then((res) => {
         res.data.forEach(element => {
-          if (element.IsEnable != 2) {
+          console.log('巡检计划',element.CarrierID == this.carID)
+          if (element.IsEnable != 2 &&element.CarrierID == this.carID) {
             this.taskList.push({
               label: element.PlanName,
               value: element.PlanID
             })
+          }else{
+            
           }
 
         });
