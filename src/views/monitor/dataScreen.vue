@@ -477,18 +477,18 @@
           <div class="alarm">
             <div class="myTable">
               <el-table :data="showTable" @row-click="(e)=>getDetailMessage(e,true)" style="width: 100%;" height="10rem">
-                <el-table-column width="60" label="序号" type="index" align="center">
+                <el-table-column width="55" label="序号" type="index" align="center">
                 </el-table-column>
                 <!--                  <el-table-column prop="AlarmCode" :label="'告警码'" width="80" align="center">-->
                 <!--                  </el-table-column>-->
                 <el-table-column width="150" prop="ReportTime" label="时间" align="center">
                 </el-table-column>
-                <el-table-column width="100" prop="AlarmName" label="事件类型" align="center">
-                  <template slot-scope="scope">
-                    {{ scope.row.AlarmName.slice(0, -2) }}
-                  </template>
+                <el-table-column width="120" prop="AlarmName" label="事件类型" align="center">
+<!--                  <template slot-scope="scope">-->
+<!--                    {{ scope.row.AlarmName.slice(0, -2) }}-->
+<!--                  </template>-->
                 </el-table-column>
-                <el-table-column prop="MaxLevel" width="100" :label="'告警等级'" align="center">
+                <el-table-column prop="MaxLevel" width="90" :label="'告警等级'" align="center">
                   <template slot-scope="scope">
                     <span v-if="scope.row.MaxLevel != undefined && scope.row.MaxLevel === 4" class="first">致命</span>
                     <span v-else-if="scope.row.MaxLevel != undefined && scope.row.MaxLevel === 3" class="two">严重</span>
