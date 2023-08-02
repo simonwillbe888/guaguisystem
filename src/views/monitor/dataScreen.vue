@@ -3,7 +3,7 @@
     <div class="content">
       <div style="height: 6rem;margin-bottom: 1rem;background-color: transparent;display: flex;position: relative;justify-content: center;">
         <div style="position: absolute;left: 0;">
-          <el-select v-model="tunnel" placeholder="请选择" style="width: 8rem;margin: 2.5rem 3rem;">
+          <el-select v-model="tunnel" placeholder="请选择" style="width: 8rem;margin: 3rem 3rem;">
             <el-option
               v-for="item in tunnelList"
               :key="item.value"
@@ -21,7 +21,7 @@
           </div>
           <div style="display: flex;margin-right: 2rem;align-items: center;">
             <Clock style="color: #5ea19f;margin-right: 1rem;font-size: 1.5rem"></Clock>
-            <span  @click="$router.back()"><svg-icon icon-class="exit" style="width: 2rem;margin: auto"/></span>
+            <span  @click="$router.push('/dashboard/monitor')"><svg-icon icon-class="exit" style="width: 2rem;margin: auto"/></span>
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@
                   <svg-icon icon-class="tempicture" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
                   <div style="color:#0FB1CBFF;width: 3rem">温度</div>
                 </div>
-                <div class="gasDetail">
+                <div class="gasDetail" style="margin-left: 0.7rem;">
                   {{ gasList.Temperature == null ? '0' : (gasList.Temperature / 100).toFixed(1) }}℃
                 </div>
               </div>
@@ -52,7 +52,7 @@
                   <svg-icon icon-class="shidu" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
                   <div style="color:#0FB1CBFF;width: 3rem">湿度</div>
                 </div>
-                <div class="gasDetail" style="margin-left: 0.5rem;">
+                <div class="gasDetail" style="margin-left: 0.7rem;">
                   {{ gasList.Humidity == null ? '0' : (gasList.Humidity / 100).toFixed(1) }}
                   <span style="font-size: 0.625rem;">%</span>
                 </div>
@@ -60,9 +60,9 @@
               <div class="enviroDetail">
                 <div class="detail_icon">
                   <svg-icon icon-class="fog" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
-                  <div style="color:#0cbebd;width: 3rem">烟雾</div>
+                  <div style="color:#0FB1CBFF;width: 3rem">烟雾</div>
                 </div>
-                <div class="gasDetail">
+                <div class="gasDetail" style="margin-left: 0.7rem;">
                   {{ gasList.Smoke == null ? '0' : (gasList.Smoke / 100).toFixed(1) }}
                   <span style="font-size: 0.625rem;">ppm</span>
                 </div>
@@ -194,7 +194,8 @@
 <!--              <el-button :class="{buttonInactive:alarmSumButtonActive !== 'month',buttonActive:alarmSumButtonActive === 'month'}" size="mini" round @click="alarmSumButton('month')">近30天</el-button>-->
 <!--            </el-button-group>-->
           <div style="height: 10rem;">
-            <AlarmSumEcharts :alarmData="alarmSumData" style="width: 100%;"></AlarmSumEcharts>
+            <span v-if="alarmSumData.length == 0" style="color: #FFFFFF;position: absolute;margin: 4rem 0 0 12rem;">暂无数据</span>
+            <AlarmSumEcharts :hidden="alarmSumData.length == 0" :alarmData="alarmSumData" style="width: 100%;"></AlarmSumEcharts>
           </div>
         </div>
 
@@ -217,7 +218,8 @@
           </div>
 
           <div style="height: 8rem;">
-            <AlarmAnalysisEcharts :alarmData="alarmAnalData"  style="width: 100%;"></AlarmAnalysisEcharts>
+            <span v-if="alarmAnalData.xAxisData.length == 0" style="color: #FFFFFF;position: absolute;margin: 4rem 0 0 12rem;">暂无数据</span>
+            <AlarmAnalysisEcharts :hidden="alarmAnalData.xAxisData.length == 0" :alarmData="alarmAnalData"  style="width: 100%;"></AlarmAnalysisEcharts>
           </div>
         </div>
 
@@ -314,7 +316,7 @@
                   <div>
                     <svg-icon icon-class="mark" style="width: 1rem;margin: auto"/>
                     <span style="font-size: 0.8rem;color: #0cbebd">运动模式：</span>
-                    <el-radio-group v-model="moveMode" :disabled="!carID" @input="setOpen(moveMode)">
+                    <el-radio-group v-model="robotOpen" :disabled="!carID" @input="setOpen(robotOpen)">
                       <el-radio style="margin-left:1rem;color: white" :label=2>自动模式</el-radio>
                       <el-radio style="margin-left:1rem;color: white" :label=1>手动模式</el-radio>
                     </el-radio-group>
@@ -323,15 +325,14 @@
                   <div style="margin-top:0.5rem">
                     <svg-icon icon-class="voice" style="width: 1rem;margin: auto"/>
                     <span style="font-size: 0.8rem;color: #0cbebd">语音对讲：</span>
-                    <Intercom hidden="hidden" :intercomControl="intercomControl"></Intercom>
-                    <el-switch v-model="intercomControl" style="margin-left: 0.5rem"></el-switch>
-
+                    <Intercom hidden="hidden" :carID="carID" :intercomControl="intercomControl"></Intercom>
+                    <el-switch v-model="intercomControl" :active-value=true :inactive-value=false style="margin-left: 0.5rem"></el-switch>
 
                     <span style="font-size: 0.8rem;margin-left: 4rem;color: #0cbebd">
                       <svg-icon icon-class="warnLight2" style="width: 1.5rem;"/>
                       设备警灯：
                     </span>
-                    <el-switch style="margin-left: 0.5rem" v-model="warnLightOpen" :active-value=1 :inactive-value=0 @change="setWarnLight()"></el-switch>
+                    <el-switch style="margin-left: 0.5rem" v-model="warnLightOpen" :active-value=1 :inactive-value=0 @change="setWarnLight"></el-switch>
                   </div>
 
                   <div style="margin-top:1rem;display: flex;align-items: center">
@@ -359,11 +360,14 @@
                     <el-select v-model="riskSpeed" style="width: 10rem;margin-left: 1rem">
                       <el-option v-for="item in speedList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select>
-                    <el-button size="mini" style="margin-left: 1rem">
+
                       <el-popconfirm title="确定去往巡检点?" @confirm="goLocation">
-                        <div class="goYes" slot="reference">确定</div>
+                        <div class="goYes" slot="reference">
+                          <el-button size="mini" style="margin-left: 1rem">确定
+                          </el-button>
+                        </div>
                       </el-popconfirm>
-                    </el-button>
+
                   </div>
 
                 </div>
@@ -373,7 +377,7 @@
                     <div class="robotMoveDirect" @mousedown="setRobotMoveCrl(2)" @mouseup="setRobotMoveCrl(3)">
                       <svg-icon icon-class="go" style="width: 3rem;height:2rem;margin: auto;rotate: 180deg"/>
                     </div>
-                    <el-select v-model="riskSpeed" style="width: 10rem;margin:0 0.5rem 0 2rem">
+                    <el-select v-model="riskSpeed" style="width: 7rem;margin:0 0.5rem 0 2rem">
                       <el-option v-for="item in speedList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                     <div class="robotMoveDirect" @mousedown="setRobotMoveCrl(1)" @mouseup="setRobotMoveCrl(3)">
@@ -381,9 +385,9 @@
                     </div>
                   </div>
 
-                  <div style="margin:1rem 0 0 2rem;font-size: 0.8rem">
-                    <span>后退</span>
-                    <span style="margin: 0 4rem">推荐速度</span>
+                  <div style="margin:1rem 0 0 1.5rem;font-size: 0.8rem;display: flex">
+                    <span >后退</span>
+                    <span style="margin: 0 4.5em">推荐速度</span>
                     <span >前进</span>
                   </div>
 
@@ -431,7 +435,7 @@
           <el-radio label="前方事故，请注意绕行"></el-radio><br>
           <el-radio label="路面凹坑，请谨慎驾驶"></el-radio><br>
           <el-radio label="路面异物，请谨慎驾驶"></el-radio><br>
-          <el-radio label="前方拥堵，请注意减速"></el-radio><br>
+          <el-radio label="前方拥堵，请注意减速"></el-radio><br>-
           <el-radio label="道路湿滑，请谨慎驾驶"></el-radio><br>
         </el-radio-group>
         <div class="broadcastBtn">
@@ -477,9 +481,9 @@
                 </el-table-column>
                 <!--                  <el-table-column prop="AlarmCode" :label="'告警码'" width="80" align="center">-->
                 <!--                  </el-table-column>-->
-                <el-table-column prop="ReportTime" label="时间" align="center">
+                <el-table-column width="150" prop="ReportTime" label="时间" align="center">
                 </el-table-column>
-                <el-table-column width="120" prop="AlarmName" label="事件类型" align="center">
+                <el-table-column width="100" prop="AlarmName" label="事件类型" align="center">
                   <template slot-scope="scope">
                     {{ scope.row.AlarmName.slice(0, -2) }}
                   </template>
@@ -593,6 +597,7 @@
         </div>
       </el-col>
     </div>
+    <WebSocket></WebSocket>
   </div>
 </template>
 
@@ -640,22 +645,19 @@ import {
   StartZoomIn, StartZoomOut, EndZoomIn, EndZoomOut, StartIrisOpen, EndIrisOpen, StartIrisClose, EndIrisClose, StartFocusFar, EndFocusFar, StartFocusNear, EndFocusNear, takePhoto, startRecord, endRecord
 } from '../../api/dashboard';
 import Intercom from './intercom.vue';
-import { clearInterval } from 'timers';
-import { async } from 'q';
 
 import { vue3dLoader } from "vue-3d-loader"
 import AlarmSumEcharts from '@/views/dashboard/echarts/AlarmSumEcharts.vue'
 import AlarmAnalysisEcharts from '@/views/dashboard/echarts/AlarmAnalysisEcharts.vue'
-import defaultSettings from '@/settings'
-import { readNoticeBack } from '@/api/user'
 import controlSwitch from '@/views/monitor/controlSwitch.vue'
 import moment from 'moment'
 import { getCountByCode, getCountByDate, getCountByLevelAndStatus } from '@/api/homepageAlarm'
-import item from '@/layout/components/Sidebar/Item.vue'
 import Clock from '@/layout/components/Sidebar/Clock.vue'
+import WebSocket from '@/components/WebSocket/index.vue'
 
 export default {
   components: {
+    WebSocket,
     Clock,
     controlSwitch,
     AlarmAnalysisEcharts,
@@ -690,11 +692,17 @@ export default {
       agvDirection: true,
       alarmSumButtonActive: 'day',
       alarmAnalysisButtonActive: 'day',
+      alarmSumRequest: true,
+      alarmAnalysisRequest : true,
       controlManager: true,
-      vue3dLoaderHeight: 300,
+      vue3dLoaderHeight: 275,
       vue3dLoaderWidth: 943,
       loaderFS: false,
-      alarmAnalData: {},
+      alarmAnalData: {
+        xAxisData: [],
+        legendData: [],
+        seriesData: []
+      },
       alarmSumData: [],
       tempicture: null,
       tempictureShow: false,
@@ -820,7 +828,7 @@ export default {
     }
     this.carRoller = setInterval(() => {
       this.getcarList()
-    }, 500)
+    }, 1000)
 
     this.judgeIsFullScreen()
     // this.initHT();
@@ -828,7 +836,8 @@ export default {
 
   beforeDestroy() {
     this.HKlogout()
-    this.broadcast()
+    this.broadcast('语音停止播放')
+    this.setWarnLight(0)
     console.log(this.robotOpen == 1)
     if (this.robotOpen == 1) {
       this.logoutCar()
@@ -842,7 +851,8 @@ export default {
     ...mapState({
       systemConfig: (state) => state.sysConfig.systemConfig,
     }),
-    ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen','closeAll']),
+    ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen',
+      'closeAll', 'closeBroadcast','closeWarnL']),
     realTimeAlarminfo() {
       return this.realTimeAlarm[0]
     },
@@ -875,6 +885,8 @@ export default {
       if(newv != undefined){
         this.showTable.unshift(newV)
         this.getDetailMessage(newV,false)
+        this.alarmAnalysisButton(this.alarmAnalysisButtonActive)
+        this.alarmSumButton(this.alarmSumButtonActive)
       }
     },
     dialogLocation(newV, old) {
@@ -898,24 +910,8 @@ export default {
       console.log('速度变化了')
       if (newV == 1000) {
         this.speedMode = 1
-        // const param = {
-        //   carrier: this.carID,
-        //   speed: 1000,
-        //   speedMode: 2
-        // }
-        // SetSpeed(param).then((res) => {
-        //   console.log('巡检速度1', res, param)
-        // })
       } else {
         this.speedMode = 2
-        // const param = {
-        //   carrier: this.carID,
-        //   speed: 500,
-        //   speedMode: 1
-        // }
-        // SetSpeed(param).then((res) => {
-        //   console.log('应急速度2', res, param)
-        // })
       }
     },
     standby(){
@@ -924,8 +920,14 @@ export default {
       }
       this.HKlogout()
 
+    },
+    closeBroadcast(newV, oldV) {
+      console.log('关闭语音对讲了', newV)
+      this.stopBroadcast()
+    },
+    closeWarnL(){
+      this.stopWarn()
     }
-
   },
 
   directives: {
@@ -1000,7 +1002,7 @@ export default {
         let that = this
         infrared.contentDocument.onmousemove = (e) => {
           // this.currentCamera = this.currentAdvices[1]
-          // console.log('视频宽高', e.clientX,e.target.clientWidth)
+          // console.log('视频宽高', e.clientX,e.clientY)
           // console.log("查看红外信息", this.carrierSelected.CarrierAccessoryList[0].AccessoryID)
           clientX = parseFloat(e.clientX).toFixed(1)
           clientY = parseFloat(e.clientY).toFixed(1)
@@ -1029,25 +1031,23 @@ export default {
             const getHot = function (e) {
               let tempictureMove = document.getElementById('tempicture')
               let tempoint = document.getElementById('tempoint')
-              // let templocation = document.getElementById('templocation')
               const rightMove = e.target.clientWidth - clientX
 
               if(tempictureMove != null){
-                // console.log("tempictureMove--->",tempictureMove)
                 if (clientX > 75) {
-                  tempictureMove.style.right = rightMove -25 + 'px'
-                }
-                else {
+                  if(rightMove < 30){
+                    tempictureMove.style.right = '30px'
+                  }else {
+                    tempictureMove.style.right = rightMove - 25 + 'px'
+                  }
+                }else {
                   tempictureMove.style.right = e.target.clientWidth -  75 + 'px'
                 }
                 tempictureMove.style.top = clientY - 15 + 'px'
 
+
                 tempoint.style.right = rightMove + 'px'
                 tempoint.style.top = clientY + 'px'
-
-                // templocation.style.right = rightMove + 'px'
-                // templocation.style.top = clientY + 35 + 'px'
-                // that.templocation = '(' + clientX + ',' + clientY + ')'
 
                 that.tempictureShow = true
               }
@@ -1075,7 +1075,7 @@ export default {
         })
       }else {
         this.vue3dLoaderWidth = 943
-        this.vue3dLoaderHeight = 300
+        this.vue3dLoaderHeight = 275
       }
       this.$refs.model.$forceUpdate()
     },
@@ -1111,7 +1111,7 @@ export default {
       this.$confirm('确认关闭？')
         .then(_ => {
           this.cancelLocation()
-          done();
+          // done();
         })
         .catch(_ => { });
     },
@@ -1342,7 +1342,9 @@ export default {
       this.$forceUpdate()
     },
     broadcast(e) {
+      console.log('broadcast e',e)
       this.broadcastVisible = false
+      this.selectedOption = e
       if (this.selectedOption != '语音停止播放' && this.selectedOption != '') {
         startVoiceBroadcast({
           carrierID: this.carrierSelected.CarrierID,
@@ -1350,19 +1352,39 @@ export default {
         }).then((res) => {
           if (res.code == 20000) {
             this.broadcasting = true
+            Notification({
+              title: '提示',
+              duration: 5000,
+              message: res.data,
+              type: 'success'
+            })
           } else {
             this.selectedOption = null
+            Notification({
+              title: '提示',
+              duration: 5000,
+              message: res.data,
+              type: 'error'
+            })
           }
         })
       }
-      else if (this.selectedOption == '语音停止播放') {
+      else if (this.selectedOption == '语音停止播放' && this.broadcasting) {
         stopVoiceBroadcast(this.carrierSelected.CarrierID).then((res) => {
           if (res.code == 20000) {
+            this.broadcasting = false
             Notification({
               title: '提示',
               duration: 5000,
               message: '语音停止播放',
               type: 'success'
+            })
+          }else {
+            Notification({
+              title: '提示',
+              duration: 5000,
+              message: res.data,
+              type: 'error'
             })
           }
         })
@@ -1382,9 +1404,10 @@ export default {
       }
     },
 
-    setWarnLight() {
+    setWarnLight(e) {
+      console.log('warnLightOpen',this.warnLightOpen,e)
       const time = this.getNowtime()
-      if (this.warnLightOpen == 0) {
+      if (e == 1 && this.warnLightOpen == 0) {
         //警示灯closed
         startWarningLight(this.carID).then((res) => {
           if (res.code != 20000) {
@@ -1396,9 +1419,16 @@ export default {
               duration: 5000
             });
           }
-          else{this.warnLightOpen = 1}
+          else{
+            this.warnLightOpen = 1
+            Notification({
+              title: '提示',
+              message: res.data,
+              type: 'success',
+              duration: 5000
+            });}
         })
-      } else if (this.warnLightOpen == 1) {
+      } else if (e == 0 && this.warnLightOpen == 1) {
         //警示灯ing
         stopWarningLight(this.carID).then((res) => {
           console.log(res)
@@ -1413,6 +1443,12 @@ export default {
           }
           else{
             this.warnLightOpen = 0
+            Notification({
+              title: '提示',
+              message: res.data,
+              type: 'info',
+              duration: 5000
+            });
           }
         })
 
@@ -1552,23 +1588,31 @@ export default {
     },
 
     alarmSumButton(data){
-      // switch (data) {
-      //   case 'day':{
-      //     this.alarmSumButtonActive = 'day'
-      //     break
-      //   }
-      //   case 'week':{
-      //     this.alarmSumButtonActive = 'week'
-      //     break
-      //   }
-      //   case 'month':{
-      //     this.alarmSumButtonActive = 'month'
-      //     break
-      //
-      //   }
-      // }
+
+      if(!this.alarmSumRequest){
+        return
+      }
+      this.alarmSumRequest = false
+
       this.alarmSumButtonActive = data
-      let timeFrameStart = moment().subtract(1,data).format('YYYY-MM-DD')
+
+      let amount = 0;
+      switch (data) {
+        case 'day':{
+          amount = 0
+          break
+        }
+        case 'week':{
+          amount = 6
+          break
+        }
+        case 'month':{
+          amount = 29
+          break
+
+        }
+      }
+      let timeFrameStart = moment().subtract(amount,'day').format('YYYY-MM-DD')
       let timeFrameEnd = moment().subtract(0,'day').format('YYYY-MM-DD')
       // console.log("时间范围开始",timeFrameStart)
       // console.log("时间范围结束",timeFrameEnd)
@@ -1580,13 +1624,14 @@ export default {
         .then((response) => {
           // console.log(param)
           // console.log(response)
-          if (response && response.data.length) {
-            this.alarmSumData = []
+          this.alarmSumData = []
+          if (response && response.data.length > 0) {
             response.data.forEach((item) => {
               this.alarmSumData.push({name:this.alarmJudge(item.alarmType),value:item.count})
             });
             // console.log("this.alarmSumData--->",this.alarmSumData)
           }
+          this.alarmSumRequest = true
         })
         .catch(() => {});
       // const end = new Date();
@@ -1598,28 +1643,33 @@ export default {
     },
 
     alarmAnalysisButton(data){
-      console.log('alarmAnalysisButton',data)
-      let searchUnit;
+      // console.log('alarmAnalysisButton',data)
+      if(!this.alarmAnalysisRequest){
+        return
+      }
+      this.alarmAnalysisRequest = false
+      this.alarmAnalysisButtonActive = data
+      let searchUnit,amount = 0;
       switch (data) {
         case 'day':{
-          this.alarmAnalysisButtonActive = 'day'
           searchUnit = 3
+          amount = 0
           break
         }
         case 'week':{
-          this.alarmAnalysisButtonActive = 'week'
           searchUnit = 2
+          amount = 6
           break
         }
         case 'month':{
-          this.alarmAnalysisButtonActive = 'month'
           searchUnit = 2
+          amount = 29
           break
 
         }
       }
-      this.alarmAnalysisButtonActive = data
-      let timeFrameStart = moment().subtract(1,data).format('YYYY-MM-DD')
+
+      let timeFrameStart = moment().subtract(amount,'day').format('YYYY-MM-DD')
       let timeFrameEnd = moment().subtract(0,'day').format('YYYY-MM-DD')
       // console.log("时间范围开始",timeFrameStart)
       // console.log("时间范围结束",timeFrameEnd)
@@ -1627,11 +1677,6 @@ export default {
         startTime: timeFrameStart,
         endTime: timeFrameEnd,
         searchUnit: searchUnit
-      }
-      this.alarmAnalData = {
-        xAxisData: [],
-        legendData: [],
-        seriesData: []
       }
       let xAxisData = new Set()
       let legendData = new Set()
@@ -1644,7 +1689,6 @@ export default {
           return a.localeCompare(b) || b.localeCompare(a)
         }
       }
-
       //TODO 可优化 一次循环完成
       // 遍历对象类型和日期 均为set集合
       // 1 判断类型 如果类型不存在 推入类型数组 推入对象数据 建立对象数据数组
@@ -1652,9 +1696,10 @@ export default {
       // 3 判断已存在的类型对象数据 根据时间返回下标进行数据插入
       getCountByDate(param)
         .then((response) => {
-          // console.log(param)
-          // console.log(response.data)
-          if (response && response.data.length) {
+          this.alarmAnalData.xAxisData = []
+          this.alarmAnalData.legendData = []
+          this.alarmAnalData.seriesData = []
+          if (response && response.data.length > 0) {
             response.data.forEach((item) => {
               legendData.add(item.alarmType)
               xAxisData.add(item.alarmDate)
@@ -1688,12 +1733,12 @@ export default {
                   type: 'line',//echarts 类型
                   smooth: true,
                   minAngle: 0,//echarts数据value为0时默认为value为5
-                  label:{
-                    color: '#FFFFFF',
-                  },
+                  // label:{
+                  //   color: '#FFFFFF',
+                  // },
                   data: tempData,
                   // areaStyle: {}, //曲线背景填充
-                  stack: 'x',
+                  // stack: 'x',
                 }
               )
               tempData = []
@@ -1701,9 +1746,14 @@ export default {
               this.alarmAnalData.legendData.push(this.alarmJudge(i))
             })
             this.alarmAnalData.xAxisData = Array.from(new Set(this.alarmAnalData.xAxisData))
+            this.$forceUpdate()
           }
+          // console.log('alarmAnalData',this.alarmAnalData)
+          this.alarmAnalysisRequest = true
         })
-        .catch(() => {});
+        .catch(() => {
+          this.alarmAnalysisRequest = true
+        });
     },
     locationAgv(){
       if(this.position.length > 1){
@@ -2367,7 +2417,8 @@ export default {
       } else {
         this.glassCameraBak = this.currentAdvices[0].src
         // this.currentAdvices[0].src = `/static/video.html?data=rtsp://${glassAddress}:8080/h264_pcm.sdp&serve=${this.webRtcIP}`
-        this.currentAdvices[0].src = `/static/video.html?data=rtsp://admin:jiaqi2023@192.168.20.66:554/Streaming/Channels/101&serve=${this.webRtcIP}`
+        this.currentAdvices[0].src = `/static/video.html?data=rtsp://admin:Jiaqi2022@192.168.20.64:554/h264/ch2/main/av_stream&serve=192.168.20.23`
+        // this.currentAdvices[0].src = `/static/video.html?data=rtsp://admin:jiaqi2023@192.168.20.66:554/Streaming/Channels/101&serve=${this.webRtcIP}`
       }
       this.glassCamera = !this.glassCamera
       console.log(this.currentAdvices[0].src)
@@ -2579,13 +2630,14 @@ export default {
 .tempicture {
   position: absolute;
   //bottom: 26rem;
+  margin-top: 6rem;
   color:darkgreen;
   z-index: 890;
 }
 
 .myTable ::v-deep .el-table__body-wrapper::-webkit-scrollbar {
   width: auto !important;
-  background-color: #031b31 !important;
+  background-color: rgb(9, 43, 46,0.8) !important;
 }
 
 .htView {
@@ -2598,6 +2650,18 @@ export default {
   right: 0;
 }
 
+.myTable ::v-deep .el-table td.el-table__cell{
+  border-bottom: 0.5px solid rgba(235, 238, 245, 0.5) !important;
+}
+
+.myTable ::v-deep .el-table tbody .el-table__cell {
+  background: rgb(9, 43, 46)!important;
+  font-size: 14px;
+}
+
+.myTable ::v-deep .el-table thead .el-table__cell{
+  background: rgb(9, 43, 46)!important;
+}
 
 .content {
 
@@ -2660,16 +2724,17 @@ export default {
   }
 
   .el-table{
-    background-color: #031b31!important;
+    background-color: rgb(9, 43, 46,0.8)!important;
   }
 
   .back-shaodow {
-    background-color: rgba($color: #071828, $alpha: 0.9);
-    background: linear-gradient(135deg, transparent 15px, rgba(7, 23, 38, 0.8) 0) top left,
-                linear-gradient(-135deg, transparent 0, rgba(7, 23, 38, 0.8) 0) top right,
-                linear-gradient(-45deg, rgb(103, 178, 177) 10px, transparent 11px,transparent 15px, rgba(7, 23, 38, 0.8) 0) bottom right,
-                linear-gradient(45deg, rgb(103, 178, 177) 10px, transparent 11px,transparent 15px, rgba(7, 23, 38, 0.8) 0) bottom left;
-    background-size: 50% 50%;
+    position: relative;
+    background-color: rgb(9, 43, 46,0.8);
+    background: linear-gradient(135deg, transparent 15px, rgb(9, 43, 46,0.8) 0) top left,
+                linear-gradient(-135deg, transparent 0, rgb(9, 43, 46,0.8) 0) top right,
+                linear-gradient(-45deg, rgb(103, 178, 177) 10px, transparent 11px,transparent 15px, rgb(9, 43, 46,0.8) 0) bottom right,
+                linear-gradient(45deg, rgb(103, 178, 177) 10px, transparent 11px,transparent 15px, rgb(9, 43, 46,0.8) 0) bottom left;
+    background-size: 50.1% 50.1%;
     background-repeat: no-repeat;
     //border: 1px solid rgba(255, 255, 255, 0.5);
   }
@@ -2712,7 +2777,7 @@ export default {
   }
 
   ::v-deep .el-dialog{
-    background: #0b1d35;
+    background: rgb(9, 43, 46,0.9);
   }
 
   ::v-deep .el-input__inner{

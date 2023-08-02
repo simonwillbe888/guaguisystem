@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     init() {
-      var iframe = document.getElementById('startTalk')
+      let iframe = document.getElementById('startTalk')
       iframe.onload = () => {
         setTimeout(() => {
           iframe.contentWindow.clickLogin()

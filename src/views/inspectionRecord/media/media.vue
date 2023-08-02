@@ -21,7 +21,7 @@
       <div class="container" style="background-color: rgba(7, 24, 40, 0.5)">
         <el-row style="height: 37rem">
           <el-col :xs="24" :sm="12" :md="6" v-for="(item, index) in list" :key="index">
-            <el-card class="box" :style="{ width: '21.625rem', height: '17rem', background: '#fff'}">
+            <el-card class="box" :style="{ width: '21.625rem', height: '18rem', background: '#fff'}">
               <div class="box-content">
                 <div>
                   <div class="download" @click="download(item)">
@@ -32,7 +32,7 @@
                     :preview-src-list="imgaeList"></el-image>
                   <!-- <img @click="largerPic(item.FilePath)" :src="item.FilePath" style="width: 20.625rem;height: 14.0625rem;" v-if="item.fileType == 1"> -->
                   <!-- <video ></video>     -->
-                  <iframe :src="item.FilePath" style="width: 22rem;height: 11rem;" v-if="item.fileType == 4"
+                  <iframe :src="item.FilePath" style="width: 21.625rem;height: 12rem;" v-if="item.fileType == 4"
                     allowfullscreen="true" frameborder="0"></iframe>
                 </div>
                 <div class="box-content-detail">

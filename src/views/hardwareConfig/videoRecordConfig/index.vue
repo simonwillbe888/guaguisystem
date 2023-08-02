@@ -56,7 +56,7 @@
           <el-table-column
             align="center"
             label="操作"
-            width="400"
+            width="500"
           >
             <template slot-scope="{ row }">
               <el-button
@@ -77,6 +77,16 @@
                 @click="connentAdvices(row)"
                 >{{ $t('robot_setting.accessory_operate_label') }}</el-button
               >
+
+              <el-button
+                class="robot-operate"
+                type="success"
+                icon="el-icon-video-camera-solid"
+                size="mini"
+                @click="nvrRecord(row)"
+                >录像回看</el-button
+              >
+
               <el-button
                 icon="el-icon-edit"
                 style="background-color:#64C8C8 ;color:#fff"
@@ -294,6 +304,50 @@
         >
       </span>
     </el-dialog>
+
+    <el-dialog
+      title="录像回看"
+      :visible.sync="nvrRecordVisible"
+      width="60%"
+      :close-on-click-modal="false"
+    >
+      <div class="content-body">
+        <div style="display: flex;position:relative;height:3rem;align-items:center;float: right;margin-bottom: 1rem">
+          <span>{{ $t('comment_vary.default_time_label') }}</span>
+          <el-date-picker v-model="startVal" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
+                          @input="startTimeCheck"
+                          :placeholder="$t('comment_vary.start_time_label')">
+          </el-date-picker>
+          <span> -- </span>
+          <el-date-picker v-model="endVal" type="datetime" :placeholder="$t('comment_vary.end_time_label')"
+                          @input="endTimeCheck"
+                          style="margin-right: 20px" value-format="yyyy-MM-dd HH:mm:ss">
+          </el-date-picker>
+<!--          可见光红外-->
+          <el-button @click="getNVRRecord()" size="mini">回放</el-button>
+        </div>
+        <div v-if="nvrRecordData.src == ''"
+             class="nvrRecord"
+             style="background-color: #000000;font-size: 1.5rem;align-items: center;justify-content: center;display: flex;">
+          请选择录像起止时间 点击回放按钮查看
+        </div>
+        <iframe
+          v-if="nvrRecordData.src != ''"
+          class="nvrRecord"
+          :myData="nvrRecordData"
+          name="nvrRecord"
+          :id="'nvrRecord'"
+          :src="nvrRecordData.src">
+        </iframe>
+      </div>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" size="mini" @click="nvrRecordVisible = false"
+        >取消</el-button
+        >
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 <script>
@@ -394,6 +448,12 @@ export default {
         ],
         channel: [{ required: true, message: '请输入通道', trigger: 'change' }],
       },
+      nvrRecordVisible: false,
+      nvrRecordData: {src:''},
+      nvrData: {},
+      startVal: '',
+      endVal: '',
+      nvrTimePickerError: false
     };
   },
   mounted() {
@@ -418,6 +478,92 @@ export default {
         this.total = (res.data || {}).length || 0;
       }
     },
+
+    nvrRecord(obj){
+      this.nvrRecordVisible = true
+      this.nvrData = obj
+      this.nvrRecordData= {src:''}
+      this.startVal = ''
+      this.endVal = ''
+    },
+
+    startTimeCheck(){
+      // console.log('startTimeCheck',(new Date(this.endVal) - new Date(this.startVal)))
+      if(this.endVal != ''){
+        let betweenTime = new Date(this.endVal) - new Date(this.startVal)
+        if(betweenTime > 86400000){
+          this.$notify({
+            message: '回放时间长度不能超过24小时',
+            type: 'info',
+            title: '提示',
+          });
+          this.nvrTimePickerError = true
+        }else if(betweenTime < 0){
+          this.$notify({
+            message: '回放开始时间不能大于结束时间',
+            type: 'info',
+            title: '提示',
+          });
+          this.nvrTimePickerError = true
+        }else {
+          this.nvrTimePickerError = false
+        }
+      }
+    },
+
+    endTimeCheck(){
+      // console.log('endTimeCheck',(new Date(this.endVal) - new Date(this.startVal)))
+      if(this.startVal != ''){
+        let betweenTime = new Date(this.endVal) - new Date(this.startVal)
+        if(betweenTime > 86400000){
+          this.$notify({
+            message: '回放时间长度不能超过24小时',
+            type: 'info',
+            title: '提示',
+          });
+          this.nvrTimePickerError = true
+        }else if(betweenTime < 0){
+          this.$notify({
+            message: '回放结束时间不能小于开始时间',
+            type: 'info',
+            title: '提示',
+          });
+          this.nvrTimePickerError = true
+        }else {
+          this.nvrTimePickerError = false
+        }
+      }
+    },
+
+    getNVRRecord(){
+      this.nvrRecordData= {src:''}
+      if(this.startVal == '' || this.endVal == ''){
+        this.$notify({
+          message: '请选择回放时间',
+          type: 'warning',
+          title: '提示',
+        });
+        return
+      }
+      if(this.nvrTimePickerError){
+        this.$notify({
+          message: '请选择正确回放时间区间',
+          type: 'warning',
+          title: '提示',
+        });
+        return
+      }
+      console.log('nvrData',this.startVal,this.endVal)
+      let startTime = this.startVal.replace(/-|:|\.\d+/g, '').replace(' ','t')+'z'
+      let endTime = this.endVal.replace(/-|:|\.\d+/g, '').replace(' ','t')+'z'
+      let channel = '101'
+      let webRtcIP = '192.168.20.6'
+      this.nvrData.src = `/static/video.html?data=`+encodeURIComponent(`rtsp://${this.nvrData.userName}:${this.nvrData.passWord}@${this.nvrData.ip}:${this.nvrData.port}/Streaming/tracks/${channel}?starttime=${startTime}&endtime=${endTime}`)+`&serve=${webRtcIP}`
+      // this.nvrData.src = `/static/video.html?data=`+encodeURIComponent(`rtsp://admin:jiaqi2023@192.168.20.66:554/Streaming/tracks/101?starttime=20230727t000000z&endtime=20230728t000000z`)+`&serve=192.168.20.23`
+      this.nvrRecordData = Object.assign({},this.nvrData)
+      this.$forceUpdate()
+    },
+
     connentAdvices(obj) {
       const { details, id } = obj;
       this.form2.dvrid = id;
@@ -617,6 +763,19 @@ export default {
 .headerBtn {
   background-color: #64C8C8 !important;
 }
+
+::v-deep .el-input__icon {
+  line-height: 30px;
+}
+
+.nvrRecord{
+  width: 100%;
+  height: 30.5rem;
+  border: none;
+  display: inline-block;
+  margin-top: 1rem;
+}
+
   .content-header {
 
   margin-bottom: 10px;

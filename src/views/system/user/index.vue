@@ -74,7 +74,7 @@
     </el-table>
 
     <el-dialog :visible.sync="dialog_visiable" :title="text_map[dialog_status]">
-      <el-form label-position="left" style="padding: 30px" label-width="20%">
+      <el-form label-position="left" style="padding: 30px;margin: auto" label-width="20%">
         <el-form-item :label="$t('user.UserName')">
           <el-input
             :disabled="input_visiable"

@@ -10,13 +10,7 @@ export default {
   props: {
     alarmData:{
       type: Array,
-      default: [ //echarts数据
-        { value: 80, name: '行人告警' },
-        { value: 50, name: '非机动车告警' },
-        { value: 120, name: '违停告警' },
-        { value: 210, name: '灯光告警' },
-        { value: 20, name: '井盖告警' }
-      ]
+      default: []
     }
   },
   watch:{
@@ -89,8 +83,8 @@ export default {
             name: '', //echarts图名字
             type: 'pie',//echarts 类型
             minAngle: 5,//echarts数据value为0时默认为value为5
-            radius: ['35%', '45%'],//设置环形图 （ radius: ['设置内圆大小', '设置外圆大小']  不折设置默认为实心圆饼图）
-            center: ['75%', '60%'],//设置饼图位置 （center:['x轴位置','y轴位置']不设置默认在中间）
+            radius: ['30%', '45%'],//设置环形图 （ radius: ['设置内圆大小', '设置外圆大小']  不折设置默认为实心圆饼图）
+            center: ['75%', '50%'],//设置饼图位置 （center:['x轴位置','y轴位置']不设置默认在中间）
             label:{
               show: true,
               color: '#ffffff',

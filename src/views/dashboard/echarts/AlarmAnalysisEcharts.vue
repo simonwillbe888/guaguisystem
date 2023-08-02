@@ -89,10 +89,10 @@ export default {
           itemStyle: {},//设置图例前面的图标样式
           textStyle: {//设置图例文字样式
             fontSize: 12,
-            color: '#ffffff'
+            color: '#FFFFFF'
           },
-          itemWidth: 25,
-          itemHeight: 20,
+          itemWidth: 20,
+          itemHeight: 7,
         },
         // 设置主体
         series: []
