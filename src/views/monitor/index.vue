@@ -66,7 +66,7 @@
             </div>
 
             <div class="electri">
-              <el-progress :width="40" color="#66b3b2" type="circle"
+              <el-progress :width="40" color="#66b3b2" text-color="#fff" type="circle"
                 :percentage="carList.batteryLevel"></el-progress>
               <div style="font-size: 0.8rem;margin-left: 0.5rem">当前电量</div>
             </div>
