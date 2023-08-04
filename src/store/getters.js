@@ -22,5 +22,6 @@ const getters = {
   closeBroadcast:(state)=>state.global.closeBroadcast,
   clostSpeak:(state)=>state.global.clostSpeak,
   closeWarnL:(state)=>state.global.closeWarnL,
+  dealwithAlarm:(state)=>state.global.dealwithAlarm
 }; 
 export default getters;

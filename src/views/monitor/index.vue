@@ -57,9 +57,9 @@
             <div class="warnL" style="position:absolute;top: 9.2rem;left: 2.7rem;">
               <div
                 style="border-radius: 0.625rem;;width: 3.1rem;background-color: #66B3B2;display: flex;height: 3rem;line-height: 2rem;align-items: center;justify-items: center;"
-                @click="setWarnLight()" :class="{'warning_light_active':warnLightOpen == 1}">
+                @click="setWarnLight()" :class="{ 'warning_light_active': warnLightOpen == 1 }">
                 <img src="../../assets/img/warnLight.png" style="margin: auto;width: 2.3rem">
-<!--                <svg-icon icon-class="warnLight" style="margin:auto;width: 2.5rem;height: 2.5rem;"></svg-icon>-->
+                <!--                <svg-icon icon-class="warnLight" style="margin:auto;width: 2.5rem;height: 2.5rem;"></svg-icon>-->
               </div>
               <div class="warning_light" style="font-size: 0.875rem;margin: 0.5rem 0.2rem"> 警示灯</div>
 
@@ -89,8 +89,9 @@
                 currentCamera.accessoryID === currentAdvices.accessoryID
                   ? 'active'
                   : '', 'back-shaodow'
-              ]" :ref="'iframe0'" :myData="currentAdvices[0]" style="width: 100%;height:27.5rem;border: 1px solid transparent;" marginwidth="0"
-                marginheight="0" name="ddddd" :id="'iframes0'" control="" scrolling="auto" :src="currentAdvices[0].src">
+              ]" :ref="'iframe0'" :myData="currentAdvices[0]"
+                style="width: 100%;height:27.5rem;border: 1px solid transparent;" marginwidth="0" marginheight="0"
+                name="ddddd" :id="'iframes0'" control="" scrolling="auto" :src="currentAdvices[0].src">
               </iframe>
               <!-- <iframe v-for="(item, index) in currentAdvices" allow="fullscreen" :class="[
                   currentCamera.accessoryID === item.accessoryID
@@ -111,8 +112,8 @@
           <div class="right">
             <iframe :class="[
               'infrared', 'back-shaodow'
-            ]" :ref="'iframe1'" :myData="currentAdvices[1]" style="border: 1px solid transparent" name="ddddd" marginwidth="0" marginheight="0"
-              :id="'infrared'" scrolling="auto" :src="currentAdvices[1].src">
+            ]" :ref="'iframe1'" :myData="currentAdvices[1]" style="border: 1px solid transparent" name="ddddd"
+              marginwidth="0" marginheight="0" :id="'infrared'" scrolling="auto" :src="currentAdvices[1].src">
             </iframe>
             <div class="tempicture" id="tempicture">{{ tempicture }}</div>
           </div>
@@ -162,8 +163,8 @@
 
               <span style="margin-left: 1.875rem;">
 
-              预计完成：<span style="color:#66B3B2 ;"></span>{{ finishTime ==
-                '' ? '0' : Math.abs(finishTime) }}分钟 </span>
+                预计完成：<span style="color:#66B3B2 ;"></span>{{ finishTime ==
+                  '' ? '0' : Math.abs(finishTime) }}分钟 </span>
             </div>
             <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0rem;">
               任务下发
@@ -192,22 +193,21 @@
             <img src="../../assets/img/route.png" class="backgroundIm">
             <div style="display: flex;">
               <div class="nowPosition">
-              <span style="margin:0.125rem 0.625rem 0  0.625rem ;font-size: 1.25rem;">巡检地图</span>
-              <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }}机器人当前位置：{{ carList.pileNumber == null ?
-                carList.x / 1000 :
-                '站点' + carList.pileNumber
-              }}</span>
-             </div>
-             <div class="goLocation">
-              <el-input
-                @blur="handleInput()"
-                class="location_Detail" v-model="locationID" :placeholder="areaName">
-                <template slot="prefix">去往</template>
-              </el-input>
-              <el-popconfirm title="确定去往桩号?" @confirm="goLocation">
-                <div class="goYes" slot="reference">确定</div>
-              </el-popconfirm>
-             </div>
+                <span style="margin:0.125rem 0.625rem 0  0.625rem ;font-size: 1.25rem;">巡检地图</span>
+                <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }}机器人当前位置：{{ carList.pileNumber == null
+                  ?
+                  carList.x / 1000 :
+                  '站点' + carList.pileNumber
+                }}</span>
+              </div>
+              <div class="goLocation">
+                <el-input @blur="handleInput()" class="location_Detail" v-model="locationID" :placeholder="areaName">
+                  <template slot="prefix">去往</template>
+                </el-input>
+                <el-popconfirm title="确定去往桩号?" @confirm="goLocation">
+                  <div class="goYes" slot="reference">确定</div>
+                </el-popconfirm>
+              </div>
             </div>
 
 
@@ -232,10 +232,10 @@
             <div style="display:flex;margin: 0.75rem 0;">
               <div class="robotDirec" @mousedown="setRobotMoveCrl(2)" @mouseup="setRobotMoveCrl(3)">
                 <img src="../../assets/img/back.png" style="width:3rem" alt="">
-<!--                <span style="position: relative;;bottom: 0.3125rem;">后退</span>-->
+                <!--                <span style="position: relative;;bottom: 0.3125rem;">后退</span>-->
               </div>
               <div class="robotDirec" @mousedown="setRobotMoveCrl(1)" @mouseup="setRobotMoveCrl(3)">
-<!--                <span style="position: relative;;bottom: 0.3125rem;">前进</span> -->
+                <!--                <span style="position: relative;;bottom: 0.3125rem;">前进</span> -->
                 <img src="../../assets/img/front.png" style="width:3rem" alt="">
               </div>
               <div class="speed">
@@ -263,7 +263,7 @@
                   <div style="color:rgba(100 200 200) ;">温度</div>
                 </div>
                 <div class="gasDetail">
-                  {{ parseFloat( (gasList.Temperature / 100).toFixed(1) )}}℃
+                  {{ parseFloat((gasList.Temperature / 100).toFixed(1)) }}℃
                 </div>
               </div>
               <div class="enviroDetail">
@@ -323,7 +323,7 @@
                   </el-table-column>
                   <el-table-column prop="AlarmName" :label="$t('alarm_dealWith.alarm_name_label')" align="center">
                     <template slot-scope="scope">
-                      {{ scope.row.AlarmName}}
+                      {{ scope.row.AlarmName }}
                     </template>
                   </el-table-column>
                   <el-table-column prop="MaxLevel" width="100" :label="'告警级别'" align="center">
@@ -374,12 +374,12 @@
                               == 1010 ? "动物告警" : alarm.AlarmCode == 1012 ? "消防设备告警" : alarm.AlarmCode == 1011 ? "井盖异常告警" :
                                 alarm.AlarmCode
                                   == 1013 ? "火灾烟雾告警" : alarm.AlarmCode
-                                    == 1014 ? "红外测温告警" :alarm.AlarmCode
-                                    == 1015 ? "算法异常告警" : alarm.AlarmCode
-                                    == 1016 ? "逆行告警" : alarm.AlarmCode
-                                    == 1017 ? "风机告警" :
-                                    alarm.AlarmCode
-                                    == 1018 ? "指示灯告警" :  "机体告警" }} </div>
+                                    == 1014 ? "红外测温告警" : alarm.AlarmCode
+                                      == 1015 ? "算法异常告警" : alarm.AlarmCode
+                                        == 1016 ? "逆行告警" : alarm.AlarmCode
+                                          == 1017 ? "风机告警" :
+                                  alarm.AlarmCode
+                                    == 1018 ? "指示灯告警" : "机体告警" }} </div>
                     <div style="margin: 1.875rem 0;">
                       事件描述：{{ alarm.Description }}
                     </div>
@@ -455,14 +455,16 @@
                 <div style="margin-top:1rem;padding-left: 1rem;font-size: 0.8rem">
                   云台速度
                   <!-- <el-input disabled v-model="speed" ></el-input> -->
-                <div class="speed" style="margin:0.625rem 0;width: 17rem;display: flex;position: relative;align-items: center;">
-                  <el-slider :max="7" v-model="speed" style="margin: 0 1.25rem 0 -0.5rem;width: 12rem">
-                  </el-slider>
-                  <el-input-number size="mini" :min=0 :max=7 v-model="speed" :step="1" :controls="false" style="width: 5rem"></el-input-number>
-<!--                  <span-->
-<!--                    style="width: 2.75rem;float: right;background-color: #071828;text-align: center; border: 0.0625rem #ffffff solid;">{{-->
-<!--                      speed }}</span>-->
-                </div>
+                  <div class="speed"
+                    style="margin:0.625rem 0;width: 17rem;display: flex;position: relative;align-items: center;">
+                    <el-slider :max="7" v-model="speed" style="margin: 0 1.25rem 0 -0.5rem;width: 12rem">
+                    </el-slider>
+                    <el-input-number size="mini" :min=0 :max=7 v-model="speed" :step="1" :controls="false"
+                      style="width: 5rem"></el-input-number>
+                    <!--                  <span-->
+                    <!--                    style="width: 2.75rem;float: right;background-color: #071828;text-align: center; border: 0.0625rem #ffffff solid;">{{-->
+                    <!--                      speed }}</span>-->
+                  </div>
                 </div>
               </div>
             </div>
@@ -482,7 +484,7 @@ import { getSystemXmlConfig } from '../../api/sysCtrl';
 import {
   getCarrierDetailInfo, getMapData
 } from '../../api/map';
-import {getAllPatrolLocation} from '@/api/taskConfig'
+import { getAllPatrolLocation } from '@/api/taskConfig'
 import { debounce } from '../../utils/debounce';
 import {
   getEquipmentList, SetSpeed,
@@ -589,7 +591,7 @@ export default {
       tempicture: null,
       tempicTimer: null,
       moveSet: null,
-      areaName:'',
+      areaName: '',
       warnLightOpen: 0, //0关 1开
     };
   },
@@ -600,13 +602,13 @@ export default {
 
   async mounted() {
     try {
+      await this.getAlarmList()
       await this.getSysConfig();
       // await this.init();
       await this.getAdvices();
       await this.lazyLoad()
       await this.getCarTask()
       await this.getcarList()
-      await this.getAlarmList()
     } catch (error) {
       console.log(error);
     }
@@ -638,7 +640,7 @@ export default {
       systemConfig: (state) => state.sysConfig.systemConfig,
     }),
     ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen',
-    'closeAll', 'closeBroadcast','closeWarnL']),
+      'closeAll', 'closeBroadcast', 'closeWarnL', 'dealwithAlarm']),
     realTimeAlarminfo() {
       return this.realTimeAlarm[0]
     },
@@ -713,8 +715,16 @@ export default {
       console.log('关闭语音对讲了', newV)
       this.stopBroadcast()
     },
-    closeWarnL(){
+    closeWarnL() {
       this.stopWarn()
+    },
+    dealwithAlarm() {
+      console.log('处理了数据')
+      this.alarmList = []
+      setTimeout(() => {
+        this.getAlarmList()
+
+      }, 1000)
     }
 
 
@@ -723,7 +733,7 @@ export default {
   methods: {
     async init() {
       //获取巡检点 
-      getAllPatrolLocation().then((res)=>{
+      getAllPatrolLocation().then((res) => {
         this.areaName = res.data[0].MapDisplayName
       })
       const res = await getAllCarrierDetailInfo()
@@ -917,7 +927,7 @@ export default {
       this.carID = this.carrierSelected.CarrierID
       this.carrierName = this.carrierSelected.CarrierName
       const camera = this.carrierSelected.CarrierAccessoryList[0]
-this.getCarTask()
+      this.getCarTask()
       if (camera == undefined) {
         this.currentAdvices[0].accessoryID = null
         this.currentAdvices[0].accessoryType = null
@@ -943,7 +953,7 @@ this.getCarTask()
         limit: 1000000,
         status: ""
       });
-      // console.log('实时告警', res)
+      console.log('实时告警', res)
       if (res.code === 20000) {
         if (res.data) {
           res.data.records.forEach(element => {
@@ -977,7 +987,7 @@ this.getCarTask()
       if (gas.code == 20000) {
         this.gasList = gas.data
       }
-      else{
+      else {
         // console.log('查看气体',gas)
         this.gasList = []
       }
@@ -1013,14 +1023,14 @@ this.getCarTask()
         planType: 2,
       }).then((res) => {
         res.data.forEach(element => {
-          console.log('巡检计划',element.CarrierID == this.carID)
-          if (element.IsEnable != 2 &&element.CarrierID == this.carID) {
+          console.log('巡检计划', element.CarrierID == this.carID)
+          if (element.IsEnable != 2 && element.CarrierID == this.carID) {
             this.taskList.push({
               label: element.PlanName,
               value: element.PlanID
             })
-          }else{
-            
+          } else {
+
           }
 
         });
@@ -1363,7 +1373,7 @@ this.getCarTask()
               duration: 5000
             });
           }
-          else{this.warnLightOpen = 1}
+          else { this.warnLightOpen = 1 }
         })
       } else if (this.warnLightOpen == 1) {
         //警示灯ing
@@ -1378,9 +1388,9 @@ this.getCarTask()
               duration: 5000
             });
           }
-          else{
-        this.warnLightOpen = 0
-         }
+          else {
+            this.warnLightOpen = 0
+          }
         })
 
       }
@@ -1694,7 +1704,7 @@ this.getCarTask()
       }
     },
     // 时间格式
-    handleInput(){
+    handleInput() {
       // const pattern = /^[A-Za-z0-9]+\+[0-9]+$/;
 
       // if (!pattern.test(this.locationID)) {
@@ -1902,38 +1912,41 @@ this.getCarTask()
         line-height: 1.875rem;
       }
     }
-    .warnL{
+
+    .warnL {
       .warnLight {
 
-width: 3.1rem;
-height: 2rem;
-animation: flashAnimation 1s infinite;
-background: linear-gradient(to right, blue 50%, red 50%);
-}
+        width: 3.1rem;
+        height: 2rem;
+        animation: flashAnimation 1s infinite;
+        background: linear-gradient(to right, blue 50%, red 50%);
+      }
 
-@keyframes flashAnimation {
-0% {
-  opacity: 0;
-}
+      @keyframes flashAnimation {
+        0% {
+          opacity: 0;
+        }
 
-50% {
-  opacity: 1;
-}
+        50% {
+          opacity: 1;
+        }
 
-100% {
-  opacity: 0;
-}
-}
-::v-deep .el-switch__core{
-    width:2.1875rem!important;
-    height:.9375rem;
-}
-::v-deep .el-switch__core::after{
-    width:.875rem;
-    height:.875rem;
-    margin-top:-0.0625rem;
-    margin-bottom: .125rem;
-  }
+        100% {
+          opacity: 0;
+        }
+      }
+
+      ::v-deep .el-switch__core {
+        width: 2.1875rem !important;
+        height: .9375rem;
+      }
+
+      ::v-deep .el-switch__core::after {
+        width: .875rem;
+        height: .875rem;
+        margin-top: -0.0625rem;
+        margin-bottom: .125rem;
+      }
 
     }
 
@@ -2061,7 +2074,7 @@ background: linear-gradient(to right, blue 50%, red 50%);
       .gas {
         color: #66B3B2;
         margin: 0.625rem 0 0 0.375rem;
-        
+
       }
 
       .gasDetail {
@@ -2210,6 +2223,7 @@ background: linear-gradient(to right, blue 50%, red 50%);
       font-size: 0.8rem;
       line-height: 1.875rem;
       margin-right: 1rem;
+
       .location_Detail {
         width: 12rem;
         min-width: 11.5rem;
@@ -2248,13 +2262,14 @@ background: linear-gradient(to right, blue 50%, red 50%);
 
   // }
 
- ::v-deep .el-input__inner,
-.el-range-editor.el-input__inner {
-  height: 1.875rem;
-  // background-color: rgba($color: #071828, $alpha: 1);
-  background-color: transparent;
-  color: #fff;
-}
+  ::v-deep .el-input__inner,
+  .el-range-editor.el-input__inner {
+    height: 1.875rem;
+    // background-color: rgba($color: #071828, $alpha: 1);
+    background-color: transparent;
+    color: #fff;
+  }
+
   .hkControl {
     width: 100%;
     background-color: rgba(7, 24, 40, 0.5);

@@ -12,6 +12,7 @@ const state = {
   closeBroadcast:false,
   clostSpeak:false,
   closeWarnL:false,
+  dealwithAlarm:false,
 };
 
 const mutations = {
@@ -54,6 +55,9 @@ const mutations = {
   setWarn:()=>{
     state.closeWarnL = !state.closeWarnL
   },
+  set_DealwithAlarm:()=>{
+    state.dealwithAlarm = !state.dealwithAlarm
+  }
 
 };
 
@@ -94,6 +98,9 @@ const actions = {
   setWarnLight({commit},data){
     commit('setWarn',data)
   },
+  setDeaiwithAlarm({commit},data){
+    commit('set_DealwithAlarm',data)
+  }
 };
 
 export default {

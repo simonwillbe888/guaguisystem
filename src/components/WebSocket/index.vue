@@ -283,6 +283,10 @@ export default {
             duration: 0,
           });
         }
+        else if (data.code == 15){
+          console.log('发来处理告警的信息')
+          this.$store.dispatch('global/setDeaiwithAlarm', data.data)
+        }
       }
       //   console.log('收到服务端发送的信息');
       //   console.log(e.data);
