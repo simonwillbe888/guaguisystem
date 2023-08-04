@@ -837,7 +837,10 @@ export default {
   beforeDestroy() {
     this.HKlogout()
     this.broadcast('语音停止播放')
-    this.setWarnLight(0)
+    // console.log('beforeDestroy this.warnLightOpen',this.warnLightOpen)
+    if(this.warnLightOpen == 1){
+      this.setWarnLight(0)
+    }
     console.log(this.robotOpen == 1)
     if (this.robotOpen == 1) {
       this.logoutCar()
@@ -852,7 +855,7 @@ export default {
       systemConfig: (state) => state.sysConfig.systemConfig,
     }),
     ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen',
-      'closeAll', 'closeBroadcast','closeWarnL']),
+      'closeAll', 'closeBroadcast','closeWarnL', 'dealwithAlarm']),
     realTimeAlarminfo() {
       return this.realTimeAlarm[0]
     },
@@ -927,6 +930,14 @@ export default {
     },
     closeWarnL(){
       this.stopWarn()
+    },
+    dealwithAlarm() {
+      console.log('处理了数据')
+      this.alarmList = []
+      setTimeout(() => {
+        this.getAlarmList()
+
+      }, 1000)
     }
   },
 
@@ -1407,7 +1418,7 @@ export default {
     setWarnLight(e) {
       console.log('warnLightOpen',this.warnLightOpen,e)
       const time = this.getNowtime()
-      if (e == 1 && this.warnLightOpen == 0) {
+      if (e == 1) {
         //警示灯closed
         startWarningLight(this.carID).then((res) => {
           if (res.code != 20000) {
@@ -1428,7 +1439,7 @@ export default {
               duration: 5000
             });}
         })
-      } else if (e == 0 && this.warnLightOpen == 1) {
+      } else if (e == 0) {
         //警示灯ing
         stopWarningLight(this.carID).then((res) => {
           console.log(res)

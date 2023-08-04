@@ -76,14 +76,25 @@
 
         <el-form-item label="所属权限" prop="PowerList">
           <div style="background: #021627;">
-            <el-collapse>
+            <el-collapse :accordion="true">
               <el-checkbox-group v-model="powerListArray" @change="collapseChange">
                 <el-collapse-item v-for="p in powerList" style="margin: 0.5rem">
                   <template #title>
                     <el-checkbox style="margin-left: 1rem" :label="p.ID" @change="checkboxClick(p)">{{p.PowerName}}</el-checkbox>
                   </template>
                   <span v-for="c in p.children">
-                    <el-checkbox style="margin-left: 1rem" :label="c.ID" >{{c.PowerName}}</el-checkbox>
+                    <el-checkbox v-if="c.children.length == 0" style="margin-left: 1rem" :label="c.ID">{{c.PowerName}}</el-checkbox>
+                    <el-tooltip placement="top" v-else>
+                      <el-checkbox style="margin-left: 1rem" :label="c.ID" @change="checkboxClick(c)" >{{c.PowerName}}</el-checkbox>
+                      <div slot="content">
+                        <el-checkbox-group v-model="powerListArray">
+                          <span v-for="cc in c.children">
+                            <el-checkbox style="margin-left: 1rem" :label="cc.ID">{{cc.PowerName}}</el-checkbox><br>
+                          </span>
+                        </el-checkbox-group>
+                      </div>
+                    </el-tooltip>
+
                   </span>
                 </el-collapse-item>
               </el-checkbox-group>
@@ -403,22 +414,37 @@ export default {
     },
 
     checkboxClick(e){
-      console.log('checkboxClick',e)
-      console.log('this.powerListArray.includes(e)',this.powerListArray.includes(e.ID))
+      // console.log('checkboxClick',e)
+      // console.log('this.powerListArray.includes(e)',this.powerListArray.includes(e.ID))
       if(this.powerListArray.includes(e.ID)){
-        e.children.forEach(c=>{
-          if(!this.powerListArray.includes(c.ID)){
-            this.powerListArray.push(c.ID)
-          }
-        })
+        if(e.children != undefined && e.children.length>0) {
+          e.children.forEach(c => {
+            if (!this.powerListArray.includes(c.ID)) {
+              this.powerListArray.push(c.ID)
+              if (c.children != undefined && c.children.length > 0) {
+                c.children.forEach(cc => {
+                  this.powerListArray.push(cc.ID)
+                })
+              }
+            }
+          })
+        }
       }else {
-        // e.children.forEach(c=>{
-        //   if(this.powerListArray.includes(c.ID)){
-        //     this.powerListArray.filter(item => item !== c.ID)
-        //   }
-        // })
+        if(e.children != undefined && e.children.length>0) {
+          e.children.forEach(c => {
+            if (this.powerListArray.includes(c.ID)) {
+              this.powerListArray.splice(this.powerListArray.indexOf(c.ID), 1)
+              if (c.children != undefined && c.children.length > 0) {
+                c.children.forEach(cc => {
+                  this.powerListArray.splice(this.powerListArray.indexOf(cc.ID), 1)
+                })
+              }
+            }
+          })
+        }
       }
-    }
+      this.$forceUpdate()
+    },
 
   },
 };
