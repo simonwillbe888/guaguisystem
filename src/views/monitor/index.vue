@@ -170,7 +170,7 @@
               任务下发
             </div>
             <div class="taskDetail">
-              <span style="width: 6rem;line-height: 2rem;">任务模板 ：</span>
+              <span style="width: 6rem;line-height: 2rem;height: 2rem;overflow: hidden;">任务模板 ：</span>
               <span style="color:#66B3B2;width: 7rem">
                 <el-select v-model="taskID" placeholder="请选择">
                   <el-option v-for="item in taskList" :key="item.value" :label="item.label" :value="item.value">

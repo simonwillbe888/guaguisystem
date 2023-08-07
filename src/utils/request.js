@@ -48,7 +48,7 @@ service.interceptors.response.use(
       // console.log("查看错误", res)
       Notification({
         title: '提示',
-        duration: 1000,
+        duration: 5000,
         message: res.data || 'Error',
         type: 'error',
         // duration: 5 * 1000,
