@@ -609,6 +609,7 @@ export default {
 
     plusAccesso() {
       this.dialogFormVisible = true;
+      this.selectState =  null
       this.dialogType = 'addAccesso';
       this.resetForm();
       //   this.accessoForm.isEdit = false;

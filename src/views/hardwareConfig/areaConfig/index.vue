@@ -151,6 +151,9 @@
           </el-select>
         </el-form-item>
         <el-form-item class="common-form-footer">
+          <div style="margin-right: 8% ;">
+
+          
           <el-button
             type="primary"
             @click="
@@ -166,6 +169,7 @@
             @click="cancelOperate('accessoForm')"
             >{{ $t('equip_setting.cancel_label') }}</el-button
           >
+        </div>
         </el-form-item>
       </el-form>
     </el-dialog>

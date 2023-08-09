@@ -977,7 +977,7 @@ export default {
       let robot = document.getElementById('robot')
       if (res.code === 20000) {
         this.carList = res.data || [];
-        //  console.log('小车速度',this.carList.realTimeSpeed)
+         console.log('小车速度',this.carList.realTimeSpeed)
         if (this.carList.x >= 1) {
           const left = (93 / 46072) * this.carList.x
           robot.style.left = left * 0.95 + '%'

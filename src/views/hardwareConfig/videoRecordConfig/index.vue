@@ -207,7 +207,7 @@
           style="width:100%"
           class="common-form-footer"
         >
-          <div>
+          <div style="margin-right: 6% ;">
             <el-button type="primary" size="mini" @click="save">{{
               form.isEdit ? '保存编辑' : '立即新增'
             }}</el-button>

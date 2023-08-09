@@ -330,6 +330,9 @@
           ></el-input>
         </el-form-item>
         <el-form-item class="common-form-footer">
+          <div style="margin-right:16%">
+
+          
           <el-button
             type="primary"
             @click="
@@ -342,6 +345,7 @@
           <el-button type="primary" plain @click="cancel('alarmForm')">{{
             $t('inspection_setting.cancel_add_label')
           }}</el-button>
+          </div>
         </el-form-item>
       </el-form>
     </el-dialog>
