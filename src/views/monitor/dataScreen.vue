@@ -377,7 +377,7 @@
                     <div class="robotMoveDirect" @mousedown="setRobotMoveCrl(2)" @mouseup="setRobotMoveCrl(3)">
                       <svg-icon icon-class="go" style="width: 3rem;height:2rem;margin: auto;rotate: 180deg"/>
                     </div>
-                    <el-select v-model="riskSpeed" style="width: 7rem;margin:0 0.5rem 0 2rem">
+                    <el-select v-model="commandRiskSpeed" style="width: 7rem;margin:0 0.5rem 0 2rem">
                       <el-option v-for="item in speedList" :key="item.value" :label="item.label" :value="item.value"></el-option>
                     </el-select>
                     <div class="robotMoveDirect" @mousedown="setRobotMoveCrl(1)" @mouseup="setRobotMoveCrl(3)">
@@ -446,14 +446,14 @@
       <el-dialog :visible.sync="lowButtery" title="低电量提示" width="30%">
         <span style="font-size:1.5rem ;">机器人低电量,确定启动该任务吗? </span>
         <span slot="footer">
-            <el-button size="mini" @click="lowButtery = false">取 消</el-button>
+            <el-button size="mini" type="info" style="background-color: #FFFFFF;color: #000000" @click="lowButtery = false">取 消</el-button>
             <el-button size="mini" type="primary" @click="goLocationLowButtery()">确 定</el-button>
           </span>
       </el-dialog>
       <el-dialog :visible.sync="locationAuto" :show-close="false" :close-on-click-modal="false" title="操作提示" width="30%">
         <span style="font-size:1.5rem ;">已到达巡检点{{locationID}}，是否手动操作机器人</span>
         <span slot="footer">
-            <el-button size="mini" @click="cancelLocation()">否</el-button>
+            <el-button size="mini" type="info" style="background-color: #FFFFFF;color: #000000" @click="cancelLocation()">否</el-button>
             <el-button size="mini" type="primary" @click="openLocation()">是</el-button>
           </span>
       </el-dialog>
@@ -763,6 +763,7 @@ export default {
         label: "巡检速度"
       }],
       riskSpeed: 1000,
+      commandRiskSpeed: 1000,
       speedMode:1,
       broadcasting: false,
       lowButtery: false,
@@ -1129,7 +1130,7 @@ export default {
 
     cancelLocation() {
       CancelCarrierControl(this.carID).then((res) => {
-        console.log('取消回到返回', res)
+        // console.log('取消回到返回', res)
         if (res.code == '20000') {
           this.locationAuto = false
           this.$store.dispatch('global/setLocation', '返回待命点')
@@ -2139,14 +2140,14 @@ export default {
       } else {
         if (flag == 1) {
           this.moveSet = setTimeout(() => {
-            moveCar(flag, 1000, 1000000, time).then((res) => {
+            moveCar(flag, this.commandRiskSpeed, 1000000, time).then((res) => {
               console.log('前进', time, res)
             })
           }, 1000)
         }
         else if (flag == 2) {
           this.moveSet = setTimeout(() => {
-            moveCar(flag, 1000, 1000000, time).then((res) => {
+            moveCar(flag, this.commandRiskSpeed, 1000000, time).then((res) => {
               console.log('后退', time, res)
             })
           }, 1000)
@@ -2721,7 +2722,7 @@ export default {
     padding-top: 1.5rem;
     cursor: pointer;
     //opacity: 0.8;
-    z-index: 888;
+    z-index: 889;
   }
   .button-box:hover {
     color: white;
