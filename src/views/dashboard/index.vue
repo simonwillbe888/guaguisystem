@@ -167,7 +167,9 @@ export default {
     width: 3.75rem;
   }
 }
-
+::v-deep .el-input__inner, .el-range-editor.el-input__inner{
+  background-color: #071828;
+}
 .echarts-container {
   display: flex;
 

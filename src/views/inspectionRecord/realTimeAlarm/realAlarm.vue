@@ -20,7 +20,7 @@
 <!--        <el-radio v-model="alarmType" label="1">设备告警</el-radio>-->
 <!--      </template>-->
 
-      <toggleSwitch style="margin-left: 1rem" :labelChecked="'设备告警'" :labelUnchecked="'巡检告警'" @switchAlarm="switchAlarm" ></toggleSwitch>
+      <toggleSwitch style="margin-left: 1rem" :labelChecked="'设备异常'" :labelUnchecked="'巡检告警'" @switchAlarm="switchAlarm" ></toggleSwitch>
 
       <div style="display:inline;float:right">
         <el-input style="width:10vw;margin-left: 0.1vw;" v-if="alarmType == 2" placeholder="请输入告警名称" v-model="alarmName">

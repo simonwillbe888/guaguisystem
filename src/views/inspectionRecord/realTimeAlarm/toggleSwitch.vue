@@ -60,6 +60,7 @@ export default {
   methods: {
     toggle (event) {
       this.toggled = !this.toggled
+      console.log(this.toggled,'查看')
       this.$emit('switchAlarm', this.toggled)
     }
   }

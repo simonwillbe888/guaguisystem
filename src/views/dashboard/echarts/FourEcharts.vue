@@ -81,8 +81,8 @@ export default {
               break;
               case 1018: self.alarmName.push("指示灯")
               break;
-              case 1:
-              default: self.alarmName.push('机体')
+              // case 1:
+              // default: self.alarmName.push('机体')
               }
               self.count.push(item.count);
             });

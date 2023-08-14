@@ -1634,11 +1634,16 @@ export default {
       getCountByCode(param)
         .then((response) => {
           // console.log(param)
-          // console.log(response)
+          console.log(response)
           this.alarmSumData = []
           if (response && response.data.length > 0) {
             response.data.forEach((item) => {
+              // console.log('查看item ',item)
+              if(item.alarmType != 1){
+
+              
               this.alarmSumData.push({name:this.alarmJudge(item.alarmType),value:item.count})
+              }
             });
             // console.log("this.alarmSumData--->",this.alarmSumData)
           }
@@ -1930,7 +1935,7 @@ export default {
           case 1012: return '消防设备告警'
           case 1013: return '火灾烟雾告警'
           case 1014: return '红外测温告警'
-          default: return '机体告警'
+          // default: return '机体告警'
         }
       }
 
