@@ -679,7 +679,7 @@ export default {
       // cameraPosition: {x:4,y:1,z:4.5},
       // cameraRotation: {x:0,y:Math.PI/2,z:0},
       cameraRotation: {x:0,y:0,z:0},
-      cameraFollow: false,
+      cameraFollow: true,
       cameraLookAt: {x:0,y:0,z:0},
       cameraUp: {x:0,y:1,z:0},
       controlsOptions: {target:{x:0,y:0,z:0}},
@@ -778,6 +778,12 @@ export default {
       finishTime: '',
       tranLeft: 100,
       moveSet: null,
+      // batteryLevelColors: [
+      //   {color: '#ff0000', percentage: 20},
+      //   {color: '#e6a23c', percentage: 50},
+      //   {color: '#1989fa', percentage: 99},
+      //   {color: '#5cb87a', percentage: 100},
+      // ],
       tunnelList: [{
         value:'qifu',
         key:'qifu',
@@ -1564,6 +1570,7 @@ export default {
       // console.log("lastTarget---",lastTarget)
 
       if(this.cameraFollow){
+        //判断AGV的坐标没发生改变
         if(lastTarget.x == agvPosition.x &&
           lastTarget.y == agvPosition.y -2 &&
           lastTarget.z == agvPosition.z ){
@@ -1635,15 +1642,12 @@ export default {
       getCountByCode(param)
         .then((response) => {
           // console.log(param)
-          console.log(response)
+          // console.log(response)
           this.alarmSumData = []
           if (response && response.data.length > 0) {
             response.data.forEach((item) => {
-              // console.log('查看item ',item)
-              if(item.alarmType != 1){
-
-              
-              this.alarmSumData.push({name:this.alarmJudge(item.alarmType),value:item.count})
+              if('机体告警'.localeCompare(this.alarmJudge(item.alarmType)) !== 0){
+                this.alarmSumData.push({name:this.alarmJudge(item.alarmType),value:item.count})
               }
             });
             // console.log("this.alarmSumData--->",this.alarmSumData)
@@ -1718,8 +1722,10 @@ export default {
           this.alarmAnalData.seriesData = []
           if (response && response.data.length > 0) {
             response.data.forEach((item) => {
-              legendData.add(item.alarmType)
-              xAxisData.add(item.alarmDate)
+              if('机体告警'.localeCompare(this.alarmJudge(item.alarmType)) !== 0){
+                legendData.add(item.alarmType)
+                xAxisData.add(item.alarmDate)
+              }
             });
             legendData.forEach((i)=>{ //类型
               // 对每种类型进行一次时间遍历 时间先进行排序
@@ -1936,7 +1942,11 @@ export default {
           case 1012: return '消防设备告警'
           case 1013: return '火灾烟雾告警'
           case 1014: return '红外测温告警'
-          // default: return '机体告警'
+          case 1015: return '算法启动告警'
+          case 1016: return '逆行告警'
+          case 1017: return '风机告警'
+          case 1018: return '指示灯告警'
+          default: return '机体告警'
         }
       }
 
