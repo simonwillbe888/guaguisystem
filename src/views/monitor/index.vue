@@ -623,7 +623,7 @@ export default {
   beforeDestroy() {
     this.HKlogout()
     this.stopBroadcast()
-    console.log(this.robotOpen == 1)
+    // console.log(this.robotOpen == 1)
     if (this.robotOpen == 1) {
       this.logoutCar()
     }
@@ -678,7 +678,7 @@ export default {
       }
     },
     dialogLocation(newV, old) {
-      console.log('告知到达巡检点了')
+      // console.log('告知到达巡检点了')
       this.locationAuto = true
     },
     yuntaiInfo() {
@@ -696,7 +696,6 @@ export default {
       return this.carrierSelected.CarrierID
     },
     riskSpeed(newV, oldV) {
-      console.log('速度变化了')
       if (newV == 1000) {
         this.speedMode = 1
       } else {
@@ -712,14 +711,12 @@ export default {
       this.HKlogout()
     },
     closeBroadcast(newV, oldV) {
-      console.log('关闭语音对讲了', newV)
       this.stopBroadcast()
     },
     closeWarnL() {
       this.stopWarn()
     },
     dealwithAlarm() {
-      console.log('处理了数据')
       this.alarmList = []
       setTimeout(() => {
         this.getAlarmList()
@@ -781,7 +778,7 @@ export default {
               y: parseInt(512 / e.target.clientHeight * clientY),
             }
             getTemperature(param).then((res) => {
-              console.log('调用接口参数', param, res)
+              // console.log('调用接口参数', param, res)
               if (res.code == 20000) {
                 this.tempicture = res.data + '℃'
               }
@@ -807,7 +804,7 @@ export default {
 
         };
         infrared.contentDocument.onmouseout = () => {
-          console.log('移除')
+          // console.log('移除')
           window.clearInterval(that.tempicTimer)
           timer = null
         }
@@ -953,7 +950,7 @@ export default {
         limit: 1000000,
         status: ""
       });
-      console.log('实时告警', res)
+      // console.log('实时告警', res)
       if (res.code === 20000) {
         if (res.data) {
           res.data.records.forEach(element => {
@@ -977,7 +974,7 @@ export default {
       let robot = document.getElementById('robot')
       if (res.code === 20000) {
         this.carList = res.data || [];
-         console.log('小车速度',this.carList.realTimeSpeed)
+        //  console.log('小车速度',this.carList.realTimeSpeed)
         if (this.carList.x >= 1) {
           const left = (93 / 46072) * this.carList.x
           robot.style.left = left * 0.95 + '%'
@@ -1023,7 +1020,7 @@ export default {
         planType: 2,
       }).then((res) => {
         res.data.forEach(element => {
-          console.log('巡检计划', element.CarrierID == this.carID)
+          // console.log('巡检计划', element.CarrierID == this.carID)
           if (element.IsEnable != 2 && element.CarrierID == this.carID) {
             this.taskList.push({
               label: element.PlanName,

@@ -177,13 +177,11 @@ export default {
   },
   methods: {
     acitveManue(item) {
-      console.log('跳转item', item)
       if (item.children && item.children[0] && item.children[0].name) {
         //去默认跳转第一个子路由
         this.$router.push({
           name: item.children[0].name,
         });
-        console.log('跳转路由名称', item.children[0].name)
       } else {
         this.$router.push({
           name: item.name,

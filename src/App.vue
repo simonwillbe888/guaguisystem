@@ -13,7 +13,29 @@ export default {
     if(targetRoute == '/system/licenseSetting'){
       this.$router.push('system/licenseSetting')
     }
-  }
+
+  },
+  mounted(){
+      const url = new URL(window.location.href)
+      const params = new URLSearchParams(url.search)
+      const token = params.get('token')
+      if(token){
+        this.$store.dispatch('user/ssoLogin',token)
+        .then(async () => {
+              this.$router.push({ path: this.redirect || '/' });
+              this.loading = false;
+              // const res = await getSystemXmlConfig();
+              // if (res.code === 20000 && res.data) {
+              //   // console.log('查看res',res.data)
+              //   this.$store.dispatch('sysConfig/setSystemConfig', res.data);
+              // }
+            })
+            .catch(() => {
+              this.loading = false;
+            });
+      }
+  },
+
 }
 resizeWeb();
 window.addEventListener('resize',(e)=>{

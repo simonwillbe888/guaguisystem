@@ -21,6 +21,12 @@ export function remoteLoginOut() {
     method: 'post',
   });
 }
+export function sso (token){
+  return request ({
+    url:'/api/User/sso?token=' + token,
+    method:'get'
+  })
+}
 
 export function loginOut() {
   return request({

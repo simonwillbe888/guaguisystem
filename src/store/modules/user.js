@@ -1,4 +1,4 @@
-import { login, loginOut, getInfo,remoteLoginOut } from '@/api/user';
+import { login, loginOut, getInfo,remoteLoginOut,sso } from '@/api/user';
 import { getToken, setToken, removeToken } from '@/utils/auth';
 import { resetRouter } from '@/router';
 
@@ -13,6 +13,7 @@ const state = {
     webRtcIP: '',
     fileAddress: '',
   },
+  tokenSso:'',
 };
 
 const mutations = {
@@ -67,7 +68,23 @@ const actions = {
         });
     });
   },
+  ssoLogin({commit},tokenSso){
+    return new Promise((resolve,reject)=>{
+      sso(tokenSso)
+      .then((response)=>{
+        // console.log('单点跳转登录',response,tokenSso)
+        if (response.code === 20000) {
+          // getInfo()
+          commit('SET_TOKEN', response.data);
+          setToken(response.data);
+          resolve();
+        } else {
+          reject(response.data);
+        }
+      })
+    })
 
+  },
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
