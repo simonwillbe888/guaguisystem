@@ -992,16 +992,13 @@ export default {
       if (car.data.length > 0) {
         getTaskRemainingMileage(car.data[0].taskID).then((res) => {
           const time = (res.data.time / 60)
-          // console.log('查看剩余里程', res.data.mileage, time)
-          if (this.carList.realTimeSpeed > 0 && res.data.mileage > 20000) {
-            this.finishTime = Number(((res.data.mileage / (this.carList.realTimeSpeed * 60))).toFixed(1)) + time
-            this.finishTime = this.finishTime.toFixed(1)
-            // console.log('看看时间', typeof this.finishTime, time)
+          if (res.data.mileage > 2000 && Math.abs(this.carList.realTimeSpeed) > 0) {
+            this.finishTime = Number(((res.data.mileage / (Math.abs(this.carList.realTimeSpeed) * 60))).toFixed(1)) + time
             if (res.data.mileage = 0) {
               this.finishTime = 0
             }
           }
-          else if (this.carList.realTimeSpeed > 0 && res.data.mileage < 20000) {
+          else if (this.carList.realTimeSpeed > 300 && res.data.mileage < 2000) {
             this.finishTime = 0.1
           }
         })
@@ -1011,6 +1008,7 @@ export default {
         this.finishTime = 0
         this.realTimeTask = ''
       }
+
     },
     async getCarTask() {
       this.taskList = []
@@ -2442,4 +2440,5 @@ export default {
     }
   }
 
-}</style>
+}
+</style>
