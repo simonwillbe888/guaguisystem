@@ -16,10 +16,15 @@
           </div>
         </div>
         <div style="position:relative;padding-bottom: 20px">
-          <el-upload ref="uploadLicense" :show-file-list="false" :limit="1" name="file"
-            action="/api/SystemConfig/uploadLicense" :on-success="uploadLicense">
+          <el-upload ref="uploadLicense" :limit="2" name="file"
+                     :auto-upload="false"
+                     action="/api/SystemConfig/uploadLicense"
+                     :file-list="fileList"
+                     :on-success="uploadLicense"
+                     :on-change="uploadChange"
+          >
             <el-button style="margin-right: 30px" slot="trigger" type="success" icon="el-icon-upload2">上传许可证</el-button>
-            <el-button type="primary" icon="el-icon-key" @click="licenseChecker">授权验证</el-button>
+            <el-button type="primary" icon="el-icon-key" @click="uploadHandle">授权验证</el-button>
           </el-upload>
         </div>
       </div>
@@ -33,6 +38,7 @@ export default {
   components: {},
   data() {
     return {
+      fileList: [],
       result: {
         icon: "warning",
         title: "未授权",
@@ -53,17 +59,17 @@ export default {
   methods: {
     async getLicenseStatus(notify) {
       await getLicenseStatus().then((res) => {
-        this.licenseProcess(res, notify)
+        this.licenseProcess(res, notify,false)
       }).catch(() => { })
     },
 
-    licenseProcess(res, notify) {
-      const powelist = this.$store.getters.roles
+    licenseProcess(res, notify, refresh) {
+      const powerList = this.$store.getters.roles
       if (res.code === 20000) {
         this.extra.active = res.data.active
         this.extra.period = res.data.period
         if (res.data.active) {
-          if (!powelist.includes('vertify')) {
+          if (!powerList.includes('vertify')) {
             this.$store.dispatch('user/setVertify', 'vertify')
           }
           this.result.icon = "success"
@@ -83,6 +89,10 @@ export default {
               type: 'success'
             });
           }
+          if(refresh){
+            //授权成功后刷新路由
+            this.$router.go(0);
+          }
         } else {
           this.result.icon = "warning"
           this.result.title = "未授权"
@@ -91,7 +101,7 @@ export default {
 
           this.$notify({
             title: '授权失败',
-            message: '许可证验证失败',
+            message: res.data.msg,
             type: 'warning'
           });
         }
@@ -106,6 +116,18 @@ export default {
           type: 'warning'
         });
       }
+    },
+
+    uploadHandle(){
+      if(this.fileList == null){
+        this.licenseChecker()
+      }else {
+        this.$refs.uploadLicense.submit()
+      }
+    },
+
+    uploadChange(file,fileList){
+      this.fileList = fileList.slice(-1)
     },
 
     uploadLicense(res) {
@@ -124,8 +146,7 @@ export default {
 
     async licenseChecker() {
       await licenseChecker().then((res) => {
-        this.licenseProcess(res, true)
-        this.$router.go(0);
+        this.licenseProcess(res, true,true)
       }).catch(() => { })
     },
 
@@ -177,6 +198,10 @@ export default {
     top: 85%;
   }
 
+}
+
+::v-deep .el-upload-list__item-name{
+  color: #409eff;
 }
 
 ::v-deep .el-input__icon {
