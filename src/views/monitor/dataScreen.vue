@@ -822,7 +822,7 @@ export default {
       await this.getAdvices()
       await this.lazyLoad()
       await this.getCarTask()
-      await this.getcarList()
+      await this.getCarList()
       await this.getAlarmList()
       await this.alarmSumButton('day')
       await this.alarmAnalysisButton('day')
@@ -834,7 +834,7 @@ export default {
       this.locationAuto = true
     }
     this.carRoller = setInterval(() => {
-      this.getcarList()
+      this.getCarList()
     }, 1000)
 
     this.judgeIsFullScreen()
@@ -1277,8 +1277,9 @@ export default {
         }
       }
     },
-    async getcarList() {
-      if(this.carrierSelected == null){
+    async getCarList() {
+      if(this.carrierSelected.CarrierID == undefined || this.carrierSelected.CarrierID == ''){
+        console.log('CarrierID is null')
         return
       }
       const res = await getCarrierDetailInfo(this.carrierSelected.CarrierID);

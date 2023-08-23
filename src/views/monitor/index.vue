@@ -729,7 +729,7 @@ export default {
 
   methods: {
     async init() {
-      //获取巡检点 
+      //获取巡检点
       getAllPatrolLocation().then((res) => {
         this.areaName = res.data[0].MapDisplayName
       })
@@ -964,6 +964,10 @@ export default {
       }
     },
     async getcarList() {
+      if(this.carrierSelected.CarrierID == undefined || this.carrierSelected.CarrierID == ''){
+        console.log('CarrierID is null')
+        return
+      }
       const res = await getCarrierDetailInfo(this.carrierSelected.CarrierID);
       const gas = await GetMonitorData()
       const buttery = await getChargingStateByCarrierID(this.carrierSelected.CarrierID)
@@ -983,8 +987,7 @@ export default {
       //气体
       if (gas.code == 20000) {
         this.gasList = gas.data
-      }
-      else {
+      }else {
         // console.log('查看气体',gas)
         this.gasList = []
       }
