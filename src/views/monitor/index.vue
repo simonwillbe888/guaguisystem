@@ -992,8 +992,8 @@ export default {
       if (car.data.length > 0) {
         getTaskRemainingMileage(car.data[0].taskID).then((res) => {
           const time = (res.data.time / 60)
-          if (res.data.mileage > 2000 && Math.abs(this.carList.realTimeSpeed) > 0) {
-            this.finishTime = Number(((res.data.mileage / (Math.abs(this.carList.realTimeSpeed) * 60))).toFixed(1)) + time
+          if (res.data.mileage > 2000 && Math.abs(this.carList.realTimeSpeed) > 100) {
+            this.finishTime = Number(((res.data.mileage / (Math.abs(this.carList.realTimeSpeed) * 60))).toFixed(1) + (time/60)).toFixed(1)
             if (res.data.mileage = 0) {
               this.finishTime = 0
             }
@@ -1034,6 +1034,7 @@ export default {
     beforeunloadHandler(e) {
       window.addEventListener("beforeunload", () => {
         this.HKlogout()
+        this.stopWarn()
         if (this.robotOpen == 1) {
           this.logoutCar()
         }
