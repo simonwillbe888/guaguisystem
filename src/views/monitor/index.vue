@@ -683,7 +683,7 @@ export default {
     },
     yuntaiInfo() {
       if (this.YTlogin == true) {
-        this.YTlogin = false
+        this.HKlogout()
         this.$notify({
           message: '云台退出连接',
           type: 'warning',
@@ -994,9 +994,10 @@ export default {
       const car = await getRealPatrolTaskList()
       if (car.data.length > 0) {
         getTaskRemainingMileage(car.data[0].taskID).then((res) => {
-          const time = (res.data.time / 60)
+          const time =  parseFloat((res.data.time / 60).toFixed(1))
           if (res.data.mileage > 2000 && Math.abs(this.carList.realTimeSpeed) > 100) {
-            this.finishTime = Number(((res.data.mileage / (Math.abs(this.carList.realTimeSpeed) * 60))).toFixed(1) + (time/60)).toFixed(1)
+            this.finishTime = ((res.data.mileage / (Math.abs(this.carList.realTimeSpeed) * 60))).toFixed(1) + time
+            console.log(typeof time)
             if (res.data.mileage = 0) {
               this.finishTime = 0
             }
@@ -1182,9 +1183,9 @@ export default {
       if (this.YTlogin == true) {
         // console.log("执行关闭云台")
         logOut(this.currentAdvices[0].accessoryID).then((res) => {
-          if (res.code == '20000') {
+          console.log('关闭云台',res)
             this.YTlogin = false
-          }
+          
         })
       }
 
