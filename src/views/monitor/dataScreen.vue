@@ -401,10 +401,6 @@
 
       <el-col :span="6">
         <div class="right">
-          <!--            :class="[-->
-          <!--            currentCamera.accessoryID === currentAdvices.accessoryID-->
-          <!--            ? 'active'-->
-          <!--            : '', 'back-shaodow']"-->
           <iframe
             :myData="currentAdvices[1]"
             style="width:100%; height:20.5rem; border: none; "
@@ -418,9 +414,7 @@
           <div class="tempicture" id="tempoint" >
             <i v-if="tempictureShow" style="color: #FFFFFF">+</i>
           </div>
-          <!--            <div class="tempicture" id="templocation" >-->
-          <!--              <i v-if="tempictureShow" style="color: #FFFFFF">{{ templocation }}</i>-->
-          <!--            </div>-->
+
         </div>
       </el-col>
 

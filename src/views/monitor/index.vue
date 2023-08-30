@@ -194,9 +194,8 @@
             <div style="display: flex;">
               <div class="nowPosition">
                 <span style="margin:0.125rem 0.625rem 0  0.625rem ;font-size: 1.25rem;">巡检地图</span>
-                <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }}机器人当前位置：{{ carList.pileNumber == null
-                  ?
-                  carList.x / 1000 :
+                <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }}当前位置：{{ carList.pileNumber == null ?
+                  (isNaN(carList.x) ? '未知' : carList.x / 1000) :
                   '站点' + carList.pileNumber
                 }}</span>
               </div>
@@ -263,7 +262,7 @@
                   <div style="color:rgba(100 200 200) ;">温度</div>
                 </div>
                 <div class="gasDetail">
-                  {{ parseFloat((gasList.Temperature / 100).toFixed(1)) }}℃
+                  {{typeof gasList.Temperature == Number? parseFloat((gasList.Temperature / 100).toFixed(1)) : '0' }}℃
                 </div>
               </div>
               <div class="enviroDetail">
@@ -623,7 +622,6 @@ export default {
   beforeDestroy() {
     this.HKlogout()
     this.stopBroadcast()
-    // console.log(this.robotOpen == 1)
     if (this.robotOpen == 1) {
       this.logoutCar()
     }
@@ -664,9 +662,6 @@ export default {
     dialogLocationBoolen() {
       return this.locationTips
     },
-    // clostCode12(){
-    //   return
-    // }
   },
   watch: {
     filterText(val) {
@@ -678,7 +673,6 @@ export default {
       }
     },
     dialogLocation(newV, old) {
-      // console.log('告知到达巡检点了')
       this.locationAuto = true
     },
     yuntaiInfo() {
@@ -761,8 +755,6 @@ export default {
         let timer
         let that = this
         infrared.contentDocument.onmousemove = (e) => {
-          // this.currentCamera = this.currentAdvices[1]
-          // console.log('视频宽高', e.clientX,e.target.clientWidth)
           // console.log("查看红外信息", this.carrierSelected.CarrierAccessoryList[0].AccessoryID)
           clientX = parseFloat(e.clientX).toFixed(1)
           clientY = parseFloat(e.clientY).toFixed(1)
@@ -825,7 +817,6 @@ export default {
     },
     cancelLocation() {
       CancelCarrierControl(this.carID).then((res) => {
-        // console.log('取消回到返回', res)
         if (res.code == '20000') {
           this.locationAuto = false
           this.$store.dispatch('global/setLocation', '返回待命点')
@@ -905,8 +896,6 @@ export default {
           }`
         that.currentAdvices[1].src = `/static/video.html?data=${res.data.infraredRTSP}&serve=${this.webRtcIP
           }`
-        // that.currentAdvices[1]=
-        // console.log('获取设备', that.currentAdvices[0].src,that.currentAdvices[1].src)
       })
     },
     async changeRobotRight() {
@@ -935,7 +924,6 @@ export default {
         this.currentAdvices[0].accessoryType = camera.AccessoryType
         this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
       }
-      // console.log('查看右侧', this.currentAdvices[0])
       this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
       this.getVideo()
     },
@@ -964,7 +952,7 @@ export default {
       }
     },
     async getcarList() {
-      if(this.carrierSelected.CarrierID == undefined || this.carrierSelected.CarrierID == ''){
+      if (this.carrierSelected.CarrierID == undefined || this.carrierSelected.CarrierID == '') {
         console.log('CarrierID is null')
         return
       }
@@ -973,7 +961,6 @@ export default {
       const buttery = await getChargingStateByCarrierID(this.carrierSelected.CarrierID)
       // console.log('小车具体速度,总运行时间,',res.data)
       this.butteryInfo = buttery.data
-      // console.log(buttery)
       // console.log('气体',gas)
       let robot = document.getElementById('robot')
       if (res.code === 20000) {
@@ -987,17 +974,18 @@ export default {
       //气体
       if (gas.code == 20000) {
         this.gasList = gas.data
-      }else {
+      } else {
         // console.log('查看气体',gas)
         this.gasList = []
       }
       const car = await getRealPatrolTaskList()
       if (car.data.length > 0) {
         getTaskRemainingMileage(car.data[0].taskID).then((res) => {
-          const time =  parseFloat((res.data.time / 60).toFixed(1))
+          const time = parseFloat((res.data.time / 60).toFixed(1))
           if (res.data.mileage > 2000 && Math.abs(this.carList.realTimeSpeed) > 100) {
-            this.finishTime = ((res.data.mileage / (Math.abs(this.carList.realTimeSpeed) * 60))).toFixed(1) + time
-            console.log(typeof time)
+            this.finishTime = parseFloat(((res.data.mileage / (Math.abs(this.carList.realTimeSpeed) * 60))).toFixed(1)) + time
+            this.finishTime = this.finishTime.toFixed(1)
+            console.log(this.finishTime)
             if (res.data.mileage = 0) {
               this.finishTime = 0
             }
@@ -1041,6 +1029,20 @@ export default {
         this.stopWarn()
         if (this.robotOpen == 1) {
           this.logoutCar()
+        }
+        if (this.warnLightOpen == 1) {
+          //警示灯ing
+          stopWarningLight(this.carID).then((res) => {
+            if (res.code != 20000) {
+              this.warnLightOpen = 1
+              Notification({
+                title: '提示',
+                message: res.data,
+                type: 'error',
+                duration: 5000
+              });
+            }
+          })
         }
       });
     },
@@ -1183,9 +1185,9 @@ export default {
       if (this.YTlogin == true) {
         // console.log("执行关闭云台")
         logOut(this.currentAdvices[0].accessoryID).then((res) => {
-          console.log('关闭云台',res)
-            this.YTlogin = false
-          
+          console.log('关闭云台', res)
+          this.YTlogin = false
+
         })
       }
 
@@ -2209,6 +2211,7 @@ export default {
     }
 
     .nowPosition {
+      flex: 1;
       display: flex;
       position: relative;
       bottom: 8.25rem;
