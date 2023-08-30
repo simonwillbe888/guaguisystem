@@ -21,7 +21,13 @@ export function moveToVertex(data) {
     data
   })
 }
-
+export function getPatrolPointListByAreaId(id) {
+  return request({
+    url: '/api/PatrolLocation/getPatrolPointListByAreaId?areaId=' + id,
+    method: 'get',
+    data:{}
+  })
+}
 export function getAllLocationInfo() {
   return request({
     url: '/api/Location/GetAllLocationInfo',

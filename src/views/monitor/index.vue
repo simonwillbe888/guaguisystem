@@ -481,7 +481,7 @@ import { mapGetters, mapState } from 'vuex';
 import { getRealPatrolTaskList, cancelPatrolTask } from '@/api/inspectRecord';
 import { getSystemXmlConfig } from '../../api/sysCtrl';
 import {
-  getCarrierDetailInfo, getMapData
+  getCarrierDetailInfo, getPatrolPointListByAreaId
 } from '../../api/map';
 import { getAllPatrolLocation } from '@/api/taskConfig'
 import { debounce } from '../../utils/debounce';
@@ -686,9 +686,7 @@ export default {
         });
       }
     },
-    carID() {
-      return this.carrierSelected.CarrierID
-    },
+
     riskSpeed(newV, oldV) {
       if (newV == 1000) {
         this.speedMode = 1
@@ -716,6 +714,27 @@ export default {
         this.getAlarmList()
 
       }, 1000)
+    },
+    //左右切换机器时的改变
+    carrierIndex(){
+      this.carrierSelected = this.carrierArr[this.carrierIndex]
+      this.carID = this.carrierSelected.CarrierID
+      this.carrierName = this.carrierSelected.CarrierName
+      const camera = this.carrierSelected.CarrierAccessoryList[0]
+      this.getAreaName()
+      this.getCarTask()
+      if (camera == undefined) {
+        this.currentAdvices[0].accessoryID = null
+        this.currentAdvices[0].accessoryType = null
+        this.currentAdvices[0].configJson = null
+      }
+      else {
+        this.currentAdvices[0].accessoryID = camera.AccessoryID
+        this.currentAdvices[0].accessoryType = camera.AccessoryType
+        this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
+      }
+      this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
+      this.getVideo()
     }
 
 
@@ -724,23 +743,16 @@ export default {
   methods: {
     async init() {
       //获取巡检点
-      getAllPatrolLocation().then((res) => {
-        this.areaName = res.data[0].MapDisplayName
-      })
       const res = await getAllCarrierDetailInfo()
       //机器人列表
       const robotInfo = await getIndexCar()
-      // console.log('获取机器人列表',robotInfo.data)
       this.carrierArr = robotInfo.data //机器人的集合
       this.carrierIndex = 0 //数组长度
       this.carrierSelected = robotInfo.data[this.carrierIndex]
-
-      // console.log('获取选中机器人',this.carrierSelected)
+      this.getAreaName()
       this.carID = this.carrierSelected.CarrierID
       this.carrierName = this.carrierSelected.CarrierName
       this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
-
-      // console.log('小车ip', this.carrierSelected)
       const iframe = document.getElementById('iframes0');
       iframe.onload = () => {
         iframe.contentDocument.onclick = (e) => {
@@ -796,17 +808,13 @@ export default {
 
         };
         infrared.contentDocument.onmouseout = () => {
-          // console.log('移除')
           window.clearInterval(that.tempicTimer)
           timer = null
         }
       };
 
     },
-    getInfrared() {
-      const iframe1 = document.getElementById('infrared');
 
-    },
     handleClose() {
       this.$confirm('确认关闭？')
         .then(_ => {
@@ -859,6 +867,17 @@ export default {
       this.butteryInfo = null
       this.gasList = []
     },
+    getAreaName(){
+      getPatrolPointListByAreaId( this.carrierSelected.AreaID).then((res)=>{
+        console.log('巡检点',res.data[0])
+        if( res.data[0]  !== undefined){
+          this.areaName = res.data[0].mapDisplayName
+        }
+        else{
+          this.areaName = '绑定区域无站点'
+        }
+      })
+    },
     async changeRobotLeft() {
       this.HKlogout()
       setTimeout(() => {
@@ -870,23 +889,7 @@ export default {
       } else {
         this.carrierIndex = this.carrierArr.length - 1
       }
-      this.carrierSelected = this.carrierArr[this.carrierIndex]
-      this.carID = this.carrierSelected.CarrierID
-      this.carrierName = this.carrierSelected.CarrierName
-      const camera = this.carrierSelected.CarrierAccessoryList[0]
-      this.getCarTask()
-      if (camera == undefined) {
-        this.currentAdvices[0].accessoryID = null
-        this.currentAdvices[0].accessoryType = null
-        this.currentAdvices[0].configJson = null
-      }
-      else {
-        this.currentAdvices[0].accessoryID = camera.AccessoryID
-        this.currentAdvices[0].accessoryType = camera.AccessoryType
-        this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
-      }
-      this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
-      this.getVideo()
+
     },
     getVideo() {
       let that = this
@@ -909,23 +912,7 @@ export default {
       } else {
         ++this.carrierIndex
       }
-      this.carrierSelected = this.carrierArr[this.carrierIndex]
-      this.carID = this.carrierSelected.CarrierID
-      this.carrierName = this.carrierSelected.CarrierName
-      const camera = this.carrierSelected.CarrierAccessoryList[0]
-      this.getCarTask()
-      if (camera == undefined) {
-        this.currentAdvices[0].accessoryID = null
-        this.currentAdvices[0].accessoryType = null
-        this.currentAdvices[0].configJson = null
-      }
-      else {
-        this.currentAdvices[0].accessoryID = camera.AccessoryID
-        this.currentAdvices[0].accessoryType = camera.AccessoryType
-        this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
-      }
-      this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
-      this.getVideo()
+      
     },
     async getAlarmList() {
       //获取实时警告
@@ -1705,23 +1692,7 @@ export default {
         }
       }
     },
-    // 时间格式
-    handleInput() {
-      // const pattern = /^[A-Za-z0-9]+\+[0-9]+$/;
 
-      // if (!pattern.test(this.locationID)) {
-      //   Notification({
-      //             title: '提示',
-      //             message: '请输入正确的巡检位置如K100+103',
-      //             type: 'error',
-      //             duration: 5000
-      //           });
-      //           this.locationID = ''
-      //   this.locationID = this.locationID.replace(/[^A-Za-z0-9\+]/g, '');
-      // }else{
-      //   console.log('校验通过')
-      // }
-    },
     getNowtime() {
 
       //获取当前时间并打印
