@@ -3,11 +3,17 @@
     <div class="header">
       <div>
         <img src="../assets/img/logo@2x.png" style="width:10.125rem ;height: 2rem;">
+        <!-- <div style="font-weight: bold;font-size: 2rem;color: #64C8C8;
+                  font-style: italic;">
+          机器人管理系统
+        </div> -->
       </div>
       <div class="changeRoad">
-        <span> 高速隧道</span>
-        <svg-icon icon-class="changeSuidao"></svg-icon>
-        <span>切换隧道</span>
+        <el-select v-model="choosedArea" placeholder="请选择">
+          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+          </el-option>
+        </el-select>
+
       </div>
       <div class="nav">
         <template v-for="(item, index) in permission_routes">
@@ -21,7 +27,8 @@
           </div>
         </template>
       </div>
-      <i class="el-icon-sort" style="rotate:90deg;color: white;margin-right: 2rem" @click="()=>{this.$router.push('/dataScreen')}"></i>
+      <i class="el-icon-sort" style="rotate:90deg;color: white;margin-right: 2rem"
+        @click="() => { this.$router.push('/dataScreen') }"></i>
 
       <screenfull id="screenfull" class="right-menu-item hover-effect" style="margin-right: 1.875rem;color: white" />
       <div class="right">
@@ -33,7 +40,7 @@
               class="user-avatar"
             /> -->
             <i style="font-size: 1.5vw; color: #fdfdfd" class="el-icon-user-solid" />
-            <span style="color:#fff;font-size: 1vw;" >{{ nickName }}</span>
+            <span style="color:#fff;font-size: 1vw;">{{ nickName }}</span>
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dropdown">
             <el-dropdown-item @click.native="DialogVisible = true">
@@ -74,6 +81,7 @@
 
 <script>
 import { Navbar, Sidebar, AppMain } from './components';
+import { getExistCarrierAreaList } from '@/api/areaConfig.js'
 import WebSocket from '@/components/WebSocket';
 import Screenfull from '@/components/Screenfull';
 import { getAlarmNotice } from '@/api/user.js';
@@ -99,12 +107,15 @@ export default {
       },
       DialogVisible: false,
       interValTime: '',
-      nickName:'',
+      nickName: '',
+      options: [],
+      choosedArea: ''
     };
   },
   created() {
     // getInfo(this.token).then((res)=>{
     // })
+    this.init()
   },
   mounted() {
     // this.permission_routes=  sessionStorage.getItem('sessionRoles')
@@ -122,7 +133,7 @@ export default {
 
   },
   computed: {
-    ...mapGetters(['permission_routes', 'sidebar', 'logoutState', 'token']),
+    ...mapGetters(['permission_routes', 'sidebar', 'logoutState', 'token','areaId']),
     logoutAuto() {
       return this.logoutState
     },
@@ -173,6 +184,11 @@ export default {
         title: '提示',
         duration: 1000,
       });
+    },
+    choosedArea(newV,old){
+      this.$store.dispatch('global/setAreaId',newV)
+      console.log('区域切换了',newV,this.areaId)
+
     }
   },
   methods: {
@@ -189,6 +205,22 @@ export default {
       }
       this.currentManue = item;
       this.currentManue.currentPath = this.$route.path;
+    },
+    init() {
+
+      getExistCarrierAreaList().then((res) => {
+        console.log('区域',res)
+        let accessTypeArr = res.data
+        this.choosedArea = accessTypeArr[1].id
+        for (let i = 0, len = accessTypeArr.length; i < len; i++) {
+          let optionObj = {
+            value: accessTypeArr[i].id,
+            label: accessTypeArr[i].areaName,
+          };
+          this.options.push(optionObj);
+        }
+      })
+      this.choosedArea = this.areaId
     },
     async logout() {
       loginOut().then((res) => {
@@ -258,13 +290,7 @@ export default {
     align-items: center;
 
     .changeRoad {
-      font-size: 1.25rem;
-      display: flex;
-      color: #fff;
-
-      span {
-        margin: 0 1rem;
-      }
+      margin-left: 2rem;
     }
 
     .nav {
@@ -365,6 +391,14 @@ export default {
 
 }
 
+::v-deep .el-select .el-input .el-select__caret {
+  line-height: 24px;
+}
+
+::v-deep .el-input__inner {
+  color: #fff;
+}
+
 >>>.warnes {
   position: fixed;
   bottom: 6.25rem;
@@ -386,4 +420,6 @@ export default {
     right: 1.25rem;
     // top: 1.875rem;
   }
-}</style>
+
+}
+</style>

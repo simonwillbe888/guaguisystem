@@ -36,7 +36,7 @@
           </el-table-column>
           <el-table-column prop="plantypeName" label="计划类型" align="center">
           </el-table-column>
-          <el-table-column prop="executeTypeName" label="执行方式" align="center">
+          <el-table-column prop="MapDisplayName" label="隧道名称" align="center">
           </el-table-column>
           <el-table-column prop="CarrierName" label="机器人名称" align="center">
           </el-table-column>
@@ -507,6 +507,11 @@ export default {
     await this.initTaskList();
     await this.initPlanList();
   },
+  watch:{
+    planTasks(newV,oldV){
+      console.log('巡检计划',newV)
+    }
+  },
   methods: {
     async init() {
       let self = this;
@@ -614,7 +619,7 @@ export default {
       })
         .then((response) => {
           let planArr = response.data || [];
-          //  console.log("查看巡检计划",planArr)
+           console.log("查看巡检计划",planArr)
           if (planArr.length) {
             //表格数据重构
             planArr.forEach((item) => {

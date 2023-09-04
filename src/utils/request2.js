@@ -78,14 +78,14 @@ export function request2 (config){
         //cgw
         // return {}
         //cgw
-        console.log('err' + error); // for debug
+      // for debug
         // Notification({
         //   title: '提示',
         //   message:'机器人未上线',
         //   type: 'error',
         //   duration: 1000,
         // });
-        return Promise.reject(error);
+        return (error);
       }
     );
     return instance(config)

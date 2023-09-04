@@ -249,7 +249,7 @@
           </el-row>
             <el-row :gutter="10">
               <el-col :span="12">
-                <el-form-item label="水平角度(0~360)">
+                <el-form-item label="水平角度(0~360)" prop="yunPAngle">
                 <el-input
                 v-model.number="videoForm.yunPAngle"
                 ></el-input>
@@ -257,7 +257,7 @@
               </el-col>
               <el-col :span="12">
                 <!-- oninput="if(value.length==1){value=value.replace(/[^1-360]/g,'')}else{value=value.replace(/\D/g,'')}" -->
-                <el-form-item label="垂直角度(0~360)">
+                <el-form-item label="垂直角度(-90~90)" prop="yunTAngle">
                 <el-input
                 v-model.number="videoForm.yunTAngle"
               ></el-input>
@@ -273,41 +273,13 @@
               >
                 <el-option
                   v-for="item in patrolLocationList"
-                  :key="item.LocationID"
-                  :label="item.Name"
-                  :value="item.LocationID"
+                  :key="item.locationID"
+                  :label="item.name"
+                  :value="item.locationID"
                 >
                 </el-option>
               </el-select>
             </el-form-item>
-
-            <!-- <el-form-item label="水平参数" prop="pAngle">
-              <el-input v-model="videoForm.pAngle"></el-input>
-            </el-form-item>
-            <el-form-item label="垂直参数" prop="tAngle">
-              <el-input v-model="videoForm.tAngle"></el-input>
-            </el-form-item>
-            <el-form-item label="变倍参数" prop="zAngle">
-              <el-input v-model="videoForm.zAngle"></el-input>
-            </el-form-item>
-            <el-form-item label="云台P参数" prop="p">
-              <el-input v-model="videoForm.p"></el-input>
-            </el-form-item>
-            <el-form-item label="水平转速" prop="pSpeed">
-              <el-input v-model="videoForm.pSpeed"></el-input>
-            </el-form-item>
-            <el-form-item label="云台T参数" prop="t">
-              <el-input v-model="videoForm.t"></el-input>
-            </el-form-item>
-            <el-form-item label="垂直转速" prop="tSpeed">
-              <el-input v-model="videoForm.tSpeed"></el-input>
-            </el-form-item>
-            <el-form-item label="云台Z参数" prop="z">
-              <el-input v-model="videoForm.z"></el-input>
-            </el-form-item>
-            <el-form-item label="变倍转速" prop="zSpeed">
-              <el-input v-model="videoForm.zSpeed"></el-input>
-            </el-form-item> -->
           </el-form>
         </div>
       </div>
@@ -336,12 +308,7 @@
             :model="photoForm"
             :rules="photoRules"
           >
-            <!-- <el-form-item label="模式" prop="mode">
-              <el-radio-group v-model="photoForm.mode">
-                <el-radio :label="1">串行</el-radio>
-                <el-radio :label="0">并行</el-radio>
-              </el-radio-group>
-            </el-form-item> -->
+
             <el-row :gutter="10">
              <el-col :span="12">
               <el-form-item label="拍照数量" prop="count">
@@ -363,16 +330,15 @@
 
 
              <el-row :gutter="10">
-              <!-- oninput="if(value.length==1){value=value.replace(/[^1-36000]/g,'')}else{value=value.replace(/\D/g,'')}" -->
               <el-col :span="12">
-                <el-form-item label="水平角度(0~360)">
+                <el-form-item label="水平角度(0~360)" prop="yunPAngle">
                 <el-input
                 v-model.number="photoForm.yunPAngle"
                 ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="垂直角度(0~360)">
+                <el-form-item label="垂直角度(-90~90)" prop="yunTAngle">
                 <el-input
                 v-model.number="photoForm.yunTAngle"
               ></el-input>
@@ -397,24 +363,16 @@
               >
                 <el-option
                   v-for="item in patrolLocationList"
-                  :key="item.LocationID"
-                  :label="item.Name"
-                  :value="item.LocationID"
+                  :key="item.locationID"
+                  :label="item.name"
+                  :value="item.locationID"
                 >
                 </el-option>
               </el-select>
             </el-form-item>
             </el-col>
              </el-row>
-            <!-- <el-form-item label="云台P参数" prop="p">
-              <el-input v-model="photoForm.p"></el-input>
-            </el-form-item>
-            <el-form-item label="云台T参数" prop="t">
-              <el-input v-model="photoForm.t"></el-input>
-            </el-form-item>
-            <el-form-item label="云台Z参数" prop="z">
-              <el-input v-model="photoForm.z"></el-input>
-            </el-form-item> -->
+
           </el-form>
         </div>
       </div>
@@ -450,14 +408,7 @@
               oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
               v-model.number="moveForm.sequence" style="width:13vw"
             ></el-input>
-            <!-- <el-input-number
-              style="width:200px"
-              size="mini"
-              :min="1"
-              :step="1"
-              step-strictly
-              v-model.number="moveForm.sequence"
-            ></el-input-number> -->
+
           </el-form-item>
           <el-form-item
             label="导航点"
@@ -494,9 +445,9 @@
             >
               <el-option
                 v-for="item in patrolLocationList"
-                :key="item.LocationID"
-                :label="item.Name"
-                :value="item.LocationID"
+                :key="item.locationID"
+                :label="item.name"
+                :value="item.locationID"
               >
               </el-option>
             </el-select>
@@ -531,38 +482,20 @@
           :model="infraForm"
           :rules="infraRules"
         >
-          <!-- <el-form-item label="模式" prop="mode">
-            <el-radio-group v-model="infraForm.mode">
-              <el-radio :label="1">串行</el-radio>
-              <el-radio :label="0">并行</el-radio>
-            </el-radio-group>
-          </el-form-item> -->
+
           <el-form-item label="时长(秒)" prop="duration">
             <el-input
               oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
               v-model.number="infraForm.duration"
             ></el-input>
           </el-form-item>
-          <!-- <el-form-item label="预置点" prop="presetNo">
-            <el-input
-              disabled
-              oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
-              v-model.number="infraForm.presetNo"
-            ></el-input>
-          </el-form-item> -->
+
           <el-form-item label="顺序" prop="sequence">
             <el-input
               oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
               v-model.number="infraForm.sequence"
             ></el-input>
-            <!-- <el-input-number
-              style="width:200px"
-              size="mini"
-              :min="1"
-              :step="1"
-              step-strictly
-              v-model.number="infraForm.sequence"
-            ></el-input-number> -->
+
           </el-form-item>
           <el-form-item label="巡检点" prop="locationID">
             <el-select
@@ -572,9 +505,9 @@
             >
               <el-option
                 v-for="item in patrolLocationList"
-                :key="item.LocationID"
-                :label="item.Name"
-                :value="item.LocationID"
+                :key="item.locationID"
+                :label="item.name"
+                :value="item.locationID"
               >
               </el-option>
             </el-select>
@@ -600,12 +533,7 @@
           :model="broadcast"
           :rules="fireRules"
         >
-          <!-- <el-form-item label="模式" prop="sequence">
-            <el-radio-group v-model="fireForm.mode">
-              <el-radio :label="1">串行</el-radio>
-              <el-radio :label="0">并行</el-radio>
-            </el-radio-group>
-          </el-form-item> -->
+
         <el-row :gutter="10">
            <el-col :span="12">
             <el-form-item label="播报内容" prop="readText">
@@ -617,9 +545,7 @@
            </el-col>
            <el-col :span="12">
             <el-form-item label="播报音量(0~100)" prop="volume">
-            <!-- oninput="if(value.length==1){value=value.replace(/[^0-100]/g,'')}else{value=value.replace(/\D/g,'')}" -->
             <el-input
-
               v-model.number="broadcast.volume"
             ></el-input>
           </el-form-item>
@@ -664,9 +590,9 @@
             >
               <el-option
                 v-for="item in patrolLocationList"
-                :key="item.LocationID"
-                :label="item.Name"
-                :value="item.LocationID"
+                :key="item.locationID"
+                :label="item.name"
+                :value="item.locationID"
               >
               </el-option>
             </el-select>
@@ -695,6 +621,7 @@ import {
   getAllPatrolTemplate,
   UpdatePatrolTemplates,
 } from '@/api/taskConfig';
+import { getPatrolPointListByAreaId} from '@/api/map.js'
 import { getMapData } from '@/api/map.js';
 
 export default {
@@ -743,6 +670,14 @@ export default {
             message: '请输入顺序',
             trigger: 'change',
           },
+        ],
+        yunPAngle:[
+          
+        { validator: this.validateYunPAngle, trigger: 'blur' }
+        ],
+        yunTAngle:[
+        { validator: this.validateYunTAngle, trigger: 'blur' }
+
         ],
         presetNo: [
           {
@@ -793,6 +728,13 @@ export default {
             message: '请输入顺序',
             trigger: 'change',
           },
+        ],
+        yunPAngle:[
+        { validator: this.validateYunPAngle, trigger: 'blur' }
+        ],
+        yunTAngle:[
+        { validator: this.validateYunTAngle, trigger: 'blur' }
+
         ],
         presetNo: [
           {
@@ -919,6 +861,8 @@ export default {
             message: '请输入播报速度',
             trigger: 'change',
           },
+          { validator: this.validateRate, trigger: 'blur' },
+
         ],
         count: [
           {
@@ -940,6 +884,8 @@ export default {
             message: '请输入播报音量',
             trigger: 'change',
           },
+          { validator: this.validateVolume, trigger: 'blur' },
+
         ],
         locationID: [
           {
@@ -954,6 +900,9 @@ export default {
       patrolLocationList: [],
       sonTemplateDialogTitle: '',
     };
+  },
+  computed:{
+
   },
   mounted() {
     this.getAllTemplate();
@@ -990,7 +939,6 @@ export default {
       let self = this;
       self.actionsList = [];
       self.pointOptions = [];
-
       getMapData()
         .then((response) => {
           let jsonData = response.data;
@@ -1042,10 +990,15 @@ export default {
     taskType(val) {},
     async getAllPatrolLocationList() {
       // try {
-      const res = await getAllPatrolLocation();
+      const res = await getPatrolPointListByAreaId(this.$route.query.areaId);
+      console.log('当前区域的巡检点',res)
       if (res.code === 20000) {
-        this.patrolLocationList = res.data || [];
+        res.data.forEach((element)=>{
+          this.patrolLocationList.push(element)
+        })
+        // this.patrolLocationList = res.data || [];
       }
+      
       // } catch (error) {}
     },
     async getAllTemplate() {
@@ -1054,7 +1007,6 @@ export default {
       const res = await getAllPatrolTemplate();
       if (res.code === 20000) {
         let arr = res.data;
-        console.log("查看巡检流程列表",arr)
         if (arr && arr.length) {
           // this.templateList = arr.filter((item) => item.id != id) || [];
           arr.forEach(i => {
@@ -1073,8 +1025,8 @@ export default {
         id,
       });
       if (res.code === 20000) {
-        console.log("查看子模版",res.data)
         this.actionsList = res.data || [];
+        console.log('查看已添加的',this.actionsList)
       }
       // } catch (error) {}
     },
@@ -1477,8 +1429,10 @@ export default {
         list: arr,
         taskTemplateID: id,
       };
+      console.log('保存的参数',this.$route.query)
       const res = await UpdatePatrolTemplates(obj);
       if (res.code === 20000) {
+        console.log('保存参数',obj)
         this.$notify({
           message: '保存成功',
           type: 'success',
@@ -1491,14 +1445,50 @@ export default {
       // } catch (error) {}
     },
     showInfo(val) {
-      if (!val || !this.patrolLocationList.length) return;
+      if (!val || !this.patrolLocationList.length){
+        return;
+      } 
       let txt = '';
       this.patrolLocationList.forEach((item) => {
-        if (item.LocationID == val) {
-          txt = item.Name;
+        if (item.locationID == val) {
+          txt = item.mapDisplayName;
         }
       });
-      return txt;
+      return  txt;
+    },
+    //校验规则
+    validateVolume(rule, value, callback) {
+      const volume = Number(value);
+      if (isNaN(volume) || volume < 0 || volume > 100) {
+        callback(new Error('音量范围为0~100'));
+      } else {
+        callback();
+      }
+    },
+    validateRate(rule, value, callback) {
+      const volume = Number(value);
+      if (isNaN(volume) || volume < -10 || volume > 10) {
+        callback(new Error('音量范围为-10~10'));
+      } else {
+        callback();
+      }
+    },
+    
+    validateYunPAngle(rule, value, callback) {
+      const volume = Number(value);
+      if (isNaN(volume) || volume < 0 || volume > 360) {
+        callback(new Error('音量范围为0~360'));
+      } else {
+        callback();
+      }
+    },
+    validateYunTAngle(rule, value, callback) {
+      const volume = Number(value);
+      if (isNaN(volume) || volume < -90 || volume > 90) {
+        callback(new Error('音量范围为-90~90'));
+      } else {
+        callback();
+      }
     },
   },
 };

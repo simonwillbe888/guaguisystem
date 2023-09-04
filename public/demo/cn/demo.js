@@ -212,11 +212,11 @@ function changeWndNum(iType) {
 }
 
 // 登录
-function clickLogin() {
-    var szIP = '192.168.20.64',
+function clickLogin(e) {
+    var szIP = e.Ip,
     szPort = '80',
-    szUsername = 'admin',
-    szPassword = 'Jiaqi2022';
+    szUsername = e.Username,
+    szPassword = e.Password;
     // szIP = $("#loginip").val(),
         // szPort = $("#port").val(),
         // szUsername = $("#username").val(),
@@ -231,7 +231,7 @@ function clickLogin() {
     WebVideoCtrl.I_Login(szIP, 1, szPort, szUsername, szPassword, {
         timeout: 3000,
         success: function (xmlDoc) {            
-
+               console.log(xmlDoc,'登录成功！',e)
             showOPInfo(szDeviceIdentify + " 登录成功！");
             $("#ip").prepend("<option value='" + szDeviceIdentify + "'>" + szDeviceIdentify + "</option>");
             setTimeout(function () {
@@ -243,6 +243,8 @@ function clickLogin() {
             }, 10);
         },
         error: function (oError) {
+            console.log(oError,'登录失败！',e)
+
             if (ERROR_CODE_LOGIN_REPEATLOGIN === status) {
                 showOPInfo(szDeviceIdentify + " 已登录过！");
             } else {
@@ -706,7 +708,7 @@ function clickStopRecord(szType, iWndIndex) {
 // 获取对讲通道
 function clickGetAudioInfo() {
     var szDeviceIdentify = $("#ip").val();
-    console.log('对讲通道',szDeviceIdentify) 
+    console.log('对讲通道',szDeviceIdentify, $("#ip")) 
 
     if (null == szDeviceIdentify) {
         alert('请先打开HCWebSDKPlugin.exe')
@@ -755,7 +757,7 @@ function clickStartVoiceTalk() {
         showOPInfo(szDeviceIdentify + " " + szInfo);
     }, (oError) => {
         var szInfo = " 开始对讲失败！";
-        console.log('对讲失败')     
+        console.log('对讲失败',szDeviceIdentify + szInfo)     
         
         alert('请先打开HCWebSDKPlugin.exe')
         const data = '123'

@@ -23,6 +23,10 @@ export default {
     carID: Number,
     required: true,
     intercomControl: false,
+    hkPlugin:{
+      type:Object,
+      required:true
+    }
   },
   data() {
     return {
@@ -66,8 +70,8 @@ export default {
       let iframe = document.getElementById('startTalk')
       iframe.onload = () => {
         setTimeout(() => {
-          iframe.contentWindow.clickLogin()
-
+          iframe.contentWindow.clickLogin(this.hkPlugin)
+          console.log('看看hkplugin',this.hkPlugin)
           iframe.contentWindow.getChannelInfo()
           iframe.contentWindow.getDevicePort()
         }, 1000)
@@ -79,7 +83,7 @@ export default {
      */
     begin() {
 
-      // console.log('查看id', typeof this.carID, this.carID)
+      console.log('查看id', typeof this.carID, this.carID)
 
        this.openSpeak().then((res)=>{
 

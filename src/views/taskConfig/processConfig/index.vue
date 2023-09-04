@@ -154,11 +154,24 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="地图显示名称" prop="mapName">
-            <el-input
+            <!-- <el-input
               placeholder="请输入地图名称"
               class="process-input"
               v-model="taskForm.mapName"
-            ></el-input>
+            ></el-input> -->
+            <el-select
+              v-model="taskForm.mapName"
+              placeholder="请选择区域"
+              clearable
+            >
+              <el-option
+                v-for="item in bigAreaOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
           </el-form-item>
           <el-form-item class="common-form-footer">
             <el-button
@@ -230,7 +243,7 @@ import {
   deletePatrolTemplate,
   updatePatrolTemplate,
 } from '@/api/taskConfig';
-
+import {getArea} from '@/api/areaConfig.js'
 const inspectOptions = [];
 export default {
   data() {
@@ -276,9 +289,9 @@ export default {
         // inspectedTask: [
         //   { required: true, message: '请输入巡检任务名称', trigger: 'change' },
         // ],
-        // inspectedPoint: [
-        //   { required: true, message: '请输入巡检点名称', trigger: 'change' },
-        // ],
+        mapName: [
+          { required: true, message: '请选择地图显示名称', trigger: 'change' },
+        ],
       },
       currentRobot: '',
       currentInspectPoint: '',
@@ -290,6 +303,7 @@ export default {
       currentRow: null,
       hasCheckedWHLeftData: [],
       ID: 0,
+      bigAreaOptions:[]
     };
   },
   mounted() {
@@ -301,7 +315,6 @@ export default {
       self.processTaskArr = [];
       getAllPatrolTemplate()
         .then((response) => {
-          // console.log("查看巡检计划",response.data)
           let processArr = response.data;
           if (processArr.length) {
             for (let i = 0, len = processArr.length; i < len; i++) {
@@ -310,6 +323,7 @@ export default {
                 process_name: processArr[i].taskName,
                 map_name: processArr[i].mapDisplayName,
                 createTime: processArr[i].createTime,
+                areaId:processArr[i].areaId
               };
               self.processTaskArr.push(inspectObj);
             }
@@ -351,6 +365,19 @@ export default {
             duration: 1000,
           });
         });
+        //获取巡检区域
+        getArea()
+        .then((response) => {
+          let accessTypeArr = response.data;
+          for (let i = 0; i < accessTypeArr.length; i++) {
+            let optionObj = {
+              value: accessTypeArr[i].id,
+              label: accessTypeArr[i].areaName,
+            };
+            self.bigAreaOptions.push(optionObj);
+          }
+        })
+
     },
     handleChange(value, direction, movedKeys) {
       // console.log(value, direction, movedKeys);
@@ -384,9 +411,11 @@ export default {
           let param = {
             taskName: taskData.processName,
             mapDisplayName: taskData.mapName,
+            areaId:taskData.mapName
           };
           addPatrolTemplate(param)
             .then((response) => {
+              console.log('新增参数',param)
               if (response.code === 20000) {
                 this.$notify({
                   type: 'success',
@@ -422,6 +451,8 @@ export default {
             id: self.ID,
             taskName: taskData.processName,
             mapDisplayName: taskData.mapName,
+            areaId:taskData.mapName
+
           };
           updatePatrolTemplate(param)
             .then((response) => {
@@ -493,9 +524,10 @@ export default {
       }
     },
     configInspectPoint(item) {
+      console.log('配置流程详情',item)
       this.$router.push({
         name: 'action_actionManage_label',
-        query: { id: item.process_id, title: item.process_name },
+        query: { id: item.process_id, title: item.process_name,areaId:item.areaId,mapName:item.map_name },
       });
       // let arr = [];
       // this.inspectPoints = item;
@@ -740,9 +772,6 @@ export default {
 ::v-deep .el-table::before{
      height: 0 !important;
    }
->>> .el-dialog {
-
-}
 
 .dialog-sty {
   >>> .el-dialog {
@@ -789,7 +818,7 @@ export default {
 }
 
 .process-input {
-  width: 200px;
+  width: 12.5rem;
 }
 
 >>> .el-table th,
@@ -849,6 +878,7 @@ export default {
 }
 ::v-deep  .el-input__inner
  {
+  width: 12.5rem;
   height: 1.875rem;
   background-color: transparent;
   color: #fff;

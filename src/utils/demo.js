@@ -212,7 +212,8 @@ function changeWndNum(iType) {
 }
 
 // 登录
-function clickLogin() {
+function clickLogin(e) {
+    console.log('看参数')
     var szIP = '192.168.20.64',
     szPort = '80',
     szUsername = 'admin',
@@ -709,7 +710,7 @@ function clickGetAudioInfo() {
     console.log('对讲通道',szDeviceIdentify) 
 
     if (null == szDeviceIdentify) {
-        alert('请先打开HCWebSDKPlugin.exe')
+        // alert('请先打开HCWebSDKPlugin.exe')
         const data = '123'
         window.functionForJs(data)
         return;
@@ -757,7 +758,7 @@ function clickStartVoiceTalk() {
         var szInfo = " 开始对讲失败！";
         console.log('对讲失败')     
         
-        alert('请先打开HCWebSDKPlugin.exe')
+        // alert('请先打开HCWebSDKPlugin.exe')
         const data = '123'
         window.functionForJs(data)
         showOPInfo(szDeviceIdentify + szInfo, oError.errorCode, oError.errorMsg);

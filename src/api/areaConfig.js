@@ -24,6 +24,14 @@ export function getAddArea(data) {
     data,
   });
 }
+//有机器人的区域列表
+export function getExistCarrierAreaList(){
+  return request({
+    url:'/api/Area/getExistCarrierAreaList',
+    method:"GET",
+    data:{}
+  })
+}
 // 获取地图数据待命点
 export function GetMapData(){
   return request({

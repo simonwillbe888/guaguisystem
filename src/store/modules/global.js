@@ -13,6 +13,7 @@ const state = {
   clostSpeak:false,
   closeWarnL:false,
   dealwithAlarm:false,
+  areaId:0,
 };
 
 const mutations = {
@@ -57,6 +58,9 @@ const mutations = {
   },
   set_DealwithAlarm:()=>{
     state.dealwithAlarm = !state.dealwithAlarm
+  },
+  set_areaId:(state,data)=>{
+    state.areaId = data
   }
 
 };
@@ -100,6 +104,9 @@ const actions = {
   },
   setDeaiwithAlarm({commit},data){
     commit('set_DealwithAlarm',data)
+  },
+  setAreaId({commit},data){
+    commit('set_areaId',data)
   }
 };
 

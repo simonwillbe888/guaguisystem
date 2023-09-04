@@ -77,7 +77,7 @@ service.interceptors.response.use(
     //cgw
     // console.log('服务器连接失败' + error); // for debug
     // store.dispatch('global/setlogoutState',++disconnect).then(()=>{
-    //   console.log('失败原因')
+      console.log('失败原因')
     // })
     // Notification({
     //   title: '提示',
@@ -86,7 +86,7 @@ service.interceptors.response.use(
     //   type: 'error',
     //   // duration: 5 * 1000,
     // });
-    return error;
+    return 'timeout';
   }
 );
 

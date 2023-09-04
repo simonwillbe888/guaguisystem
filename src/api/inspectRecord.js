@@ -156,6 +156,12 @@ export function getRealPatrolTaskList() {
     method: 'get',
   });
 }
+export function GetRealPatrolTaskByCarrierId(id) {
+  return request({
+    url: '/api/PatrolTask/GetRealPatrolTaskByCarrierId?carrierId='+ id,
+    method: 'get',
+  });
+}
 //取消任务
 export function cancelPatrolTask(data) {
   return request({

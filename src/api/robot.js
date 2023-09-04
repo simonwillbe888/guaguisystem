@@ -108,6 +108,14 @@ export function getIndexCar(){
     data:{}
   })
 }
+export function getCarrierListByAreaId(id){
+  return request ({
+    url: '/api/CarrierSet/getCarrierListByAreaId?areaId=' + id,
+    method: 'get',
+    data:{}
+  })
+}
+
 
 export function addCarrier(data) {
   return request({
