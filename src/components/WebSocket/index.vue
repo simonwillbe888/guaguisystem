@@ -258,12 +258,12 @@ export default {
         }
         else if (data.code == 12) {
           this.$store.dispatch('global/setcloseBroadcast', data.data)
-          this.$notify({
-            message: '关闭语音播放',
-            type: 'success',
-            title: '提示',
-            duration: 0,
-          });
+          // this.$notify({
+          //   message: '关闭语音播放',
+          //   type: 'success',
+          //   title: '提示',
+          //   duration: 0,
+          // });
         }
         else if (data.code == 13) {
           this.$store.dispatch('global/setCloseSpeak', data.data)

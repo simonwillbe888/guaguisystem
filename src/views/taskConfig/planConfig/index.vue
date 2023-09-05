@@ -144,7 +144,7 @@
                     </span>
                   </el-dropdown-item>
                   <el-dropdown-item>
-                    <span v-if="row.PlanType === 3" @click="stopTask(row)">
+                    <span   @click="stopTask(row)">
                       终止
                     </span>
                   </el-dropdown-item>

@@ -697,7 +697,6 @@ export default {
       }
     },
     standby() {
-      console.log('触发了')
       if (this.robotOpen == 1) {
         this.logoutCar()
       }
@@ -726,7 +725,6 @@ export default {
     },
     //左右切换机器时的改变
     carrierIndex() {
-      console.log('状态改变')
       if (this.robotOpen == 1) {
         this.logoutCar()
       }
@@ -786,7 +784,6 @@ export default {
           this.currentAdvices.push(res)
         })
         // console.log('查看选中机器人', this.carrierSelected)
-        
         this.getAreaName()
         this.carID = this.carrierSelected.CarrierID
         this.carrierName = this.carrierSelected.CarrierName
@@ -794,7 +791,6 @@ export default {
         const iframe = document.getElementById('iframes0');
         iframe.onload = () => {
           iframe.contentDocument.onclick = (e) => {
-            // console.log("查看摄像机信息", this.currentAdvices[0].src)
             this.currentCamera = this.currentAdvices[0]
           };
         };
@@ -805,7 +801,6 @@ export default {
           let timer
           let that = this
           infrared.contentDocument.onmousemove = (e) => {
-            // console.log("查看红外信息", this.carrierSelected.CarrierAccessoryList[0].AccessoryID)
             clientX = parseFloat(e.clientX).toFixed(1)
             clientY = parseFloat(e.clientY).toFixed(1)
           }
@@ -819,7 +814,6 @@ export default {
                 y: parseInt(512 / e.target.clientHeight * clientY),
               }
               getTemperature(param).then((res) => {
-                // console.log('调用接口参数', param, res)
                 if (res.code == 20000) {
                   this.tempicture = res.data + '℃'
                 }
@@ -974,7 +968,6 @@ export default {
         limit: 1000000,
         status: ""
       });
-      // console.log('实时告警', res)
       if (res.code === 20000) {
         if (res.data) {
           res.data.records.forEach(element => {
@@ -1019,7 +1012,6 @@ export default {
           if (res.data.mileage > 2000 && Math.abs(this.carList.realTimeSpeed) > 100) {
             this.finishTime = parseFloat(((res.data.mileage / (Math.abs(this.carList.realTimeSpeed) * 60))).toFixed(1)) + time
             this.finishTime = this.finishTime.toFixed(1)
-            console.log(this.finishTime)
             if (res.data.mileage = 0) {
               this.finishTime = 0
             }
@@ -1044,7 +1036,6 @@ export default {
         planType: 2,
       }).then((res) => {
         res.data.forEach(element => {
-          console.log('巡检计划', element)
           if (element.IsEnable != 2 && element.CarrierID == this.carID) {
             this.taskList.push({
               label: element.PlanName,
@@ -1053,8 +1044,7 @@ export default {
           } else {
           }
         });
-        console.log('特殊巡检计划',this.taskList)
-        this.loading = false
+                this.loading = false
 
       })
     },
@@ -1071,7 +1061,6 @@ export default {
           text: this.selectedOption
         }
         startVoiceBroadcast(params).then((res) => {
-          console.log('语音播报', res, params)
           if (res.code == 20000) {
             this.broadcasting = true
           } else {
@@ -1143,7 +1132,6 @@ export default {
           speedMode: 2
         }
         moveToPatrolPoint(param).then((res) => {
-          console.log(param,res,'巡检应急')
           if (res.code === 20000) {
             Notification({
               title: '提示',
@@ -1174,7 +1162,7 @@ export default {
           this.currentAdvices[0].accessoryID = camera.AccessoryID
         this.currentAdvices[0].accessoryType = camera.AccessoryType
         this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
-       console.log('查看参数',this.carrierSelected.CarrierAccessoryList[0])
+      //  console.log('查看云台参数',this.carrierSelected.CarrierAccessoryList[0])
       if (!this.YTlogin) {
         let param = {
           carrierID: this.carID,
@@ -1184,17 +1172,11 @@ export default {
 
         }
         login(param).then((res) => {
-          console.log("连接云台请求响应", param,res)
           if (res.code == '20000') {
             this.YTlogin = true
           }
           else {
-            // this.$notify({
-            //   message: res.data,
-            //   type: 'warning',
-            //   title: '提示',
-            //   duration: 5000,
-            // });
+
             this.YTlogin = false
 
           }
@@ -1207,17 +1189,11 @@ export default {
     },
     HKlogout() {
       if(this.videoOn){
-        console.log('关闭录像')
-        endRecord(this.currentAdvices[0].accessoryID).then((res) => {
-          console.log('关闭录像',res)
-              this.videoOn = false
-            })
+         this.setCameraOperate(23)
       }
       if (this.YTlogin == true) {
-        // console.log("执行关闭云台")
         setTimeout(()=>{
           logOut(this.currentAdvices[0].accessoryID).then((res) => {
-          console.log('关闭云台', res)
           this.YTlogin = false
 
         })
@@ -1359,7 +1335,6 @@ export default {
         const informOpen = await informOpenRobot(this.carrierSelected.CarrierID)
         if (informOpen.code == 20000) {
           connectCar(this.robotOpen, time).then((res) => {
-            console.log("开关状态", res)
             if (res.code == 20000) {
               Notification({
                 title: '提示',
@@ -1385,7 +1360,6 @@ export default {
           this.robotOpen = 2
         }
       } else if (this.robotOpen == 2) {
-        console.log('关闭切换')
         this.logoutCar()
       }
 
@@ -1396,35 +1370,20 @@ export default {
       if (this.warnLightOpen == 0) {
         //警示灯closed
         startWarningLight(this.carID).then((res) => {
-          console.log('打开警示灯',res)
           if (res.code != 20000) {
             this.warnLightOpen = 0
-            Notification({
-              title: '提示',
-              message: res.data,
-              type: 'error',
-              duration: 5000
-            });
           }
           else { this.warnLightOpen = 1 }
         })
       } else if (this.warnLightOpen == 1) {
         //警示灯ing
         stopWarningLight(this.carID).then((res) => {
-          console.log('关闭警示灯',res)
           if (res.code != 20000) {
             this.warnLightOpen = 1
-            Notification({
-              title: '提示',
-              message: res.data,
-              type: 'error',
-              duration: 5000
-            });
           }
           else {
             this.warnLightOpen = 0
-          }
-          
+          }          
         })
 
       }
@@ -1438,7 +1397,6 @@ export default {
     stopWarn() {
       if (this.warnLightOpen == 1) {
         stopWarningLight(this.carID).then((res) => {
-          console.log('调用关闭警示灯',res)
           if (res.code == 20000) {
             this.warnLightOpen = 0
 
@@ -1448,9 +1406,7 @@ export default {
     },
     logoutCar() {
       const time = this.getNowtime()
-      console.log('关闭遥控', this.carrierSelectedIp, time)
       connectCar(2, time).then((res) => {
-        console.log('关闭遥控', res)
         if (res.code == 20000) {
           informCloseRobot(this.carrierSelected.CarrierID)
           this.robotOpen = 2
@@ -1473,20 +1429,14 @@ export default {
       } else {
         if (flag == 1) {
           this.moveSet = setTimeout(() => {
-            // console.log('前进')
-
             moveCar(flag, 1000, 1000000, time).then((res) => {
-              // console.log('前进', time, res)
             })
           }, 1000)
 
         }
         else if (flag == 2) {
           this.moveSet = setTimeout(() => {
-            // console.log('后退')
-
             moveCar(flag, 1000, 1000000, time).then((res) => {
-              // console.log('后退', time, res)
             })
 
           }, 1000)
@@ -1494,10 +1444,8 @@ export default {
         else if (flag == 3) {
           clearTimeout(this.moveSet)
           setTimeout(() => {
-            // console.log('暂停')
             const time = this.getNowtime()
             stopCar(time).then((res) => {
-              // console.log('暂停', res)
             })
           }, 300)
         }
@@ -1543,10 +1491,8 @@ export default {
       }
     },
     async setCameraOperate(val) {
-      // console.log( this.speed)
       this.camState = val
       if (this.YTlogin == false) {
-        // console.log('点击了')
         Notification({
           title: '提示',
           message: '请先登录设备',
@@ -1582,7 +1528,6 @@ export default {
 
           case 12:
             StartLight(this.speed, this.currentAdvices[0].accessoryID).then((res) => {
-              console.log('开灯', res)
               if (res.code == 20000) {
                 this.lightOn = true
               }
