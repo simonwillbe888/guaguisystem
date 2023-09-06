@@ -2,14 +2,14 @@
   <div>
     <div class="licenseSetting">
       <div
-        style="text-align: center;color: white;margin: 10px auto;height:400px;width:500px;background-color: rgb(3, 27, 49)">
+        style="text-align: center;color: white;margin: 10px auto;height:450px;width:500px;background-color: rgb(3, 27, 49)">
         <el-result :icon="result.icon" :title="result.title" :subTitle="result.subTitle">
         </el-result>
         <div style="">
           <h3 v-if="extra.active && extra.period != -1" style="margin:0 auto 40px">
             授权将在 <a style='color: red'>{{ extra.expire }}天</a> 后到期
           </h3>
-          <div v-if="!extra.active" style="margin:0 auto 20px;width: 380px;word-wrap: break-word;">
+          <div style="margin:0 auto 20px;width: 380px;word-wrap: break-word;">
             <a @click="copySerialNo()">
               <h3 style="margin-top: 0">{{ extra.serialNo }}</h3>
             </a>
@@ -78,9 +78,11 @@ export default {
           this.updateRouteRoles(userRoles);
           if (res.data.period == -1) {
             this.result.subTitle = ""
+            this.extra.serialNo = ""
           } else {
             this.result.subTitle = "许可证有效期为" + res.data.period + "天"
             this.extra.expire = res.data.expire
+            this.extra.serialNo = res.data.serialNo
           }
           if (notify) {
             this.$notify({
@@ -119,7 +121,7 @@ export default {
     },
 
     uploadHandle(){
-      if(this.fileList == null){
+      if(this.fileList.length < 1){
         this.licenseChecker()
       }else {
         this.$refs.uploadLicense.submit()

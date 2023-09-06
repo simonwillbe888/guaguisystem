@@ -1,0 +1,42 @@
+<html>
+	<head>
+		<script src="js/webrtcStreamerRecord.js"></script>
+		<script>
+			//     // 接受从vue组件中传过来的参数
+			let url = location.search //这一条语句获取了包括问号开始到参数的最后，不包括前面的路径
+			let params = url.substr(1) //去掉问号
+			let pa = params.split("&")
+			let s = {}
+			let webRtcServer = null
+			for (let i = 0; i < pa.length; i++) {
+				s[pa[i].split("=")[0]] = unescape(pa[i].split("=")[1]);
+			}
+      if(!s.serve){
+          // alert('推流地址不存在！')
+          // this.$message({
+          //     type:'error',
+          //     message:
+          // })
+      }
+			window.onload = function() {
+				// webRtcServer.connect(s.data);
+				webRtcServer = new WebRtcStreamer("video", `http://${s.serve}:8001`);
+				webRtcServer.connect(s.data);
+				console.log("----预览链接----",s.data,s.serve)
+				// console.log("webRtcServer",webRtcServer)
+			}
+
+			window.onbeforeunload = function() {
+        console.log("----链接断开--->",s.data,s.serve)
+				webRtcServer.disconnect()
+        setTimeout(()=>{
+          webRtcServer = null
+        },100)
+
+			}
+		</script>
+	</head>
+	<body style="margin: 0">
+  <video id="video" style="width: 100%;height: 100%;object-fit: fill;" controls autoplay ></video>
+	</body>
+</html>
