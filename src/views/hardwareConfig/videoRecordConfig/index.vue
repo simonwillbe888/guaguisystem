@@ -369,7 +369,14 @@
           </iframe>
 
           <div style="margin: 1rem 0 0 1rem;width: 55%">
-            <el-table :data="fileList" style="width: 100%;" height="25rem" :header-cell-style="headerCellStyle" :cell-style="cellStyle">
+            <el-table
+              :data="fileList"
+              style="width: 100%;"
+              height="25rem"
+              :header-cell-style="headerCellStyle"
+              :cell-style="cellStyle"
+              ref="recordTable"
+            >
               <el-table-column type="index" label="序号" width="60"></el-table-column>
               <el-table-column prop="start" label="开始时间"> </el-table-column>
               <el-table-column prop="stop" label="结束时间"> </el-table-column>
@@ -421,7 +428,6 @@
           @mousewheel="onMouseweel"
           @mouseup="onMouseup(null,true,true)"
           @mouseout="onMouseout"
-          @dblclick="dblclick"
         ></canvas>
       </div>
     </el-dialog>
@@ -582,10 +588,13 @@ export default {
       recordTimerCount: 0,
       recordStart: null,
       recordStop: null,
+      recordTotalTime: null,
       recordReload: true,
+      recordPlayTime: null,
       headerCellStyle: {"text-align":"center"},
       cellStyle: { "text-align":"center" },
       cleanBuff: null,
+      currentTableRow: null,
     };
   },
   mounted() {
@@ -647,7 +656,11 @@ export default {
       findRecordList(nvrData).then((res)=>{
         console.log('res--->',res)
         if(res.code == 20000){
-          this.fileList = [...res.data]
+          if(res.data.length>0){
+            this.fileList = [...res.data]
+          }else {
+            return
+          }
           this.searchResultText = "共检索到 "+res.data.length+ " 个录像文件 "
 
           this.timeSegments = []
@@ -657,9 +670,10 @@ export default {
               endTime: new Date(item.stop).getTime(),
               style: {
                 background: "#7f93a6",
-              },
+              }
             })
           })
+          // console.log('this.timeSegments--->',this.timeSegments)
           if(res.data.length>0){
             this.middleTime = res.data[0].start
             this.currentTime = new Date(this.middleTime).getTime()
@@ -770,12 +784,10 @@ export default {
       })
     },
 
+    //下载录像文件
     downloadRecord(row,index){
-      // this.$notify({
-      //   message: "正在下载录像文件",
-      //   type: 'info',
-      //   title: '提示',
-      // });
+
+      //调用下载接口
       downloadRecordByFile(this.nvrData.id,row.name).then((res)=>{
         console.log('downloadRecordByFile--->',res)
         if (res.data == true){
@@ -802,13 +814,16 @@ export default {
 
                 // this.fileList.forEach((item,index) => {
                 //   if(item.name == res.data.name){
+
+                //更新下载状态
                 this.$set(this.fileList[index],'progress',res.data.progress)
                 this.$set(this.fileList[index],'downloading',true)
+
+                //下载完成标志
                 if(res.data.progress == 101){
                   clearInterval(this.downloading[row.name])
                   this.$set(this.fileList[index],'download',true)
                   this.$set(this.fileList[index],'downloading',false)
-                  this.$forceUpdate()
                 }
                 //   }
                 // })
@@ -819,18 +834,22 @@ export default {
                   type: 'warning',
                   title: '提示',
                 });
+
+                //清除定时器 更新下载文件的状态属性
                 clearInterval(this.downloading[row.name])
                 this.$set(this.fileList[index],'downloading',false)
               }
+              this.$forceUpdate()
             }).catch(()=>{
               clearInterval(this.downloading[row.name])
               this.$set(this.fileList[index],'downloading',false)
+              this.$forceUpdate()
             })
           },1000)
 
         }else {
           this.$notify({
-            message: "加载失败",
+            message: res.data,
             type: 'error',
             title: '提示',
           });
@@ -838,6 +857,7 @@ export default {
       })
     },
 
+    //回看录像文件
     playRecordFile(row){
 
       // console.log("playRecordFile",+row)
@@ -867,15 +887,20 @@ export default {
       // this.$refs.recordVideo.play()
     },
 
+    //调整时间轴指向标
     timingTimeline(time){
+
+      const PX_PER_MS = this.width / (ZOOM[this.currentZoomIndex] * ONE_HOUR_STAMP)
+      this.startTimestamp = new Date(time).getTime() - this.width / 2 / PX_PER_MS
       this.currentTime = new Date(time).getTime()
-      this.startTimestamp = this.currentTime - 15 * 60 * 1000;
+
       this.middleTime = time
       this.onMouseup(null,false,false)
       this.ctx.clearRect(0, 0, this.width, this.height);
       this.draw();
     },
 
+    //录像播放
     playRecord(row,timing){
       this.recordTimerCount = 0
 
@@ -888,24 +913,32 @@ export default {
       }
       this.recordStart = row.start
       this.recordStop = row.stop
+      this.recordTotalTime = (new Date(row.stop) - new Date(row.start))/1000
       let startTime = row.start.replace(/-|:|\.\d+/g, '').replace(' ','T')+'Z'
       let endTime  = row.stop.replace(/-|:|\.\d+/g, '').replace(' ','T')+'Z'
       let channel = '101'
-      let webRtcIP = '192.168.20.23'
+      let webRtcIP = window.location.hostname
+      // console.log('playRecord---webRtcIP',webRtcIP)
+      // if (webRtcIP == 'localhost' || webRtcIP == '127.0.0.1'){
+      //   webRtcIP = '192.168.20.23'
+      // }
       let port = '554'
       this.nvrData.src = `/static/record.html?data=`+encodeURIComponent(`rtsp://${this.nvrData.userName}:${this.nvrData.passWord}@${this.nvrData.ip}:${port}/Streaming/tracks/${channel}?starttime=${startTime}&endtime=${endTime}`)+`&serve=${webRtcIP}`
 
       this.nvrRecordData = Object.assign({},this.nvrData)
-      this.$forceUpdate()
+      // this.$forceUpdate()
       this.reloadIframe()
     },
 
+    //视频开始播放的触发方法
     onVideoLoaded(type){
       console.log('onVideoLoaded type',type)
       if(this.recordTimer){
         clearInterval(this.recordTimer)
       }
       let video = null
+
+      //判断是回看还是预览
       if(type == 'video'){
         video = this.$refs.recordVideo
       }else if (type == 'iframe'){
@@ -915,19 +948,33 @@ export default {
       if(video != null){
         // video.setAttribute("autoplay",true)
         // video.setAttribute("controls",true)
+
+        //视频播放计时器
         this.recordTimer = setInterval(()=>{
           if(!this.nvrRecordVisible){
             clearInterval(this.recordTimer)
           }
           // console.log('newTime',moment(new Date(this.recordStart).getTime()+video.currentTime*1000).format("YYYY-MM-DD HH:mm:ss"))
-          let recordNow = moment(new Date(this.recordStart).getTime()+video.currentTime*1000).format("YYYY-MM-DD HH:mm:ss")
-          if(new Date(recordNow) - new Date(this.recordStop) < 0){
-            this.timingTimeline(recordNow)
+          // console.log('video.currentTime--->',video.currentTime)
+          this.recordPlayTime = moment(new Date(this.recordStart).getTime()+video.currentTime*1000).format("YYYY-MM-DD HH:mm:ss")
+          //当播放时间未超过结束时间持续调整指向标
+          // console.log('this.recordTotalTime--->',this.recordTotalTime)
+          if(new Date(this.recordPlayTime) - new Date(this.recordStop) < 0){
+            this.timingTimeline(this.recordPlayTime)
+
+            //视频播放时长超过视频播放时间就暂停
+          }else if(video.currentTime >= this.recordTotalTime){
+            clearInterval(this.recordTimer)
+            video.pause()
+
+            //其他情况暂停播放
           }else {
             clearInterval(this.recordTimer)
-            // video.pause()
+            video.pause()
           }
           // console.log("recordNow",recordNow)
+
+          // 播放重载定时器 设定一直不播放10秒后自动重载
           if(video.currentTime == 0){
             // console.log('this.recordTimerCount',this.recordTimerCount)
             this.recordTimerCount ++
@@ -943,17 +990,23 @@ export default {
       }
     },
 
+    //重载iframe
     reloadIframe(){
       this.recordReload = false
       this.$forceUpdate()
-      let webRtcIP = '192.168.20.23'
+      let webRtcIP = window.location.hostname
+      // console.log('reloadIframe---webRtcIP',webRtcIP)
+      // if (webRtcIP == 'localhost' || webRtcIP == '127.0.0.1'){
+      //   webRtcIP = '192.168.20.23'
+      // }
       this.getPeerConnectionList(webRtcIP)
       setTimeout(()=>{
         this.recordReload = true
         this.$forceUpdate()
-      },1000)
+      },100)
     },
 
+    //获取webrtcstreamer中正在播放的连接
     getPeerConnectionList(srvurl){
       fetch('http://'+srvurl+ ':8001'+'/api/getPeerConnectionList')
         .then((response) => response.json())
@@ -963,6 +1016,7 @@ export default {
             response.forEach((item,index) => {
               // console.log(Object.keys(item)[0])
               let peer = Object.keys(item)[0]
+              //踢掉所有播放连接
               fetch('http://'+srvurl + ':8001'+'/api/hangup?peerid=' + peer)
                 .then((res)=>{
                   console.log('断连hangup '+peer,res)
@@ -975,6 +1029,7 @@ export default {
           console.log('获取所有链接失败 ',e)});
     },
 
+    //关闭弹窗时候关闭定时器
     closeRecordDialog(){
       console.log('closeRecordDialog')
       if(this.recordTimer){
@@ -1127,13 +1182,6 @@ export default {
       }
     },
 
-
-    dblclick(e){
-      console.log('dblclick')
-      this.onMousedown(e)
-      this.onMouseup(null,true,true)
-    },
-
     //鼠标按下的操作
     onMousedown(e) {
       let { left } = this.$refs.canvas.getBoundingClientRect()
@@ -1194,10 +1242,29 @@ export default {
         this.width / (ZOOM[this.currentZoomIndex] * ONE_HOUR_STAMP); // px/ms
       // 计算中间位置刻度的时间位置的时间
       this.currentTime = this.startTimestamp + x / PX_PER_MS;
+
+      //判断指向标落在哪个区间段的录像 并进行播放
+      let ctime = this.currentTime
+      let closestTime
+
+      this.timeSegments.find((item,index)=>{
+        if(ctime >= item.beginTime && ctime <= item.endTime){
+          this.$set(this.timeSegments[index],'style',{background: "#e0bd63"})
+          //高亮当前选中行未实现
+          // this.$nextTick(()=>{
+          //   this.$refs.recordTable.setCurrentRow(index)
+          // })
+          closestTime = item
+        }else {
+          this.$set(this.timeSegments[index],'style',{background: "#7f93a6"})
+        }
+      })
+      // console.log('closestTime-->',closestTime)
+
       if(data == null){
         data = {
           start: moment(this.currentTime).format("YYYY-MM-DD HH:mm:ss"),
-          stop: moment(this.currentTime+60*60*1000).format("YYYY-MM-DD HH:mm:ss")
+          stop: moment(closestTime.endTime).format("YYYY-MM-DD HH:mm:ss")
         }
       }
       if(play){
@@ -1239,9 +1306,14 @@ export default {
       }
       this.ctx.clearRect(0, 0, this.width, this.height);
       // 重新计算起始时间点，当前时间-新的时间范围的一半
-      this.startTimestamp =
-        this.currentTime - (ZOOM[this.currentZoomIndex] * ONE_HOUR_STAMP) / 2;
-      this.draw();
+      this.startTimestamp = this.currentTime - (ZOOM[this.currentZoomIndex] * ONE_HOUR_STAMP) / 2;
+
+      if(this.recordPlayTime == null){
+        this.draw();
+      }else {
+        //重新标定时间轴
+        this.timingTimeline(this.recordPlayTime)
+      }
     },
 
     //绘制时间段 开始到结束时都在

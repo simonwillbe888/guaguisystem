@@ -1,11 +1,11 @@
 <template>
   <div class="screen">
-    <div class="content">
+    <div class="content" v-loading="loading">
       <div style="height: 6rem;margin-bottom: 1rem;background-color: transparent;display: flex;position: relative;justify-content: center;">
         <div style="position: absolute;left: 0;">
-          <el-select v-model="tunnel" placeholder="请选择" style="width: 8rem;margin: 3rem 3rem;">
+          <el-select v-model="choosedArea" placeholder="请选择" style="width: 8rem;margin: 3rem 3rem;">
             <el-option
-              v-for="item in tunnelList"
+              v-for="item in options"
               :key="item.value"
               :label="item.label"
               :value="item.value">
@@ -44,7 +44,7 @@
                   <div style="color:#0FB1CBFF;width: 3rem">温度</div>
                 </div>
                 <div class="gasDetail" style="margin-left: 0.7rem;">
-                  {{ gasList.Temperature == null ? '0' : (gasList.Temperature / 100).toFixed(1) }}℃
+                  {{ gasList.Temperature == null || (typeof gasList.Temperature != Number) ? '0' : parseFloat((gasList.Temperature / 100).toFixed(1)) }}℃
                 </div>
               </div>
               <div class="enviroDetail">
@@ -290,10 +290,10 @@
           </div>
 
 <!--          <div style="position: absolute;left:1rem;top:15.5rem">-->
-<!--              <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }} 机器人位置  {{ carList.vertexNumber == 0 ?-->
-<!--                carList.x / 1000 :-->
-<!--                '站点' + (carList.vertexNumber?carList.vertexNumber:'')-->
-<!--                }}</span>-->
+<!--          <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }}当前位置：{{ carList.pileNumber == null ?-->
+<!--            (isNaN(carList.x) ? '未知' : carList.x / 1000) :-->
+<!--            '站点' + carList.pileNumber-->
+<!--            }}</span>-->
 <!--          </div>-->
 
 <!--          <div style="position:absolute;left:21rem; top:15.5rem;">-->
@@ -325,7 +325,7 @@
                   <div style="margin-top:0.5rem">
                     <svg-icon icon-class="voice" style="width: 1rem;margin: auto"/>
                     <span style="font-size: 0.8rem;color: #0cbebd">语音对讲：</span>
-                    <Intercom hidden="hidden" :carID="carID" :intercomControl="intercomControl"></Intercom>
+                    <Intercom ref="closeIntercom" hidden="hidden" :key="carID" :hkPlugin="hkPlugin" :carID="carID" :intercomControl="intercomControl"></Intercom>
                     <el-switch v-model="intercomControl" :active-value=true :inactive-value=false style="margin-left: 0.5rem"></el-switch>
 
                     <span style="font-size: 0.8rem;margin-left: 4rem;color: #0cbebd">
@@ -596,13 +596,13 @@
 </template>
 
 <script>
-import { Notification } from 'element-ui';
+import { Notification, Loading } from 'element-ui';
 import { getCurrentAlarmRecordList } from '../../api/inspectRecord';
 import { mapGetters, mapState } from 'vuex';
-import { getRealPatrolTaskList, cancelPatrolTask } from '@/api/inspectRecord';
+import { GetRealPatrolTaskByCarrierId, cancelPatrolTask } from '@/api/inspectRecord';
 import { getSystemXmlConfig } from '../../api/sysCtrl';
 import {
-  getCarrierDetailInfo, getMapData
+  getCarrierDetailInfo, getPatrolPointListByAreaId
 } from '../../api/map';
 import { debounce } from '../../utils/debounce';
 import {
@@ -627,7 +627,7 @@ import {
   getTemperature,
   startVoiceBroadcast,
   stopVoiceBroadcast,
-  getIndexCar,
+  getCarrierListByAreaId,
   getRtsp,
   getTaskRemainingMileage,
   startWarningLight,
@@ -639,6 +639,9 @@ import {
   StartZoomIn, StartZoomOut, EndZoomIn, EndZoomOut, StartIrisOpen, EndIrisOpen, StartIrisClose, EndIrisClose, StartFocusFar, EndFocusFar, StartFocusNear, EndFocusNear, takePhoto, startRecord, endRecord
 } from '../../api/dashboard';
 import Intercom from './intercom.vue';
+import { clearInterval } from 'timers';
+import { async } from 'q';
+import { type } from 'os';
 
 import { vue3dLoader } from "vue-3d-loader"
 import AlarmSumEcharts from '@/views/dashboard/echarts/AlarmSumEcharts.vue'
@@ -648,6 +651,7 @@ import moment from 'moment'
 import { getCountByCode, getCountByDate, getCountByLevelAndStatus } from '@/api/homepageAlarm'
 import Clock from '@/layout/components/Sidebar/Clock.vue'
 import WebSocket from '@/components/WebSocket/index.vue'
+import { getExistCarrierAreaList } from '@/api/areaConfig'
 
 export default {
   components: {
@@ -740,7 +744,7 @@ export default {
       pageNum: 1,
       pageSize: 15,
       carList: [],
-      gasList: [],
+      gasList: '',
       taskList: [],
       taskID: '',
       locationID: '',
@@ -772,18 +776,16 @@ export default {
       finishTime: '',
       tranLeft: 100,
       moveSet: null,
+      loading:false,
       // batteryLevelColors: [
       //   {color: '#ff0000', percentage: 20},
       //   {color: '#e6a23c', percentage: 50},
       //   {color: '#1989fa', percentage: 99},
       //   {color: '#5cb87a', percentage: 100},
       // ],
-      tunnelList: [{
-        value:'qifu',
-        key:'qifu',
-        label:'祈福隧道'
-      }],
-      tunnel: 'qifu',
+      options: [],
+      choosedArea: '',
+
       broadcastList: [{
         key:1,
         value:'语音停止播放',
@@ -805,15 +807,17 @@ export default {
     };
   },
   created() {
-    this.init()
+    // this.init()
   },
 
 
   async mounted() {
     try {
+      await this.AreaSwap()
+      await this.init()
       await this.getSysConfig()
-      // await this.init()
-      await this.getAdvices()
+      // await this.getAdvices()
+      await this.getVideo()
       await this.lazyLoad()
       await this.getCarTask()
       await this.getCarList()
@@ -838,17 +842,20 @@ export default {
   beforeDestroy() {
     this.HKlogout()
     this.broadcast('语音停止播放')
+    this.stopWarn()
     // console.log('beforeDestroy this.warnLightOpen',this.warnLightOpen)
-    if(this.warnLightOpen == 1){
-      this.setWarnLight(0)
-    }
-    console.log(this.robotOpen == 1)
+    // if(this.warnLightOpen == 1){
+    //   this.setWarnLight(0)
+    // }
+    // console.log(this.robotOpen == 1)
     if (this.robotOpen == 1) {
       this.logoutCar()
 
     }
     window.clearInterval(this.carRoller)
     window.clearInterval(this.tempicTimer)
+    this.carRoller = null
+    this.tempicTimer = null
   },
 
   computed: {
@@ -856,16 +863,16 @@ export default {
       systemConfig: (state) => state.sysConfig.systemConfig,
     }),
     ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen',
-      'closeAll', 'closeBroadcast','closeWarnL', 'dealwithAlarm']),
+      'closeAll', 'closeBroadcast','closeWarnL', 'dealwithAlarm', 'areaId']),
     realTimeAlarminfo() {
       return this.realTimeAlarm[0]
     },
     yuntaiInfo() {
       return this.cameraOut
     },
-    standby(){
-      return this.closeAll
-    },
+    // standby(){
+    //   return this.closeAll
+    // },
     showTable() {
       const now = 0
       const next = this.pageSize * this.pageNum
@@ -881,6 +888,7 @@ export default {
       return this.locationTips
     }
   },
+
   watch: {
     // filterText(val) {
     //   this.$refs.tree.filter(val);
@@ -898,7 +906,7 @@ export default {
     },
     yuntaiInfo() {
       if (this.YTlogin == true) {
-        this.YTlogin = false
+        this.HKlogout()
         this.$notify({
           message: '云台退出连接',
           type: 'warning',
@@ -907,9 +915,9 @@ export default {
         });
       }
     },
-    carID() {
-      return this.carrierSelected.CarrierID
-    },
+    // carID() {
+    //   return this.carrierSelected.CarrierID
+    // },
     riskSpeed(newV, oldV) {
       console.log('速度变化了')
       if (newV == 1000) {
@@ -919,11 +927,18 @@ export default {
       }
     },
     standby(){
+      console.log('触发了')
       if (this.robotOpen == 1) {
         this.logoutCar()
       }
-      this.HKlogout()
+      this.stopWarn()
 
+      if (this.selectedOption != '语音停止播放' && this.selectedOption != '') {
+        stopVoiceBroadcast(this.carrierSelected.CarrierID)
+        this.selectedOption = ''
+      }
+      this.HKlogout()
+      this.$refs.closeIntercom.end()
     },
     closeBroadcast(newV, oldV) {
       console.log('关闭语音对讲了', newV)
@@ -933,12 +948,70 @@ export default {
       this.stopWarn()
     },
     dealwithAlarm() {
-      console.log('处理了数据')
       this.alarmList = []
       setTimeout(() => {
         this.getAlarmList()
 
       }, 1000)
+    },
+    //左右切换机器时的改变
+    carrierIndex() {
+      console.log('状态改变')
+      if (this.robotOpen == 1) {
+        this.logoutCar()
+      }
+      this.$store.dispatch('global/setCloseAll', '待机')
+      this.carrierSelected = this.carrierArr[this.carrierIndex]
+      this.carID = this.carrierSelected.CarrierID
+      this.carrierName = this.carrierSelected.CarrierName
+      const camera = this.carrierSelected.CarrierAccessoryList[0]
+      this.getAreaName()
+      this.getCarTask()
+      if (camera == undefined) {
+        this.currentAdvices[0].accessoryID = null
+        this.currentAdvices[0].accessoryType = null
+        this.currentAdvices[0].configJson = null
+      } else {
+        this.currentAdvices[0].accessoryID = camera.AccessoryID
+        this.currentAdvices[0].accessoryType = camera.AccessoryType
+        this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
+      }
+      this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
+      this.getVideo()
+    },
+
+    //切换隧道
+    areaId() {
+      console.log("areaId running")
+      this.$store.dispatch('global/setCloseAll', '待机')
+      this.loading = true
+      this.init()
+      setTimeout(() => {
+        this.getCarTask()
+
+      }, 300);
+
+      setTimeout(() => {
+        const camera = this.carrierSelected.CarrierAccessoryList[0]
+        this.currentAdvices[0].accessoryID = camera.AccessoryID
+        this.currentAdvices[0].accessoryType = camera.AccessoryType
+        this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
+      }, 2000);
+      this.getVideo()
+    },
+
+    logoutAuto(old) {
+      this.remove()
+      this.$notify({
+        message: '有新用户登录',
+        type: 'success',
+        title: '提示',
+        duration: 1000,
+      });
+    },
+    choosedArea(newV,old){
+      this.$store.dispatch('global/setAreaId',newV)
+      console.log('区域切换了',newV,this.areaId)
     }
   },
 
@@ -974,20 +1047,30 @@ export default {
 
   methods: {
     async init() {
-      const res = await getAllCarrierDetailInfo()
       //机器人列表
-      const robotInfo = await getIndexCar()
-      // console.log('获取机器人列表',robotInfo.data)
+      console.log('this.areaId',this.areaId)
+      const robotInfo = await getCarrierListByAreaId(this.areaId)
       this.carrierArr = robotInfo.data //机器人的集合
-      this.carrierIndex = 0 //数组长度
-      this.carrierSelected = robotInfo.data[this.carrierIndex]
-
-      // console.log('获取选中机器人',this.carrierSelected)
+      console.log('robotInfo',robotInfo)
+      console.log('this.carrierArr',this.carrierArr)
+      if (this.carrierArr.length == 0) {
+        this.carrierSelected = null
+      } else {
+        this.carrierIndex = 0 //数组长度
+        this.carrierSelected = robotInfo.data[this.carrierIndex]
+        this.carrierSelected.CarrierAccessoryList.forEach((res) => {
+          this.currentAdvices.push(res)
+        })
+      }
+      console.log('查看选中机器人', this.carrierSelected)
+      if(this.carrierSelected == null){
+        return
+      }
+      this.getAreaName()
       this.carID = this.carrierSelected.CarrierID
       this.carrierName = this.carrierSelected.CarrierName
       this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
 
-      // console.log('小车ip', this.carrierSelected)
       const visibleLight = document.getElementById('visibleLight');
       visibleLight.onload = () => {
         visibleLight.contentDocument.ondblclick = (e) =>{
@@ -1004,8 +1087,6 @@ export default {
           infrared.classList.toggle("iframe-fullScreen")
         }
         infrared.contentDocument.onclick = (e) => {
-          // this.currentCamera = this.currentAdvices[1]
-          // console.log("查看红外信息", this.currentAdvices[1])
         };
 
         let clientX = 2
@@ -1077,6 +1158,23 @@ export default {
       };
 
     },
+
+    async AreaSwap(){
+      getExistCarrierAreaList().then((res) => {
+        console.log('区域',res)
+        let accessTypeArr = res.data
+        this.choosedArea = accessTypeArr[1].id
+        for (let i = 0, len = accessTypeArr.length; i < len; i++) {
+          let optionObj = {
+            value: accessTypeArr[i].id,
+            label: accessTypeArr[i].areaName,
+          };
+          this.options.push(optionObj);
+        }
+      })
+      this.choosedArea = this.areaId
+    },
+
     vue3dLoaderFullScreen(){
       const vue3dLoader = document.getElementById('vue3dLoader')
       this.loaderFS = vue3dLoader.classList.toggle("iframe-fullScreen")
@@ -1174,8 +1272,16 @@ export default {
       this.butteryInfo = null
       this.gasList = []
     },
+    getAreaName(){
+      getPatrolPointListByAreaId( this.carrierSelected.AreaID).then((res)=>{
+        if( res.data[0]  !== undefined){
+          this.areaName = res.data[0].mapDisplayName
+        }else{
+          this.areaName = '绑定区域无站点'
+        }
+      })
+    },
     async changeRobotLeft() {
-      this.HKlogout()
       setTimeout(() => {
         this.clearDetail()
       }, 1500)
@@ -1185,36 +1291,45 @@ export default {
       } else {
         this.carrierIndex = this.carrierArr.length - 1
       }
-      this.carrierSelected = this.carrierArr[this.carrierIndex]
-      this.carID = this.carrierSelected.CarrierID
-      this.carrierName = this.carrierSelected.CarrierName
-      const camera = this.carrierSelected.CarrierAccessoryList[0]
-      if (camera == undefined) {
-        this.currentAdvices[0].accessoryID = null
-        this.currentAdvices[0].accessoryType = null
-        this.currentAdvices[0].configJson = null
-      }
-      else {
-        this.currentAdvices[0].accessoryID = camera.AccessoryID
-        this.currentAdvices[0].accessoryType = camera.AccessoryType
-        this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
-      }
-      console.log('查左侧',this.currentAdvices[0])
-      this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
-      console.log('选中机器人且更改参数',this.currentAdvices[0])
-      this.getVideo()
+      // this.carrierSelected = this.carrierArr[this.carrierIndex]
+      // this.carID = this.carrierSelected.CarrierID
+      // this.carrierName = this.carrierSelected.CarrierName
+      // const camera = this.carrierSelected.CarrierAccessoryList[0]
+      // if (camera == undefined) {
+      //   this.currentAdvices[0].accessoryID = null
+      //   this.currentAdvices[0].accessoryType = null
+      //   this.currentAdvices[0].configJson = null
+      // }
+      // else {
+      //   this.currentAdvices[0].accessoryID = camera.AccessoryID
+      //   this.currentAdvices[0].accessoryType = camera.AccessoryType
+      //   this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
+      // }
+      // console.log('查左侧',this.currentAdvices[0])
+      // this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
+      // console.log('选中机器人且更改参数',this.currentAdvices[0])
+      // this.getVideo()
     },
     getVideo() {
       let that = this
-      getRtsp(this.carID).then((res) => {
-        that.currentAdvices[0].src = `/static/video.html?data=${res.data.lightRTSP}&serve=${this.webRtcIP}`
-        that.currentAdvices[1].src = `/static/video.html?data=${res.data.infraredRTSP}&serve=${this.webRtcIP}`
-        // that.currentAdvices[1]=
-        // console.log('获取设备', that.currentAdvices[0].src,that.currentAdvices[1].src)
-      })
+      setTimeout(() => {
+        getRtsp(this.carID).then((res) => {
+          that.currentAdvices[0].src = `/static/video.html?data=${res.data.lightRTSP}&serve=${this.webRtcIP}`
+          that.currentAdvices[1].src = `/static/video.html?data=${res.data.infraredRTSP}&serve=${this.webRtcIP}`
+          var text = that.currentAdvices[0].src
+          var username = text.match(/\/\/(.*?):/)[1];
+          var usernamePassword = text.match(/:(.*?)@/)[1].split(':');
+          var password = usernamePassword[1];
+          var ip = text.match(/@(.*?):/)[1];
+          that.hkPlugin = {
+            Username:username,
+            Password:password,
+            Ip:ip,
+          }
+        })
+      }, 1000);
     },
     async changeRobotRight() {
-      this.HKlogout()
       setTimeout(() => {
         this.clearDetail()
       }, 1500)
@@ -1224,24 +1339,24 @@ export default {
       } else {
         ++this.carrierIndex
       }
-      this.carrierSelected = this.carrierArr[this.carrierIndex]
-      this.carID = this.carrierSelected.CarrierID
-      this.carrierName = this.carrierSelected.CarrierName
-      const camera = this.carrierSelected.CarrierAccessoryList[0]
-
-      if (camera == undefined) {
-        this.currentAdvices[0].accessoryID = null
-        this.currentAdvices[0].accessoryType = null
-        this.currentAdvices[0].configJson = null
-      }
-      else {
-        this.currentAdvices[0].accessoryID = camera.AccessoryID
-        this.currentAdvices[0].accessoryType = camera.AccessoryType
-        this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
-      }
-      console.log('查看右侧',this.currentAdvices[0])
-      this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
-      this.getVideo()
+      // this.carrierSelected = this.carrierArr[this.carrierIndex]
+      // this.carID = this.carrierSelected.CarrierID
+      // this.carrierName = this.carrierSelected.CarrierName
+      // const camera = this.carrierSelected.CarrierAccessoryList[0]
+      //
+      // if (camera == undefined) {
+      //   this.currentAdvices[0].accessoryID = null
+      //   this.currentAdvices[0].accessoryType = null
+      //   this.currentAdvices[0].configJson = null
+      // }
+      // else {
+      //   this.currentAdvices[0].accessoryID = camera.AccessoryID
+      //   this.currentAdvices[0].accessoryType = camera.AccessoryType
+      //   this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
+      // }
+      // console.log('查看右侧',this.currentAdvices[0])
+      // this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
+      // this.getVideo()
     },
     async getAlarmList() {
       //获取实时警告
@@ -1272,7 +1387,8 @@ export default {
       }
     },
     async getCarList() {
-      if(this.carrierSelected.CarrierID == undefined || this.carrierSelected.CarrierID == ''){
+      if(this.carrierSelected == null || this.carrierSelected.CarrierID == null ||
+        this.carrierSelected.CarrierID == undefined || this.carrierSelected.CarrierID == ''){
         console.log('CarrierID is null')
         return
       }
@@ -1284,11 +1400,9 @@ export default {
       // console.log('气体',gas)
       let robot = document.getElementById('robot')
       // console.log("model----->",this.$refs.model)
-      if (res.code === 20000) {
+      if (res.code === '20000') {
         this.carList = res.data || [];
-        //  console.log('小车速度',this.carList.realTimeSpeed,'总运行时间',this.carList.totalRunTime,'里程',this.carList.totalDistance)
 
-        // console.log("this.carList--->",this.carList)
         // if (this.carList.x >= 1) {
         const left = (93 / 46072) * this.carList.x
         // robot.style.left = left + '%'
@@ -1297,17 +1411,16 @@ export default {
 
       }
       //气体
-      if (gas.code == 20000) {
+      if (gas.code == '20000') {
         this.gasList = gas.data
       }
-      const car = await getRealPatrolTaskList()
-      // console.log('里程任务id',car)
-      if (car.data != null && car.data.length > 0) {
-        getTaskRemainingMileage(car.data[0].taskID).then((res)=>{
-          const time = (res.data.time / 60)
+      const car = await GetRealPatrolTaskByCarrierId(this.carID)
+      if (car.data != null) {
+        getTaskRemainingMileage(car.data.taskID).then((res)=>{
+          const time =  parseFloat((res.data.time / 60).toFixed(1))
           // console.log('查看剩余里程',res.data.mileage,time)
           if (this.carList.realTimeSpeed > 0 && res.data.mileage > 20000) {
-            this.finishTime = Number(((res.data.mileage / (this.carList.realTimeSpeed * 60))).toFixed(1)) + time
+            this.finishTime = parseFloat(((res.data.mileage / (this.carList.realTimeSpeed * 60))).toFixed(1)) + time
             this.finishTime = this.finishTime.toFixed(1)
             // console.log('看看时间', typeof this.finishTime ,time)
             if (res.data.mileage = 0) {
@@ -1317,7 +1430,7 @@ export default {
             this.finishTime = 0.1
           }
         })
-        this.realTimeTask = car.data[0].planName
+        this.realTimeTask = car.data.planName
       }
       else{
         this.finishTime = 0
@@ -1339,14 +1452,13 @@ export default {
             })
           }
         });
+        console.log('特殊巡检计划',this.taskList)
+        this.loading = false
       })
     },
     beforeunloadHandler(e) {
       window.addEventListener("beforeunload", () => {
-        this.HKlogout()
-        if (this.robotOpen == 1) {
-          this.logoutCar()
-        }
+        this.$store.dispatch('global/setCloseAll', '待机')
       });
     },
     locationInput(){
@@ -1359,10 +1471,11 @@ export default {
       this.broadcastVisible = false
       this.selectedOption = e
       if (this.selectedOption != '语音停止播放' && this.selectedOption != '') {
-        startVoiceBroadcast({
+        let params = {
           carrierID: this.carrierSelected.CarrierID,
           text: this.selectedOption
-        }).then((res) => {
+        }
+        startVoiceBroadcast({params}).then((res) => {
           if (res.code == 20000) {
             this.broadcasting = true
             Notification({
@@ -1879,14 +1992,19 @@ export default {
       this.lowButtery = false
     },
     async HKlogin() {
+      const camera = this.carrierSelected.CarrierAccessoryList[0]
+      this.currentAdvices[0].accessoryID = camera.AccessoryID
+      this.currentAdvices[0].accessoryType = camera.AccessoryType
+      this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
+      console.log('查看参数',this.carrierSelected.CarrierAccessoryList[0])
       if (!this.YTlogin) {
         let param = {
           carrierID: this.carID,
           id: this.currentAdvices[0].accessoryID,
-          accessoryType: this.currentAdvices[0].accessoryType,
-          configJson: this.currentAdvices[0].configJson
+          configJson: this.currentAdvices[0].configJson,
+          accessoryType: this.currentAdvices[0].accessoryType
         }
-        console.log("连接云台",param)
+        // console.log("连接云台",param)
         login(param).then((res) => {
           console.log("连接云台",param)
           if (res.code == '20000') {
@@ -1909,13 +2027,18 @@ export default {
       }
     },
     HKlogout() {
+      if(this.videoOn){
+        this.setCameraOperate(23)
+      }
+      if(this.lightOn){
+        this.setCameraOperate(14)
+      }
       if (this.YTlogin == true) {
-        // console.log("执行关闭云台")
-        logOut(this.currentAdvices[0].accessoryID).then((res) => {
-          if (res.code == '20000') {
+        setTimeout(()=>{
+          logOut(this.currentAdvices[0].accessoryID).then((res) => {
             this.YTlogin = false
-          }
-        })
+          })
+        },1000)
       }
 
     },
@@ -1982,112 +2105,108 @@ export default {
       }
     },
     //树结构 隧道
-    async getAdvices() {
-      try {
-        const res = await getEquipmentList();
-        console.log("获取设备列表", res)
-        //递归重构数据 把设备和隧道组合起来
-        let hasFindFirstVideo = true;
-        const deepfined = (list) => {
-          if (!list && !list.length) return;
-          list.forEach((item, index) => {
-            //默认播放第一个机器人摄像头
-            // console.log('第一个节点',item.children)
-            // console.log('看隧道',item.areaList && item.areaList.length == true)
-            if (hasFindFirstVideo && item.children && item.children[0]) {
-
-              hasFindFirstVideo = false;
-              this.treeNodeClick(item.children[0]);
-              // console.log('第er个节点', item.children[0])
-              //展开并选中第一个节点
-              this.defaultExpanded = [item.label];
-              // this.$nextTick(() => {
-              //   this.$refs.tree.setCurrentKey(item.children[0].label);
-              // });
-            }
-            if (item.areaList && item.areaList.length) {
-              item.children = [...item.children, ...item.areaList];
-
-            }
-            if (item.children && item.children.length) {
-              deepfined(item.children);
-            }
-          });
-        };
-        if (res.code === 20000) {
-          if (res.data) {
-            deepfined(res.data);
-            this.adviceList = res.data || [];
-
-          }
-        }
-      } catch (error) {
-      }
-    },
-    treeNodeClick(node) {
-      if (!node.accessoryList) {
-        if (this.YTlogin == true) {
-          this.HKlogout()
-        }
-        this.$notify({
-          message: '请点击机器节点经行选择！',
-          type: 'warning',
-          title: '提示',
-          duration: 5000,
-        });
-        // this.$refs.tree.setCurrentKey(null);
-        // this.$refs.tree.setCurrentKey(this.currentNode.label);
-        return;
-      }
-      if (this.robotOpen === 1) {
-        // this.$notify({
-        //   message: '当前有机器正在被控制,不允许切换',
-        //   type: 'warning',
-        //   title: '提示',
-        //   duration: 1000,
-        // });
-        // this.$refs.tree.setCurrentKey(null);
-        // this.$refs.tree.setCurrentKey(this.currentNode.label);
-        // return;
-      }
-      let arr = [];
-      if (node && node.accessoryList) {
-        // console.log("点击节点信息", node.accessoryList)
-        node.accessoryList.forEach((item) => {
-          if (item && item.configObj) {
-            let video = item.configObj;
-            const src = `/static/video.html?data=${video.rtsp}&serve=${this.webRtcIP}`;
-            arr.push({
-              ...item,
-              src,
-            });
-          }
-        });
-        // console.log('获取小车ID', node)
-        // this.carID = node.id;
-        this.currentNode = node;
-        // console.log('摄像机ID',this.carID)
-      }
-      if (arr.length < 1) {
-        this.arr = [{}, {}];
-      }
-      this.currentAdvices = arr;
-      // console.log('摄像机信息', this.currentAdvices)
-    },
-    tabClick(val) {
-      this.activeName = val;
-    },
-    filterNode(value, data) {
-      if (!value) return true;
-      return data.label.indexOf(value) !== -1;
-    },
+    // async getAdvices() {
+    //   try {
+    //     const res = await getEquipmentList();
+    //     // console.log("获取设备列表", res)
+    //     //递归重构数据 把设备和隧道组合起来
+    //     let hasFindFirstVideo = true;
+    //     const deepfined = (list) => {
+    //       if (!list && !list.length) return;
+    //       list.forEach((item, index) => {
+    //         //默认播放第一个机器人摄像头
+    //         // console.log('第一个节点',item.children)
+    //         // console.log('看隧道',item.areaList && item.areaList.length == true)
+    //         if (hasFindFirstVideo && item.children && item.children[0]) {
+    //
+    //           hasFindFirstVideo = false;
+    //           this.treeNodeClick(item.children[0]);
+    //           // console.log('第er个节点', item.children[0])
+    //           //展开并选中第一个节点
+    //           this.defaultExpanded = [item.label];
+    //           this.$nextTick(() => {
+    //             this.$refs.tree.setCurrentKey(item.children[0].label);
+    //           });
+    //         }
+    //         if (item.areaList && item.areaList.length) {
+    //           item.children = [...item.children, ...item.areaList];
+    //
+    //         }
+    //         if (item.children && item.children.length) {
+    //           deepfined(item.children);
+    //         }
+    //       });
+    //     };
+    //     if (res.code === 20000) {
+    //       if (res.data) {
+    //         deepfined(res.data);
+    //         this.adviceList = res.data || [];
+    //
+    //       }
+    //     }
+    //   } catch (error) {
+    //   }
+    // },
+    // treeNodeClick(node) {
+    //   if (!node.accessoryList) {
+    //     if (this.YTlogin == true) {
+    //       this.HKlogout()
+    //     }
+    //     this.$notify({
+    //       message: '请点击机器节点经行选择！',
+    //       type: 'warning',
+    //       title: '提示',
+    //       duration: 5000,
+    //     });
+    //     this.$refs.tree.setCurrentKey(null);
+    //     this.$refs.tree.setCurrentKey(this.currentNode.label);
+    //     return;
+    //   }
+    //   if (this.robotOpen === 1) {
+    //     // this.$notify({
+    //     //   message: '当前有机器正在被控制,不允许切换',
+    //     //   type: 'warning',
+    //     //   title: '提示',
+    //     //   duration: 1000,
+    //     // });
+    //     // this.$refs.tree.setCurrentKey(null);
+    //     // this.$refs.tree.setCurrentKey(this.currentNode.label);
+    //     // return;
+    //   }
+    //   let arr = [];
+    //   if (node && node.accessoryList) {
+    //     // console.log("点击节点信息", node.accessoryList)
+    //     node.accessoryList.forEach((item) => {
+    //       if (item && item.configObj) {
+    //         let video = item.configObj;
+    //         const src = `/static/video.html?data=${video.rtsp}&serve=${this.webRtcIP}`;
+    //         arr.push({
+    //           ...item,
+    //           src,
+    //         });
+    //       }
+    //     });
+    //     // console.log('获取小车ID', node)
+    //     // this.carID = node.id;
+    //     this.currentNode = node;
+    //     // console.log('摄像机ID',this.carID)
+    //   }
+    //   if (arr.length < 1) {
+    //     this.arr = [{}, {}];
+    //   }
+    //   this.currentAdvices = arr;
+    //   // console.log('摄像机信息', this.currentAdvices)
+    // },
+    // tabClick(val) {
+    //   this.activeName = val;
+    // },
+    // filterNode(value, data) {
+    //   if (!value) return true;
+    //   return data.label.indexOf(value) !== -1;
+    // },
     async setOpen(e) {
       this.robotOpen = e
-      // if(e){
-      //   this.robotOpen = 2
-      // }else {
-      //   this.robotOpen = 1
-      // }
+
       const time = this.getNowtime()
       //通知后台再开遥控
       if (this.robotOpen == 1) {
@@ -2111,6 +2230,8 @@ export default {
                 type: 'error',
                 duration: 5000
               });
+              informCloseRobot(this.carrierSelected.CarrierID)
+
               this.robotOpen = 2
             }
           })
@@ -2614,7 +2735,7 @@ export default {
   //   return node
   // }
 
-};
+}
 
 </script>
 <style lang="scss" scoped>
@@ -3269,6 +3390,7 @@ export default {
     }
 
     .nowPosition {
+      flex: 1;
       display: flex;
       position: relative;
       bottom: 10.25rem;
@@ -3492,6 +3614,10 @@ export default {
 
   ::v-deep .el-slider__bar {
     background-color: #64C8C8;
+  }
+
+  ::v-deep .el-loading-mask {
+    background: none;
   }
 
   .broadcastBtn {
