@@ -689,7 +689,7 @@ export default {
         locationID: [
           {
             required: true,
-            message: '请输入巡检点',
+            message: '请选择巡检点',
             trigger: 'change',
           },
         ],
@@ -746,7 +746,7 @@ export default {
         locationID: [
           {
             required: true,
-            message: '请输入巡检点',
+            message: '请选择巡检点',
             trigger: 'change',
           },
         ],
@@ -793,7 +793,7 @@ export default {
         locationID: [
           {
             required: true,
-            message: '请输入巡检点',
+            message: '请选择巡检点',
             trigger: 'change',
           },
         ],
@@ -832,7 +832,7 @@ export default {
         locationID: [
           {
             required: true,
-            message: '请输入巡检点',
+            message: '请选择巡检点',
             trigger: 'change',
           },
         ],
@@ -890,7 +890,7 @@ export default {
         locationID: [
           {
             required: true,
-            message: '请输入巡检点',
+            message: '请选择巡检点',
             trigger: 'change',
           },
         ],
@@ -1477,7 +1477,7 @@ export default {
     validateYunPAngle(rule, value, callback) {
       const volume = Number(value);
       if (isNaN(volume) || volume < 0 || volume > 360) {
-        callback(new Error('音量范围为0~360'));
+        callback(new Error('水平角度为0~360'));
       } else {
         callback();
       }
@@ -1485,7 +1485,7 @@ export default {
     validateYunTAngle(rule, value, callback) {
       const volume = Number(value);
       if (isNaN(volume) || volume < -90 || volume > 90) {
-        callback(new Error('音量范围为-90~90'));
+        callback(new Error('垂直角度为-90~90'));
       } else {
         callback();
       }

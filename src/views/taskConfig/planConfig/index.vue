@@ -42,7 +42,7 @@
           </el-table-column>
           <el-table-column prop="frequencyTypeName" label="执行时间" align="center">
             <template slot-scope="{ row }">
-              {{ row.frequencyTypeName }} <span style="margin:1px"></span>
+              {{ row.frequencyTypeName }}{{  row.OpenTime  }} <span style="margin:1px"></span>
               {{ row.OpenTime ? row.OpenTime.slice(22, 27) : '' }}
             </template>
           </el-table-column>
@@ -51,9 +51,9 @@
               {{ row.PlanType === 3 ? '--' : row.ExecuteCount }}
             </template>
           </el-table-column>
-          <el-table-column prop="ExecuteCount" label="剩余次数" align="center">
+          <el-table-column prop="ResidueCount" label="剩余次数" align="center">
             <template slot-scope="{ row }">
-              {{ row.PlanType === 3 ? '--' : row.residueCount }}
+              {{ row.PlanType === 3 ? '--' : row.ResidueCount }}
             </template>
           </el-table-column>
           <el-table-column prop="ExecuteSpace" label="执行间隔(分钟)" align="center">
@@ -424,7 +424,7 @@ export default {
           { required: true, message: '请输入初始垂直角度', trigger: 'blur' },
         ],
         TaskTemplateID: [
-          { required: true, message: '请选择任务选择', trigger: 'change' },
+          { required: true, message: '请选择流程模板', trigger: 'change' },
         ],
         PlanType: [
           { required: true, message: '请选择计划类型', trigger: 'change' },

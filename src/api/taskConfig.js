@@ -7,10 +7,9 @@ export function getPatrolLocation() {
     method: 'get',
   });
 }
-
-export function getAllPatrolLocation() {
+export function getAllPatrolLocation(areaid,name) {
   return request({
-    url: '/api/PatrolLocation/GetAllPatrolLocation',
+    url: '/api/PatrolLocation/GetAllPatrolLocation?AreaId='+ areaid + '&LocationName=' + encodeURIComponent(name),
     method: 'get',
   });
 }

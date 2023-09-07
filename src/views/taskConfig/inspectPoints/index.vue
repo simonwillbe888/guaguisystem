@@ -14,6 +14,20 @@
         >
       <div class="inspec-setting-inquire">
         <!-- {{ $t("inspection_setting.inspecName_label") }} -->
+        <el-select
+            clearable
+            placeholder="请选择区域"
+            v-model="siteName"
+            style="width:200px;margin-right: 10px;"
+          >
+            <el-option
+              v-for="item in bigAreaOptions"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
         <el-input
           class="robot-inquire"
           v-model="inquireVal"
@@ -22,7 +36,7 @@
           clearable
         ></el-input>
 
-        <el-button type="success"  @click="inquireInspect()">{{
+        <el-button type="success"  @click="init()">{{
           $t('inspection_setting.inquire_label')
         }}</el-button>
       </div>
@@ -131,8 +145,8 @@
         <el-col :span="12">
           <el-form-item label="巡检点名称" prop="inspectName">
           <el-input
-          style="width:13.5vw"
-            placeholder="请输入机器人名称"
+          style="width:260px"
+            placeholder="请输入巡检点名称"
             maxlength="20"
             v-model="inspectForm.inspectName"
           ></el-input>
@@ -141,7 +155,7 @@
         <el-col :span="12">
           <el-form-item label="导航点编号" prop="naviNumber">
           <el-input
-            style="width:13.5vw"
+            style="width:260px"
             placeholder="请输入导航点编号"
             oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
             v-model.number="inspectForm.naviNumber"
@@ -153,7 +167,7 @@
         <el-col :span="12">
           <el-form-item label="地图标注名称" prop="mapName">
           <el-input
-          style="width:13.5vw"
+          style="width:260px"
             placeholder="请输入地图标注名称"
             v-model="inspectForm.mapName"
           ></el-input>
@@ -162,7 +176,7 @@
         <el-col :span="12">
           <el-form-item label="所属组别" prop="belongGroup">
           <el-input
-          style="width:13.5vw"
+          style="width:260px"
             placeholder="请输入所属组别"
             oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
             v-model.number="inspectForm.belongGroup"
@@ -176,6 +190,7 @@
             clearable
             placeholder="请选择区域"
             v-model="inspectForm.siteName"
+            style="width:260px"
           >
             <el-option
               v-for="item in bigAreaOptions"
@@ -263,7 +278,7 @@ export default {
         siteName: [
           {
             required: true,
-            message: "请输入地图标注名称",
+            message: "请输入区域",
             trigger: "change",
           },
         ],
@@ -278,6 +293,7 @@ export default {
       currentInspect: '',
       currentRow: null,
       ID: 0,
+      siteName:null
     };
   },
   mounted() {
@@ -288,10 +304,10 @@ export default {
     init() {
       let self = this;
       self.inspectInfoArr = [];
-      getAllPatrolLocation()
+      getAllPatrolLocation(this.siteName,this.inquireVal)
         .then((response) => {
           self.inspectPoints = response.data;
-           console.log("查看巡检计划",self.inspectPoints)
+           console.log("查看巡检计划",response)
            self.inspectInfoArr = self.inspectPoints
           // if (self.inspectPoints.length) {
           //   for (let i = 0, len = self.inspectPoints.length; i < len; i++) {
@@ -339,24 +355,6 @@ export default {
             duration: 1000,
           });
         });
-    },
-    inquireInspect() {
-      let self =this
-      if (this.inquireVal && this.inspectPoints.length !== 0) {
-        let newInspectArr = [];
-        for (let i = 0; i <  this.inspectPoints.length; i++) {
-          if (this.inquireVal == self.inspectPoints[i].Name) {
-            newInspectArr.push(this.inspectPoints[i]);
-          }
-        }
-        if (newInspectArr.length) {
-          this.inspectInfoArr = newInspectArr;
-        } else {
-          alert('未检索到满足要求的巡检点');
-        }
-      } else {
-        this.init();
-      }
     },
     plusInspects() {
       this.dialogFormVisible = true;

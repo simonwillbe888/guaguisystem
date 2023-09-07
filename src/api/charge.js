@@ -14,6 +14,12 @@ export function getAllChargeDevice() {
   });
 }
 
+export function getStation() {
+  return request({
+    url: '/api/ChargeSetting/getStation',
+    method: 'get',
+  });
+}
 export function getChargeDevice(data) {
   return request({
     url: '/api/Charge/GetChargeDevice',

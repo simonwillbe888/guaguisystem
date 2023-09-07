@@ -47,13 +47,13 @@
               label="最大充电时长(分钟)"
             >
             </el-table-column> -->
-            <el-table-column
+            <!-- <el-table-column
               prop="mapID"
               align="center"
 
               label="地图ID"
             >
-            </el-table-column>
+            </el-table-column> -->
             <!-- <el-table-column
               prop="vertexNumber"
               align="center"
@@ -67,6 +67,7 @@
               label="活动站点编号"
               align="center"
             >
+            
             </el-table-column>
             <el-table-column
               prop="parameter1"
@@ -158,14 +159,12 @@
         </el-form-item> -->
         <el-form-item prop="chargePileName" label="充电站名称">
           <el-input
-            style="width:220px"
             v-model="form.chargePileName"
             placeholder="请输入充电站名称"
           ></el-input>
         </el-form-item>
         <el-form-item prop="ipaddress" label="充电站IP">
           <el-input
-            style="width:220px"
             v-model="form.ipaddress"
             placeholder="请输入充电站ip"
           ></el-input>
@@ -178,79 +177,38 @@
             placeholder="请输最大时长"
           ></el-input>
         </el-form-item> -->
-        <el-form-item prop="mapID" label="地图ID">
+        <!-- <el-form-item prop="mapID" label="地图ID">
           <el-input
             style="width:220px"
             oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
             v-model.number="form.mapID"
             placeholder="请输地图ID"
           ></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item prop="station" label="活动站点编号">
-          <el-input
+          <el-select
+          style="width: 188.4px;"
+            placeholder="请选择活动站点"
+            v-model="form.station"
+            clearable
+          >
+            <el-option
+            
+              v-for="item in station"
+              :key="item"
+              :label="item"
+              :value="item"
+            >
+            </el-option>
+          </el-select>
+          <!-- <el-input
             style="width:220px"
             oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
             v-model.number="form.station"
             placeholder="请输入活动站点编号"
-          ></el-input>
+          ></el-input> -->
         </el-form-item>
-        <!-- <el-form-item prop="vertexNumber" label="导航点编号">
-          <el-input
-            style="width:220px"
-            oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
-            v-model.number="form.vertexNumber"
-            placeholder="请输入导航点编号"
-          ></el-input>
-        </el-form-item> -->
-        <!-- <el-form-item prop="protocolType" label="充电协议">
-          <el-select
-            v-model="form.protocolType"
-            clearable
-            placeholder="请选择协议"
-            style="width:220px"
-          >
-            <el-option
-              v-for="item in protocolList"
-              :key="item.Code"
-              :label="item.Desc"
-              :value="item.Code"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item prop="chargingMode" label="充电方式">
-          <el-select
-            clearable
-            v-model="form.chargingMode"
-            placeholder="请选择充电车型"
-            style="width:220px"
-          >
-            <el-option
-              v-for="item in chargingWayList"
-              :key="item.Code"
-              :label="item.Desc"
-              :value="item.Code"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item> -->
-        <!-- <el-form-item prop="canAgvUseTypeStr" label="小车类型">
-          <el-select
-            clearable
-            multiple
-            v-model="form.canAgvUseTypeStr"
-            placeholder="请选择充电车型"
-            style="width:220px"
-          >
-            <el-option
-              v-for="item in charrierList"
-              :key="item.Code"
-              :label="item.Desc"
-              :value="item.Code"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item> -->
+
         <el-form-item class="common-form-footer">
           <el-button type="primary" @click="chargeStation">保存</el-button>
           <el-button type="primary" plain @click="centerDialogVisible = false"
@@ -273,6 +231,7 @@ import {
   lockChargePile,
   unLockChargePile,
   getChargePileSettingList,
+  getStation
 } from '@/api/charge';
 
 export default {
@@ -318,7 +277,6 @@ export default {
         chargingMode: [
           { required: true, message: '请选择协议', trigger: 'change' },
         ],
-        mapID: [{ required: true, message: '请输入地图ID', trigger: 'change' }],
         station: [
           { required: true, message: '活动站点编号', trigger: 'change' },
         ],
@@ -337,6 +295,7 @@ export default {
       },
       protocolList: [],
       chargingWayList: [],
+      station:[],
     };
   },
   mounted() {
@@ -348,6 +307,12 @@ export default {
       this.getProtocolList();
       this.getChargingWayList();
       this.getCharrierList();
+      getStation().then((res)=>{
+        console.log('aabc',res)
+        res.data.forEach(element => {
+          this.station.push(element)
+        });
+      })
     },
     async getProtocolList() {
       const res = await getChargeProtocolType();

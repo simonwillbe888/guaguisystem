@@ -529,7 +529,7 @@ export default {
           { required: true, message: '请输入用户名', trigger: 'blur' },
         ],
         passWord: [
-          { required: true, message: '其请输入密码', trigger: 'blur' },
+          { required: true, message: '请输入密码', trigger: 'blur' },
         ],
       },
       rules2: {

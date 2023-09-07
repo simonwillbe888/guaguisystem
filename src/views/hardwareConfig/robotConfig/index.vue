@@ -538,6 +538,13 @@ export default {
     //   deep: true,
     //   immediate: true,
     // }
+    // standByChecked(newV,oldV){
+    //   if(!oldV){
+    //     console.log('点击待命点了')
+    //     this.vertex = null
+
+    //   }
+    // }
   },
   mounted() {
     this.initArea();
@@ -620,8 +627,7 @@ export default {
       let self = this;
       self.bigAreaOptions = [];
       GetMapData().then((res)=>{
-        console.log('待命点',res)
-        const obj = []
+         const obj = []
         res.data.stations.forEach(element => {
           console.log(element.type,'aaaaa')
           if(element.type == 2){
@@ -632,7 +638,6 @@ export default {
           }
           self.StationVertex= obj
         });
-
       })
       getArea()
         .then((response) => {
@@ -813,7 +818,7 @@ export default {
     editRobot(item, flag) {
       let that = this
       this.vertex = item.homeStation
-      this.standByChecked = true;
+      console.log('啊啊啊啊',item)
       if (item) {
         this.dialogFormVisible = true;
         this.dialogType = 'editRobots';
@@ -832,7 +837,8 @@ export default {
           // console.log("",typeof that.standByChecked)
         } else {
           // console.log("为什么还绑定")
-          this.standByPoint = '';
+          this.standByPoint = 0;
+          this.vertex = null
           this.standByChecked = false;
         }
 

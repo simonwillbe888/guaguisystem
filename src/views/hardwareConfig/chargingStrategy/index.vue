@@ -383,7 +383,7 @@ export default {
       if (!valid) return;
       if (
         !(this.form.mustChargePower < this.form.freeChargePower) ||
-        !(this.form.mustChargePower < this.form.interruptChargePower)
+        !(this.form.mustChargePower < this.form.interruptChargePower) || this.form.interruptChargePower < this.form.freeChargePower
       ) {
         this.$notify({
           message: '请输入合理阀值',
