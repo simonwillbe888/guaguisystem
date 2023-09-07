@@ -189,7 +189,7 @@
         >
           <el-select style="width:188px"
             placeholder="请选择配件状态"
-            :disabled="accessoForm.isEdit  || accessoForm.state==2"
+            :disabled="accessoForm.state==2"
             clearable
             v-model="accessoForm.accessoState"
             @focus="selectChange()"

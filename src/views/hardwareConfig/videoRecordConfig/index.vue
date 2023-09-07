@@ -159,20 +159,20 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="相录像机名称" prop="dvrname">
+        <el-form-item label="录像机名称" prop="dvrname">
           <el-input
             placeholder="请输入录像机名称"
             v-model="form.dvrname"
             :disabled="form.isDetail"
           ></el-input>
         </el-form-item>
-        <el-form-item label="录像机编号" prop="dvrcode">
+        <!-- <el-form-item label="录像机编号" prop="dvrcode">
           <el-input
             placeholder="请输入录像机编号"
             v-model="form.dvrcode"
             :disabled="form.isDetail"
           ></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="IP" prop="ip">
           <el-input
             placeholder="请输入IP"

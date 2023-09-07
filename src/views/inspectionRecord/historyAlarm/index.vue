@@ -301,7 +301,7 @@ export default {
       };
       const powelist = self.$store.getters.roles
       powelist.forEach((res) => {
-        if (res == 'exportHistoryAlarm ') {
+        if (res == 'exportHistoryAlarm') {
           self.exportRole = true
         }
       })
@@ -546,7 +546,7 @@ export default {
         exportHistoryExcel({
           alarmName: this.alarmName,
           alarmCode: this.alarmCode,
-          status: -1,
+          // status: -1,
           alarmType: this.alarmType
 
         }).then((res) => { //导出流

@@ -431,12 +431,12 @@
                   <div title="清洗" class="action_detail" @mousedown="setCameraOperate(16)" @mouseup="stopCam()">
                     <img src="../../assets/img/clean.png" alt="">
                   </div>
-                  <div title="聚焦" class="action_detail" @mousedown="setCameraOperate(13)" @mouseup="stopCam()">
+                  <div title="聚焦" class="action_detail" @mousedown="setCameraOperate(13)" @mouseup="stopCam(13)">
                     <img src="../../assets/img/jujiao.png" alt="">
                   </div>
                 </div>
                 <div class="hkAction">
-                  <div title="缩小" class="action_detail" @mousedown="setCameraOperate(11)" @mouseup="stopCam()">
+                  <div title="缩小" class="action_detail" @mousedown="setCameraOperate(11)" @mouseup="stopCam(11)">
                     <img src="../../assets/img/suoxiao.png" alt="">
                   </div>
                   <div class="action_detail">
@@ -447,7 +447,7 @@
                     <img title="开灯" src="../../assets/img/light.png" v-if="!lightOn" @click="setCameraOperate(12)">
                     <img title="关灯" src="../../assets/img/closeLiht.png" v-if="lightOn" @click="setCameraOperate(14)">
                   </div>
-                  <div class="action_detail" @mousedown="setCameraOperate(15)" @mouseup="stopCam()">
+                  <div class="action_detail" @mousedown="setCameraOperate(15)" @mouseup="stopCam(15)">
                     <img title="远焦" src="../../assets/img/yuanjiao.png" alt="">
                   </div>
                 </div>
@@ -633,6 +633,8 @@ export default {
 
     window.clearInterval(this.carRoller)
     window.clearInterval(this.tempicTimer)
+    this.carRoller = null
+    this.tempicTimer = null
   },
 
   computed: {
@@ -1191,6 +1193,9 @@ export default {
       if(this.videoOn){
          this.setCameraOperate(23)
       }
+      if(this.lightOn){
+        this.setCameraOperate(14)
+      }
       if (this.YTlogin == true) {
         setTimeout(()=>{
           logOut(this.currentAdvices[0].accessoryID).then((res) => {
@@ -1351,6 +1356,8 @@ export default {
                 type: 'error',
                 duration: 5000
               });
+              informCloseRobot(this.carrierSelected.CarrierID)
+
               this.robotOpen = 2
 
             }
@@ -1538,6 +1545,8 @@ export default {
           case 14:
             if (this.YTlogin == true) {
               EndLight(this.currentAdvices[0].accessoryID).then((res) => {
+                console.log('关闭补光灯')
+
                 if (res.code == 20000) {
                   this.lightOn = false
                 }

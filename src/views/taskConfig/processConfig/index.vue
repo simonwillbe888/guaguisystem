@@ -401,6 +401,7 @@ export default {
         this.taskForm = {
           processName: item.process_name,
           mapName: item.map_name,
+          areaId:item.areaId
         };
       }
     },
@@ -451,7 +452,7 @@ export default {
             id: self.ID,
             taskName: taskData.processName,
             mapDisplayName: taskData.mapName,
-            areaId:taskData.mapName
+            areaId:taskData.areaId
 
           };
           updatePatrolTemplate(param)

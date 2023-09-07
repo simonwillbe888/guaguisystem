@@ -253,13 +253,20 @@ export default {
             trigger: 'change',
           },
         ],
-        // mapName: [
-        //   {
-        //     required: true,
-        //     message: "请输入地图标注名称",
-        //     trigger: "change",
-        //   },
-        // ],
+        mapName: [
+          {
+            required: true,
+            message: "请输入地图标注名称",
+            trigger: "change",
+          },
+        ],
+        siteName: [
+          {
+            required: true,
+            message: "请输入地图标注名称",
+            trigger: "change",
+          },
+        ],
         belongGroup: [
           {
             required: true,

@@ -37,12 +37,13 @@ export default {
       };
       getCountByCode(param)
         .then((response) => {
-          // console.log('查看',response.data.length == true)
+          console.log('查看',response.data)
           if (response && response.data.length) {
             self.count = [];
             self.alarmName = [];
             if (response.data.length > 0){
               response.data.forEach((item) => {
+                console.log('循环次数')
             //   self.alarmName.push(item.alarmName);
               switch (item.alarmType)  {
               case 1001: self.alarmName.push("行人")
@@ -84,7 +85,10 @@ export default {
               // case 1:
               // default: self.alarmName.push('机体')
               }
-              self.count.push(item.count);
+              if(item.alarmType != 1 ){
+                self.count.push(item.count);
+
+              }
             });
             }
           }

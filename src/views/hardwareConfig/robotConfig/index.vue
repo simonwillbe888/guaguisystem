@@ -620,15 +620,15 @@ export default {
       let self = this;
       self.bigAreaOptions = [];
       GetMapData().then((res)=>{
+        console.log('待命点',res)
         const obj = []
         res.data.stations.forEach(element => {
-          console.log(element.type)
+          console.log(element.type,'aaaaa')
           if(element.type == 2){
             obj.push({
               label:element.vertex.number,
               value:element.vertex.number
             })
-
           }
           self.StationVertex= obj
         });
@@ -645,7 +645,6 @@ export default {
             };
             self.bigAreaOptions.push(optionObj);
           }
-          console.log("查看区域",self.bigAreaOptions )
         })
         .catch((error) => {
           self.$notify({
@@ -750,6 +749,7 @@ export default {
       this.dialogFormVisible = true;
       this.dialogType = 'addRobots';
       this.robotForm.isEdit = false;
+      this.standByChecked =false
       this.resetForm();
     },
     addSuccess(robotForm, robotParam) {
@@ -765,7 +765,6 @@ export default {
             areaID: Number(robotParam.siteName),
             carrierIP: robotParam.robotIp,
           };
-          console.log("查看robotParam",robotParam)
           // 绑定待命点
           if (this.standByChecked) {
             param.isHomeStation = true;
@@ -782,7 +781,6 @@ export default {
           }
           addCarrier(param)
             .then((response) => {
-              console.log("新增机器人的参数",param)
               if (response.code === 20000) {
                 this.$notify({
                   type: 'success',
@@ -804,7 +802,6 @@ export default {
               });
             });
         } else {
-          console.log('error submit!!');
           return false;
         }
       });
@@ -815,7 +812,6 @@ export default {
     },
     editRobot(item, flag) {
       let that = this
-      console.log("查看详情",item,flag)
       this.vertex = item.homeStation
       this.standByChecked = true;
       if (item) {
@@ -831,12 +827,11 @@ export default {
           agvTypes: item.type,
         };
         if (item.standby) {
-          console.log("checkbox是true为何不渲染",that.standByChecked)
           this.standByPoint = item.homeStation;
           that.standByChecked = true;
-          console.log("",typeof that.standByChecked)
+          // console.log("",typeof that.standByChecked)
         } else {
-          console.log("为什么还绑定")
+          // console.log("为什么还绑定")
           this.standByPoint = '';
           this.standByChecked = false;
         }
@@ -909,7 +904,6 @@ export default {
               });
             });
         } else {
-          console.log('error submit!!');
           return false;
         }
         this.dialogFormVisible = false;
@@ -934,10 +928,8 @@ export default {
           }
         )
           .then(() => {
-            console.log("查看id",item.id)
             deleteCarrier(item.id)
               .then((response) => {
-                console.log(response)
                 let data = response.data;
                 if (response.code === 20000) {
                   self.initRobot();
@@ -977,7 +969,6 @@ export default {
     },
     // 关联配件
     configAccesso(val) {
-      console.log("查看关联配件",val)
       let self = this;
       //   this.robotId = val.carrierId;
       this.accessoID = val.carrierId
@@ -990,7 +981,6 @@ export default {
       self.accessoInfoArr = [];
       getAccessory(this.accessoID)
         .then((response) => {
-          console.log('获取',response,this.accessoID)
           let data = response.data ? response.data : [];
           data.forEach((item) => {
             self.typeOptions.forEach((node) => {
@@ -1070,7 +1060,6 @@ export default {
         });
       });
       const res = await saveAccessory(data);
-      console.log("查看保存参数",data)
       if (res.code === 20000) {
         this.dialogAccessFlag = false;
         this.$notify({
