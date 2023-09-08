@@ -19,7 +19,7 @@ export function GetMonitorData(){
 
 export function moveCar(Direct,Speed,Span,SendTime){
   return request2({
-    url:'/api/Vcu/Move?Direct=' + Direct +'&Speed=' +Speed + 
+    url:'/api/Vcu/Move?Direct=' + Direct +'&Speed=' +Speed +
     '&Span='+ Span +'&SendTime=' +SendTime,
     method:'post',
     data:{},
@@ -202,7 +202,7 @@ export function getAccessory(carId) {
   return request({
     url: '/api/CarrierAccessory/GetCarrierAccessoryList?carrierID='+ carId,
     method: 'post',
-   
+
   });
 }
 //语音播报
@@ -301,6 +301,36 @@ export function delVideoRecordList(data) {
     url: '/api/DVR/Delete',
     method: 'post',
     params: data,
+  });
+}
+
+export function findRecordList(data) {
+  return request({
+    url: '/api/DVR/findRecordList',
+    method: 'post',
+    data,
+  });
+}
+
+export function getRecordList(id) {
+  return request({
+    url: '/api/DVR/getRecordList?id='+id,
+    method: 'get'
+  });
+}
+
+export function getRecordByName(id,name) {
+  return request({
+    url: '/api/DVR/getRecordByName?id='+id+'&name='+name,
+    method: 'get'
+  });
+}
+
+export function downloadRecordByFile(id,fileName) {
+  return request({
+    url: '/api/DVR/downloadRecordByFile?id='+id+'&fileName='+fileName,
+    method: 'get',
+    timeout: 600000,
   });
 }
 
