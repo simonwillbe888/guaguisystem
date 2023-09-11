@@ -415,24 +415,33 @@
 
       </div>
 
-      <span slot="footer" class="dialog-footer" style="display: flex;justify-content: center;margin-top: 0.5rem">
-        <el-button type="success" size="mini" @click="loadNextRecord(1)" :disabled="ids >= fileList.length">
-          ←
-        </el-button>
-        <div style="margin: auto 1rem;width: 5rem;align-items: center;justify-content:center;display: flex">
-          <span style="color: #FFFFFF;">
-            {{ this.searchResultText }}
-          </span>
+      <span slot="footer" class="dialog-footer">
+        <div style="display: flex;justify-content: center;align-items: center;margin-top: 0.5rem">
+          <el-button type="success" size="mini" @click="loadNextRecord(1)" :disabled="ids >= fileList.length">
+            ←
+          </el-button>
+          <div style="margin: auto 1rem;width: 5rem;text-align: center;justify-content:center;">
+            <span style="color: #FFFFFF;">
+              {{ this.searchResultText }}
+            </span>
+          </div>
+          <el-button type="success" size="mini" @click="loadNextRecord(-1)" :disabled="ids <= 0">
+            →
+          </el-button>
         </div>
-        <el-button type="success" size="mini" @click="loadNextRecord(-1)" :disabled="ids <= 0">
-          →
-        </el-button>
+        <div style="position: absolute;left: 1rem;bottom: 1.5rem;justify-content:center;text-align: center">
+          <span style="color: #FFFFFF;">自动续播</span>
+          <el-switch active-text="开" inactive-text="关" v-model="autoContinuePlay" :active-value=true :inactive-value=false ></el-switch>
+          <span style="color: #FFFFFF;margin-left: 1rem" v-if="autoContinuePlay">方向 {{ this.playDirection == 1? "←" : "→"}}</span>
+        </div>
+        <div style="position: absolute;right: 1rem;bottom: 1.5rem;">
+          <el-button type="primary" size="mini" @click="nvrRecordVisible = false">
+          关闭
+          </el-button>
+        </div>
       </span>
 
-<!--      <span slot="footer" class="dialog-footer">-->
-<!--        <span style="color: #FFFFFF;margin-right: 2rem;">-->
-<!--          {{ this.searchResultText }}-->
-<!--        </span>-->
+<!--      <span slot="footer" class="dialog-footer" style="align-self: flex-end;">-->
 <!--        <el-button type="primary" size="mini" @click="nvrRecordVisible = false">-->
 <!--          关闭-->
 <!--        </el-button>-->
@@ -611,6 +620,9 @@ export default {
       recordTotalTime: null,
       recordReload: true,
       recordPlayTime: null,
+      autoContinuePlay: false,
+      autoCoutinueCount: 0,
+      playDirection: -1,
       headerCellStyle: {"text-align":"center"},
       cellStyle: { "text-align":"center" },
       cleanBuff: null,
@@ -679,8 +691,9 @@ export default {
       this.id = 0
       this.titleName = ''
       this.recordVideoSrc = ''
+      this.recordTimerCount = 0
 
-      this.middleTime = moment().format("YYYY-MM-DD 00:00:00")
+      this.middleTime = moment(new Date()).format("YYYY-MM-DD 00:00:00")
       this.currentTime = new Date(this.middleTime).getTime()
       this.startTimestamp = new Date(this.middleTime).getTime() - 15 * 60 * 1000
 
@@ -701,7 +714,8 @@ export default {
           }else {
             return
           }
-          this.searchResultText = (this.ids+1)+' / '+res.data.length
+          this.searchResultText = (this.ids+1)+' / '+ res.data.length
+          this.recordTimerCount = res.data.length
 
           this.timeSegments = []
           res.data.forEach((item,index)=>{
@@ -714,12 +728,12 @@ export default {
             })
           })
           // console.log('this.timeSegments--->',this.timeSegments)
-          if(res.data.length>0){
+          if(res.data.length > 0){
             this.middleTime = res.data[0].start
             this.currentTime = new Date(this.middleTime).getTime()
-            this.startTimestamp = this.currentTime - 15 * 60 * 1000;
+            this.startTimestamp = this.currentTime - 15 * 60 * 1000
             this.onMouseup(res.data[0],false,false)
-            this.ctx.clearRect(0, 0, this.width, this.height);
+            this.ctx.clearRect(0, 0, this.width, this.height)
           }
           this.draw();
         }else {
@@ -800,6 +814,7 @@ export default {
         if(res.code == 20000){
           this.fileList = [...res.data]
           this.searchResultText = (this.ids+1)+' / '+res.data.length
+          this.recordTimerCount = res.data.length
 
           this.timeSegments = []
           res.data.forEach((item,index)=>{
@@ -843,27 +858,27 @@ export default {
               if(res.code == 20000){
 
                 if(res.data.progress != 101 && res.data.downloading == false){
-                  clearInterval(this.downloading[row.name])
                   this.$set(this.fileList[index],'downloading',false)
                   this.$notify({
                     message: "加载失败 请重试",
                     type: 'warning',
                     title: '提示',
                   });
+                  clearInterval(this.downloading[row.name])
+                }else {
+                  //更新下载状态
+                  this.$set(this.fileList[index],'progress',res.data.progress)
+                  this.$set(this.fileList[index],'downloading',true)
                 }
 
                 // this.fileList.forEach((item,index) => {
                 //   if(item.name == res.data.name){
 
-                //更新下载状态
-                this.$set(this.fileList[index],'progress',res.data.progress)
-                this.$set(this.fileList[index],'downloading',true)
-
                 //下载完成标志
                 if(res.data.progress == 101){
-                  clearInterval(this.downloading[row.name])
                   this.$set(this.fileList[index],'download',true)
                   this.$set(this.fileList[index],'downloading',false)
+                  clearInterval(this.downloading[row.name])
                 }
                 //   }
                 // })
@@ -897,26 +912,36 @@ export default {
       })
     },
 
-    //回看录像文件
-    playRecordFile(row){
+    //录像回看文件
+    playRecordFile(row,timing){
 
       // console.log("playRecordFile",+row)
       this.nvrRecordData = {src:''}
       this.titleName = '回看 '+ row.start + ' - ' + row.stop +' '
       this.recordVideoSrc = '/'+row.name+".mp4"
-      this.$forceUpdate()
-      this.$nextTick(()=>{
-        this.$refs.recordVideo.load()
-      })
+
+      this.recordStart = row.start
+      this.recordStop = row.stop
+      this.recordTotalTime = (new Date(row.stop) - new Date(row.start))/1000
 
       if(this.recordTimer){
         clearInterval(this.recordTimer)
       }
-      this.timingTimeline(row.start)
 
-      this.$refs.recordVideo.addEventListener("loadeddata", function() {
-        this.onVideoLoaded('video')
-      });
+      if(timing){
+        this.timingTimeline(row.start)
+      }
+
+      this.$refs.recordVideo.addEventListener("loadeddata", this.onVideoLoaded('video'))
+      this.$refs.recordVideo.addEventListener("ended", ()=>{
+        if(this.autoContinuePlay){
+          this.loadNextRecord(this.playDirection)
+        }
+      })
+      this.$nextTick(()=>{
+        this.$refs.recordVideo.load()
+      })
+      this.$forceUpdate()
       // this.currentTime = new Date(row.start).getTime()
       // this.startTimestamp = this.currentTime - 15 * 60 * 1000;
       // this.middleTime = row.start
@@ -942,7 +967,6 @@ export default {
 
     //录像预览
     playRecord(row,timing){
-      this.recordTimerCount = 0
 
       this.nvrRecordData= {src:''}
       this.recordVideoSrc = ''
@@ -951,6 +975,11 @@ export default {
       if(timing){
         this.timingTimeline(row.start)
       }
+
+      if(this.recordTimer){
+        clearInterval(this.recordTimer)
+      }
+
       this.recordStart = row.start
       this.recordStop = row.stop
       this.recordTotalTime = (new Date(row.stop) - new Date(row.start))/1000
@@ -961,7 +990,7 @@ export default {
       let webRtcIP = window.location.hostname
       // console.log('playRecord---webRtcIP',webRtcIP)
       // if (webRtcIP == 'localhost' || webRtcIP == '127.0.0.1'){
-      //   webRtcIP = '192.168.20.23'
+        webRtcIP = '192.168.20.23'
       // }
       let port = '554'
       this.nvrData.src = `/static/record.html?data=`+encodeURIComponent(`rtsp://${this.nvrData.userName}:${this.nvrData.passWord}@${this.nvrData.ip}:${port}/Streaming/tracks/${channel}?starttime=${startTime}&endtime=${endTime}`)+`&serve=${webRtcIP}`
@@ -972,8 +1001,9 @@ export default {
     },
 
     loadNextRecord(i){
-      if(this.ids+i >= 0 && this.ids+i < this.fileList.length ){
-        console.log('row--->',this.fileList[this.ids+i])
+      this.playDirection = i
+      if((this.ids+i >= 0) && (this.ids+i < this.fileList.length) ){
+        // console.log('row--->',this.fileList[this.ids+i])
         if(this.fileList[this.ids+i].download){
           console.log('录像回看')
           this.playRecordFile(this.fileList[this.ids+i])
@@ -1008,24 +1038,35 @@ export default {
           if(!this.nvrRecordVisible){
             clearInterval(this.recordTimer)
           }
-          // console.log('newTime',moment(new Date(this.recordStart).getTime()+video.currentTime*1000).format("YYYY-MM-DD HH:mm:ss"))
-          // console.log('video.currentTime--->',video.currentTime)
+          let lastPlayTime = this.recordPlayTime
+
           this.recordPlayTime = moment(new Date(this.recordStart).getTime()+video.currentTime*1000).format("YYYY-MM-DD HH:mm:ss")
+
+          //当开启了自动续播后在播放结束后3秒会自动播放
+          if(this.autoContinuePlay && new Date(this.recordPlayTime) - new Date(this.recordStop) < 5*1000 && this.autoCoutinueCount >= 6) {
+            // console.log('autoContinuePlay')
+            this.autoCoutinueCount = 0
+            this.loadNextRecord(this.playDirection)
+          }
+
           //当播放时间未超过结束时间持续调整指向标
-          // console.log('this.recordTotalTime--->',this.recordTotalTime)
           if(new Date(this.recordPlayTime) - new Date(this.recordStop) < 0){
             this.timingTimeline(this.recordPlayTime)
-
+            if(lastPlayTime == this.recordPlayTime && video.currentTime!= 0){
+              this.autoCoutinueCount ++
+            }else {
+              this.autoCoutinueCount = 0
+            }
+          }else if(video.currentTime >= this.recordTotalTime && !this.autoContinuePlay){
             //视频播放时长超过视频播放时间就暂停
-          }else if(video.currentTime >= this.recordTotalTime){
-            clearInterval(this.recordTimer)
-            video.pause()
-
-            //其他情况暂停播放
-          }else {
-            clearInterval(this.recordTimer)
-            video.pause()
+              clearInterval(this.recordTimer)
+              video.pause()
           }
+          // else {
+          //   //其他情况暂停播放
+          //   clearInterval(this.recordTimer)
+          //   video.pause()
+          // }
           // console.log("recordNow",recordNow)
 
           // 播放重载定时器 设定一直不播放10秒后自动重载
@@ -1051,7 +1092,7 @@ export default {
       let webRtcIP = window.location.hostname
       // console.log('reloadIframe---webRtcIP',webRtcIP)
       // if (webRtcIP == 'localhost' || webRtcIP == '127.0.0.1'){
-      //   webRtcIP = '192.168.20.23'
+        webRtcIP = '192.168.20.23'
       // }
       this.getPeerConnectionList(webRtcIP)
       setTimeout(()=>{
@@ -1287,6 +1328,7 @@ export default {
 
     //鼠标起来的操作
     onMouseup(data,play,timing) {
+
       // 设置一下标志位 移动取消
       this.mousedown = false;
       //中间刻度距离左侧画布左侧距离
@@ -1299,12 +1341,12 @@ export default {
 
       //判断指向标落在哪个区间段的录像 并进行播放
       let ctime = this.currentTime
+
+      console.log('this.currentTime',moment(this.currentTime).format("YYYY-MM-DD HH:mm:ss"),)
       let closestTime
-      let findOut = false
       //给播放区段赋浅蓝色
-      this.timeSegments.find((item,index)=>{
-        if(ctime >= item.beginTime && ctime < item.endTime && !findOut){
-          findOut = true
+      this.timeSegments.forEach((item,index)=>{
+        if(ctime >= item.beginTime && ctime < item.endTime){
           this.$set(this.timeSegments[index],'style',{background: "#64c8c8"})
           this.ids = index
           closestTime = item
@@ -1331,6 +1373,7 @@ export default {
           this.$set(this.timeSegments[index],'style',{background: timelineColor})
         }
       })
+      // console.log('closestTime',closestTime)
 
 
       if(data == null){
