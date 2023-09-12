@@ -1,5 +1,5 @@
 import request from '@/utils/request';
-
+import request3 from '@/utils/request3'
 // 巡检记录配置
 export function getList(StartTime, EndTime) {
   return request({
@@ -64,7 +64,7 @@ export function getAlarmListByPatrolRecordID(id) {
   });
 }
 export function exportExcel(data){
-  return request({
+  return request3({
     url:'/api/AlarmRecord/currentAlarmRecordExportExcel',
     responseType:'blob',
     method:'post',
@@ -72,7 +72,7 @@ export function exportExcel(data){
   })
 }
 export function exportHistoryExcel(data){
-  return request({
+  return request3({
     url:'/api/AlarmRecord/historyAlarmRecordExportExcel',
     responseType:'blob',
     method:'post',
@@ -80,7 +80,7 @@ export function exportHistoryExcel(data){
   })
 }
 export function patrolRecordExportExcel(data){
-  return request({
+  return request3({
     url:'/api/PatrolRecord/patrolRecordExportExcel',
     responseType:'blob',
     method:'post',
@@ -88,7 +88,7 @@ export function patrolRecordExportExcel(data){
   })
 }
 export function exportRecord(data){
-  return request({
+  return request3({
     url:'/api/SystemLog/systemLogExportExcel',
     responseType:'blob',
     method:'post',

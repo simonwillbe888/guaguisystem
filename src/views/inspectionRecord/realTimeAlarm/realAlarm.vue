@@ -330,7 +330,7 @@ export default {
       };
       getCurrentAlarmRecordList(param)
         .then((response) => {
-          // console.log("查看实时告警参数", param)
+          console.log("查看实时告警参数", response)
           self.total = response.data.total;
           if (self.total > 0) {
             self.exportVisible = true
@@ -401,7 +401,7 @@ export default {
         console.log("实时", e)
         this.alarm = e
         if(e.alarmCode == 1014){
-          this.imageUrl = 'http://192.168.20.6:8888/images/' + e.Image
+          this.imageUrl = process.env.VUE_APP_BASE_API + '/images/' + e.Image
         }
         else{
           this.imageUrl = 'http://192.168.20.44:8888/images/' + e.Image

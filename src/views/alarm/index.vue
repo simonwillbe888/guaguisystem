@@ -137,7 +137,7 @@
           align="center"
         >
           <template slot-scope="{ row }">
-            <span>{{ row.OccurThreshold/100 }}</span>
+            <span>{{typeof (row.OccurThreshold) != 'number'? null : row.OccurThreshold/100 }}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -146,7 +146,7 @@
           align="center"
         >
           <template slot-scope="{ row }">
-            <span>{{ row.RecoveryThreshold/100 }}</span>
+            <span>{{typeof(row.RecoveryThreshold) != 'number'?null :row.RecoveryThreshold/100 }}</span>
           </template>
         </el-table-column>
         <el-table-column prop="" label="操作" align="center" width="300" >
@@ -473,18 +473,13 @@ export default {
       };
       getAlarmSetList(param)
         .then((response) => {
+          console.log('告警配置',response.data)
           self.total = response.data.total;
            this.alarmInfoArr = (response.data || {}).records;
-           console.log("查看数据",this.alarmInfoArr)
 
         })
         .catch((error) => {
-          //   self.$notify({
-          //     title: self.$t('user.Failure'),
-          //     message: self.$t('user.interface_call_failed_tip'),
-          //     type: 'error',
-          //     duration: 2000,
-          //   });
+
         });
     },
     // 告警类型、设备类型、级别、处理方式
@@ -495,7 +490,6 @@ export default {
       self.alarmLevelOptions = [];
       getAlarmTypeList()
         .then((response) => {
-          console.log("查看告警类型",response)
           if (response && response.data.length) {
             self.alarmTypeOptions = [];
             response.data.forEach((item) => {
@@ -586,12 +580,7 @@ export default {
               }
             })
             .catch(() => {
-              self.$notify({
-                title: self.$t('user.Failure'),
-                message: self.$t('user.interface_call_failed_tip'),
-                type: 'error',
-                duration: 1000,
-              });
+  
             });
         })
         .catch(() => {});
@@ -615,6 +604,7 @@ export default {
             // areaId: Number(alarmForm.alarmArea),
             occurThreshold: alarmForm.OccurThreshold*100,
             recoveryThreshold: alarmForm.RecoveryThreshold*100,
+            gasType:alarmForm.gasType
           };
           console.log("查看新增数据",param)
           getAddAlarmSet(param)
@@ -633,12 +623,6 @@ export default {
             })
             .catch((error) => {
               this.cancel();
-              self.$notify({
-                title: self.$t('user.Failure'),
-                message: self.$t('user.interface_call_failed_tip'),
-                type: 'error',
-                duration: 1000,
-              });
             });
         } else {
           // console.log('error submit!!');
@@ -653,9 +637,14 @@ export default {
         this.dialogType = 'editAlarmTask';
         this.alarmForm = { ...obj };
       }
-          console.log("查看修改的数据",this.alarmForm)
-          this.alarmForm.OccurThreshold=  this.alarmForm.OccurThreshold/100
+          console.log("查看修改的数据",obj)
+          this.alarmForm.gasType = obj.GasType
+          if(typeof (this.alarmForm.OccurThreshold) == 'number'){
+            this.alarmForm.OccurThreshold=  this.alarmForm.OccurThreshold/100
           this.alarmForm.RecoveryThreshold = this.alarmForm.RecoveryThreshold/100
+          }
+       
+          // this.alarmForm.gasType = obj.AlarmName
     },
     // 修改成功
     editSuccess(alarmData) {
@@ -689,22 +678,10 @@ export default {
                 });
               }
               else{
-                this.$notify({
-                  type: 'error',
-                  message: response.data,
-                  title: '提示',
-                  duration: 1000,
-                });
               }
             })
             .catch((error) => {
               this.cancel();
-              self.$notify({
-                title: self.$t('user.Failure'),
-                message: self.$t('user.interface_call_failed_tip'),
-                type: 'error',
-                duration: 1000,
-              });
             });
         } else {
           // console.log('error submit!!');
@@ -819,12 +796,6 @@ export default {
         .catch((error) => {
           //   console.log(error, '--------00');
           //   self.closeDetail();
-          self.$notify({
-            title: self.$t('user.Failure'),
-            message: self.$t('user.interface_call_failed_tip'),
-            type: 'error',
-            duration: 1000,
-          });
         });
     },
     // 关闭明细

@@ -307,7 +307,7 @@ export default {
       getAllPatrolLocation(this.siteName,this.inquireVal)
         .then((response) => {
           self.inspectPoints = response.data;
-           console.log("查看巡检计划",response)
+           console.log("巡检点",response)
            self.inspectInfoArr = self.inspectPoints
           // if (self.inspectPoints.length) {
           //   for (let i = 0, len = self.inspectPoints.length; i < len; i++) {
@@ -339,6 +339,7 @@ export default {
       getArea()
         .then((response) => {
           let accessTypeArr = response.data;
+          console.log('看区域',response)
           for (let i = 0, len = accessTypeArr.length; i < len; i++) {
             let optionObj = {
               value: accessTypeArr[i].id,

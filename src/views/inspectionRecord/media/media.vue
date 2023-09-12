@@ -71,7 +71,7 @@
 import {
   getPatrolFileList, GetPhotoData, GetVideoData, GetPTZFile, downLoadPTZFile
 } from '@/api/inspectRecord';
-import { downLoadBatchPTZFile } from '../../../api/sysCtrl';
+import { downLoadBatchPTZFile ,getDownLoadFile} from '../../../api/sysCtrl';
 import Pagination from '@/components/Pagination';
 
 import { mapGetters, mapState } from 'vuex';
@@ -97,6 +97,7 @@ export default {
       enlargePic: false,
       picLarger: null,
       exportRole:false,
+      timer:null
     };
   },
   mounted() {
@@ -128,10 +129,10 @@ export default {
         this.list.forEach(element => {
 
           if (element.fileType == 4) {
-            element.FilePath = 'http://192.168.20.6:8888/' + element.fileUrl
+            element.FilePath = process.env.VUE_APP_BASE_API  + element.fileUrl
           }
           else if (element.fileType == 1) {
-            element.FilePath = 'http://192.168.20.6:8888/images/' + element.fileUrl
+            element.FilePath = process.env.VUE_APP_BASE_API + '/images/' + element.fileUrl
           }
 
         });
@@ -234,7 +235,6 @@ export default {
         currend: null,
         fileType: that.actions
       }
-      console.log('下载的类型参数', typeof params.fileType, params)
       // console.log(params.fileType)
       if (that.actions == null) {
           this.$notify({
@@ -249,40 +249,14 @@ export default {
           // console.log("查看",that.download)
           this.$notify({
             type: 'success',
-            message: '下载成功，请稍候',
+            message: '加载中，请稍候',
             title: '提示',
             duration: 1000,
           });
+          this.$parent.downloadMedia(params)
+        
         }
-      downLoadBatchPTZFile(params).then((res) => {
-        console.log('下载成功')
-
-
-
-        let blob = new Blob([res], { type: "application/zip" });
-        // let blob = new Blob([res]);//response.data为后端传的流文件
-        let downloadFilename = '下载文件' + this.$moment(new Date()).format('YYYY-MM-DD HH:mm:ss') + ".zip";//设置导出的文件名  用moment时间插件对文件命名防止每次都是一样的文件名
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          //兼容ie浏览器
-          window.navigator.msSaveOrOpenBlob(blob, downloadFilename)
-        } else {
-          //谷歌,火狐等浏览器
-          let url = window.URL.createObjectURL(blob);
-          let downloadElement = document.createElement("a");
-          downloadElement.style.display = "none";
-          downloadElement.href = url;
-          downloadElement.download = downloadFilename;
-          document.body.appendChild(downloadElement);
-          downloadElement.click();
-          document.body.removeChild(downloadElement);
-          window.URL.revokeObjectURL(url);
-        }
-      }).catch(function (err) {
-        // console.log(err)
-      }).finally(function () {
-
-      })
-    },
+  },
     largerPic(src) {
       console.log('放大版', src)
       this.picLarger = src

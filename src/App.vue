@@ -2,6 +2,8 @@
   <div id="app"
        v-cloak>
     <router-view />
+    <iframe id="startTalk" hidden="hidden" src="/demo/cn/demo.html" frameborder="0" style="width: 0;height: 0;" ></iframe>
+
   </div>
 </template>
 

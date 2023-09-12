@@ -619,7 +619,6 @@ export default {
       })
         .then((response) => {
           let planArr = response.data || [];
-           console.log("查看巡检计划",planArr)
           if (planArr.length) {
             //表格数据重构
             planArr.forEach((item) => {

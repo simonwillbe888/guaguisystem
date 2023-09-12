@@ -14,7 +14,6 @@ import { resolve } from 'path';
 import { reject } from 'q';
 import { callbackify } from 'util';
 import { mapGetters, mapState } from 'vuex';
-
 var ws = null; //实现WebSocket
 
 export default {
@@ -38,11 +37,10 @@ export default {
   mounted() {
     this.init()
     this.beforeunloadHandler()
+    window.addEventListener('notification', this.functionForJs);
     // window.functionForJs = this.functionForJs
   },
-  beforeDestroy() {
-    this.end()
-  },
+
   computed:{
     ...mapGetters(['clostSpeak']),
     standby(){
@@ -84,10 +82,7 @@ export default {
     begin() {
 
       console.log('查看id', typeof this.carID, this.carID)
-
-       this.openSpeak().then((res)=>{
-
-       })
+       this.openSpeak()
 
      },
     openSpeak(){
@@ -111,7 +106,7 @@ export default {
 
     },
     functionForJs(){
-
+       console.log('收到通知+','aaa')
         this.speak = false
 
     },
@@ -119,10 +114,10 @@ export default {
      * 关闭对讲
      */
     end() {
+      console.log('关闭按下了')
       if(this.speak){
         this.stopSpeak().then((res)=>{
          stopTalk(this.carID).then((res)=>{
-           console.log('关闭了',res.code)
            if(res.code == 20000){
             this.speak = false
            }
@@ -132,19 +127,22 @@ export default {
 
     },
     stopSpeak(){
-      return new Promise((resolve,reject)=>{
+        return new Promise((resolve,reject)=>{
         var iframe = document.getElementById('startTalk')
       iframe.contentWindow.clickStopVoiceTalk()
+      console.log('关闭对讲')
       resolve()
+
       })
     },
     beforeunloadHandler(e) {
+      console.log('监听intercom关闭')
       window.addEventListener("beforeunload", () => {
          if(this.speak){
           this.end()
          }
       });
-      // console.log('埋点监听')
+      console.log('埋点监听')
     },
   },
 };

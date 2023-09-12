@@ -118,8 +118,10 @@
           </el-table-column>
           <el-table-column prop="Status" label="告警状态" align="center" width="130">
             <template slot-scope="scope">
-              {{ scope.row.Status == 1 ? '提示' : scope.row.Status == 2 ? '一般' : scope.row.Status == 3 ? '严重' : scope.row.Status ==
-                4 ? 致命 : '默认' }}
+              {{ scope.row.Status == 1 ? '发生' : scope.row.Status == 2 ? '正常恢复' : scope.row.Status == 3 ? '重启恢复' : scope.row.Status ==
+                4 ? '手动接触' :scope.row.Status ==
+                5 ? '重新检测恢复':scope.row.Status ==
+                6 ? '归档': '异常值' }}
             </template>
 
           </el-table-column>

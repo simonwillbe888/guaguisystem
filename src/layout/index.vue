@@ -32,7 +32,11 @@
 
       <screenfull id="screenfull" class="right-menu-item hover-effect" style="margin-right: 1.875rem;color: white" />
       <div class="right">
-
+        <div class="message-container" v-show="show" @mouseenter="showCloseIcon = true"
+          @mouseleave="showCloseIcon = false">
+          <el-progress :percentage="progressPercentage" style="width: 9rem;" color="#66b3b2"></el-progress>
+          <i class="el-icon-close" style="color: #fff;" v-show="showCloseIcon" @click="closeProgress"></i>
+        </div>
         <el-dropdown class="avatar-container" trigger="click">
           <div class="avatar-wrapper">
             <!-- <img
@@ -76,10 +80,13 @@
     <div class="warnes">
       <WebSocket></WebSocket>
     </div>
+
+
   </div>
 </template>
 
 <script>
+import { Message, Progress } from 'element-ui';
 import { Navbar, Sidebar, AppMain } from './components';
 import { getExistCarrierAreaList } from '@/api/areaConfig.js'
 import WebSocket from '@/components/WebSocket';
@@ -88,7 +95,7 @@ import { getAlarmNotice } from '@/api/user.js';
 import { mapGetters } from 'vuex';
 import { removeToken } from '@/utils/auth';
 import { loginOut, remoteLoginOut, getInfo } from '@/api/user'
-
+import { downLoadBatchPTZFile, getDownLoadFile } from '../api/sysCtrl';
 export default {
   name: 'Layout',
   components: {
@@ -109,7 +116,12 @@ export default {
       interValTime: '',
       nickName: '',
       options: [],
-      choosedArea: ''
+      choosedArea: '',
+      show: false,
+      progressPercentage: 0,
+      timer: null,
+      progressTimer: null,
+      showCloseIcon: false
     };
   },
   created() {
@@ -133,7 +145,7 @@ export default {
 
   },
   computed: {
-    ...mapGetters(['permission_routes', 'sidebar', 'logoutState', 'token','areaId']),
+    ...mapGetters(['permission_routes', 'sidebar', 'logoutState', 'token', 'areaId']),
     logoutAuto() {
       return this.logoutState
     },
@@ -185,10 +197,8 @@ export default {
         duration: 1000,
       });
     },
-    choosedArea(newV,old){
-      this.$store.dispatch('global/setAreaId',newV)
-      console.log('区域切换了',newV,this.areaId)
-
+    choosedArea(newV, old) {
+      this.$store.dispatch('global/setAreaId', newV)
     }
   },
   methods: {
@@ -207,9 +217,8 @@ export default {
       this.currentManue.currentPath = this.$route.path;
     },
     init() {
-
       getExistCarrierAreaList().then((res) => {
-        console.log('区域',res)
+        console.log('区域', res)
         let accessTypeArr = res.data
         this.choosedArea = accessTypeArr[1].id
         for (let i = 0, len = accessTypeArr.length; i < len; i++) {
@@ -236,7 +245,41 @@ export default {
       this.$store.dispatch('user/logout')
       removeToken();
       this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+    },
+    showProgressMessage() {
+
+    },
+    downloadMedia(params) {
+      console.log('获取的参数', params, process.env.VUE_APP_BASE_API)
+      downLoadBatchPTZFile(params).then((response) => {
+        clearInterval(this.progressTimer)
+
+        console.log('下载文件名', response.data)
+        let file = encodeURIComponent(response.data)
+        this.progressTimer = null
+        this.progressTimer = setInterval(() => {
+          getDownLoadFile(file).then((res) => {
+            console.log('正式下载', res, file)
+            this.show = true
+
+            this.progressPercentage = Number(res.data)
+            if (Number(res.data) >= 100) {
+               this.closeProgress()
+              window.location.href = process.env.VUE_APP_BASE_API + '/download/' + response.data
+
+            }
+          })
+        }, 1000)
+
+      })
+    },
+    closeProgress() {
+      clearInterval(this.progressTimer)
+      this.progressTimer = null
+      this.show = false;
+      this.progressPercentage = 0;
     }
+
     // getWarn() {
     //   this.interValTime = setInterval(async () => {
     //     console.log('cgw444444---dddddd');
@@ -251,6 +294,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.message-container {
+  display: flex;
+  position: fixed;
+  top: 6rem;
+  width: 10rem;
+  right: 20px;
+  z-index: 99;
+}
+
+::v-deep .el-progress__text {
+  color: #fff;
+}
+
 .container {
   padding: 0;
   background: rgb(8, 46, 80);

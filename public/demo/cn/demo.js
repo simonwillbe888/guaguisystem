@@ -759,7 +759,7 @@ function clickStartVoiceTalk() {
         var szInfo = " 开始对讲失败！";
         console.log('对讲失败',szDeviceIdentify + szInfo)     
         
-        alert('请先打开HCWebSDKPlugin.exe')
+        alert('请重新打开HCWebSDKPlugin并刷新')
         const data = '123'
         window.functionForJs(data)
         showOPInfo(szDeviceIdentify + szInfo, oError.errorCode, oError.errorMsg);

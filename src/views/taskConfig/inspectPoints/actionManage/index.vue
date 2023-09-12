@@ -422,13 +422,12 @@
               clearable
 
             >
-              <el-option
-                v-for="item in pointOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-
-              >
+                   <el-option
+                  v-for="item in patrolLocationList"
+                  :key="item.locationID"
+                  :label="item.vertexID"
+                  :value="item.locationID"
+                >
               </el-option>
             </el-select>
           </el-form-item>
@@ -941,6 +940,7 @@ export default {
       self.pointOptions = [];
       getMapData()
         .then((response) => {
+          console.log('导航点编号',response)
           let jsonData = response.data;
           if (jsonData) {
             let pointArr = jsonData.vertexs;
@@ -996,7 +996,6 @@ export default {
         res.data.forEach((element)=>{
           this.patrolLocationList.push(element)
         })
-        // this.patrolLocationList = res.data || [];
       }
       
       // } catch (error) {}

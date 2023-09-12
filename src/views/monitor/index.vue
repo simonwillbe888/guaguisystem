@@ -1,46 +1,27 @@
 <template>
   <div style="height:100%">
-    <!-- <div class="page-title">
-      {{ $t("home_page.monitor_information") }}
-      <span class="video-btn" @click="$router.push('/map')"
-        ><svg-icon icon-class="ditu"
-      /></span>
-    </div> -->
     <div class="content"  v-loading="loading">
       <el-row :gutter="10">
         <el-col :span="6">
-          <!-- <div class="selectAdvice">
-            <div class="cearchAdvice">
-              <el-input placeholder="输入关键字进行过滤" v-model="filterText">
-              </el-input>
-            </div>
-            <el-tree class="filter-tree"
-            :data="adviceList" :props="defaultProps"
-            :filter-node-method="filterNode"
-            ref="tree" node-key="label" auto-expand-parent accordion expand-on-click-node
-              :default-expanded-keys="defaultExpanded"
-              	 @node-click="treeNodeClick">
-            </el-tree>
-          </div> -->
           <div class="robot back-shaodow">
             <div class="leftTitle"> 机器人信息 <span v-if="butteryInfo">({{ butteryInfo }})</span> </div>
             <div class="robotMessage">
               <div>
                 当前速度
                 <div>
-                  {{ carList.realTimeSpeed == null ? '0' : Math.abs((carList.realTimeSpeed / 1000).toFixed(1)) }} m/s
+                  {{isNaN(carList.realTimeSpeed) ? '0' : Math.abs((carList.realTimeSpeed / 1000).toFixed(1)) }} m/s
                 </div>
               </div>
               <div style="margin-left:10% ;">
                 累计运行里程
                 <div>
-                  {{ carList.totalDistance == null ? '0' : (carList.totalDistance / 100000).toFixed(2) }} Km
+                  {{ isNaN(carList.totalDistance) ? '0' : (carList.totalDistance / 100000).toFixed(2) }} Km
                 </div>
               </div>
               <div>
                 累计运行时间
                 <div>
-                  {{ carList.totalRunTime == null ? '0' : (carList.totalRunTime / 1440).toFixed(1) }} Day
+                  {{ isNaN(carList.totalRunTime) ? '0' : (carList.totalRunTime / 1440).toFixed(1) }} Day
                 </div>
               </div>
             </div>
@@ -93,13 +74,6 @@
                 style="width: 100%;height:27.5rem;border: 1px solid transparent;" marginwidth="0" marginheight="0"
                 name="ddddd" :id="'iframes0'" control="" scrolling="auto" :src="currentAdvices[0].src">
               </iframe>
-              <!-- <iframe v-for="(item, index) in currentAdvices" allow="fullscreen" :class="[
-                  currentCamera.accessoryID === item.accessoryID
-                    ? 'active'
-                    : '',
-                ]" :ref="'iframe' + index" :myData="item" style="width: 25.6; height: 40 ;margin-right: 0.9375rem;"
-                  name="ddddd" :id="'iframes' + index" scrolling="auto" :src="item.src" :key="index">
-                </iframe> -->
               <el-button
                 style="position:absolute;margin-left: 0; top:1rem;background-color:transparent;border-color: transparent"
                 size="mini" @click="glassCameraSwitch">
@@ -177,9 +151,6 @@
                   </el-option>
                 </el-select>
               </span>
-              <!-- <el-button size="small" round
-                  style="background-color:#66B3B2 ; color:#ffffff;margin-left: 3.75rem;height: 3;line-height: 0.3125rem;"
-                  @click="startPlan()">执行</el-button> -->
               <el-popconfirm title="确定执行任务吗?" @confirm="startPlan()">
                 <div
                   style="background-color:#66B3B2 ; color:#ffffff;margin-left: 7.5rem;width: 3.75rem; text-align: center; height: 1.875rem;line-height: 1.875rem;"
@@ -241,8 +212,8 @@
                 <div @click="robotSpeed = 1000" :class="robotSpeed == 1000 ? 'speed_detail_active' : 'speed_detail'">
                   巡检速度
                 </div>
-                <div style="margin-top:0.4375rem ;" @click="robotSpeed = 6000"
-                  :class="robotSpeed == 6000 ? 'speed_urgency_active' : 'speed_urgency'">
+                <div style="margin-top:0.4375rem ;" @click="robotSpeed = 8000"
+                  :class="robotSpeed == 8000 ? 'speed_urgency_active' : 'speed_urgency'">
                   应急速度
                 </div>
               </div>
@@ -262,7 +233,7 @@
                   <div style="color:rgba(100 200 200) ;">温度</div>
                 </div>
                 <div class="gasDetail">
-                  {{ typeof gasList.Temperature === 'number' ? parseFloat((gasList.Temperature / 100).toFixed(1)) : '0' }}℃
+                  {{ isNaN(gasList.Temperature) ?   '0': parseFloat((gasList.Temperature / 100).toFixed(1))}}℃
                 </div>
               </div>
               <div class="enviroDetail">
@@ -271,7 +242,7 @@
                   <div style="color:rgba(100 200 200) ;">湿度</div>
                 </div>
                 <div class="gasDetail">
-                  {{ gasList.Humidity == null ? '0' : (gasList.Humidity / 100).toFixed(1) }}<span
+                  {{ isNaN( gasList.Humidity) ? '0' : (gasList.Humidity / 100).toFixed(1) }}<span
                     style="font-size: 0.625rem;">%</span>
                 </div>
               </div>
@@ -319,6 +290,10 @@
                   <el-table-column width="60" label="序号" type="index" align="center">
                   </el-table-column>
                   <el-table-column prop="AlarmCode" :label="'告警码'" width="80" align="center">
+                  </el-table-column>
+                  <el-table-column prop="CarrierName" :label="'机器人名称'"  align="center">
+                    
+
                   </el-table-column>
                   <el-table-column prop="AlarmName" :label="$t('alarm_dealWith.alarm_name_label')" align="center">
                     <template slot-scope="scope">
@@ -568,7 +543,7 @@ export default {
       broadcastVisible: false,
       selectedOption: '',
       speedList: [{
-        value: 2000,
+        value: 8000,
         label: "应急速度"
       }, {
         value: 1000,
@@ -630,6 +605,7 @@ export default {
     if (this.robotOpen == 1) {
       this.logoutCar()
     }
+    this.$refs.closeIntercom.end()
 
     window.clearInterval(this.carRoller)
     window.clearInterval(this.tempicTimer)
@@ -655,7 +631,7 @@ export default {
     showTable() {
       const now = 0
       const next = this.pageSize * this.pageNum
-      return this.alarmList.slice(now, next);
+       return this.alarmList.slice(now, next);
     },
     carrierIp() {
       return this.carrierSelectedIp
@@ -672,9 +648,11 @@ export default {
       this.$refs.tree.filter(val);
     },
     realTimeAlarminfo(newV, oldV) {
-      if (newV != undefined) {
-        this.showTable.unshift(newV)
-      }
+      // if (newV != undefined) {
+      //   this.showTable.unshift(newV)
+      // }
+      // this.showTable = []
+      this.getAlarmList()
     },
     dialogLocation(newV, old) {
       this.locationAuto = true
@@ -719,18 +697,20 @@ export default {
       this.stopWarn()
     },
     dealwithAlarm() {
-      this.alarmList = []
       setTimeout(() => {
         this.getAlarmList()
-
+        console.log('次数')
       }, 1000)
     },
     //左右切换机器时的改变
     carrierIndex() {
+      console.log('切换机器')
+    
+      this.$store.dispatch('global/setCloseAll', '待机')
+      setTimeout(()=>{    
       if (this.robotOpen == 1) {
         this.logoutCar()
       }
-      this.$store.dispatch('global/setCloseAll', '待机')
       this.carrierSelected = this.carrierArr[this.carrierIndex]
       this.carID = this.carrierSelected.CarrierID
       this.carrierName = this.carrierSelected.CarrierName
@@ -749,15 +729,17 @@ export default {
       }
       this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
       this.getVideo()
+    },1000)
     },
     //切换隧道
     areaId() {
       this.$store.dispatch('global/setCloseAll', '待机')
+      setTimeout(() => {
+        
       this.loading = true
       this.init()
       setTimeout(() => {
         this.getCarTask()
-
       }, 300);
 
       setTimeout(() => {
@@ -767,6 +749,7 @@ export default {
         this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
       }, 2000);
       this.getVideo()
+    }, 1000);
 
       
     }
@@ -785,7 +768,7 @@ export default {
         this.carrierSelected.CarrierAccessoryList.forEach((res) => {
           this.currentAdvices.push(res)
         })
-        // console.log('查看选中机器人', this.carrierSelected)
+        console.log('查看选中机器人', this.carrierSelected.CarrierID)
         this.getAreaName()
         this.carID = this.carrierSelected.CarrierID
         this.carrierName = this.carrierSelected.CarrierName
@@ -816,7 +799,7 @@ export default {
                 y: parseInt(512 / e.target.clientHeight * clientY),
               }
               getTemperature(param).then((res) => {
-                if (res.code == 20000) {
+                if (res.code == 20000 && res.data != '') {
                   this.tempicture = res.data + '℃'
                 }
                 getHot()
@@ -903,7 +886,6 @@ export default {
     },
     getAreaName() {
       getPatrolPointListByAreaId(this.carrierSelected.AreaID).then((res) => {
-
         if (res.data[0] !== undefined) {
           this.areaName = res.data[0].mapDisplayName
         }
@@ -961,6 +943,7 @@ export default {
     },
     async getAlarmList() {
       //获取实时警告
+      this.alarmList = []
       const res = await getCurrentAlarmRecordList({
         // current: 1,
         alarmCode: null,
@@ -973,7 +956,6 @@ export default {
       if (res.code === 20000) {
         if (res.data) {
           res.data.records.forEach(element => {
-
             this.alarmList.push(element)
           });
           this.alarmList.forEach((item, index) => {
@@ -1199,8 +1181,8 @@ export default {
       if (this.YTlogin == true) {
         setTimeout(()=>{
           logOut(this.currentAdvices[0].accessoryID).then((res) => {
-          this.YTlogin = false
-
+          console.log('退出连接的接口',res,this.currentAdvices[0].accessoryID)
+            this.YTlogin = false
         })
            },1000)
    
@@ -1229,7 +1211,7 @@ export default {
     async getDetailMessage(e) {
       // console.log("实时", e)
       if (e.AlarmCode == 1014) {
-        this.imageUrl = 'http://192.168.20.6:8888/images/' + e.Image
+        this.imageUrl = process.env.VUE_APP_BASE_API + '/images/'+ e.Image
       }
       else {
         this.imageUrl = 'http://192.168.20.44:8888/images/' + e.Image
@@ -1404,6 +1386,7 @@ export default {
     stopWarn() {
       if (this.warnLightOpen == 1) {
         stopWarningLight(this.carID).then((res) => {
+          console.log('关闭警示灯',this.carID)
           if (res.code == 20000) {
             this.warnLightOpen = 0
 

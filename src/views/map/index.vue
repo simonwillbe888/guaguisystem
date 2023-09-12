@@ -580,7 +580,7 @@ export default {
     async getDetailMessage(e){
       // console.log("实时",e)
       this.alarm = e
-      this.imageUrl = 'http://192.168.20.6:8888/images/' + e.Image
+      this.imageUrl = process.env.VUE_APP_BASE_API + '/images/' + e.Image
       this.dialogVisible = true
     },
     treeNodeClick(node) {

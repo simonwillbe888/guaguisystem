@@ -171,6 +171,7 @@ export default {
       if (data) {
         if (data.code === 1) {
           if (data.data) {
+            console.log('产生告警')
             this.$store.dispatch('global/setRealTimeAlarm', data.data)
           }
         } else if (data.code === 2) {

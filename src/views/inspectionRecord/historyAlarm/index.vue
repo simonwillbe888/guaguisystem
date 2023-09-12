@@ -365,7 +365,7 @@ export default {
       if (this.alarmType == 2) {
         this.alarm = e
         if(e.alarmCode == 1014){
-          this.imageUrl = 'http://192.168.20.6:8888/images/' + e.Image
+          this.imageUrl =  process.env.VUE_APP_BASE_API + '/images/' + e.Image
         }
         else{
           this.imageUrl = 'http://192.168.20.44:8888/images/' + e.Image

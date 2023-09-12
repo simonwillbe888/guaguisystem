@@ -46,14 +46,18 @@ export function getRoleList(data) {
   });
 }
 export function downLoadBatchPTZFile(data) {
-  return request3({
+  return request({
     url: '/api/HKControl/downLoadBatchPTZFile',
     method: 'post',
     data,
-    responseType: "blob"
   });
 }
-
+export function getDownLoadFile(data) {
+  return request({
+    url: '/api/System/getDownLoadFile?fileName=' + data ,
+    method: 'get',
+  });
+}
 export function deleteRole(data) {
   return request({
     url: '/api/Role/deleteRole?roleID='+ data,

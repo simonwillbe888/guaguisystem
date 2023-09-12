@@ -11,7 +11,7 @@ const service = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 5000, // request timeout
+  timeout: 50000, // request timeout
 });
 
 // request interceptor
@@ -36,7 +36,7 @@ service.interceptors.response.use(
     // return {}
     //cgw
     const res = response.data;
-    if (res.code !== 20000 && res.code !== undefined  ) {
+    if (res.code !== 20000 && res.code !== undefined && res.code !== 9999 ) {
       // console.log("查看错误", res)
       Notification({
         title: '提示',
