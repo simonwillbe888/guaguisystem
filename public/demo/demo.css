@@ -44,9 +44,10 @@ select
 }
 /*插件*/
 .plugin
-{
-    width:0;
-    height:0;
+{    
+    visibility: hidden;
+    width:1px;
+    height:1px;
 }
 fieldset
 {

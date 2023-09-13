@@ -315,7 +315,7 @@
           prop="OccurThreshold"
         >
           <el-input
-            v-model="alarmForm.OccurThreshold"
+            v-model.number="alarmForm.OccurThreshold"
             placeholder="请输入告警上限值"
           ></el-input>
         </el-form-item>
@@ -325,7 +325,7 @@
           prop="RecoveryThreshold"
         >
           <el-input
-            v-model="alarmForm.RecoveryThreshold"
+            v-model.number="alarmForm.RecoveryThreshold"
             placeholder="请输入告警修复门限值"
           ></el-input>
         </el-form-item>
@@ -660,8 +660,8 @@ export default {
             deviceType: alarmData.DeviceType,
             alarmLevel: Number(alarmData.AlarmLevel),
             // areaId: Number(alarmData.alarmArea),
-            occurThreshold: alarmData.OccurThreshold*100,
-            recoveryThreshold: alarmData.RecoveryThreshold*100,
+            occurThreshold: typeof alarmData.OccurThreshold === 'number' ? alarmData.OccurThreshold * 100 : null,
+            recoveryThreshold: typeof alarmData.RecoveryThreshold === 'number' ? alarmData.RecoveryThreshold * 100 : null,
             gasType:alarmData.gasType
           };
           getUpdateAlarmSet(param)

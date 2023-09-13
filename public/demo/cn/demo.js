@@ -772,13 +772,9 @@ function clickStopVoiceTalk() {
     // console.log('关闭失败')
     var szDeviceIdentify = $("#ip").val();
     WebVideoCtrl.I_StopVoiceTalk().then(() => {
-        szInfo = "停止对讲成功！";
-        console.log('关闭对讲成功')
-        showOPInfo(szDeviceIdentify + " " + szInfo);
+        console.log('停止对讲成功！')
     }, (oError) => {
-        var szInfo = " 停止对讲失败！";
         console.log('关闭失败')
-        showOPInfo(szDeviceIdentify + szInfo, oError.errorCode, oError.errorMsg);
     });
 }
 

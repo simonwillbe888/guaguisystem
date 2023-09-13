@@ -250,18 +250,18 @@ export default {
 
     },
     downloadMedia(params) {
-      console.log('获取的参数', params, process.env.VUE_APP_BASE_API)
+    //获取文件
       downLoadBatchPTZFile(params).then((response) => {
+        if(response.code != '20000'){
+          return
+        }
         clearInterval(this.progressTimer)
-
-        console.log('下载文件名', response.data)
         let file = encodeURIComponent(response.data)
         this.progressTimer = null
         this.progressTimer = setInterval(() => {
+          //打包进度
           getDownLoadFile(file).then((res) => {
-            console.log('正式下载', res, file)
             this.show = true
-
             this.progressPercentage = Number(res.data)
             if (Number(res.data) >= 100) {
                this.closeProgress()
