@@ -44,7 +44,7 @@
                   <div style="color:#0FB1CBFF;width: 3rem">温度</div>
                 </div>
                 <div class="gasDetail" style="margin-left: 0.7rem;">
-                  {{ gasList.Temperature == null || (typeof gasList.Temperature != Number) ? '0' : parseFloat((gasList.Temperature / 100).toFixed(1)) }}℃
+                  {{ isNaN(gasList.Temperature) ?   '0': parseFloat((gasList.Temperature / 100).toFixed(1))}}℃
                 </div>
               </div>
               <div class="enviroDetail">
@@ -53,7 +53,7 @@
                   <div style="color:#0FB1CBFF;width: 3rem">湿度</div>
                 </div>
                 <div class="gasDetail" style="margin-left: 0.7rem;">
-                  {{ gasList.Humidity == null ? '0' : (gasList.Humidity / 100).toFixed(1) }}
+                  {{ isNaN( gasList.Humidity) ? '0' : (gasList.Humidity / 100).toFixed(1) }}
                   <span style="font-size: 0.625rem;">%</span>
                 </div>
               </div>
@@ -249,12 +249,13 @@
         </div>
         <div style="margin: 0.5rem 0.5rem 0;
                 position:relative;"
-             ref="vue3dLoaderDiv">
+             ref="vue3dLoaderDiv" >
 
           <vue3dLoader
             style="overflow:hidden;"
             id="vue3dLoader"
             ref="model"
+            v-if="vue3dShow"
             :height="vue3dLoaderHeight"
             :width="vue3dLoaderWidth"
             :enableDamping="true"
@@ -666,7 +667,8 @@ export default {
   data() {
     return {
       //模型路径 存放在/public/static/model/
-      filePath: ["/static/model/screen.glb","/static/model/robot.glb"],
+      filePath: [],
+      // filePath: ["/static/model/screen.glb","/static/model/robot.glb"],
       // mtlPath: ["","/static/model/plane.mtl"],
       mtlPath: ["",""],
       //模型比例缩放
@@ -695,6 +697,7 @@ export default {
       controlManager: true,
       vue3dLoaderHeight: 275,
       vue3dLoaderWidth: 943,
+      vue3dShow:false,
       loaderFS: false,
       alarmAnalData: {
         xAxisData: [],
@@ -754,7 +757,7 @@ export default {
       broadcastVisible: false,
       selectedOption: '',
       speedList: [{
-        value: 2000,
+        value: 8000,
         label: "应急速度"
       }, {
         value: 1000,
@@ -850,8 +853,8 @@ export default {
     // console.log(this.robotOpen == 1)
     if (this.robotOpen == 1) {
       this.logoutCar()
-
     }
+    this.$refs.closeIntercom.end()
     window.clearInterval(this.carRoller)
     window.clearInterval(this.tempicTimer)
     this.carRoller = null
@@ -894,12 +897,13 @@ export default {
     //   this.$refs.tree.filter(val);
     // },
     realTimeAlarminfo(newV, oldV) {
-      if(newv != undefined){
-        this.showTable.unshift(newV)
-        this.getDetailMessage(newV,false)
-        this.alarmAnalysisButton(this.alarmAnalysisButtonActive)
-        this.alarmSumButton(this.alarmSumButtonActive)
-      }
+      // if(newv != undefined){
+      //   this.showTable.unshift(newV)
+      //   this.getDetailMessage(newV,false)
+      //   this.alarmAnalysisButton(this.alarmAnalysisButtonActive)
+      //   this.alarmSumButton(this.alarmSumButtonActive)
+      // }
+      this.getAlarmList()
     },
     dialogLocation(newV, old) {
       this.locationAuto = true
@@ -948,56 +952,63 @@ export default {
       this.stopWarn()
     },
     dealwithAlarm() {
-      this.alarmList = []
+      // this.alarmList = []
       setTimeout(() => {
         this.getAlarmList()
-
       }, 1000)
     },
     //左右切换机器时的改变
     carrierIndex() {
-      console.log('状态改变')
-      if (this.robotOpen == 1) {
-        this.logoutCar()
-      }
+      console.log('切换机器')
+
       this.$store.dispatch('global/setCloseAll', '待机')
-      this.carrierSelected = this.carrierArr[this.carrierIndex]
-      this.carID = this.carrierSelected.CarrierID
-      this.carrierName = this.carrierSelected.CarrierName
-      const camera = this.carrierSelected.CarrierAccessoryList[0]
-      this.getAreaName()
-      this.getCarTask()
-      if (camera == undefined) {
-        this.currentAdvices[0].accessoryID = null
-        this.currentAdvices[0].accessoryType = null
-        this.currentAdvices[0].configJson = null
-      } else {
-        this.currentAdvices[0].accessoryID = camera.AccessoryID
-        this.currentAdvices[0].accessoryType = camera.AccessoryType
-        this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
-      }
-      this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
-      this.getVideo()
-    },
-
-    //切换隧道
-    areaId() {
-      console.log("areaId running")
-      this.$store.dispatch('global/setCloseAll', '待机')
-      this.loading = true
-      this.init()
-      setTimeout(() => {
-        this.getCarTask()
-
-      }, 300);
-
-      setTimeout(() => {
+      setTimeout(()=>{
+        if (this.robotOpen == 1) {
+            this.logoutCar()
+          }
+        this.$store.dispatch('global/setCloseAll', '待机')
+        this.carrierSelected = this.carrierArr[this.carrierIndex]
+        this.carID = this.carrierSelected.CarrierID
+        this.carrierName = this.carrierSelected.CarrierName
         const camera = this.carrierSelected.CarrierAccessoryList[0]
-        this.currentAdvices[0].accessoryID = camera.AccessoryID
-        this.currentAdvices[0].accessoryType = camera.AccessoryType
-        this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
-      }, 2000);
-      this.getVideo()
+        this.getAreaName()
+        this.getCarTask()
+        if (camera == undefined) {
+          this.currentAdvices[0].accessoryID = null
+          this.currentAdvices[0].accessoryType = null
+          this.currentAdvices[0].configJson = null
+        } else {
+          this.currentAdvices[0].accessoryID = camera.AccessoryID
+          this.currentAdvices[0].accessoryType = camera.AccessoryType
+          this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
+        }
+        this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
+        this.getVideo()
+        },1000)
+      },
+
+      //切换隧道
+      areaId() {
+        console.log("areaId running")
+        this.$store.dispatch('global/setCloseAll', '待机')
+
+        setTimeout(() => {
+
+          this.loading = true
+          this.init()
+          setTimeout(() => {
+            this.getCarTask()
+
+          }, 300);
+
+          setTimeout(() => {
+            const camera = this.carrierSelected.CarrierAccessoryList[0]
+            this.currentAdvices[0].accessoryID = camera.AccessoryID
+            this.currentAdvices[0].accessoryType = camera.AccessoryType
+            this.currentAdvices[0].configJson = JSON.stringify(camera.ConfigJson)
+          }, 2000);
+          this.getVideo()
+        },1000)
     },
 
     logoutAuto(old) {
@@ -1112,7 +1123,7 @@ export default {
             }
             getTemperature(param).then((res) => {
               // console.log('调用接口参数', param, res)
-              if (res.code == 20000) {
+              if (res.code == 20000 && res.data != '') {
                 this.tempicture = res.data + '℃'
                 getHot(e)
                 setTimeout(()=>{
@@ -1156,6 +1167,17 @@ export default {
         }
 
       };
+
+      if(this.choosedArea == 37){
+        this.filePath = ["/static/model/screen.glb","/static/model/robot.glb"]
+        this.vue3dShow = false
+        this.vue3dShow = true
+      }else {
+        this.filePath = ["/static/model/robot.glb"]
+        this.vue3dShow = false
+        this.vue3dShow = true
+      }
+
 
     },
 
@@ -1359,6 +1381,7 @@ export default {
       // this.getVideo()
     },
     async getAlarmList() {
+      this.alarmList = []
       //获取实时警告
       const res = await getCurrentAlarmRecordList({
         // current: 1,
@@ -2094,7 +2117,7 @@ export default {
       console.log("实时", e)
       // let serverAddress = defaultSettings.backService+':'+defaultSettings.servicePort
       if (e.AlarmCode == 1014) {
-        this.imageUrl = 'http://192.168.20.6:8888/images/' + e.Image
+        this.imageUrl = process.env.VUE_APP_BASE_API + e.Image
       }
       else {
         this.imageUrl = 'http://' + this.$store.state.global.fileAddress +':8888/images/' + e.Image
