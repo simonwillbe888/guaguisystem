@@ -83,7 +83,7 @@
                 type="success"
                 icon="el-icon-video-camera-solid"
                 size="mini"
-                @click="nvrRecord(row)"
+                @click="nvrRecord(row,true)"
                 >录像回看</el-button
               >
 
@@ -432,7 +432,7 @@
         <div style="position: absolute;left: 1rem;bottom: 1.5rem;justify-content:center;text-align: center">
           <span style="color: #FFFFFF;">自动续播</span>
           <el-switch active-text="开" inactive-text="关" v-model="autoContinuePlay" :active-value=true :inactive-value=false ></el-switch>
-          <span style="color: #FFFFFF;margin-left: 1rem" v-if="autoContinuePlay">方向 {{ this.playDirection == 1? "←" : "→"}}</span>
+          <span style="color: #FFFFFF;margin-left: 1rem;cursor: pointer" v-if="autoContinuePlay" @click="()=>{this.playDirection=this.playDirection*-1}">方向 {{ this.playDirection == 1? "←" : "→"}}</span>
         </div>
         <div style="position: absolute;right: 1rem;bottom: 1.5rem;">
           <el-button type="primary" size="mini" @click="nvrRecordVisible = false">
@@ -621,6 +621,7 @@ export default {
       recordReload: true,
       recordPlayTime: null,
       autoContinuePlay: false,
+      videoPlaying: false,
       autoCoutinueCount: 0,
       playDirection: -1,
       headerCellStyle: {"text-align":"center"},
@@ -634,8 +635,7 @@ export default {
     this.init()
   },
   beforeDestroy() {
-    clearInterval(this.timer)
-    clearInterval(this.recordTimer)
+    this.destroy()
   },
   methods: {
     init() {
@@ -656,9 +656,19 @@ export default {
         this.total = (res.data || {}).length || 0;
       }
     },
-
+    destroy() {
+      clearInterval(this.timer)
+      clearInterval(this.recordTimer)
+      let video = this.$refs.recordVideo
+      if(this.$refs.recordVideo._eventListeners != null){
+        for (let i = 0; i < video._eventListeners.length; i++) {
+          video.removeEventListener(video._eventListeners[i].type, video._eventListeners[i].listener);
+        }
+      }
+    },
     resetting(){
-      this.nvrRecord(this.nvrData)
+      this.destroy()
+      this.nvrRecord(this.nvrData,false)
     },
     getCellClass({ row, rowIndex, column, columnIndex }){
       // console.log('getCellClass',row, rowIndex,column, columnIndex)
@@ -680,7 +690,7 @@ export default {
     //   }
     // },
 
-    nvrRecord(obj){
+    nvrRecord(obj,draw){
       this.nvrRecordVisible = true
       this.nvrData = obj
       this.nvrRecordData= {src:''}
@@ -692,6 +702,7 @@ export default {
       this.titleName = ''
       this.recordVideoSrc = ''
       this.recordTimerCount = 0
+      this.ids = 0
 
       this.middleTime = moment(new Date()).format("YYYY-MM-DD 00:00:00")
       this.currentTime = new Date(this.middleTime).getTime()
@@ -745,9 +756,11 @@ export default {
         }
         this.searchLoading = false
       })
-      this.$nextTick(()=>{
-        this.initTimeLine()
-      })
+      if(draw){
+        this.$nextTick(()=>{
+          this.initTimeLine()
+        })
+      }
     },
 
     startTimeCheck(){
@@ -787,7 +800,7 @@ export default {
       if(this.startVal == '' || this.startVal == null ||
           this.endVal == '' || this.endVal == null){
         this.$notify({
-          message: '请选择回放时间',
+          message: '请选择回看搜索时间',
           type: 'warning',
           title: '提示',
         });
@@ -795,7 +808,7 @@ export default {
       }
       if(this.nvrTimePickerError){
         this.$notify({
-          message: '请选择正确回放时间区间',
+          message: '请选择正确回看搜索时间区间',
           type: 'warning',
           title: '提示',
         });
@@ -919,27 +932,49 @@ export default {
       this.nvrRecordData = {src:''}
       this.titleName = '回看 '+ row.start + ' - ' + row.stop +' '
       this.recordVideoSrc = '/'+row.name+".mp4"
+      // this.recordVideoSrc = '/static/video/'+row.name+".mp4"
 
       this.recordStart = row.start
       this.recordStop = row.stop
       this.recordTotalTime = (new Date(row.stop) - new Date(row.start))/1000
+      if(row.jump != null){
+        this.recordStart = moment(new Date(row.start).getTime() - row.jump*1000).format("YYYY-MM-DD HH:mm:ss")
+        this.recordTotalTime -= row.jump
+      }
 
       if(this.recordTimer){
         clearInterval(this.recordTimer)
       }
 
       if(timing){
+        console.log('playRecordFile --- this.timingTimeline',row.start)
         this.timingTimeline(row.start)
       }
 
-      this.$refs.recordVideo.addEventListener("loadeddata", this.onVideoLoaded('video'))
-      this.$refs.recordVideo.addEventListener("ended", ()=>{
-        if(this.autoContinuePlay){
-          this.loadNextRecord(this.playDirection)
+      let video = this.$refs.recordVideo
+
+      if(this.$refs.recordVideo._eventListeners != null){
+        for (let i = 0; i < video._eventListeners.length; i++) {
+          video.removeEventListener(video._eventListeners[i].type, video._eventListeners[i].listener);
+        }
+      }
+      let _this = this
+      video.addEventListener("loadeddata",function() {
+        _this.videoPlaying = true
+        _this.onVideoLoaded('video')
+      })
+      video.addEventListener("ended", function(){
+        if(_this.autoContinuePlay && _this.videoPlaying){
+          _this.videoPlaying = false
+          _this.loadNextRecord(_this.playDirection)
         }
       })
+      // console.log(row)
       this.$nextTick(()=>{
-        this.$refs.recordVideo.load()
+        video.load()
+        if(row.jump != null){
+          video.currentTime = row.jump
+        }
       })
       this.$forceUpdate()
       // this.currentTime = new Date(row.start).getTime()
@@ -1002,15 +1037,22 @@ export default {
 
     loadNextRecord(i){
       this.playDirection = i
+      console.log('this.ids,i',this.ids,i)
+      console.log('this.fileList.length',this.fileList.length)
+      console.log('(this.ids+i >= 0) && (this.ids+i < this.fileList.length)',(this.ids+i >= 0) , (this.ids+i < this.fileList.length))
+
       if((this.ids+i >= 0) && (this.ids+i < this.fileList.length) ){
         // console.log('row--->',this.fileList[this.ids+i])
-        if(this.fileList[this.ids+i].download){
-          console.log('录像回看')
-          this.playRecordFile(this.fileList[this.ids+i])
-        }else {
-          console.log('录像预览')
-          this.playRecord(this.fileList[this.ids+i])
-        }
+        // if(this.fileList[this.ids+i].download){
+        //   console.log('loadNextRecord --- 录像回看')
+        //   this.playRecordFile(this.fileList[this.ids+i],true)
+        // }else {
+        //   console.log('loadNextRecord --- 录像预览')
+        //   this.playRecord(this.fileList[this.ids+i],true)
+        // }
+        this.onMouseup(this.fileList[this.ids+i],true,true)
+      }else {
+        console.log('this.ids+i越界',this.ids+i)
       }
     },
 
@@ -1028,7 +1070,7 @@ export default {
       }else if (type == 'iframe'){
         video = this.$refs.nvrRecord.contentDocument.getElementById('video')
       }
-
+      // console.log('onVideoLoaded---->',this.playDirection)
       if(video != null){
         // video.setAttribute("autoplay",true)
         // video.setAttribute("controls",true)
@@ -1038,6 +1080,7 @@ export default {
           if(!this.nvrRecordVisible){
             clearInterval(this.recordTimer)
           }
+
           let lastPlayTime = this.recordPlayTime
 
           this.recordPlayTime = moment(new Date(this.recordStart).getTime()+video.currentTime*1000).format("YYYY-MM-DD HH:mm:ss")
@@ -1046,11 +1089,13 @@ export default {
           if(this.autoContinuePlay && new Date(this.recordPlayTime) - new Date(this.recordStop) < 5*1000 && this.autoCoutinueCount >= 6) {
             // console.log('autoContinuePlay')
             this.autoCoutinueCount = 0
+            console.log('autoContinuePlay',this.playDirection)
             this.loadNextRecord(this.playDirection)
           }
 
           //当播放时间未超过结束时间持续调整指向标
           if(new Date(this.recordPlayTime) - new Date(this.recordStop) < 0){
+            console.log('onVideoLoaded --- this.timingTimeline',this.recordPlayTime)
             this.timingTimeline(this.recordPlayTime)
             if(lastPlayTime == this.recordPlayTime && video.currentTime!= 0){
               this.autoCoutinueCount ++
@@ -1288,6 +1333,15 @@ export default {
       this.mousedownCacheStartTimestamp = this.startTimestamp
 
       clearInterval(this.recordTimer)
+
+      let video = this.$refs.recordVideo
+      if(this.$refs.recordVideo._eventListeners != null){
+        console.log('this.$refs.recordVideo._eventListeners',this.$refs.recordVideo._eventListeners)
+        for (let i = 0; i < video._eventListeners.length; i++) {
+          video.removeEventListener(video._eventListeners[i].type, video._eventListeners[i].listener);
+        }
+      }
+
     },
 
     // 鼠标移动事件
@@ -1342,11 +1396,13 @@ export default {
       //判断指向标落在哪个区间段的录像 并进行播放
       let ctime = this.currentTime
 
-      console.log('this.currentTime',moment(this.currentTime).format("YYYY-MM-DD HH:mm:ss"),)
-      let closestTime
+      // console.log('this.currentTime',moment(this.currentTime).format("YYYY-MM-DD HH:mm:ss"),)
+      let findout = false
+      let closestTime = null
       //给播放区段赋浅蓝色
       this.timeSegments.forEach((item,index)=>{
-        if(ctime >= item.beginTime && ctime < item.endTime){
+        if(ctime >= item.beginTime && ctime < item.endTime && !findout){
+          findout = true
           this.$set(this.timeSegments[index],'style',{background: "#64c8c8"})
           this.ids = index
           closestTime = item
@@ -1376,21 +1432,29 @@ export default {
       // console.log('closestTime',closestTime)
 
 
+      if(closestTime == null){
+        //暂时未处理未找到指定播放段情况
+        return
+      }
       if(data == null){
         data = {
+          name: this.fileList[this.ids].name,
+          jump: (this.currentTime - closestTime.beginTime)/1000,
           start: moment(this.currentTime).format("YYYY-MM-DD HH:mm:ss"),
           stop: moment(closestTime.endTime).format("YYYY-MM-DD HH:mm:ss")
         }
       }
+      // console.log('jump',data)
+      // console.log('this.fileList[this.ids]',this.fileList[this.ids])
       if(play){
         //移动到指定点后启动播放 不执行跳转
         //判断是否已经缓存了 如果已缓存则直接播放 否则使用预览
         if(this.fileList[this.ids].download){
-          console.log('录像回看')
-          this.playRecordFile(this.fileList[this.ids])
+          console.log('onMouseup --- 录像回看')
+          this.playRecordFile(data,timing)
         }else {
-          console.log('录像预览')
-          this.playRecord(this.fileList[this.ids])
+          console.log('onMouseup --- 录像预览')
+          this.playRecord(data,timing)
         }
         // this.playRecord(data,timing)
       }
