@@ -157,17 +157,7 @@ export default {
       }
 
     },
-    // showDetail(e) {
-    //   this.details = e.operationType
-    //   this.dialogVisible = true
-    //   if (e.operationType == '拍照') {
-    //     this.pictureUrl = 'http://192.168.1.111:8888/images/' + e.information
-    //   }
-    //   else if (e.operationType == '结束录像') {
-    //     this.videoUrl = 'http://192.168.1.111:8888/' + e.information
-    //   }
-    //   // console.log("查看详情",this.pictureUrl)
-    // },
+
 
     exportAll() {
       if (this.startVal == null && this.endVal == null) {

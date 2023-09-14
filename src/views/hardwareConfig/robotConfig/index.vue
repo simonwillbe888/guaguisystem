@@ -4,38 +4,16 @@
       <!-- <h3 class="robot-setting-title">{{ $t('robot_setting.robot_list') }}</h3> -->
       <div class="robot-setting-inquire">
         <!-- {{ $t('robot_setting.robot_name') }} -->
-        <el-input
-          class="robot-inquire"
-          v-model="inquireVal"
-          size="mini"
-          placeholder="请输入机器人名称关键字"
-          clearable
-        ></el-input>
-        <el-button type="success" @click="initRobot" >查询</el-button>
+        <el-input class="robot-inquire" v-model="inquireVal" size="mini" placeholder="请输入机器人名称关键字" clearable></el-input>
+        <el-button type="success" @click="initRobot">查询</el-button>
       </div>
-      <el-button
-          class="robot-operate"
-          type="success"
-          size="mini"
-          icon="el-icon-plus"
-          @click="plusRobot()"
-          >新增机器人</el-button
-        >
+      <el-button class="robot-operate" type="success" size="mini" icon="el-icon-plus"
+        @click="plusRobot()">新增机器人</el-button>
     </div>
     <div class="robot-body content-body">
-      <el-table
-        height="39rem"
-        class="robot-data"
-        ref="singleTable"
-        :data="robotInfoArr"
-        header-row-class-name="header-row-class"
-        row-class-name="row-class"
-        fit
-        highlight-current-row
-        size="small"
-        @current-change="handleCurrentChange"
-        :empty-text="'暂无数据'"
-      >
+      <el-table height="39rem" class="robot-data" ref="singleTable" :data="robotInfoArr"
+        header-row-class-name="header-row-class" row-class-name="row-class" fit highlight-current-row size="small"
+        @current-change="handleCurrentChange" :empty-text="'暂无数据'">
         <el-table-column type="index" label="序号" align="center" width="100">
         </el-table-column>
         <!-- <el-table-column
@@ -45,43 +23,23 @@
           width="100"
         >
         </el-table-column> -->
-        <el-table-column
-          prop="number"
-          label="机器人编码"
-          align="center"
-
-        >
+        <el-table-column prop="number" label="机器人编码" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.number }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="name"
-          label="机器人名称"
-          align="center"
-         width="110"
-        >
+        <el-table-column prop="name" label="机器人名称" align="center" width="110">
           <template slot-scope="{ row }">
             <span>{{ row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="type"
-          label="机器人类型"
-          align="center"
-
-        >
+        <el-table-column prop="type" label="机器人类型" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.type }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column
-          prop="ip"
-          label="机器人IP地址"
-          align="center"
-
-        >
+        <el-table-column prop="ip" label="机器人IP地址" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.ip }}</span>
           </template>
@@ -91,83 +49,42 @@
             <span>{{ row.area }}</span>
           </template>
         </el-table-column>
-<!--        <el-table-column-->
-<!--          prop="details"-->
-<!--          label="机器人详情"-->
-<!--          align="center"-->
+        <!--        <el-table-column-->
+        <!--          prop="details"-->
+        <!--          label="机器人详情"-->
+        <!--          align="center"-->
 
-<!--        >-->
-<!--          <template slot-scope="{ row }">-->
-<!--            <el-button-->
-<!--              type="primary"-->
-<!--              icon="el-icon-document"-->
-<!--              size="mini"-->
-<!--              plain-->
-<!--              @click="editRobot(row, 1)"-->
-<!--              >详情</el-button-->
-<!--            >-->
-<!--          </template>-->
-<!--        </el-table-column>-->
-        <el-table-column prop="operate" label="操作" align="center" width="400" >
+        <!--        >-->
+        <!--          <template slot-scope="{ row }">-->
+        <!--            <el-button-->
+        <!--              type="primary"-->
+        <!--              icon="el-icon-document"-->
+        <!--              size="mini"-->
+        <!--              plain-->
+        <!--              @click="editRobot(row, 1)"-->
+        <!--              >详情</el-button-->
+        <!--            >-->
+        <!--          </template>-->
+        <!--        </el-table-column>-->
+        <el-table-column prop="operate" label="操作" align="center" width="400">
           <template slot-scope="{ row }">
-            <el-button
-              type="primary"
-              icon="el-icon-document"
-              size="mini"
-              plain
-              @click="editRobot(row, 1)"
-            >详情</el-button
-            >
-            <el-button
-              class="robot-operate"
-              type="primary"
-              icon="el-icon-setting"
-              size="mini"
-              @click="configAccesso(row)"
-              >{{ $t('robot_setting.accessory_operate_label') }}</el-button
-            >
-            <el-button
-              class="robot-operate"
-              style="background-color:#64C8C8 ;color:#fff"
-              icon="el-icon-edit"
-              size="mini"
-              plain
-              @click="editRobot(row, 2)"
-              >修改</el-button
-            >
-            <el-button
-              class="robot-operate"
-              type="danger"
-              size="mini"
-              icon="el-icon-delete"
-              @click="deleteRobot(row)"
-              >{{ $t('robot_setting.deleteRobot_label') }}</el-button
-            >
+            <el-button type="primary" icon="el-icon-document" size="mini" plain @click="editRobot(row, 1)">详情</el-button>
+            <el-button class="robot-operate" type="primary" icon="el-icon-setting" size="mini"
+              @click="configAccesso(row)">{{ $t('robot_setting.accessory_operate_label') }}</el-button>
+            <el-button class="robot-operate" style="background-color:#64C8C8 ;color:#fff" icon="el-icon-edit" size="mini"
+              plain @click="editRobot(row, 2)">修改</el-button>
+            <el-button class="robot-operate" type="danger" size="mini" icon="el-icon-delete" @click="deleteRobot(row)">{{
+              $t('robot_setting.deleteRobot_label') }}</el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="dialog-sty">
-      <el-dialog
-        :title="robotDialog[dialogType]"
-        :visible.sync="dialogFormVisible"
-        :close-on-click-modal="false"
-        @close="cancelOperate"
-      >
-        <el-form
-          label-width="120px"
-          :model="robotForm"
-          :rules="rules"
-          ref="robotForm"
-        >
-          <el-form-item
-            :label="$t('robot_setting.robot_id_label')"
-            prop="robotID"
-          >
-            <el-input
-              placeholder="请输入机器人ID"
-              v-model.number="robotForm.robotID"
-            ></el-input>
+      <el-dialog :title="robotDialog[dialogType]" :visible.sync="dialogFormVisible" :close-on-click-modal="false"
+        @close="cancelOperate">
+        <el-form label-width="120px" :model="robotForm" :rules="rules" ref="robotForm">
+          <el-form-item :label="$t('robot_setting.robot_id_label')" prop="robotID">
+            <el-input placeholder="请输入机器人ID" v-model.number="robotForm.robotID"></el-input>
           </el-form-item>
           <!-- <el-form-item
             :label="$t('robot_setting.robotNum_label')"
@@ -179,180 +96,74 @@
               v-model.trim="robotForm.number"
             ></el-input>
           </el-form-item> -->
-          <el-form-item
-            :label="$t('robot_setting.robotName_label')"
-            prop="robotName"
-          >
-            <el-input
-              :disabled="robotForm.isEdit"
-              v-model.trim="robotForm.robotName"
-              placeholder="请输入机器人名称"
-            ></el-input>
+          <el-form-item :label="$t('robot_setting.robotName_label')" prop="robotName">
+            <el-input :disabled="robotForm.isEdit" v-model.trim="robotForm.robotName" placeholder="请输入机器人名称"></el-input>
           </el-form-item>
-          <el-form-item
-            :label="$t('robot_setting.robotIP_label')"
-            prop="robotIp"
-          >
-            <el-input
-              :disabled="robotForm.isEdit"
-              placeholder="请输入机器人Ip"
-              v-model.trim="robotForm.robotIp"
-            ></el-input>
+          <el-form-item :label="$t('robot_setting.robotIP_label')" prop="robotIp">
+            <el-input :disabled="robotForm.isEdit" placeholder="请输入机器人Ip" v-model.trim="robotForm.robotIp"></el-input>
           </el-form-item>
           <el-form-item :label="$t('robot_setting.area_label')" prop="siteName">
-            <el-select
-              :disabled="robotForm.isEdit"
-              v-model="robotForm.siteName"
-              placeholder="请选择区域"
-              clearable
-            >
-              <el-option
-                v-for="item in bigAreaOptions"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
+            <el-select :disabled="robotForm.isEdit" v-model="robotForm.siteName" placeholder="请选择区域" clearable>
+              <el-option v-for="item in bigAreaOptions" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item
-            :label="$t('robot_setting.robotType_label')"
-            prop="agvTypes"
-          >
-            <el-select
-              :disabled="robotForm.isEdit"
-              v-model="robotForm.agvTypes"
-              clearable
-              :placeholder="'请选择机器人类型'"
-            >
-              <el-option
-                v-for="item in options"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              >
+          <el-form-item :label="$t('robot_setting.robotType_label')" prop="agvTypes">
+            <el-select :disabled="robotForm.isEdit" v-model="robotForm.agvTypes" clearable :placeholder="'请选择机器人类型'">
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>
-          <el-form-item
-            :label="$t('robot_setting.ifBind_standby_label')"
-            prop="stand"
-          >
-            <el-checkbox
-              :label="$t('robot_setting.bind_standby_label')"
-              v-model="standByChecked"
-            ></el-checkbox>
-              <el-select v-if="standByChecked" :disabled="robotForm.isEdit" v-model="vertex" placeholder="请选择">
-                <el-option
-                v-for="item in StationVertex"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
+          <el-form-item :label="'是否绑定待命点'" prop="stand">
+            <el-checkbox :label="$t('robot_setting.bind_standby_label')" v-model="standByChecked"></el-checkbox>
+            <el-select v-if="standByChecked" :disabled="robotForm.isEdit" v-model="vertex" placeholder="请选择">
+              <el-option v-for="item in StationVertex" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item v-if="!robotForm.isEdit" class="common-form-footer">
-            <el-button
-              type="primary"
-              @click="
-                dialogType === 'addRobots'
-                  ? addSuccess('robotForm', robotForm)
-                  : editSuccess('robotForm', robotForm)
-              "
-              >{{ $t('robot_setting.sure_label') }}</el-button
-            >
-            <el-button
-              type="primary"
-              plain
-              @click="cancelOperate('robotForm')"
-              >{{ $t('robot_setting.cancel_label') }}</el-button
-            >
+            <el-button type="primary" @click="
+              dialogType === 'addRobots'
+                ? addSuccess('robotForm', robotForm)
+                : editSuccess('robotForm', robotForm)
+              ">{{ $t('robot_setting.sure_label') }}</el-button>
+            <el-button type="primary" plain @click="cancelOperate('robotForm')">{{ $t('robot_setting.cancel_label')
+            }}</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
     </div>
     <!-- 关联配件设置 -->
-    <el-dialog
-      :title="$t('robot_setting.access_operate_label')"
-      :visible.sync="dialogAccessFlag"
-      :close-on-click-modal="false"
-      width="70%"
-    >
+    <el-dialog :title="$t('robot_setting.access_operate_label')" :visible.sync="dialogAccessFlag"
+      :close-on-click-modal="false" width="70%">
       <div style="margin-bottom: 20px; font-size: 13px">
         <span>{{ $t('robot_setting.accesso_type_label') }}</span>
-        <el-select
-          class="access-select"
-          v-model="value1"
-          placeholder="请选择"
-          @change="initListOption"
-          clearable
-        >
-          <el-option
-            v-for="item in typeOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item"
-            :disabled="item.disabled"
-          >
+        <el-select class="access-select" v-model="value1" placeholder="请选择" @change="initListOption" clearable>
+          <el-option v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item"
+            :disabled="item.disabled">
           </el-option>
         </el-select>
         &nbsp;
         <span>{{ $t('robot_setting.accesso_list_label') }}</span>
-        <el-select
-          class="access-select"
-          v-model="value2"
-          placeholder="请选择"
-          @focus="listPrompt"
-          clearable
-        >
-          <el-option
-            v-for="item in listOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item"
-          >
+        <el-select class="access-select" v-model="value2" placeholder="请选择" @focus="listPrompt" clearable>
+          <el-option v-for="item in listOptions" :key="item.value" :label="item.label" :value="item">
           </el-option>
         </el-select>
         &nbsp;
         <span>{{ $t('robot_setting.accesso_feature_label') }}</span>
-        <el-select
-          class="access-select"
-          v-model="value3"
-          placeholder="请选择"
-          multiple
-          clearable
-        >
-          <el-option
-            v-for="item in featureOptions"
-            :key="item.value"
-            :label="item.label"
-            :value="item"
-            :disabled="item.disabled"
-          >
+        <el-select class="access-select" v-model="value3" placeholder="请选择" multiple clearable>
+          <el-option v-for="item in featureOptions" :key="item.value" :label="item.label" :value="item"
+            :disabled="item.disabled">
           </el-option>
         </el-select>
         &nbsp;
-        <el-button
-          type="primary"
-          size="mini"
-          plain
-          style="margin-top: 10px;margin-left:10vw;"
-          @click="addAccesso()"
-          >{{ $t('robot_setting.add_related_label') }}</el-button
-        >
+        <el-button type="primary" size="mini" plain style="margin-top: 10px;margin-left:10vw;" @click="addAccesso()">{{
+          $t('robot_setting.add_related_label') }}</el-button>
         <br />
       </div>
       <div class="content-body">
-        <el-table
-          class="charge-data"
-          :data="accessoInfoArr"
-          header-row-class-name="header-row-class"
-          row-class-name="row-class"
-          fit
-          highlight-current-row
-          size="mini"
-          @current-change="handleCurrentChange"
-        >
+        <el-table class="charge-data" :data="accessoInfoArr" header-row-class-name="header-row-class"
+          row-class-name="row-class" fit highlight-current-row size="mini" @current-change="handleCurrentChange">
           <el-table-column type="index" label="序号" align="center" width="80">
           </el-table-column>
           <el-table-column prop="type" label="配件类型" align="center">
@@ -369,19 +180,10 @@
               <span>{{ row.EquipFunctionsDesc }}</span>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="operate"
-            label="操作"
-            align="center"
-            width="80"
-          >
+          <el-table-column prop="operate" label="操作" align="center" width="80">
             <template slot-scope="scope">
-              <el-button
-                type="danger"
-                size="mini"
-                @click="deleteAccesso(scope)"
-                >{{ $t('charge_config.delete_label') }}</el-button
-              >
+              <el-button type="danger" size="mini" @click="deleteAccesso(scope)">{{ $t('charge_config.delete_label')
+              }}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -410,7 +212,7 @@ import {
   getAccessory,
 
 } from '@/api/robot';
-import { getArea , GetMapData} from '@/api/areaConfig.js';
+import { getArea, GetMapData } from '@/api/areaConfig.js';
 import { getCarrierTypeByDic } from '@/api/taskConfig';
 import { ninvoke } from 'q';
 
@@ -438,8 +240,8 @@ export default {
       },
       options: [],
       bigAreaOptions: [],
-      vertex:null,
-      StationVertex:[],
+      vertex: null,
+      StationVertex: [],
       rules: {
         robotID: [
           {
@@ -447,11 +249,12 @@ export default {
             message: '请输入机器人ID',
             trigger: 'blur',
           },
-          {type:'number',
-            min:0,
-            max:200,
-            message:'ID在0~99',
-            trigger:'blur'
+          {
+            type: 'number',
+            min: 0,
+            max: 200,
+            message: 'ID在0~99',
+            trigger: 'blur'
           }
         ],
         agvTypes: [
@@ -525,7 +328,7 @@ export default {
       accessoList: [],
       robotId: 0,
       accessoID: 0,
-      dataID:0,
+      dataID: 0,
     };
   },
   watch: {
@@ -565,15 +368,15 @@ export default {
             };
             self.options.push(optionObj);
           }
-          let params ={
-            current:null,
+          let params = {
+            current: null,
             keyWord: self.inquireVal,
-            limit:null,
+            limit: null,
           }
           getCarrierList(params)
             .then((response) => {
               let robotArr = response.data;
-              console.log('相应参数',response,params)
+              console.log('相应参数', response, params)
               for (let i = 0, len = robotArr.length; i < len; i++) {
                 let rowObj = {
                   id: robotArr[i].ID,
@@ -626,17 +429,17 @@ export default {
     initArea() {
       let self = this;
       self.bigAreaOptions = [];
-      GetMapData().then((res)=>{
-         const obj = []
+      GetMapData().then((res) => {
+        const obj = []
         res.data.stations.forEach(element => {
-          console.log(element.type,'aaaaa')
-          if(element.type == 2){
+          console.log(element.type, 'aaaaa')
+          if (element.type == 2) {
             obj.push({
-              label:element.vertex.number,
-              value:element.vertex.number
+              label: element.vertex.number,
+              value: element.vertex.number
             })
           }
-          self.StationVertex= obj
+          self.StationVertex = obj
         });
       })
       getArea()
@@ -754,7 +557,8 @@ export default {
       this.dialogFormVisible = true;
       this.dialogType = 'addRobots';
       this.robotForm.isEdit = false;
-      this.standByChecked =false
+      this.standByChecked = false
+      this.vertex = null
       this.resetForm();
     },
     addSuccess(robotForm, robotParam) {
@@ -773,6 +577,15 @@ export default {
           // 绑定待命点
           if (this.standByChecked) {
             param.isHomeStation = true;
+            if (this.vertex == null) {
+              this.$notify({
+                title: '提示',
+                message: '请选择待命点',
+                type: 'error',
+                duration: 3000,
+              });
+            return
+            }  
             param.homeStation = Number(this.vertex);
           } else {
             param.isHomeStation = false;
@@ -818,7 +631,7 @@ export default {
     editRobot(item, flag) {
       let that = this
       this.vertex = item.homeStation
-      console.log('啊啊啊啊',item)
+      console.log('啊啊啊啊', item)
       if (item) {
         this.dialogFormVisible = true;
         this.dialogType = 'editRobots';
@@ -867,7 +680,17 @@ export default {
           // 绑定待命点
           if (this.standByChecked) {
             param.isHomeStation = true;
-            param.homeStation = Number(this.vertex);
+            if (this.vertex == null) {
+              this.$notify({
+                title: '提示',
+                message: '请选择待命点',
+                type: 'error',
+                duration: 3000,
+              });
+            return
+            }            
+              param.homeStation = Number(this.vertex);
+
           } else {
             param.isHomeStation = false;
           }
@@ -889,7 +712,7 @@ export default {
           }
           updateCarrier(param)
             .then((response) => {
-              console.log("查看修改的参数",param)
+              console.log("查看修改的参数", param)
               if (response.code === 20000) {
                 let data = response.data;
                 this.$notify({
@@ -914,7 +737,7 @@ export default {
         }
         this.dialogFormVisible = false;
       });
-      this.$refs[robotForm].resetFields();
+      // this.$refs[robotForm].resetFields();
     },
     cancelOperate(robotForm) {
       this.dialogFormVisible = false;
@@ -956,7 +779,7 @@ export default {
                 });
               });
           })
-          .catch(() => {});
+          .catch(() => { });
       }
     },
     // 重置新增修改表单
@@ -1019,13 +842,14 @@ export default {
       const { value1, value2, value3 } = this;
       if (!value1.value || !value2.value || !value3.length) {
         this.$notify({
-          message: '请选择配件！',
+          message: '请选择配件及功能！',
           type: 'warning',
           title: '提示',
           duration: 1000,
         });
         return;
       }
+
       let obj = {
         AccessoryName: value2.label,
         AccessoryCode: value2.accessoryCode,
@@ -1117,13 +941,14 @@ export default {
 
 <style lang="scss" scoped>
 .robot-header {
-  padding:5px 10px 10px 10px;
+  padding: 5px 10px 10px 10px;
   background-color: lightblue;
   border: 1px solid #fff;
 
   .robot-setting-title {
     display: inline;
   }
+
   .el-input--mini .el-input__inner {
     width: 180px !important;
   }
@@ -1132,6 +957,7 @@ export default {
     // margin-left: 30px;
     display: inline;
     float: right;
+
     .robot-inquire {
       width: 180px;
       margin-right: 10px;
@@ -1158,48 +984,49 @@ export default {
   width: 200px;
 }
 
->>> .el-table th,
+>>>.el-table th,
 .el-table tr {
   background-color: transparent;
 }
-::v-deep  .el-input__inner
- {
+
+::v-deep .el-input__inner {
   height: 1.875rem;
   background-color: transparent;
   color: #fff;
 }
->>> .header-row-class {
+
+>>>.header-row-class {
   background-color: transparent;
 }
 
->>> .row-class {
+>>>.row-class {
   background-color: transparent;
 }
 
->>> .el-table thead {
+>>>.el-table thead {
   color: black;
 }
 
->>> .el-table th > .cell {
+>>>.el-table th>.cell {
   padding-left: 0;
   padding-right: 0;
 }
 
->>> .el-table .cell {
+>>>.el-table .cell {
   padding-left: 0;
   padding-right: 0;
 }
 
->>> .el-dialog__header {
+>>>.el-dialog__header {
   padding: 20px;
   background-color: lightgray;
 }
 
->>> .el-dialog__body {
+>>>.el-dialog__body {
   padding: 20px;
 }
 
->>> .el-checkbox__label {
+>>>.el-checkbox__label {
   font-size: 12px;
 }
 
@@ -1207,15 +1034,15 @@ export default {
 //   width: 110px;
 // }
 
->>> .standby-input .el-input__inner {
+>>>.standby-input .el-input__inner {
   width: 110px;
 }
 
->>> .simu-input .el-input__inner {
+>>>.simu-input .el-input__inner {
   width: 110px;
 }
 
->>> .el-input__inner {
+>>>.el-input__inner {
   &::placeholder {
     font-size: 12px;
   }
@@ -1256,20 +1083,23 @@ export default {
   ::v-deep .el-dialog {
     width: 540px;
   }
+
   ::v-deep .el-dialog__body {
     padding: 20px;
     margin-left: 60px;
+
     .common-form-footer {
       margin-left: -30px;
     }
   }
+
   .detail-form {
     text-align: center;
     font-size: 13px;
     font-weight: bold;
     color: black;
 
-    >>> .el-input {
+    >>>.el-input {
       width: 200px;
     }
   }

@@ -14,6 +14,7 @@ const state = {
   closeWarnL:false,
   dealwithAlarm:false,
   areaId:0,
+  fileAddress:''
 };
 
 const mutations = {
@@ -61,6 +62,9 @@ const mutations = {
   },
   set_areaId:(state,data)=>{
     state.areaId = data
+  },
+  set_fileAddress:(state,data)=>{
+    state.fileAddress = data
   }
 
 };
@@ -107,6 +111,9 @@ const actions = {
   },
   setAreaId({commit},data){
     commit('set_areaId',data)
+  },
+  setFileAddress({commit},data){
+    commit('set_fileAddress',data)
   }
 };
 

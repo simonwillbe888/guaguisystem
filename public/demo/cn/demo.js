@@ -711,7 +711,7 @@ function clickGetAudioInfo() {
     console.log('对讲通道',szDeviceIdentify, $("#ip")) 
 
     if (null == szDeviceIdentify) {
-        alert('请先打开HCWebSDKPlugin.exe')
+        alert('获取对讲通道失败')
         const data = '123'
         window.functionForJs(data)
         return;

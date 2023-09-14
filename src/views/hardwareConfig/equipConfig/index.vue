@@ -195,6 +195,15 @@
             @focus="selectChange()"
           >
             <el-option
+            v-if="accessoForm.state!==2"
+              v-for="item in chooseOptions"
+              :key="item.Code"
+              :label="item.Desc"
+              :value="item.Code"
+            >
+            </el-option>
+            <el-option
+            v-if="accessoForm.state==2"
               v-for="item in stateOptions"
               :key="item.Code"
               :label="item.Desc"
@@ -328,6 +337,7 @@ export default {
       dialogType: '',
       options: [],
       stateOptions: [],
+      chooseOptions:[],
       cameraOptions: [],
       accessoDialog: {
         addAccesso: this.$t('equip_setting.plusAccesso_label'),
@@ -514,8 +524,9 @@ export default {
       getPatrolDicByState()
         .then((res) => {
           if (res.code === 20000) {
-            // console.log("配件使用状态",res.data)
+            console.log("配件使用状态",res.data)
             this.stateOptions = res.data || [];
+            this.chooseOptions = res.data.filter(item => item.Code != 2) || [];
           }
           this.initCamera();
         })
@@ -669,7 +680,7 @@ export default {
     editAccessoed(item, flag) {
       this.dialogFormVisible = true;
       this.dialogType = 'editAccesso';
-      // console.log("查看修改row",item)
+      console.log("查看修改row",item)
       this.selectState = item.state
       if (item) {
         this.ID = item.id;

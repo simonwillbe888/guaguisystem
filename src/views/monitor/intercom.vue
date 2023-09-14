@@ -69,7 +69,6 @@ export default {
       iframe.onload = () => {
         setTimeout(() => {
           iframe.contentWindow.clickLogin(this.hkPlugin)
-          console.log('看看hkplugin',this.hkPlugin)
           iframe.contentWindow.getChannelInfo()
           iframe.contentWindow.getDevicePort()
         }, 1000)
@@ -114,7 +113,7 @@ export default {
      * 关闭对讲
      */
     end() {
-      console.log('关闭按下了')
+      // console.log('关闭按下了')
       if(this.speak){
         this.stopSpeak().then((res)=>{
          stopTalk(this.carID).then((res)=>{
@@ -136,13 +135,12 @@ export default {
       })
     },
     beforeunloadHandler(e) {
-      console.log('监听intercom关闭')
+      // console.log('监听intercom关闭')
       window.addEventListener("beforeunload", () => {
          if(this.speak){
           this.end()
          }
       });
-      console.log('埋点监听')
     },
   },
 };

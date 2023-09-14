@@ -2097,7 +2097,7 @@ export default {
         this.imageUrl = 'http://192.168.20.6:8888/images/' + e.Image
       }
       else {
-        this.imageUrl = 'http://192.168.20.44:8888/images/' + e.Image
+        this.imageUrl = 'http://' + this.$store.state.global.fileAddress +':8888/images/' + e.Image
       }
       this.alarm = e
       if(dialog){

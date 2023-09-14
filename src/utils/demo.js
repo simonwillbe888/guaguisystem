@@ -710,7 +710,6 @@ function clickGetAudioInfo() {
     console.log('对讲通道',szDeviceIdentify) 
 
     if (null == szDeviceIdentify) {
-        // alert('请先打开HCWebSDKPlugin.exe')
         const data = '123'
         window.functionForJs(data)
         return;
@@ -758,7 +757,6 @@ function clickStartVoiceTalk() {
         var szInfo = " 开始对讲失败！";
         console.log('对讲失败')     
         
-        // alert('请先打开HCWebSDKPlugin.exe')
         const data = '123'
         window.functionForJs(data)
         showOPInfo(szDeviceIdentify + szInfo, oError.errorCode, oError.errorMsg);

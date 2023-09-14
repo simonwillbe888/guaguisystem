@@ -163,7 +163,7 @@ export default {
       if (e.fileType == 4) {
         console.log(e)
         downLoadPTZFile(e.id).then((res) => {
-          console.log('响应信息58', res, e)
+          console.log('响应信息', res, e)
           let blob = new Blob([res], { type: "video/mpeg4" });
           // let blob = new Blob([res]);//response.data为后端传的流文件
           let downloadFilename = e.createTime + '.mp4'

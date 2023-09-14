@@ -171,7 +171,6 @@ export default {
     height: 100%;
     width: 100%;
     // min-height: 41.875rem;
-    // min-width: 80rem;
     background-image: url('../../assets/img/loginBackground.png');
     background-size: 120rem 60.5rem;
   }

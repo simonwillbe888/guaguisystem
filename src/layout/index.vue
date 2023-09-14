@@ -95,7 +95,7 @@ import { getAlarmNotice } from '@/api/user.js';
 import { mapGetters } from 'vuex';
 import { removeToken } from '@/utils/auth';
 import { loginOut, remoteLoginOut, getInfo } from '@/api/user'
-import { downLoadBatchPTZFile, getDownLoadFile } from '../api/sysCtrl';
+import { downLoadBatchPTZFile, getDownLoadFile,getSystemXmlConfig } from '../api/sysCtrl';
 export default {
   name: 'Layout',
   components: {
@@ -217,8 +217,10 @@ export default {
       this.currentManue.currentPath = this.$route.path;
     },
     init() {
+      getSystemXmlConfig().then((res)=>{
+        this.$store.dispatch('global/setFileAddress',res.data.fileAddress)
+      })
       getExistCarrierAreaList().then((res) => {
-        console.log('区域', res)
         let accessTypeArr = res.data
         this.choosedArea = accessTypeArr[1].id
         for (let i = 0, len = accessTypeArr.length; i < len; i++) {
@@ -251,6 +253,7 @@ export default {
     },
     downloadMedia(params) {
     //获取文件
+    this.closeProgress()
       downLoadBatchPTZFile(params).then((response) => {
         if(response.code != '20000'){
           return
@@ -265,8 +268,9 @@ export default {
             this.progressPercentage = Number(res.data)
             if (Number(res.data) >= 100) {
                this.closeProgress()
-              window.location.href = process.env.VUE_APP_BASE_API + '/download/' + response.data
-
+               const url = process.env.VUE_APP_BASE_API + '/download/' + response.data
+                console.log('url',url)
+               window.open(url,'_blank')
             }
           })
         }, 1000)
