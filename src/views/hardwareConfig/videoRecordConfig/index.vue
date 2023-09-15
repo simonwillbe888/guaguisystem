@@ -931,7 +931,7 @@ export default {
       // console.log("playRecordFile",+row)
       this.nvrRecordData = {src:''}
       this.titleName = '回看 '+ row.start + ' - ' + row.stop +' '
-      this.recordVideoSrc = '/'+row.name+".mp4"
+      // this.recordVideoSrc = '/'+row.name+".mp4"
       // this.recordVideoSrc = '/static/video/'+row.name+".mp4"
 
       this.recordStart = row.start
@@ -1025,7 +1025,7 @@ export default {
       let webRtcIP = window.location.hostname
       // console.log('playRecord---webRtcIP',webRtcIP)
       // if (webRtcIP == 'localhost' || webRtcIP == '127.0.0.1'){
-        webRtcIP = '192.168.20.23'
+      //   webRtcIP = '192.168.20.23'
       // }
       let port = '554'
       this.nvrData.src = `/static/record.html?data=`+encodeURIComponent(`rtsp://${this.nvrData.userName}:${this.nvrData.passWord}@${this.nvrData.ip}:${port}/Streaming/tracks/${channel}?starttime=${startTime}&endtime=${endTime}`)+`&serve=${webRtcIP}`
@@ -1137,7 +1137,7 @@ export default {
       let webRtcIP = window.location.hostname
       // console.log('reloadIframe---webRtcIP',webRtcIP)
       // if (webRtcIP == 'localhost' || webRtcIP == '127.0.0.1'){
-        webRtcIP = '192.168.20.23'
+      //   webRtcIP = '192.168.20.23'
       // }
       this.getPeerConnectionList(webRtcIP)
       setTimeout(()=>{
