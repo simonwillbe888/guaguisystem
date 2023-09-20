@@ -4,7 +4,16 @@
       <el-row :gutter="10">
         <el-col :span="6">
           <div class="robot back-shaodow">
-            <div class="leftTitle"> 机器人信息 <span v-if="butteryInfo">({{ butteryInfo }})</span> </div>
+            <div class="leftTitle" style="padding-bottom: 0;display: flex;margin-bottom: 1.5rem">
+              <div style="z-index: 10;margin-left: 0.5rem">机器人信息
+                <span v-if="butteryInfo">({{ butteryInfo }})</span>
+              </div>
+              <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
+                <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
+                <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+                <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+              </div>
+            </div>
             <div class="robotMessage">
               <div>
                 当前速度
@@ -37,19 +46,19 @@
             </div>
             <div class="warnL" style="position:absolute;top: 9.2rem;left: 2.7rem;">
               <div
-                style="border-radius: 0.625rem;;width: 3.1rem;background-color: #66B3B2;display: flex;height: 3rem;line-height: 2rem;align-items: center;justify-items: center;"
+                style="border-radius: 0.625rem;border: 1px solid rgb(100,200,200);width: 3.1rem;background-color: transparent;display: flex;height: 3rem;line-height: 2rem;align-items: center;justify-items: center;"
                 @click="setWarnLight()" :class="{ 'warning_light_active': warnLightOpen == 1 }">
-                <img src="../../assets/img/warnLight.png" style="margin: auto;width: 2.3rem">
+                <img src="../../assets/img/warnLight.png" style="margin: auto;width: 2.3rem;filter: hue-rotate(180deg) " alt="">
                 <!--                <svg-icon icon-class="warnLight" style="margin:auto;width: 2.5rem;height: 2.5rem;"></svg-icon>-->
               </div>
               <div class="warning_light" style="font-size: 0.875rem;margin: 0.5rem 0.2rem"> 警示灯</div>
 
             </div>
 
-            <div class="electri">
-              <el-progress :width="40" color="#66b3b2" text-color="#fff" type="circle"
-                :percentage="carList.batteryLevel"></el-progress>
-              <div style="font-size: 0.8rem;margin-left: 0.5rem">当前电量</div>
+            <div class="electri" style="width: 4rem;">
+              <el-progress :width="45" color="#66b3b2" text-color="#fff" type="circle"
+                           :percentage="carList.batteryLevel"></el-progress>
+              <div style="width:4.5rem;font-size: 0.8rem;display: flex;justify-content: center;margin-top: 0.5rem;word-break: keep-all;">当前电量</div>
             </div>
             <div class="microphone">
               <Intercom ref="closeIntercom" :key="carID" :carID="carID" :hkPlugin="hkPlugin" ></Intercom>
@@ -63,6 +72,7 @@
           </div>
 
         </el-col>
+
         <el-col :span="10">
           <div class="center">
             <div class="video" v-if="currentAdvices.length">
@@ -82,6 +92,7 @@
             </div>
           </div>
         </el-col>
+
         <el-col :span="8">
           <div class="right">
             <iframe :class="[
@@ -92,6 +103,7 @@
             <div class="tempicture" id="tempicture">{{ tempicture }}</div>
           </div>
         </el-col>
+
         <div v-if="broadcastVisible" class="broadcastSelect">
           <div class="leftTitle" style="display: flex;">
             <div>语音播报</div>
@@ -110,6 +122,7 @@
             <el-button type="primary" style="background-color:#64C8C8 ;" size="mini" @click="broadcast()">确 定</el-button>
           </div>
         </div>
+
         <el-dialog :visible.sync="lowButtery" title="低电量提示" width="30%">
           <span style="font-size:1.5rem ;">机器人低电量,确定启动该任务吗? </span>
           <span slot="footer">
@@ -117,6 +130,7 @@
             <el-button size="mini" type="primary" @click="goLocationLowButtery()">确 定</el-button>
           </span>
         </el-dialog>
+
         <el-dialog :visible.sync="locationAuto" :show-close="false" :close-on-click-modal="false" title="操作提示"
           width="30%">
           <span style="font-size:1.5rem ;">已到达桩号{{ locationName }}，是否手动操作机器人</span>
@@ -125,88 +139,263 @@
             <el-button size="mini" type="primary" @click="openLocation()">是</el-button>
           </span>
         </el-dialog>
+
       </el-row>
-      <el-row :gutter="10">
-        <el-col :span="6">
-          <div class="task back-shaodow">
-            <div class="leftTitle" style="padding-top: 1rem;padding-bottom: 0.5rem;">任务信息</div>
-            <div class="taskDetail">
-              <div>
-                当前任务 ：<span style="color:#66B3B2 ;">{{ realTimeTask == '' ? '空闲状态' : realTimeTask }} </span>
-              </div>
 
-              <span style="margin-left: 1.875rem;">
+      <el-row :gutter="10" style="position: relative">
 
-                预计完成：<span style="color:#66B3B2 ;"></span>{{ finishTime ==
-                  '' ? '0' : Math.abs(finishTime) }}分钟 </span>
-            </div>
-            <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0rem;">
-              任务下发
-            </div>
-            <div class="taskDetail">
-              <span style="width: 6rem;line-height: 2rem;height: 2rem;overflow: hidden;">任务模板 ：</span>
-              <span style="color:#66B3B2;width: 7rem">
-                <el-select v-model="taskID" placeholder="请选择">
-                  <el-option v-for="item in taskList" :key="item.value" :label="item.label" :value="item.value">
-                  </el-option>
-                </el-select>
-              </span>
-              <el-popconfirm title="确定执行任务吗?" @confirm="startPlan()">
-                <div
-                  style="background-color:#66B3B2 ; color:#ffffff;margin-left: 7.5rem;width: 3.75rem; text-align: center; height: 1.875rem;line-height: 1.875rem;"
-                  slot="reference">执行</div>
-              </el-popconfirm>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div class="map back-shaodow">
-            <img src="../../assets/img/route.png" class="backgroundIm">
-            <div style="display: flex;">
-              <div class="nowPosition">
-                <span style="margin:0.125rem 0.625rem 0  0.625rem ;font-size: 1.25rem;">巡检地图</span>
-                <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }}当前位置：{{ carList.pileNumber == null ?
-                  (isNaN(carList.x) ? '未知' : carList.x / 1000) :
-                  '站点' + carList.pileNumber
-                }}</span>
+        <el-col :span="16" style="padding: 0">
+          <el-col :span="9">
+            <div class="task back-shaodow">
+              <div class="leftTitle" style="padding-bottom: 0;display: flex;margin-bottom: 1rem">
+                <div style="z-index: 10;margin-left: 0.5rem">任务信息</div>
+                <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
+                  <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
+                  <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+                  <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+                </div>
               </div>
-              <div class="goLocation">
-                <!-- <el-input class="location_Detail" v-model="locationID" :placeholder="areaName">
-                  <template slot="prefix">去往</template>
-                </el-input> -->
-                    <el-autocomplete
-                      class="location_Detail"
-                      v-model="locationName"
-                      value-key="areaName"
-                      :fetch-suggestions="querySearch"
-                      placeholder="请输入内容"
-                      @select="handleSelect"
-                    >
-                    <template slot="prefix" >
-                      去往
-                    </template>
-                    <!-- <template slot="prefix">去往</template> -->
-                   </el-autocomplete>
-                <el-popconfirm title="确定去往桩号?" @confirm="goLocation">
-                  <div class="goYes" slot="reference">确定</div>
+              <div class="taskDetail">
+                <div>
+                  当前任务  <span style="color:#66B3B2 ;">{{ realTimeTask == '' ? '空闲状态' : realTimeTask }} </span>
+                </div>
+
+                <span style="margin-left: 1.875rem;">
+
+                  预计完成 <span style="color:#66B3B2 ;"></span>{{ finishTime ==
+                    '' ? '0' : Math.abs(finishTime) }}分钟 </span>
+              </div>
+              <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0rem;">
+                任务下发
+              </div>
+              <div class="taskDetail">
+                <span style="width: 6rem;line-height: 2rem;height: 2rem;overflow: hidden;">任务模板  </span>
+                <span style="color:#66B3B2;width: 7rem">
+                  <el-select v-model="taskID" placeholder="请选择">
+                    <el-option v-for="item in taskList" :key="item.value" :label="item.label" :value="item.value">
+                    </el-option>
+                  </el-select>
+                </span>
+                <el-popconfirm title="确定执行任务吗?" @confirm="startPlan()">
+                  <div
+                    style="background-color:#66B3B2 ; color:#ffffff;margin-left: 7.5rem;width: 3.75rem; text-align: center; height: 1.875rem;line-height: 1.875rem;"
+                    slot="reference">执行</div>
                 </el-popconfirm>
               </div>
             </div>
+          </el-col>
+
+          <el-col :span="15">
+            <div class="map back-shaodow">
+              <img src="../../assets/img/route.png" class="backgroundIm">
+              <div style="display: flex;">
+                <div class="nowPosition">
+                  <span style="margin:0.125rem 0.625rem 0  0.625rem ;font-size: 1.25rem;">巡检地图</span>
+                  <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }}当前位置：{{ carList.pileNumber == null ?
+                    (isNaN(carList.x) ? '未知' : carList.x / 1000) :
+                    '站点' + carList.pileNumber
+                  }}</span>
+                </div>
+                <div class="goLocation">
+                  <!-- <el-input class="location_Detail" v-model="locationID" :placeholder="areaName">
+                    <template slot="prefix">去往</template>
+                  </el-input> -->
+                      <el-autocomplete
+                        class="location_Detail"
+                        v-model="locationName"
+                        value-key="areaName"
+                        :fetch-suggestions="querySearch"
+                        placeholder="请输入内容"
+                        @select="handleSelect"
+                      >
+                      <template slot="prefix" >
+                        去往
+                      </template>
+                      <!-- <template slot="prefix">去往</template> -->
+                     </el-autocomplete>
+                  <el-popconfirm title="确定去往桩号?" @confirm="goLocation">
+                    <div class="goYes" slot="reference">确定</div>
+                  </el-popconfirm>
+                </div>
+              </div>
 
 
-            <div id="robot" style="position:relative;width: 3.125rem;bottom: 5.3rem;margin-left: 0rem;">
-              <img src="../../assets/img/robot1.png" style="width:2.5rem;height: 1.875rem;opacity: 1;">
+              <div id="robot" style="position:relative;width: 3.125rem;bottom: 5.3rem;margin-left: 0rem;">
+                <img src="../../assets/img/robot1.png" style="width:2.5rem;height: 1.875rem;opacity: 1;">
+              </div>
+
             </div>
+          </el-col>
 
-          </div>
+          <el-col :span="9">
+            <div class="enviroment back-shaodow threeRow">
+              <div class="leftTitle" style="padding-bottom: 0;display: flex;margin-bottom: 1rem">
+                <div style="z-index: 10;margin-left: 0.5rem">环境信息</div>
+                <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
+                  <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
+                  <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+                  <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+                </div>
+              </div>
+              <div style="display:flex">
+                <div class="enviroDetail">
+                  <div class="detail_icon">
+                    <svg-icon icon-class="tempicture" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
+                    <div style="color:rgba(100 200 200) ;">温度</div>
+                  </div>
+                  <div class="gasDetail">
+                    {{ isNaN(gasList.Temperature) ?   '0': parseFloat((gasList.Temperature / 100).toFixed(1))}}℃
+                  </div>
+                </div>
+                <div class="enviroDetail">
+                  <div class="detail_icon">
+                    <svg-icon icon-class="shidu" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
+                    <div style="color:rgba(100 200 200) ;">湿度</div>
+                  </div>
+                  <div class="gasDetail">
+                    {{ isNaN( gasList.Humidity) ? '0' : (gasList.Humidity / 100).toFixed(1) }}<span
+                      style="font-size: 0.625rem;">%</span>
+                  </div>
+                </div>
+                <div class="enviroDetail">
+                  <div style="color:rgba(100 200 200);margin: 1.25rem 0 0 0.375rem;">烟雾</div>
+                  <div class="gasDetail">
+                    {{ gasList.Smoke == null ? '0' : (gasList.Smoke / 100).toFixed(1) }}<span
+                      style="font-size: 0.625rem;">ppm</span>
+                  </div>
+                </div>
+              </div>
+              <div style="display:flex;margin-top: 0.625rem;">
+                <div class="enviroDetail">
+                  <div style="color:rgba(100 200 200);margin: 0.625rem 0 0 0.375rem;">硫化氢</div>
+                  <div class="gasDetail">
+                    {{ gasList.H2S == null ? '0' : (gasList.H2S / 100).toFixed(1) }}<span
+                      style="font-size: 0.625rem;">ppm</span>
+                  </div>
+                </div>
+                <div class="enviroDetail">
+                  <div class="gas" style="color:rgba(100 200 200);">一氧化碳</div>
+                  <div class="gasDetail">
+                    {{ gasList.CO == null ? '0' : (gasList.CO / 100).toFixed(1) }}<span
+                      style="font-size: 0.625rem;">ppm</span>
+                  </div>
+                </div>
+                <div class="enviroDetail">
+                  <div class="gas" style="color:rgba(100 200 200);margin: 1.25rem 0 0 0.375rem;">甲烷</div>
+                  <div class="gasDetail">
+                    {{ gasList.CH4 == null ? '0' : (gasList.CH4 / 100).toFixed(1) }}<span
+                      style="font-size: 0.625rem;">ppm</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </el-col>
+          <el-col :span="15">
+            <div class="alarm_2 back-shaodow threeRow">
+              <div class="alarm_title" style="margin-bottom: 0.5rem">告警信息
+                <div class="chart" @click="chart()">告警分析</div>
+              </div>
+              <div class="alarm">
+                <div class="myTable">
+                  <el-table :data="showTable" @row-click="getDetailMessage" style="width: 98%" height="10rem">
+                    <el-table-column width="60" label="序号" type="index" align="center">
+                    </el-table-column>
+                    <el-table-column prop="AlarmCode" :label="'告警码'" width="80" align="center">
+                    </el-table-column>
+                    <el-table-column prop="CarrierName" :label="'机器人名称'"  align="center">
+
+
+                    </el-table-column>
+                    <el-table-column prop="AlarmName" :label="$t('alarm_dealWith.alarm_name_label')" align="center">
+                      <template slot-scope="scope">
+                        {{ scope.row.AlarmName }}
+                      </template>
+                    </el-table-column>
+                    <el-table-column prop="MaxLevel" width="100" :label="'告警级别'" align="center">
+                      <template slot-scope="scope">
+                        <span v-if="scope.row.MaxLevel === 4" class="first">致命</span>
+                        <span v-else-if="scope.row.MaxLevel === 3" class="two">严重</span>
+                        <span v-else-if="scope.row.MaxLevel === 2" class="three">一般</span>
+                        <span v-else class="four">提示</span>
+
+                        <!-- {{ scope.row.MaxLevel ==0?'默认':scope.row.MaxLevel ==1?'提示':scope.row.MaxLevel ==2?'一般':scope.row.MaxLevel ==3?'严重':'致命' }} -->
+                      </template>
+                    </el-table-column>
+                    <!-- <el-table-column prop="CarrierName" :label="$t('alarm_dealWith.machine_name_label')">
+                              </el-table-column>
+                               <el-table-column prop="EquipmentName" :label="$t('alarm_dealWith.equipment_name_label')">
+                               </el-table-column> -->
+                    <el-table-column prop="ReportTime" :label="$t('alarm_dealWith.happen_time')" align="center">
+                    </el-table-column>
+                  </el-table>
+                </div>
+                <el-dialog title="告警详情" :visible.sync="dialogVisible" width="60%">
+                  <div style="display:flex">
+                    <img :src="imageUrl" alt="" style="width:70%">
+                    <div style="margin-left:2.5rem">
+                      <div style="margin: 0.625rem  0;">告警级别:
+                        <span v-if="alarm.MaxLevel == 4"
+                          style="border: red 0.0625rem solid; color: red;font-size: 1.375rem;">致命</span>
+                        <span v-if="alarm.MaxLevel == 3"
+                          style="border: orange 0.0625rem solid; color: orange;font-size: 1.375rem;">严重</span>
+                        <span v-if="alarm.MaxLevel == 2"
+                          style="border: yellow 0.0625rem solid; color: yellow;font-size: 1.25rem;">一般</span>
+                        <span v-if="alarm.MaxLevel == 1"
+                          style="border: #08F9EB 0.0625rem solid; color: #08F9EB ;font-size: 1.25rem;">提示</span>
+                      </div>
+                      <div style="margin: 1.25rem  0;">
+                        告警名称：{{ alarm.AlarmName }}
+                      </div>
+                      <div style="margin: 1.875rem  0;">
+                        告警编号：{{ alarm.ID }}
+                      </div>
+                      <div style="margin: 1.875rem  0;">
+                        告警类型：{{ alarm.AlarmCode == 1001 ? "行人告警" : alarm.AlarmCode == 1002 ? "非机动车告警" :
+                          alarm.AlarmCode
+                            == 1003 ? "异物告警" : alarm.AlarmCode == 1004 ? "温度告警" :
+                            alarm.AlarmCode == 1005 ? "湿度告警" : alarm.AlarmCode == 1006 ? "气体告警" : alarm.AlarmCode ==
+                              1007 ? "灯光告警" :
+                              alarm.AlarmCode == 1008 ? "违停逆行告警" : alarm.AlarmCode == 1009 ? "超速告警" : alarm.AlarmCode
+                                == 1010 ? "动物告警" : alarm.AlarmCode == 1012 ? "消防设备告警" : alarm.AlarmCode == 1011 ? "井盖异常告警" :
+                                  alarm.AlarmCode
+                                    == 1013 ? "火灾烟雾告警" : alarm.AlarmCode
+                                      == 1014 ? "红外测温告警" : alarm.AlarmCode
+                                        == 1015 ? "算法异常告警" : alarm.AlarmCode
+                                          == 1016 ? "逆行告警" : alarm.AlarmCode
+                                            == 1017 ? "风机告警" :
+                                    alarm.AlarmCode
+                                      == 1018 ? "指示灯告警" : "机体告警" }} </div>
+                      <div style="margin: 1.875rem 0;">
+                        事件描述：{{ alarm.Description }}
+                      </div>
+                      <div style="margin: 1.875rem 0;">
+                        告警位置：{{ alarm.Location }}
+                      </div>
+                      <div style="margin: 1.875rem  0;">
+                        发生时间：{{ alarm.ReportTime }}
+                      </div>
+                      <div style="margin: 1.875rem  0;">
+                        修复时间：{{ alarm.RecoveryTime == null ? "未修复" : alarm.RecoveryTime }}
+                      </div>
+                    </div>
+                  </div>
+                  <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                  </span>
+                </el-dialog>
+              </div>
+            </div>
+          </el-col>
         </el-col>
+
         <el-col :span="8">
           <div class="robotControl back-shaodow">
             <div class="leftTitle" style="display: flex;position: relative;">
               机器人控制
               <div>
                 <el-switch :disabled="!carID" style="height: 1.25rem;margin-left:1rem ;" v-model="robotOpen"
-                  active-text="开" inactive-text="关" @change="setOpen()" :active-value="1" :inactive-value="2">
+                           active-text="开" inactive-text="关" @change="setOpen()" :active-value="1" :inactive-value="2">
                 </el-switch>
               </div>
               <div style="margin-left: 7vw;">机器人速度{{ robotSpeed / 1000 }}m/s</div>
@@ -226,237 +415,81 @@
                   巡检速度
                 </div>
                 <div style="margin-top:0.4375rem ;" @click="robotSpeed = 8000"
-                  :class="robotSpeed == 8000 ? 'speed_urgency_active' : 'speed_urgency'">
+                     :class="robotSpeed == 8000 ? 'speed_urgency_active' : 'speed_urgency'">
                   应急速度
                 </div>
               </div>
             </div>
 
-          </div>
-        </el-col>
-      </el-row>
-      <el-row :gutter="10">
-        <el-col :span="6">
-          <div class="enviroment back-shaodow threeRow">
-            <div class="leftTitle">环境信息</div>
-            <div style="display:flex">
-              <div class="enviroDetail">
-                <div class="detail_icon">
-                  <svg-icon icon-class="tempicture" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
-                  <div style="color:rgba(100 200 200) ;">温度</div>
-                </div>
-                <div class="gasDetail">
-                  {{ isNaN(gasList.Temperature) ?   '0': parseFloat((gasList.Temperature / 100).toFixed(1))}}℃
-                </div>
-              </div>
-              <div class="enviroDetail">
-                <div class="detail_icon">
-                  <svg-icon icon-class="shidu" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
-                  <div style="color:rgba(100 200 200) ;">湿度</div>
-                </div>
-                <div class="gasDetail">
-                  {{ isNaN( gasList.Humidity) ? '0' : (gasList.Humidity / 100).toFixed(1) }}<span
-                    style="font-size: 0.625rem;">%</span>
-                </div>
-              </div>
-              <div class="enviroDetail">
-                <div style="color:rgba(100 200 200);margin: 1.25rem 0 0 0.375rem;">烟雾</div>
-                <div class="gasDetail">
-                  {{ gasList.Smoke == null ? '0' : (gasList.Smoke / 100).toFixed(1) }}<span
-                    style="font-size: 0.625rem;">ppm</span>
-                </div>
-              </div>
-            </div>
-            <div style="display:flex;margin-top: 0.625rem;">
-              <div class="enviroDetail">
-                <div style="color:rgba(100 200 200);margin: 0.625rem 0 0 0.375rem;">硫化氢</div>
-                <div class="gasDetail">
-                  {{ gasList.H2S == null ? '0' : (gasList.H2S / 100).toFixed(1) }}<span
-                    style="font-size: 0.625rem;">ppm</span>
-                </div>
-              </div>
-              <div class="enviroDetail">
-                <div class="gas" style="color:rgba(100 200 200);">一氧化碳</div>
-                <div class="gasDetail">
-                  {{ gasList.CO == null ? '0' : (gasList.CO / 100).toFixed(1) }}<span
-                    style="font-size: 0.625rem;">ppm</span>
-                </div>
-              </div>
-              <div class="enviroDetail">
-                <div class="gas" style="color:rgba(100 200 200);margin: 1.25rem 0 0 0.375rem;">甲烷</div>
-                <div class="gasDetail">
-                  {{ gasList.CH4 == null ? '0' : (gasList.CH4 / 100).toFixed(1) }}<span
-                    style="font-size: 0.625rem;">ppm</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </el-col>
-        <el-col :span="10">
-          <div class="alarm_2 back-shaodow threeRow">
-            <div class="alarm_title">告警信息
-              <div class="chart" @click="chart()">告警分析</div>
-            </div>
-            <div class="alarm">
-              <div class="myTable">
-                <el-table :data="showTable" @row-click="getDetailMessage" style="width: 98%" height="10rem">
-                  <el-table-column width="60" label="序号" type="index" align="center">
-                  </el-table-column>
-                  <el-table-column prop="AlarmCode" :label="'告警码'" width="80" align="center">
-                  </el-table-column>
-                  <el-table-column prop="CarrierName" :label="'机器人名称'"  align="center">
-                    
+            <hr style="border-color: rgb(100 200 200)">
 
-                  </el-table-column>
-                  <el-table-column prop="AlarmName" :label="$t('alarm_dealWith.alarm_name_label')" align="center">
-                    <template slot-scope="scope">
-                      {{ scope.row.AlarmName }}
-                    </template>
-                  </el-table-column>
-                  <el-table-column prop="MaxLevel" width="100" :label="'告警级别'" align="center">
-                    <template slot-scope="scope">
-                      <span v-if="scope.row.MaxLevel === 4" class="first">致命</span>
-                      <span v-else-if="scope.row.MaxLevel === 3" class="two">严重</span>
-                      <span v-else-if="scope.row.MaxLevel === 2" class="three">一般</span>
-                      <span v-else class="four">提示</span>
+            <div class="hkControl">
+              <div class="leftTitle" widht="6.25rem">
+                云台控制
+              </div>
+              <div style="display:flex ;">
+                <div class="hkMove">
+                  <img src="../../assets/img/hkUp.png" @mousedown="setCameraOperate(1)" @mouseup="stopCam()" class="hkUp">
+                  <div style="display: flex;">
+                    <img src="../../assets/img/hkLeft.png" @mousedown="setCameraOperate(5)" @mouseup="stopCam()"
+                         class="hkLeft">
+                    <img src="../../assets/img/hkConnect.png" @click="HKlogin()"
+                         :class="[YTlogin == true ? 'HKloading' : 'hkConnect']">
+                    <img src="../../assets/img/hkRight.png" @mousedown="setCameraOperate(7)" @mouseup="stopCam()"
+                         class="hkRight">
+                  </div>
+                  <img src="../../assets/img/hkDown.png" @mousedown="setCameraOperate(3)" @mouseup="stopCam()"
+                       class="hkDown">
+                </div>
+                <div style="margin-left: 4.125rem;width:18.75rem;position: relative;">
+                  <div class="hkAction">
+                    <div title="放大" class="action_detail" @mousedown="setCameraOperate(9)" @mouseup="stopCam()">
+                      <img src="../../assets/img/fangda.png" alt="">
+                    </div>
+                    <div title="照相" class="action_detail">
+                      <img src="../../assets/img/takephoto.png" @click="setCameraOperate(20)">
+                    </div>
+                    <div title="清洗" class="action_detail" @mousedown="setCameraOperate(16)" @mouseup="stopCam()">
+                      <img src="../../assets/img/clean.png" alt="">
+                    </div>
+                    <div title="聚焦" class="action_detail" @mousedown="setCameraOperate(13)" @mouseup="stopCam(13)">
+                      <img src="../../assets/img/jujiao.png" alt="">
+                    </div>
+                  </div>
+                  <div class="hkAction">
+                    <div title="缩小" class="action_detail" @mousedown="setCameraOperate(11)" @mouseup="stopCam(11)">
+                      <img src="../../assets/img/suoxiao.png" alt="">
+                    </div>
+                    <div class="action_detail">
+                      <img title="录像" src="../../assets/img/video.png" v-if="!videoOn" @click="setCameraOperate(21)">
+                      <img title="关闭录像" src="../../assets/img/closeVideo.png" v-if="videoOn" @click="setCameraOperate(23)">
+                    </div>
+                    <div class="action_detail">
+                      <img title="开灯" src="../../assets/img/light.png" v-if="!lightOn" @click="setCameraOperate(12)">
+                      <img title="关灯" src="../../assets/img/closeLiht.png" v-if="lightOn" @click="setCameraOperate(14)">
+                    </div>
+                    <div class="action_detail" @mousedown="setCameraOperate(15)" @mouseup="stopCam(15)">
+                      <img title="远焦" src="../../assets/img/yuanjiao.png" alt="">
+                    </div>
+                  </div>
+                  <div style="margin-top:1rem;padding-left: 1rem;font-size: 0.8rem">
+                    云台速度
+                    <!-- <el-input disabled v-model="speed" ></el-input> -->
+                    <div class="speed"
+                         style="margin:0.625rem 0;width: 17rem;display: flex;position: relative;align-items: center;">
+                      <el-slider :max="7" v-model="speed" style="margin: 0 1.25rem 0 -0.5rem;width: 12rem">
+                      </el-slider>
+                      <el-input-number size="mini" :min=0 :max=7 v-model="speed" :step="1" :controls="false"
+                                       style="width: 5rem"></el-input-number>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-                      <!-- {{ scope.row.MaxLevel ==0?'默认':scope.row.MaxLevel ==1?'提示':scope.row.MaxLevel ==2?'一般':scope.row.MaxLevel ==3?'严重':'致命' }} -->
-                    </template>
-                  </el-table-column>
-                  <!-- <el-table-column prop="CarrierName" :label="$t('alarm_dealWith.machine_name_label')">
-                            </el-table-column>
-                             <el-table-column prop="EquipmentName" :label="$t('alarm_dealWith.equipment_name_label')">
-                             </el-table-column> -->
-                  <el-table-column prop="ReportTime" :label="$t('alarm_dealWith.happen_time')" align="center">
-                  </el-table-column>
-                </el-table>
-              </div>
-              <el-dialog title="告警详情" :visible.sync="dialogVisible" width="60%">
-                <div style="display:flex">
-                  <img :src="imageUrl" alt="" style="width:70%">
-                  <div style="margin-left:2.5rem">
-                    <div style="margin: 0.625rem  0;">告警级别:
-                      <span v-if="alarm.MaxLevel == 4"
-                        style="border: red 0.0625rem solid; color: red;font-size: 1.375rem;">致命</span>
-                      <span v-if="alarm.MaxLevel == 3"
-                        style="border: orange 0.0625rem solid; color: orange;font-size: 1.375rem;">严重</span>
-                      <span v-if="alarm.MaxLevel == 2"
-                        style="border: yellow 0.0625rem solid; color: yellow;font-size: 1.25rem;">一般</span>
-                      <span v-if="alarm.MaxLevel == 1"
-                        style="border: #08F9EB 0.0625rem solid; color: #08F9EB ;font-size: 1.25rem;">提示</span>
-                    </div>
-                    <div style="margin: 1.25rem  0;">
-                      告警名称：{{ alarm.AlarmName }}
-                    </div>
-                    <div style="margin: 1.875rem  0;">
-                      告警编号：{{ alarm.ID }}
-                    </div>
-                    <div style="margin: 1.875rem  0;">
-                      告警类型：{{ alarm.AlarmCode == 1001 ? "行人告警" : alarm.AlarmCode == 1002 ? "非机动车告警" :
-                        alarm.AlarmCode
-                          == 1003 ? "异物告警" : alarm.AlarmCode == 1004 ? "温度告警" :
-                          alarm.AlarmCode == 1005 ? "湿度告警" : alarm.AlarmCode == 1006 ? "气体告警" : alarm.AlarmCode ==
-                            1007 ? "灯光告警" :
-                            alarm.AlarmCode == 1008 ? "违停逆行告警" : alarm.AlarmCode == 1009 ? "超速告警" : alarm.AlarmCode
-                              == 1010 ? "动物告警" : alarm.AlarmCode == 1012 ? "消防设备告警" : alarm.AlarmCode == 1011 ? "井盖异常告警" :
-                                alarm.AlarmCode
-                                  == 1013 ? "火灾烟雾告警" : alarm.AlarmCode
-                                    == 1014 ? "红外测温告警" : alarm.AlarmCode
-                                      == 1015 ? "算法异常告警" : alarm.AlarmCode
-                                        == 1016 ? "逆行告警" : alarm.AlarmCode
-                                          == 1017 ? "风机告警" :
-                                  alarm.AlarmCode
-                                    == 1018 ? "指示灯告警" : "机体告警" }} </div>
-                    <div style="margin: 1.875rem 0;">
-                      事件描述：{{ alarm.Description }}
-                    </div>
-                    <div style="margin: 1.875rem 0;">
-                      告警位置：{{ alarm.Location }}
-                    </div>
-                    <div style="margin: 1.875rem  0;">
-                      发生时间：{{ alarm.ReportTime }}
-                    </div>
-                    <div style="margin: 1.875rem  0;">
-                      修复时间：{{ alarm.RecoveryTime == null ? "未修复" : alarm.RecoveryTime }}
-                    </div>
-                  </div>
-                </div>
-                <span slot="footer" class="dialog-footer">
-                  <el-button @click="dialogVisible = false">取 消</el-button>
-                  <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-                </span>
-              </el-dialog>
-            </div>
           </div>
         </el-col>
-        <el-col :span="8">
-          <div class="hkControl back-shaodow threeRow">
-            <div class="leftTitle" widht="6.25rem">
-              云台控制器
-            </div>
-            <div style="display:flex ;">
-              <div class="hkMove">
-                <img src="../../assets/img/hkUp.png" @mousedown="setCameraOperate(1)" @mouseup="stopCam()" class="hkUp">
-                <div style="display: flex;">
-                  <img src="../../assets/img/hkLeft.png" @mousedown="setCameraOperate(5)" @mouseup="stopCam()"
-                    class="hkLeft">
-                  <img src="../../assets/img/hkConnect.png" @click="HKlogin()"
-                    :class="[YTlogin == true ? 'HKloading' : 'hkConnect']">
-                  <img src="../../assets/img/hkRight.png" @mousedown="setCameraOperate(7)" @mouseup="stopCam()"
-                    class="hkRight">
-                </div>
-                <img src="../../assets/img/hkDown.png" @mousedown="setCameraOperate(3)" @mouseup="stopCam()"
-                  class="hkDown">
-              </div>
-              <div style="margin-left: 4.125rem;width:18.75rem;position: relative;">
-                <div class="hkAction">
-                  <div title="放大" class="action_detail" @mousedown="setCameraOperate(9)" @mouseup="stopCam()">
-                    <img src="../../assets/img/fangda.png" alt="">
-                  </div>
-                  <div title="照相" class="action_detail">
-                    <img src="../../assets/img/takephoto.png" @click="setCameraOperate(20)">
-                  </div>
-                  <div title="清洗" class="action_detail" @mousedown="setCameraOperate(16)" @mouseup="stopCam()">
-                    <img src="../../assets/img/clean.png" alt="">
-                  </div>
-                  <div title="聚焦" class="action_detail" @mousedown="setCameraOperate(13)" @mouseup="stopCam(13)">
-                    <img src="../../assets/img/jujiao.png" alt="">
-                  </div>
-                </div>
-                <div class="hkAction">
-                  <div title="缩小" class="action_detail" @mousedown="setCameraOperate(11)" @mouseup="stopCam(11)">
-                    <img src="../../assets/img/suoxiao.png" alt="">
-                  </div>
-                  <div class="action_detail">
-                    <img title="录像" src="../../assets/img/video.png" v-if="!videoOn" @click="setCameraOperate(21)">
-                    <img title="关闭录像" src="../../assets/img/closeVideo.png" v-if="videoOn" @click="setCameraOperate(23)">
-                  </div>
-                  <div class="action_detail">
-                    <img title="开灯" src="../../assets/img/light.png" v-if="!lightOn" @click="setCameraOperate(12)">
-                    <img title="关灯" src="../../assets/img/closeLiht.png" v-if="lightOn" @click="setCameraOperate(14)">
-                  </div>
-                  <div class="action_detail" @mousedown="setCameraOperate(15)" @mouseup="stopCam(15)">
-                    <img title="远焦" src="../../assets/img/yuanjiao.png" alt="">
-                  </div>
-                </div>
-                <div style="margin-top:1rem;padding-left: 1rem;font-size: 0.8rem">
-                  云台速度
-                  <!-- <el-input disabled v-model="speed" ></el-input> -->
-                  <div class="speed"
-                    style="margin:0.625rem 0;width: 17rem;display: flex;position: relative;align-items: center;">
-                    <el-slider :max="7" v-model="speed" style="margin: 0 1.25rem 0 -0.5rem;width: 12rem">
-                    </el-slider>
-                    <el-input-number size="mini" :min=0 :max=7 v-model="speed" :step="1" :controls="false"
-                      style="width: 5rem"></el-input-number>
-                    <!--                  <span-->
-                    <!--                    style="width: 2.75rem;float: right;background-color: #071828;text-align: center; border: 0.0625rem #ffffff solid;">{{-->
-                    <!--                      speed }}</span>-->
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </el-col>
+
       </el-row>
     </div>
   </div>
@@ -715,11 +748,11 @@ export default {
       }, 1000)
     },
     //左右切换机器时的改变
-    carrierIndex() {    
+    carrierIndex() {
       this.$store.dispatch('global/setCloseAll', '待机')
       this.locationName = ''
 
-      setTimeout(()=>{    
+      setTimeout(()=>{
       if (this.robotOpen == 1) {
         this.logoutCar()
       }
@@ -748,7 +781,7 @@ export default {
     areaId() {
       this.$store.dispatch('global/setCloseAll', '待机')
       setTimeout(() => {
-        
+
       this.loading = true
       this.init()
       setTimeout(() => {
@@ -764,7 +797,7 @@ export default {
       this.getVideo()
     }, 1000);
 
-      
+
     }
   },
 
@@ -782,7 +815,7 @@ export default {
         this.carrierSelected.CarrierAccessoryList.forEach((res) => {
           this.currentAdvices.push(res)
         })
-  
+
         this.getAreaName()
         this.carID = this.carrierSelected.CarrierID
         this.carrierName = this.carrierSelected.CarrierName
@@ -908,7 +941,7 @@ export default {
             {
               areaName:element.mapDisplayName,
              locationID:element.locationID
-            }  
+            }
             )
           })
          }
@@ -943,7 +976,7 @@ export default {
           var text = that.currentAdvices[0].src
           var username = text.match(/\/\/(.*?):/)[1];
           var usernamePassword = text.match(/:(.*?)@/)[1].split(':');
-          var password = usernamePassword[1];         
+          var password = usernamePassword[1];
           var ip = text.match(/@(.*?):/)[1];
           that.hkPlugin = {
             Username:username,
@@ -951,7 +984,7 @@ export default {
             Ip:ip,
           }
         })
- 
+
       }, 1000);
 
     },
@@ -1207,7 +1240,7 @@ export default {
             this.YTlogin = false
         })
            },1000)
-   
+
       }
 
     },
@@ -1310,7 +1343,7 @@ export default {
           }
           else {
             this.warnLightOpen = 0
-          }          
+          }
         })
 
       }
@@ -1645,6 +1678,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+
 .page-title {
   line-height: 1.75rem;
   font-size: 0.875rem;
@@ -1687,7 +1721,7 @@ export default {
     }
   }
 
-  
+
   .broadcastSelect {
     position: absolute;
     top: 9rem;
@@ -1794,7 +1828,7 @@ export default {
         width: 2.1875rem !important;
         height: .9375rem;
       }
-   
+
       ::v-deep .el-switch__core::after {
         width: .875rem;
         height: .875rem;
@@ -1833,8 +1867,9 @@ export default {
       width: 3.75rem;
       height: 3.125rem;
       line-height: 3.125rem;
-      background-color: #66B3B2;
+      //background-color: #66B3B2;
       text-align: center;
+      border: 1px solid #66B3B2;
     }
 
     .warning_light {
@@ -2120,7 +2155,7 @@ export default {
   //   width: 19.375rem;
 
   // }
- 
+
   ::v-deep .el-input__inner,
   .el-range-editor.el-input__inner {
     height: 1.875rem;
@@ -2131,13 +2166,14 @@ export default {
 
   .hkControl {
     width: 100%;
-    background-color: rgba(7, 24, 40, 0.5);
+    //background-color: rgba(7, 24, 40, 0.5);
     //border-radius: 0.625rem;
     margin: 0 0 0.875rem 0;
     color: #fff;
     border: 0.0625rem solid transparent;
 
     .leftTitle {
+      padding-top: 0;
       padding-bottom: 0.3125rem;
     }
 
@@ -2234,7 +2270,7 @@ export default {
     background-color: #64C8C8;
   }
   ::v-deep .el-loading-mask {
-  background: none;   
+  background: none;
 }
   .broadcastBtn {
     position: relative;
@@ -2247,8 +2283,9 @@ export default {
     width: 100%;
     background-color: rgba(7, 24, 40, 0.5);
     color: #fff;
-    height: 8.5rem;
+    height: 22rem;
     border: 0.0625rem solid transparent;
+    position: relative;
 
     .leftTitle {
       // padding-bottom: 0.5rem;
