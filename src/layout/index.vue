@@ -1,4 +1,6 @@
 <template>
+  <div :class="themeClass">
+
   <div class="container">
     <div class="header">
       <div>
@@ -27,10 +29,10 @@
           </div>
         </template>
       </div>
-      <i class="el-icon-sort" style="rotate:90deg;color: white;margin-right: 2rem"
+      <i class="el-icon-sort" style="rotate:90deg;color: var(--font-color);margin-right: 2rem"
         @click="() => { this.$router.push('/dataScreen') }"></i>
 
-      <screenfull id="screenfull" class="right-menu-item hover-effect" style="margin-right: 1.875rem;color: white" />
+      <screenfull id="screenfull" class="right-menu-item hover-effect" style="margin-right: 1.875rem;color: var(--font-color)" />
       <div class="right">
         <div class="message-container" v-show="show" @mouseenter="showCloseIcon = true"
           @mouseleave="showCloseIcon = false">
@@ -43,15 +45,21 @@
               src="@/assets/img/dynamic/info-icon-2.png"
               class="user-avatar"
             /> -->
-            <i style="font-size: 1.5vw; color: #fdfdfd" class="el-icon-user-solid" />
-            <span style="color:#fff;font-size: 1vw;">{{ nickName }}</span>
+            <i style="font-size: 1.5vw; color: var(--font-color)" class="el-icon-user-solid" />
+            <span style="color:var(--font-color);font-size: 1vw;">{{ nickName }}</span>
           </div>
           <el-dropdown-menu slot="dropdown" class="user-dropdown">
             <el-dropdown-item @click.native="DialogVisible = true">
               <span style="display: block">关于</span>
             </el-dropdown-item>
+            <el-dropdown-item @click.native="switchTheme">
+              <span style="display: block">主题</span>
+            </el-dropdown-item>
             <el-dropdown-item @click.native="logout">
               <span style="display: block">退出</span>
+            </el-dropdown-item>
+            <el-dropdown-item @click.native="$refs.restartChild.restart(false)" v-if="restartRole">
+              <span style="display: block">重启</span>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -79,15 +87,18 @@
     </div>
     <div class="warnes">
       <WebSocket></WebSocket>
+      <RestartSystem ref="restartChild"></RestartSystem>
     </div>
 
 
   </div>
+</div>
+
 </template>
 
 <script>
 import { Message, Progress } from 'element-ui';
-import { Navbar, Sidebar, AppMain } from './components';
+import { Navbar, Sidebar, AppMain,restartSystem } from './components';
 import { getExistCarrierAreaList } from '@/api/areaConfig.js'
 import WebSocket from '@/components/WebSocket';
 import Screenfull from '@/components/Screenfull';
@@ -96,13 +107,15 @@ import { mapGetters } from 'vuex';
 import { removeToken } from '@/utils/auth';
 import { loginOut, remoteLoginOut, getInfo } from '@/api/user'
 import { downLoadBatchPTZFile, getDownLoadFile,getSystemXmlConfig } from '../api/sysCtrl';
+import RestartSystem from './components/restartSystem.vue';
 export default {
   name: 'Layout',
   components: {
     Sidebar,
     Screenfull,
     WebSocket,
-  },
+    RestartSystem
+},
   data() {
     return {
       currentManue: {
@@ -121,7 +134,9 @@ export default {
       progressPercentage: 0,
       timer: null,
       progressTimer: null,
-      showCloseIcon: false
+      showCloseIcon: false,
+      restartRole:false,
+      switchColor:true,
     };
   },
   created() {
@@ -145,10 +160,13 @@ export default {
 
   },
   computed: {
-    ...mapGetters(['permission_routes', 'sidebar', 'logoutState', 'token', 'areaId']),
+    ...mapGetters(['permission_routes', 'sidebar', 'logoutState', 'token', 'areaId','theme']),
     logoutAuto() {
       return this.logoutState
     },
+    themeClass(){
+      return this.theme === 'theme-1' ? 'theme-1' :'theme-2';
+    }
   },
   beforeDestroy() {
     this.interValTime = '';
@@ -181,7 +199,6 @@ export default {
         permission_routes.forEach((item) => {
           if (item.meta && item.meta.id === route.meta.parent_id) {
             this.currentManue = item;
-            // console.log(permission_routes)
             this.$router.addRoutes(permission_routes);
           }
         });
@@ -217,6 +234,8 @@ export default {
       this.currentManue.currentPath = this.$route.path;
     },
     init() {
+      console.log('查看角色权限',this.$store.state.user.roles)
+      this.restartRole = this.$store.state.user.roles.includes("restartSystem")
       getSystemXmlConfig().then((res)=>{
         this.$store.dispatch('global/setFileAddress',res.data.fileAddress)
       })
@@ -288,6 +307,11 @@ export default {
       this.progressTimer = null
       this.show = false;
       this.progressPercentage = 0;
+    },
+    switchTheme(){
+      this.switchColor = !this.switchColor
+      console.log(this.switchColor)
+      this.$store.commit('global/set_theme',this.switchColor)
     }
 
     // getWarn() {
@@ -319,18 +343,15 @@ export default {
 
 .container {
   padding: 0;
-  background: rgb(8, 46, 80);
   min-height: 100%;
   // max-width: 100%;
   min-width: 1180px;
   // min-height: 60rem;
   overflow: hidden;
-
   // width: 120rem;
-  background-image: url('../assets/img/background.png');
   display: flex;
   flex-direction: column;
-
+  background-color: var(--theme-color);
   >.manue {
     margin: 0 .625rem;
 
@@ -351,7 +372,7 @@ export default {
     height: 3.75rem;
     // background: url(../assets/img/main/header_bg.jpg) no-repeat;
     // background-size: cover;
-    background: #021E37;
+    background: var();
     display: flex;
     align-items: center;
 
@@ -376,7 +397,7 @@ export default {
         cursor: pointer;
         // background: rgb(198, 211, 123);
         border-radius: .3125rem;
-        color: #fff;
+        color: var(--font-color);
 
         .svg-icon {
           font-size: 1rem;
@@ -464,7 +485,13 @@ export default {
 ::v-deep .el-input__inner {
   color: #fff;
 }
-
+//  .el-dropdown-menu{
+//  background-color:rgba($color: #64C8C8, $alpha: 0.5) ;
+//  opacity: 0.2;
+//  .el-dropdown-menu__item{
+//   color: black;
+//  }
+// }
 >>>.warnes {
   position: fixed;
   bottom: 6.25rem;

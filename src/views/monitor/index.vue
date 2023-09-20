@@ -1,5 +1,5 @@
 <template>
-  <div style="height:100%">
+  <div style="height:100%" :class="themeClass">
     <div class="content"  v-loading="loading">
       <el-row :gutter="10">
         <el-col :span="6">
@@ -132,12 +132,12 @@
             <div class="leftTitle" style="padding-top: 1rem;padding-bottom: 0.5rem;">任务信息</div>
             <div class="taskDetail">
               <div>
-                当前任务 ：<span style="color:#66B3B2 ;">{{ realTimeTask == '' ? '空闲状态' : realTimeTask }} </span>
+                当前任务 ：<span style="color:var(--font-color) ;">{{ realTimeTask == '' ? '空闲状态' : realTimeTask }} </span>
               </div>
 
               <span style="margin-left: 1.875rem;">
 
-                预计完成：<span style="color:#66B3B2 ;"></span>{{ finishTime ==
+                预计完成：<span style="color:var(--font-color) ;"></span>{{ finishTime ==
                   '' ? '0' : Math.abs(finishTime) }}分钟 </span>
             </div>
             <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0rem;">
@@ -206,7 +206,7 @@
               机器人控制
               <div>
                 <el-switch :disabled="!carID" style="height: 1.25rem;margin-left:1rem ;" v-model="robotOpen"
-                  active-text="开" inactive-text="关" @change="setOpen()" :active-value="1" :inactive-value="2">
+                    @change="setOpen()" :active-value="1" :inactive-value="2">
                 </el-switch>
               </div>
               <div style="margin-left: 7vw;">机器人速度{{ robotSpeed / 1000 }}m/s</div>
@@ -582,7 +582,7 @@ export default {
       areaName: [],
       warnLightOpen: 0,
       hkPlugin:{},
-      loading:false
+      loading:false,
       };
   },
   created() {
@@ -631,12 +631,16 @@ export default {
       systemConfig: (state) => state.sysConfig.systemConfig,
     }),
     ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen',
-      'closeAll', 'closeBroadcast', 'closeWarnL', 'dealwithAlarm', 'areaId']),
+      'closeAll', 'closeBroadcast', 'closeWarnL', 'dealwithAlarm', 'areaId','theme']),
     realTimeAlarminfo() {
       return this.realTimeAlarm[0]
     },
     yuntaiInfo() {
       return this.cameraOut
+    },
+    themeClass(){
+      return this.theme === 'theme-1' ? 'theme-1' :'theme-2';
+
     },
     standby() {
       return this.closeAll
@@ -901,7 +905,7 @@ export default {
     getAreaName() {
       this.areaName= []
       getPatrolPointListByAreaId(this.carrierSelected.AreaID).then((res) => {
-        console.log('获取巡检点',res,this.carrierSelected.AreaID)
+        // console.log('获取巡检点',res,this.carrierSelected.AreaID)
         if (res.data[0] !== undefined) {
           res.data.forEach((element)=>{
             this.areaName.push(
@@ -1645,11 +1649,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.back-shaodow {
+  background-color: var(--back-shadow);
+  // box-shadow: 1px 1px 2px 1px rgba(255, 255, 255, 0.50) inset;
+
+}
 .page-title {
   line-height: 1.75rem;
   font-size: 0.875rem;
   font-weight: 700;
-  color: rgb(243, 239, 239);
+  color: var(--font-color);
   padding-left: 0.9375rem;
   border-bottom: 0.0625rem solid rgb(4, 114, 141);
 
@@ -1678,7 +1687,7 @@ export default {
   background: transparent;
   font-size: 1.25rem;
   padding-top: 1vh;
-
+  color: var(--font-color);
   >.el-row {
     height: 100%;
 
@@ -1698,7 +1707,8 @@ export default {
     z-index: 999;
 
     .leftTitle {
-      color: #66B3B2;
+      color: var(--font-color);
+
       padding-right: 2rem;
     }
 
@@ -1711,18 +1721,19 @@ export default {
   //机器人信息2.0
   .leftTitle {
     font-size: 1.2rem;
-    color: #fff;
+    color: var(--font-color);
+
     padding: 0.75rem 0 0.75rem 1.25rem;
   }
 
   .robot {
     height: 27.5rem; //27.5rem
     // min-height: 40.7vh;
+    color: var(--font-color);
 
     .robotMessage {
       display: flex;
       font-size: 1.125rem;
-      color: #fff;
 
       div {
         margin: auto;
@@ -1890,7 +1901,7 @@ export default {
       display: flex;
       padding-left: 1.25rem;
       // margin-top: %;
-      color: #fff;
+      color: var(--font-color);
       font-size: 1rem;
       width: 100%;
 
@@ -1958,11 +1969,12 @@ export default {
       position: relative;
       display: flex;
       font-size: 1.125rem;
-      color: #ffffff;
+      color: var(--font-color);
       padding: 0.625rem 0 0 1.25rem;
 
       .chart {
         background-color: #64C8C8;
+        color: #fff;
         border-radius: 0.625rem;
         font-size: 1rem;
         width: 6.25rem;
@@ -1987,29 +1999,29 @@ export default {
       }
 
 
-      .first {
-        background: rgb(254, 0, 0);
-        border-radius: 0.125rem;
-        padding: 0.0625rem 0.25rem;
-      }
+      // .first {
+      //   background: rgb(254, 0, 0);
+      //   border-radius: 0.125rem;
+      //   padding: 0.0625rem 0.25rem;
+      // }
 
-      .two {
-        background: rgb(236, 109, 30);
-        border-radius: 0.125rem;
-        padding: 0.0625rem 0.25rem;
-      }
+      // .two {
+      //   background: rgb(236, 109, 30);
+      //   border-radius: 0.125rem;
+      //   padding: 0.0625rem 0.25rem;
+      // }
 
-      .three {
-        background: rgb(215, 146, 102);
-        border-radius: 0.125rem;
-        padding: 0.0625rem 0.25rem;
-      }
+      // .three {
+      //   background: rgb(215, 146, 102);
+      //   border-radius: 0.125rem;
+      //   padding: 0.0625rem 0.25rem;
+      // }
 
-      .four {
-        background: rgb(100, 229, 238);
-        border-radius: 0.125rem;
-        padding: 0.0625rem 0.25rem;
-      }
+      // .four {
+      //   background: rgb(100, 229, 238);
+      //   border-radius: 0.125rem;
+      //   padding: 0.0625rem 0.25rem;
+      // }
     }
   }
 
@@ -2131,10 +2143,10 @@ export default {
 
   .hkControl {
     width: 100%;
-    background-color: rgba(7, 24, 40, 0.5);
     //border-radius: 0.625rem;
     margin: 0 0 0.875rem 0;
-    color: #fff;
+    color: var(--font-color);
+
     border: 0.0625rem solid transparent;
 
     .leftTitle {
@@ -2245,8 +2257,7 @@ export default {
   .robotControl {
     margin: 0.5rem 0; //1.25rem
     width: 100%;
-    background-color: rgba(7, 24, 40, 0.5);
-    color: #fff;
+    color: var(--font-color);
     height: 8.5rem;
     border: 0.0625rem solid transparent;
 
@@ -2287,17 +2298,20 @@ export default {
       width: 6.25rem;
       height: 1.875rem;
       line-height: 1.875rem;
-      border-radius: 0.625rem;
+      border: 1px solid #64c8c8;
+      border-radius: 5px;
       background-color: #64C8C8;
       text-align: center;
       margin: auto;
       opacity: 0.5;
+      color: #fff;
     }
 
     .speed_urgency,
     .speed_detail {
       background-color: #fff;
       color: black;
+      
     }
 
     .speed_detail_active,
