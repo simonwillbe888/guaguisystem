@@ -664,8 +664,8 @@ export default {
 
       console.log("查看详情数据",row)
 
-      // this.nvrVideoSrc= row.id+'.mp4'
-      this.nvrVideoSrc= '/static/video/'+row.id+'.mp4'
+      this.nvrVideoSrc= row.id+'.mp4'
+      // this.nvrVideoSrc= '/static/video/'+row.id+'.mp4'
       this.$refs.nvrVideo.load()
       // this.$refs.nvrVideo.onerror = function(){
       //   this.recordReload = false
