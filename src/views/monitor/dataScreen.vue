@@ -354,7 +354,7 @@
                     <svg-icon icon-class="p" style="width: 0.8rem;margin: auto"/>
                     <span style="font-size: 0.8rem;color: #0cbebd;width: 4rem;margin-left: 0.5rem">定点移动：</span>
                     <div @click="locationInput">
-                      <el-input ref="locationIdInput" type="text" class="location_Detail" style="width: 10rem;" v-model="locationID" @input="$forceUpdate()" placeholder="K100+90">
+                      <el-input ref="locationIdInput" type="text" class="location_Detail" style="width: 10rem;" v-model="locationName" @input="$forceUpdate()" placeholder="K100+90">
                         <template slot="prefix">K</template>
                       </el-input>
                     </div>
@@ -446,7 +446,7 @@
           </span>
       </el-dialog>
       <el-dialog :visible.sync="locationAuto" :show-close="false" :close-on-click-modal="false" title="操作提示" width="30%">
-        <span style="font-size:1.5rem ;">已到达巡检点{{locationID}}，是否手动操作机器人</span>
+        <span style="font-size:1.5rem ;">已到达巡检点{{locationName}}，是否手动操作机器人</span>
         <span slot="footer">
             <el-button size="mini" type="info" style="background-color: #FFFFFF;color: #000000" @click="cancelLocation()">否</el-button>
             <el-button size="mini" type="primary" @click="openLocation()">是</el-button>
@@ -750,7 +750,7 @@ export default {
       gasList: '',
       taskList: [],
       taskID: '',
-      locationID: '',
+      locationName: '',
       realTimeTask: '',
       carRoller: '',
       carMove: '',
@@ -1970,7 +1970,7 @@ export default {
     },
     goLocation() {
       this.lowButteryType = false
-      if (this.locationID == '') {
+      if (this.locationName == '') {
         Notification({
           title: '提示',
           duration: 5000,
@@ -1981,7 +1981,7 @@ export default {
       else {
         let param = {
           carrierId: this.carrierSelected.CarrierID,
-          patrolPoint: this.locationID,
+          patrolPoint: this.locationName,
           count: null,
           voiceBroadcastText: null,
           exit: this.lowButtery,
