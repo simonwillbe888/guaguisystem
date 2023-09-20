@@ -456,7 +456,7 @@ export const asyncRoutes = [
           roles: ['SysSetting'],
           
         },
-        hidden: true,
+        // hidden: true,
 
       },
       {

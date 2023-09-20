@@ -434,7 +434,6 @@ export default {
     },
     async getTaskType() {
       await getTaskTypeList().then(res=>{
-        console.log('getTaskTypeList',res)
         if (res.code === 20000) {
           this.taskTypes = res.data;
         }

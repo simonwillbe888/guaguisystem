@@ -181,7 +181,7 @@ export default {
         permission_routes.forEach((item) => {
           if (item.meta && item.meta.id === route.meta.parent_id) {
             this.currentManue = item;
-            console.log(permission_routes)
+            // console.log(permission_routes)
             this.$router.addRoutes(permission_routes);
           }
         });
@@ -222,7 +222,7 @@ export default {
       })
       getExistCarrierAreaList().then((res) => {
         let accessTypeArr = res.data
-        this.choosedArea = accessTypeArr[1].id
+        this.choosedArea = accessTypeArr[0].id
         for (let i = 0, len = accessTypeArr.length; i < len; i++) {
           let optionObj = {
             value: accessTypeArr[i].id,
@@ -256,6 +256,7 @@ export default {
     this.closeProgress()
       downLoadBatchPTZFile(params).then((response) => {
         if(response.code != '20000'){
+          this.closeProgress()
           return
         }
         clearInterval(this.progressTimer)
@@ -264,12 +265,17 @@ export default {
         this.progressTimer = setInterval(() => {
           //打包进度
           getDownLoadFile(file).then((res) => {
+
+            if(res.code != '20000'){
+          this.closeProgress()
+          return
+        }
             this.show = true
             this.progressPercentage = Number(res.data)
             if (Number(res.data) >= 100) {
                this.closeProgress()
                const url = process.env.VUE_APP_BASE_API + '/download/' + response.data
-                console.log('url',url)
+                // console.log('url',url)
                window.open(url,'_blank')
             }
           })

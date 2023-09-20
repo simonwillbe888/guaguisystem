@@ -96,7 +96,7 @@ export default {
   },
   watch: {
     value2(newV,oldV){
-      console.log(newV,oldV)
+      // console.log(newV,oldV)
     }
   },
   created() { },
@@ -110,7 +110,7 @@ export default {
 
   methods: {
    search(){
-    console.log('查询日期')
+    // console.log('查询日期')
     this.time = this.date;
    }
 

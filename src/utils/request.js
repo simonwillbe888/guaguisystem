@@ -36,7 +36,7 @@ service.interceptors.response.use(
     // return {}
     //cgw
     const res = response.data;
-    if (res.code !== 20000 && res.code !== undefined && res.code !== 9999 ) {
+    if (res.code !== 20000 && res.code !== undefined && res.code !== 9999 && res.code !== 20003 ) {
       // console.log("查看错误", res)
       Notification({
         title: '提示',

@@ -31,7 +31,7 @@
             <div class="robotEletri">
               <div style="display:flex;margin:2rem auto;">
                 <i class="el-icon-caret-left arrow" @click="changeRobotLeft"></i>
-                <div class="onLine">{{ carrierName }}({{ carList.inSystem ? '在线' : '离线' }})</div>
+                <div :class="[ carList.inSystem ? 'onLine': 'outLine']">{{ carrierName }}({{ carList.inSystem ? '在线' : '离线' }})</div>
                 <i class="el-icon-caret-right arrow" @click="changeRobotRight"></i>
               </div>
             </div>
@@ -717,6 +717,8 @@ export default {
     //左右切换机器时的改变
     carrierIndex() {    
       this.$store.dispatch('global/setCloseAll', '待机')
+      this.locationName = ''
+
       setTimeout(()=>{    
       if (this.robotOpen == 1) {
         this.logoutCar()
@@ -769,6 +771,7 @@ export default {
   methods: {
     async init() {
       //机器人列表
+      this.locationName = ''
       const robotInfo = await getCarrierListByAreaId(this.areaId)
       this.carrierArr = robotInfo.data //机器人的集合
       if (this.carrierArr.length == 0) {
@@ -1753,11 +1756,14 @@ export default {
         color: #64C8C8;
       }
 
-      .onLine {
+      .onLine,.outLine {
         width: 10rem;
         background-color: #67B3B2;
         text-align: center;
         line-height: 1.875rem;
+      }
+      .outLine{
+        background-color: gray;
       }
     }
 

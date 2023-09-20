@@ -132,7 +132,12 @@ export function setSystemXmlConfig(data) {
     data,
   });
 }
-
+export function restartSystem(data) {
+  return request({
+    url: '/api/System/restartSystem?flag='+ data,
+    method: 'post',
+  });
+}
 export function licenseChecker (data) {
   return request({
     url: '/api/SystemConfig/licenseChecker',

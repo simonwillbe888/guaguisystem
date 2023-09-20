@@ -1023,6 +1023,7 @@ export default {
       const res = await getPatrolTemplates({
         id,
       });
+      console.log('查看id',id)
       if (res.code === 20000) {
         this.actionsList = res.data || [];
         console.log('查看已添加的',this.actionsList)

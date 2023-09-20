@@ -140,7 +140,6 @@ export default {
       // 销毁ws
       this.wsDestroy();
       // 初始化ws
-      // console.log("查看webscoket",this.ws);
       this.webSocket = new WebSocket(this.ws);
       // ws连接建立时触发
       this.webSocket.addEventListener('open', this.wsOpenHanler);
@@ -171,7 +170,7 @@ export default {
       if (data) {
         if (data.code === 1) {
           if (data.data) {
-            console.log('产生告警')
+            // console.log('产生告警')
             this.$store.dispatch('global/setRealTimeAlarm', data.data)
           }
         } else if (data.code === 2) {
@@ -211,12 +210,12 @@ export default {
         }
         //云台登出
         else if (data.code == 4) {
-          console.log('云台发来登出消息', data.data)
+          // console.log('云台发来登出消息', data.data)
           this.$store.dispatch('global/setcameraOut', data.data)
         }
         // 登出状态
         else if (data.code === 5) {
-          console.log('用户退出登录', data)
+          // console.log('用户退出登录', data)
           if (data.data) {
             // this.$store.dispatch('user/remoteLogout')
             this.$store.dispatch('global/setlogoutState', data.data)
@@ -224,12 +223,12 @@ export default {
         }
         //6 renwu，7计划结束
         else if (data.code == 8) {
-          console.log('巡检点结束', data.data)
+          // console.log('巡检点结束', data.data)
           this.$store.dispatch('global/setLocation', data.data)
         }
         //去往巡检点失败
         else if (data.code == 9) {
-          console.log('巡检结束', data)
+          // console.log('巡检结束', data)
           // this.$store.dispatch('global/setLocationFail')
           this.$notify({
             message: data.data,
@@ -239,7 +238,7 @@ export default {
           });
         }
         else if (data.code == 10) {
-          console.log('返回待命点', data.data)
+          // console.log('返回待命点', data.data)
           this.$store.dispatch('global/setLocation', data.data)
           this.$notify({
             message: data.data,
@@ -285,8 +284,26 @@ export default {
           });
         }
         else if (data.code == 15){
-          console.log('发来处理告警的信息')
           this.$store.dispatch('global/setDeaiwithAlarm', data.data)
+        }
+        else if(data.code == 16){
+          //重启服务器完毕
+          this.$notify({
+            message: '系统已重启',
+            type: 'success',
+            title: '提示',
+            duration: 6000,
+          });
+          location.reload();
+        }
+        else if(data.code == 17){
+          console.log('发来消息提示xxx在重启',data.data)
+          this.$notify({
+            message: data.data,
+            type: 'success',
+            title: '提示',
+            duration: 0,
+          });
         }
       }
       //   console.log('收到服务端发送的信息');

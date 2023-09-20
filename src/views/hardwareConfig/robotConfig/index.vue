@@ -84,7 +84,7 @@
         @close="cancelOperate">
         <el-form label-width="120px" :model="robotForm" :rules="rules" ref="robotForm">
           <el-form-item :label="$t('robot_setting.robot_id_label')" prop="robotID">
-            <el-input placeholder="请输入机器人ID" v-model.number="robotForm.robotID"></el-input>
+            <el-input placeholder="请输入机器人ID" v-model.number="robotForm.robotID" :disabled="this.dialogType !== 'addRobots'"></el-input>
           </el-form-item>
           <!-- <el-form-item
             :label="$t('robot_setting.robotNum_label')"

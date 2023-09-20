@@ -288,8 +288,8 @@
             style="width:490px;margin:10px 0;"
             type="textarea"
             maxlength="150"
-            placeholder="请输入推流地址"
             :disabled="accessoForm.isEdit  || accessoForm.state==2"
+            placeholder="请输入推流地址"
             v-model="accessoForm.rtsp"
           ></el-input>
         </el-form-item>

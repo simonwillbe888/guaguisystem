@@ -631,7 +631,7 @@ function clickCapturePicData() {
         szInfo = "";
     if (oWndInfo != null) {
         WebVideoCtrl.I_CapturePicData().then(function(data){
-            console.log(data);
+            // console.log(data);
             szInfo = "抓图上传成功！";
             showOPInfo(oWndInfo.szDeviceIdentify + " " + szInfo);
         },function(){
