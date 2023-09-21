@@ -110,7 +110,7 @@
                   <el-descriptions-item label="顺序">{{
                     item.sequence
                   }}</el-descriptions-item>
-                  <el-descriptions-item label="巡检点">{{
+                  <el-descriptions-item label="巡检点名称">{{
                     showInfo(item.locationID)
                   }}</el-descriptions-item>
                 </el-descriptions>
@@ -397,12 +397,12 @@
           :model="moveForm"
           :rules="moveRules"
         >
-          <el-form-item label="目标点" prop="toPatrolLocation">
+          <!-- <el-form-item label="目标点" prop="toPatrolLocation">
             <el-radio-group v-model="moveForm.toPatrolLocation">
               <el-radio :label="true">移动到巡检点</el-radio>
               <el-radio :label="false">移动到导航点</el-radio>
             </el-radio-group>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="顺序" prop="sequence">
             <el-input
               oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
@@ -410,7 +410,7 @@
             ></el-input>
 
           </el-form-item>
-          <el-form-item
+          <!-- <el-form-item
             label="导航点"
             v-if="!moveForm.toPatrolLocation"
             prop="vertexID"
@@ -430,9 +430,8 @@
                 >
               </el-option>
             </el-select>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item
-            v-if="moveForm.toPatrolLocation"
             label="巡检点"
             prop="locationID"
           >
@@ -1451,7 +1450,7 @@ export default {
       let txt = '';
       this.patrolLocationList.forEach((item) => {
         if (item.locationID == val) {
-          txt = item.mapDisplayName;
+          txt = item.name;
         }
       });
       return  txt;

@@ -8,9 +8,9 @@
     :default-active="activeMenu"
     class="el-menu-demo"
     mode="horizontal"
-    background-color="#031B31"
-    text-color="#fff"
-    active-text-color="#64C8C8"
+    background-color="var(--tablebody)"
+    text-color="var(--font-color)"
+    active-text-color="#fff"
     v-if="sonManue && sonManue.children"
   >
     <sidebar-item
@@ -90,5 +90,7 @@ export default {
   margin: 1.25rem auto;
   display: flex;
   text-align: center;
+  filter: var(--filter);
 }
+
 </style>

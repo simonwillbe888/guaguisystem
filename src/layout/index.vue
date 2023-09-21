@@ -355,7 +355,7 @@ export default {
   // width: 120rem;
   display: flex;
   flex-direction: column;
-  background-color: var(--theme-color);
+  background: transparent;
   >.manue {
     margin: 0 .625rem;
 
