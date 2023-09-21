@@ -46,6 +46,7 @@
 .el-table {
   //border: 2px solid rgba(255, 255, 255, 0.5);
   //border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  
 }
 
 .row-class{
@@ -53,7 +54,9 @@
 }
 
 #app .main .content-body .el-table td.el-table__cell{
-  border-bottom: 1px solid rgba(235, 238, 245, 0.5)!important;
+  border-bottom: 1px solid var(--tableborder)!important;
+
+
 }
 
 #app .main .content-body .el-table thead .el-table__cell{
@@ -73,8 +76,8 @@
 .content-body .el-table__footer,
 .content-body .el-table__header{
   border-top: 1px solid rgba(235,238,245,.5);
-  border-left: 1px solid rgba(235,238,245,.5);
-  border-right: 2px solid rgba(235,238,245,.5);
+  border-left: 1px solid var(--tableborder)!important;
+  border-right: 1px solid var(--tableborder)!important;
   table-layout: auto;
 }
 
@@ -91,12 +94,26 @@
 .el-collapse{
   border-top: 2px solid transparent;
   border-bottom: 2px solid transparent;
+  .el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner{
+    background-color: #777777;
+    color: #fff;
+    border: 1px solid #777777;
+
+  }
+  .el-checkbox__input.is-checked+.el-checkbox__label{
+    color: #fff;
+  }
+  .el-checkbox__inner,{
+    border: 1px solid #777777;
+
+  }
+
 }
 
 .el-collapse-item__header ,
 .el-collapse-item__wrap{
-  background-color: #18456d;
-  color: #FFFFFF;
+  background-color: var(--dialoghead);
+  color: var(--font-color);
   border-bottom: none;
    height: auto;
    line-height: 36px;

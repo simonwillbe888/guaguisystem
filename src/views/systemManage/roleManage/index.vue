@@ -1,5 +1,5 @@
 <template>
-  <div style=" background: rgb(6,30,51);">
+  <div>
     <div class="content-header">
       <el-button class="headerBtn" icon="el-icon-plus" size="mini" @click="add">新增角色</el-button>
     </div>
@@ -75,7 +75,7 @@
         </el-form-item>
 
         <el-form-item label="所属权限" prop="PowerList">
-          <div style="background: #021627;">
+          <div style="border: 1px solid var(--tableborder);">
             <el-collapse :accordion="true">
               <el-checkbox-group v-model="powerListArray" @change="collapseChange">
                 <el-collapse-item v-for="p in powerList" style="margin: 0.5rem">
@@ -131,8 +131,8 @@
 <!--          </el-tree>-->
         </el-form-item>
         <el-form-item style="display: flex;justify-content: center;margin: 2rem 0">
-          <el-button type="primary" style="background-color: #FFFFFF;color: #000000" @click="cancel">取消</el-button>
           <el-button type="primary" style="background-color: #64c8c8" @click="save">确认</el-button>
+          <el-button type="primary" style="background-color: #FFFFFF;color: #000000" @click="cancel">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -460,10 +460,7 @@ export default {
   background-color: #64C8C8 !important;
 }
 
-.content-header {
-  margin-bottom: 10px;
-  height: 38px;
-}
+
 
 .form {
   width: 70%;
@@ -477,11 +474,5 @@ export default {
 >>>.el-tree-node__label {
   font-size: 12px;
 }
-::v-deep  .el-input__inner
- {
-  height: 1.875rem;
-  color: #fff;
-  background-color: #021627!important;
-  border: 1px solid transparent;
-}
+
 </style>

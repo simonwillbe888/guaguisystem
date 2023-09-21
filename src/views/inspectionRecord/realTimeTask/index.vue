@@ -1,11 +1,11 @@
 <template>
-  <div style=" background: rgb(6,30,51);">
+  <div>
     <div class="power-container">
-      <div class="content-header">
-        <!-- <el-button type="primary" size="mini" @click="getTaskList">
+      <!-- <div class="content-header">
+        <el-button type="primary" size="mini" @click="getTaskList">
           查询
-        </el-button> -->
-      </div>
+        </el-button>
+      </div> -->
       <div class="content-body">
         <template>
           <el-table :data="realTimeTasks" style="width: 100%" height="39rem"  >
@@ -140,11 +140,10 @@ export default {
 <style scoped lang="scss">
 .power-container {
   //   padding: 10px;
+  padding-top: 10px;
 }
 .content-header {
-  padding: 0 !important;
-  margin: 10px;
-  height: 30px;
+
   >>> .el-button {
     float: right;
   }

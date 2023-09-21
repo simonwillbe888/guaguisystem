@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 1%;min-width: 75rem; background: rgb(6,30,51);">
+  <div style="padding: 1%;min-width: 75rem;">
     <div class="equip-header content-header">
       <!-- <h3 class="equip-setting-title">{{ $t('inspect_record.real_alarm_list') }}</h3> -->
       <div style="display:inline;float:right">
@@ -18,10 +18,10 @@
       </div>
     </div>
     <div class="equip-body content-body">
-      <div class="container" style="background-color: rgba(7, 24, 40, 0.5)">
-        <el-row style="height: 37rem">
+      <div class="container" >
+        <el-row style="height: 37rem;background:var(--tablebody);">
           <el-col :xs="24" :sm="12" :md="6" v-for="(item, index) in list" :key="index">
-            <el-card class="box" :style="{ width: '21.5rem', height: '18rem', background: '#fff'}">
+            <el-card class="box" :style="{ width: '21.5rem', height: '18rem'}">
               <div class="box-content">
                 <div>
                   <div class="download" @click="download(item)">
@@ -350,7 +350,7 @@ export default {
   .box {
     margin: .625rem auto;
     background-color: transparent;
-
+    border: 1px solid var(--tableborder);
   }
 
   .box-content {
@@ -377,7 +377,6 @@ export default {
     }
 
     .box-content-detail {
-      border: .0313rem solid #fff;
       height: 7.1875rem;
 
       .line {

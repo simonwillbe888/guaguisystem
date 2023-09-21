@@ -34,8 +34,8 @@
           </el-table-column>
           <el-table-column prop="TaskName" label="流程模板" align="center">
           </el-table-column>
-          <el-table-column prop="plantypeName" label="计划类型" align="center">
-          </el-table-column>
+          <!-- <el-table-column prop="plantypeName" label="计划类型" align="center">
+          </el-table-column> -->
           <el-table-column prop="MapDisplayName" label="隧道名称" align="center">
           </el-table-column>
           <el-table-column prop="CarrierName" label="机器人名称" align="center">
@@ -124,7 +124,7 @@
                 >{{ $t('plan_config.inqireDetail_label') }}</el-button
               > -->
               <el-dropdown>
-                <el-button size="mini" type="primary">
+                <el-button size="mini"  class="greenButton">
                   更多<i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
                 <el-dropdown-menu slot="dropdown">

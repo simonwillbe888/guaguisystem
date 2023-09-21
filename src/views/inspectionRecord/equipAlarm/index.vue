@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 1%; background: rgb(6,30,51);">
+  <div style="padding: 1%;">
     <div class="equip-header content-header">
       <!-- <h3 class="equip-setting-title">
         {{ $t("inspect_record.equip_alarm_statics") }}
@@ -485,12 +485,13 @@ export default {
 }
 ::v-deep .el-input__inner,
 .el-range-editor.el-input__inner {
-  color: #fff;
+  color: var(--font-color);
+  border: 1px solid var(--tableborder);
 }
 .equip-body {
   padding: 0 10px;
   // background-color: lightblue;
-  border: 1px solid #fff;
+  border: 1px solid var(--tableborder);
 
   .equip-data {
     font-size: 13px;
@@ -513,15 +514,8 @@ export default {
   }
 }
 
-::v-deep .el-table th,
-.el-table tr {
-  background-color: #031B31;
-  color: #fff;
-}
 
-::v-deep .el-table .cell {
-  color: #fff;
-}
+
 
 ::v-deep .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
   background-color: #031B31;

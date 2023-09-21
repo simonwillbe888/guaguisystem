@@ -108,12 +108,12 @@
                 type="primary"
                 icon="el-icon-s-tools"
                 size="mini"
+                class="greenButton"
                 @click="configInspectPoint(row)"
                 >配置流程</el-button
               >
               <el-button
-                class="process-operate"
-                style="background-color:#64C8C8 ;color:#fff"
+                class="process-operate greenButton"
                 icon="el-icon-edit"
                 size="mini"
                 plain

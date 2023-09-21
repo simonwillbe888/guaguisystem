@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 1%; background:var(--tablebody);">
+  <div style="padding: 1%; background:#fff;">
     <div class="robot-header content-header">
       <!-- <h3 class="robot-setting-title">
         {{ $t("equip_setting.equip_list_label") }}
@@ -97,7 +97,7 @@
           @pagination="init"
         />
       </div>
-    </div>
+   
     <el-dialog
       :title="accessoDialog[dialogType]"
       :visible.sync="dialogFormVisible"
@@ -155,16 +155,15 @@
 
           
           <el-button
-            type="primary"
+            class="greenButton"
             @click="
               dialogType === 'addAccesso'
                 ? addSuccess('accessoForm', accessoForm)
                 : editSuccess('accessoForm', accessoForm)
             "
-            >{{ $t('equip_setting.sure_label') }}</el-button
+            >保存</el-button
           >
           <el-button
-            type="primary"
             plain
             @click="cancelOperate('accessoForm')"
             >{{ $t('equip_setting.cancel_label') }}</el-button
@@ -174,6 +173,7 @@
       </el-form>
     </el-dialog>
   </div>
+ </div>
 </template>
 
 <script>
@@ -509,12 +509,7 @@ export default {
 
   }
 }
-::v-deep  .el-input__inner
- {
-  height: 1.875rem;
-  background-color: transparent;
-  color: #fff;
-}
+
 .robot-body {
   padding: 0 10px;
   background-color: lightblue;

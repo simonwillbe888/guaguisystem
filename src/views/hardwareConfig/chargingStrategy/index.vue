@@ -1,5 +1,5 @@
 <template>
-  <div style=" background: rgb(6,30,51);">
+  <div>
     <div>
       <div class="content-header" >
          <el-button type="primary" icon="el-icon-plus" style="margin-top: 0.5rem"  size="mini" @click="addChargingStrategy(1)">
@@ -68,18 +68,18 @@
             <el-table-column
               align="center"
               label="操作"
-              width="140"
             >
               <template slot-scope="{ row }">
                 <el-button
                   type="danger"
                   @click="setStatus(0, row.id)"
                   size="mini"
+                  icon="el-icon-delete"
                 >
                   删除
                 </el-button>
                 <el-dropdown>
-                  <el-button size="mini" type="primary">
+                  <el-button size="mini" style="background-color:#64C8C8 ;color:#fff">
                     更多
                   </el-button>
                   <el-dropdown-menu slot="dropdown">
@@ -444,9 +444,7 @@ export default {
 </script>
 <style scoped lang="scss">
 .content-header {
-  padding: 0 !important;
-  margin: 10px;
-  height: 30px;
+ 
   >>> .el-button {
     float: right;
   }
@@ -455,7 +453,7 @@ export default {
 >>> .el-form-item__label,
 >>> .el-radio__label {
   font-size: 12px;
-  color: #fff;
+  color: var(--font-color);
 }
 ::v-deep  .el-input__inner
  {

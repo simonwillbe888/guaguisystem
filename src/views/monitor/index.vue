@@ -1941,7 +1941,7 @@ export default {
 
       ::v-deep .el-input__inner {
         background-color: #fff;
-        border: 1px soild #64C8C8;
+        border: 1px solid #64C8C8;
         color:#000;
         width: 14rem;
         height: 1.875rem;

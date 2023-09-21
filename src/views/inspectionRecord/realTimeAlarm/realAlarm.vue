@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 1%; background: rgb(6,30,51);">
+  <div style="padding: 1%;">
     <div class="equip-header content-header">
       <!-- <h3 class="equip-setting-title">{{ $t('inspect_record.real_alarm_list') }}</h3> -->
       <!-- <el-select
@@ -129,7 +129,7 @@
         </el-table-column>
         <el-table-column prop="details" label="操作" v-if="alarmType == 2" align="center" width="120">
           <template slot-scope="{ row }">
-            <el-button type="primary" icon="el-icon-edit" size="mini" plain @click.stop="showDetail(row)">处理</el-button>
+            <el-button class="greenButton" icon="el-icon-edit" size="mini" plain @click.stop="showDetail(row)">处理</el-button>
           </template>
         </el-table-column>
       </el-table>

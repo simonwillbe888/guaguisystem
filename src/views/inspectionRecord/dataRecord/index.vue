@@ -259,8 +259,5 @@ export default {
 
   }
 }
-::v-deep .el-input__inner,
-.el-range-editor.el-input__inner {
-  color: #fff;
-}
+
 </style>

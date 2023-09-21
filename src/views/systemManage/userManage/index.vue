@@ -1,5 +1,5 @@
 <template>
-  <div style=" background: rgb(6,30,51);">
+  <div>
     <div class="content-header">
       <div style="display:inline;float: right;">
       <el-input
@@ -188,8 +188,9 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" style="background-color: #FFFFFF;color: #000000" @click="cancel">取消</el-button>
           <el-button type="primary" style="background-color: #64C8C8FF" @click="save">确认</el-button>
+
+          <el-button type="primary" style="background-color: #FFFFFF;color: #000000" @click="cancel">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -406,20 +407,11 @@ export default {
   margin-top: 0.5rem;
   background-color: #64C8C8 !important;
 }
-.content-header {
-  margin-bottom: 10px;
-  height: 38px;
-}
+
 .form {
   width: 70%;
   //margin-left: 10%;
   margin: auto;
 }
-::v-deep .el-input__inner
- {
-  height: 1.875rem;
-  background-color: #021627!important;
-  //border: 1px solid transparent;
-  color: #fff;
-}
+
 </style>

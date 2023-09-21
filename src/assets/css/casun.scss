@@ -15,6 +15,10 @@
   --background:#fff;
   --tablebody:#fff;
   --filter:drop-shadow(rgba(204, 204, 204, 0.89) 2px 2px 2px);
+  --tableHead:#b1e3e3;
+  --tableborder:#64c8c8;
+  --dialoghead:#64c8c8;
+
 }
 .theme-2 {
   --theme-color: rgb(8, 46, 80);
@@ -25,7 +29,9 @@
   --data-color:#64C8C8;
   --back-shadow:rgba(7,24,40,0.5);
   --tablebody:#031b31;
-
+  --tableHead:#33717c;
+  --tableborder:#fff;
+  --dialoghead:#042A4A;
 }
 img {
   -webkit-user-drag: none;
@@ -64,10 +70,10 @@ img {
 }
 .el-radio,
 .el-radio__input.is-disabled.is-checked{
-  color: #fff;
+  color: var(--font-color);
 }
 .el-radio__input.is-disabled.is-checked .el-radio__inner::after {
-  background-color: #409EFF;
+  background-color: #64C8C8;
 }
 .common-form-footer {
     // margin-left: -30px;
@@ -97,7 +103,9 @@ img {
 .el-input__inner,
 .el-range-editor.el-input__inner {
   height: 1.875rem;
-  background-color: transparent;
+    // border:1px solid var(--tableborder);
+    color: var(--font-color);
+   
   // color: #fff; //修改了 timepicker样式改不回来
 }
 
@@ -115,25 +123,18 @@ img {
 
 .el-textarea__inner {
   // background-color: rgba($color: #071828, $alpha: 0.5);
+  border: 1px solid var(--tableborder);
   background-color: transparent;
-  border: 1px solid #fff;
-  color: #ccc;
+  color: var(--font-color);
 }
 
-.el-tree-node__content {
-  background-color: #103456;
-  color: #fff;
+.el-tree-node__content,.el-textarea.is-disabled .el-textarea__inner,.el-tree-node__content:hover {
+  background-color: transparent;
+  color: var(--font-color);
 }
 
-.el-textarea.is-disabled .el-textarea__inner {
-  background-color: rgba($color: #071828, $alpha: 0.5);
-  color: #ccc;
-}
 
-.el-tree-node__content:hover {
-  background-color: rgba($color: #071828, $alpha: 0.5);
-  color: #031b31;
-}
+
 
 .el-dialog__headerbtn {
   top: 10px;
@@ -208,24 +209,29 @@ img {
         padding: 0 !important;
       }
     }
-
+    .greenButton{
+      background-color:#64C8C8 ;
+      color:#fff;
+    }
     .content-header {
-      margin: 0px 10px 0.5rem;
+      padding:10px 10px 10px 10px;
       height: 50px;
-      padding: 10px 0;
-      background-color: rgba($color: #071828, $alpha: 0.5);
       border: none;
       font-size: 12px;
       color: #fff;
-
+      background-color: var(--tablebody);
       .el-input--mini .el-input__inner {
-        background-color: rgba($color: #071828, $alpha: 0.5);
-        // border-radius: 14px;
-
-        color: #fff;
-        // width: 150px;
+        border:1px solid var(--tableborder);
+        color: var(--font-color);
+        background: transparent;
       }
-
+      
+      .el-input__inner,
+      .el-range-editor.el-input__inner {
+        color: var(--font-color);
+        border: 1px solid var(--tableborder);
+        background: transparent;
+      }
       .el-button {
         background-color: #64C8C8;
         border: none;
@@ -256,15 +262,15 @@ img {
     .content-body {
       padding: 0 10px;
       border: none;
-
+      background-color: var(--tablebody);
       .el-table .el-table__cell {
         padding: 0;
-        color: #fff;
+        color: var(--font-color);
       }
 
       .el-table thead .el-table__cell {
         //background-color: #031B31;
-        background-color: rgb(11, 113, 124);
+        background-color: var(--tableHead);
 
         font-size: 16px;
         height: 40px;
@@ -272,7 +278,7 @@ img {
       }
 
       .el-table tbody .el-table__cell {
-        background: rgba($color: #031B31, $alpha: 0.99);
+        background:  var(--tablebody);
         font-size: 14px;
         height: 38px;
       }
@@ -283,7 +289,7 @@ img {
 
       .el-table td.el-table__cell,
       .el-table th.el-table__cell.is-leaf {
-        border-bottom: 0.5px solid #ebeef5;
+        // border-bottom: 0.5px solid #ebeef5;
       }
     }
 
@@ -295,17 +301,18 @@ img {
       display: flex;
       background: transparent;
       height: 48px;
-      justify-content: right;
+      color: var(--font-color);
+      // justify-content: right;
       align-items: center;
 
       .el-pagination {
         position: absolute;
         //bottom: 10px;
       }
-
-      .el-pagination__total,
+    
+      .el-pagination__total,.el-input__inner,
       .el-pagination__jump {
-        color: #bae1f3;
+        color: var(--font-color);
       }
     }
 
@@ -319,13 +326,16 @@ img {
       left: 50%;
       transform: translate(-50%, -50%);
       border-radius: 0 ;
-      background: #103456 ;
+      background: var(--tablebody) ;
 
       .el-dialog__header {
         border-radius: 0 !important;
-        background: #154674 ;
+        background: var(--dialoghead) ;
         padding: 15px;
         color: #fff;
+        .el-dialog__close{
+          color: #fff;
+        }
       }
 
       .el-dialog__headerbtn {
@@ -335,26 +345,32 @@ img {
       .el-dialog__body {
         padding: 10px;
         // margin-left: 10%;
-        background: #103456 ;
-
+        background: var(--tablebody) ;
+  
         .common-form {
           padding-left: 0;
         }
-
+        .el-input__inner {
+          border:1px solid var(--tableborder);
+          color: var(--font-color);
+          background-color: transparent;
+        }
         .el-form-item {
           margin-bottom: 5px;
-
+       
           .el-form-item__label,
           .el-form-item__content {
             line-height: 40px;
+            color: var(--font-color);
             // height: 32px;
 
             .el-button {
               // background: rgb(132, 187, 169);
-              border-color: rgb(46, 50, 53);
+              border: 1px solid #64C8C8;
               margin-left: 10px;
               padding: 8px 18px;
             }
+    
           }
 
           .el-form-item__error {
@@ -363,6 +379,7 @@ img {
 
           .el-input__icon {
             line-height: 40px;
+            
           }
         }
       }

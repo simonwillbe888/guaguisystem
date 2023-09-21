@@ -2,7 +2,7 @@
   <div>
     <div class="licenseSetting">
       <div
-        style="text-align: center;color: white;margin: 10px auto;height:450px;width:500px;background-color: rgb(3, 27, 49)">
+        style="text-align: center;color: white;margin: 10px auto;height:450px;width:500px;background-color: var(--tablebody);border:1px solid var(--tableborder);">
         <el-result :icon="result.icon" :title="result.title" :subTitle="result.subTitle">
         </el-result>
         <div style="">
@@ -186,11 +186,11 @@ export default {
 }
 
 ::v-deep .el-result__title p {
-  color: #FFFFFF;
+  color: var(--font-color);
 }
 
 ::v-deep .el-result__subtitle p {
-  color: #FFFFFF;
+  color: var(--font-color);
 }
 
 ::v-deep .el-form-item__content {

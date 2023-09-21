@@ -80,33 +80,34 @@
             <span>{{ text(row.state, 3) }}</span>
           </template>
         </el-table-column>
-<!--        <el-table-column-->
-<!--          prop="details"-->
-<!--          label="配件详情"-->
-<!--          align="center"-->
+       <el-table-column
+         prop="details"
+         label="配件详情"
+         align="center"
 
-<!--        >-->
-<!--          <template slot-scope="{ row }">-->
-<!--            <el-button-->
-<!--              type="primary"-->
-<!--              icon="el-icon-document"-->
-<!--              size="mini"-->
-<!--              plain-->
-<!--              @click="editAccessoed(row, 1)"-->
-<!--              >{{ $t('plan_config.inqireDetail_label') }}</el-button-->
-<!--            >-->
-<!--          </template>-->
-<!--        </el-table-column>-->
-        <el-table-column prop="operate" label="操作" width="300"  align="center">
+       >
+         <template slot-scope="{ row }">
+           <el-button
+             type="plain"
+             style="color: #64C8C8;"
+             icon="el-icon-document"
+             size="mini"
+             plain
+             @click="editAccessoed(row, 1)"
+             >{{ $t('plan_config.inqireDetail_label') }}</el-button
+           >
+         </template>
+       </el-table-column>
+        <el-table-column prop="operate" label="操作"  align="center">
           <template slot-scope="{ row }">
-            <el-button
+            <!-- <el-button
               type="primary"
               icon="el-icon-document"
               size="mini"
               plain
               @click="editAccessoed(row, 1)"
             >{{ $t('plan_config.inqireDetail_label') }}</el-button
-            >
+            > -->
             <el-button
               class="robot-operate"
               style="background-color:#64C8C8 ;color:#fff"
@@ -881,12 +882,7 @@ export default {
 
   }
 }
-::v-deep  .el-input__inner
- {
-  height: 1.875rem;
-  background-color: transparent;
-  color: #fff;
-}
+
 .robot-body {
   padding: 0 10px;
   background-color: lightblue;
@@ -945,12 +941,9 @@ export default {
   font-size: 12px;
 }
 
->>> .el-input.is-disabled .el-input__inner {
-  background-color:#2A3940 ;
-}
+
 
 >>> .el-input__inner {
-  background-color:#2A3940 ;
   &::placeholder {
     font-size: 12px;
     background-color:#2A3940 ;

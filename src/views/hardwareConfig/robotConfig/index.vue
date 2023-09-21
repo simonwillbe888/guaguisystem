@@ -49,27 +49,28 @@
             <span>{{ row.area }}</span>
           </template>
         </el-table-column>
-        <!--        <el-table-column-->
-        <!--          prop="details"-->
-        <!--          label="机器人详情"-->
-        <!--          align="center"-->
+               <el-table-column
+                 prop="details"
+                 label="机器人详情"
+                 align="center"
 
-        <!--        >-->
-        <!--          <template slot-scope="{ row }">-->
-        <!--            <el-button-->
-        <!--              type="primary"-->
-        <!--              icon="el-icon-document"-->
-        <!--              size="mini"-->
-        <!--              plain-->
-        <!--              @click="editRobot(row, 1)"-->
-        <!--              >详情</el-button-->
-        <!--            >-->
-        <!--          </template>-->
-        <!--        </el-table-column>-->
-        <el-table-column prop="operate" label="操作" align="center" width="400">
+               >
+                 <template slot-scope="{ row }">
+                   <el-button
+                     type="plain"
+                     style="color: #64C8C8;"
+                     icon="el-icon-document"
+                     size="mini"
+                     plain
+                     @click="editRobot(row, 1)"
+                     >详情</el-button
+                   >
+                 </template>
+               </el-table-column>
+        <el-table-column prop="operate" label="操作" align="center" width="350">
           <template slot-scope="{ row }">
-            <el-button type="primary" icon="el-icon-document" size="mini" plain @click="editRobot(row, 1)">详情</el-button>
-            <el-button class="robot-operate" type="primary" icon="el-icon-setting" size="mini"
+            <!-- <el-button type="primary" icon="el-icon-document" size="mini" plain @click="editRobot(row, 1)">详情</el-button> -->
+            <el-button class="robot-operate" style="background-color:#64C8C8 ;color:#fff" icon="el-icon-setting" size="mini"
               @click="configAccesso(row)">{{ $t('robot_setting.accessory_operate_label') }}</el-button>
             <el-button class="robot-operate" style="background-color:#64C8C8 ;color:#fff" icon="el-icon-edit" size="mini"
               plain @click="editRobot(row, 2)">修改</el-button>
@@ -194,6 +195,7 @@
         }}</el-button>
       </div>
     </el-dialog>
+    
   </div>
 </template>
 
@@ -989,11 +991,11 @@ export default {
   background-color: transparent;
 }
 
-::v-deep .el-input__inner {
-  height: 1.875rem;
-  background-color: transparent;
-  color: #fff;
-}
+// ::v-deep .el-input__inner {
+//   height: 1.875rem;
+//   background-color: transparent;
+//   color: #fff;
+// }
 
 >>>.header-row-class {
   background-color: transparent;

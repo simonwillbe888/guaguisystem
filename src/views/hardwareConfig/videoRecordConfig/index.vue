@@ -53,25 +53,29 @@
           </el-table-column>
           <el-table-column prop="ip" align="center" label="IP地址">
           </el-table-column>
-          <el-table-column
-            align="center"
-            label="操作"
-            width="500"
-          >
+          <el-table-column  align="center" label="相机详情">
             <template slot-scope="{ row }">
               <el-button
                 icon="el-icon-document"
-                type="primary"
+                type="plain"
+                style="color: #64C8C8;"
                 @click="edit(row, true)"
                 size="mini"
-                plain
+                
               >
                 详情
               </el-button>
-
+            </template>
+ 
+          </el-table-column>
+          <el-table-column
+            align="center"
+            label="操作"
+            width="420"
+          >
+            <template slot-scope="{ row }">
               <el-button
-                class="robot-operate"
-                type="primary"
+                class="greenButton"
                 icon="el-icon-setting"
                 size="mini"
                 @click="connentAdvices(row)"
@@ -79,8 +83,7 @@
               >
 
               <el-button
-                class="robot-operate"
-                type="success"
+                class="greenButton"
                 icon="el-icon-video-camera-solid"
                 size="mini"
                 @click="nvrRecord(row,true)"
@@ -88,9 +91,8 @@
               >
 
               <el-button
+                class="greenButton"
                 icon="el-icon-edit"
-                style="background-color:#64C8C8 ;color:#fff"
-
                 @click="edit(row, false)"
                 size="mini"
                 plain
@@ -1750,9 +1752,7 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-.content-body {
-  margin-top: 10px;
-}
+
 .headerBtn {
   background-color: #64C8C8 !important;
 }
@@ -1770,9 +1770,8 @@ export default {
 }
 
   .content-header {
-
-  margin-bottom: 10px;
-  height: 38px;
+  padding:5px 10px 10px 10px;
+  // margin-bottom: 10px;
   .inquireCamera{
     display: inline;
     float: right;

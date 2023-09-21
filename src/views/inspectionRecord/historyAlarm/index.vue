@@ -101,9 +101,9 @@
         </el-table-column>
         <el-table-column prop="details" label="操作" v-if="alarmType == 2" align="center" width="120">
           <template slot-scope="{ row }">
-            <el-button style="background-color:#64C8C8 ;color:#fff" v-if="row.statusNum == 0 || row.statusNum == 1"  icon="el-icon-edit" size="mini"
+            <el-button class="greenButton" v-if="row.statusNum == 0 || row.statusNum == 1"  icon="el-icon-edit" size="mini"
               plain @click.stop="showDetail(row)">处理</el-button>
-            <el-button style="background-color:#64C8C8 ;color:#fff" v-else  icon="el-icon-document" size="mini" plain>详情</el-button>
+            <el-button style="color:#64C8C8" v-else  icon="el-icon-document" size="mini" plain>详情</el-button>
           </template>
         </el-table-column>
       </el-table>

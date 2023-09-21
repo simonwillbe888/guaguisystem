@@ -130,6 +130,9 @@
         </el-table-column>
       </el-table>
     </div>
+    <!-- <div>
+        <pagination v-show="total > 0" :total="total" :page.sync="page" :limit.sync="limit" @pagination="init" />
+    </div> -->
     <el-dialog
       :title="inspectDialog[dialogType]"
       :visible.sync="dialogFormVisible"
@@ -232,8 +235,10 @@ import {
   updatePatrolLocation,
 } from '@/api/taskConfig';
 import { getArea } from '@/api/areaConfig.js';
+import Pagination from '@/components/Pagination';
 
 export default {
+  components:{Pagination},
   data() {
     return {
       inquireVal: '',
@@ -293,7 +298,10 @@ export default {
       currentInspect: '',
       currentRow: null,
       ID: 0,
-      siteName:null
+      siteName:null,
+      total:0,
+      page:1,
+      limit:10
     };
   },
   mounted() {
