@@ -23,6 +23,7 @@ const getters = {
   clostSpeak:(state)=>state.global.clostSpeak,
   closeWarnL:(state)=>state.global.closeWarnL,
   dealwithAlarm:(state)=>state.global.dealwithAlarm,
-  areaId:(state)=>state.global.areaId
+  areaId:(state)=>state.global.areaId,
+  theme:(state)=>state.global.theme,
 }; 
 export default getters;

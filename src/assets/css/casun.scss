@@ -5,7 +5,18 @@
 .el-table__fixed-right::before {
   height: 0;
 }
-
+.theme-1 {
+  --theme-color:linear-gradient(161deg,rgba(183,230,230,0.00) 10%, rgba(89,179,179,0.50) 92%);
+  --header-color:tranparent;
+  --active-color:#64C8C8;
+  --font-color:#000;
+  --back-shadow:#fff;
+}
+.theme-2 {
+  --theme-color: rgb(8, 46, 80);
+  --font-color:#fff;
+  --back-shadow:rgba(7,24,40,0.5);
+}
 img {
   -webkit-user-drag: none;
 }
@@ -13,6 +24,8 @@ img {
 .container {
   padding: 30px;
   padding-right: 100px;
+  background: rgb(8, 46, 80);
+
 }
 
 .chart-select {
@@ -135,11 +148,6 @@ img {
   color: #409EFF !important;
 }
 
-.back-shaodow {
-  background-color: rgba($color: #071828, $alpha: 0.5);
-  //border-radius: 10px;
-  //box-shadow: 1px 1px 2px 1px rgba(255, 255, 255, 0.50) inset;
-}
 
 .myTable {
   padding: 10px;
@@ -148,7 +156,7 @@ img {
 
 .myTable .el-table .el-table__cell {
   padding: 0;
-  color: #fff;
+  color: var(--font-color);
 
 }
 
@@ -157,13 +165,13 @@ img {
 }
 
 .myTable .el-table thead .el-table__cell {
-  background: #031b31;
+  background: rgb(11, 113, 124);
   font-size: 16px;
   font-weight: normal;
 }
 
 .myTable .el-table tbody .el-table__cell {
-  background: #031b31;
+  background: var(--back-shadow);
   font-size: 14px;
 }
 

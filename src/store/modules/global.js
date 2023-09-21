@@ -14,7 +14,8 @@ const state = {
   closeWarnL:false,
   dealwithAlarm:false,
   areaId:0,
-  fileAddress:''
+  fileAddress:'',
+  theme:'theme-1'
 };
 
 const mutations = {
@@ -65,8 +66,14 @@ const mutations = {
   },
   set_fileAddress:(state,data)=>{
     state.fileAddress = data
-  }
-
+  },
+  set_theme:(state,data)=>{
+    if(data){
+      state.theme = 'theme-1'
+    }else {
+      state.theme = 'theme-2'
+    }
+  },
 };
 
 const actions = {
