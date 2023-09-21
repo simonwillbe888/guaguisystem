@@ -107,9 +107,36 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog title="告警详情" :visible.sync="dialogVisible" width="60%">
+      <el-dialog title="告警详情" :visible.sync="dialogVisible" width="60%" @close="closeDetailDialog">
         <div style="display:flex">
-          <img :src="imageUrl" alt="" style="width:70%">
+          <div style="width:70%;height: 24rem;position: relative">
+            <img v-if="showImg" :src="imageUrl" alt="" style="width:100%;">
+            <div v-if="!recordReload"
+                 class="nvrRecord"
+                 style="font-size: 1.5rem;align-items: center;justify-content: center;display: flex;">
+              正在获取录像文件
+            </div>
+            <video
+              v-show="!showImg && nvrVideoSrc != ''"
+              class="nvrRecord"
+              ref="nvrVideo"
+              v-if="recordReload"
+              :src="nvrVideoSrc"
+              autoplay controls
+            >
+            </video>
+            <!--          <iframe-->
+            <!--            v-show="!showImg && nvrRecordData.src != ''"-->
+            <!--            class="nvrRecord"-->
+            <!--            :myData="nvrRecordData"-->
+            <!--            v-if="recordReload"-->
+            <!--            name="nvrRecord"-->
+            <!--            :id="'nvrRecord'"-->
+            <!--            ref="nvrRecord"-->
+            <!--            :src="nvrRecordData.src">-->
+            <!--          </iframe>-->
+          </div>
+
           <div style="margin-left:2vw">
             <div style="margin: 1vh  0;">告警级别:
               <span v-if="alarm.maxAlarmLevel == 4" style="border: red 1px solid; color: red;font-size: 1.2vw;">致命</span>
@@ -152,6 +179,7 @@
         </div>
         <span slot="footer" class="dialog-footer">
           <template>
+            <el-button type="success" style="margin-right: 3rem" @click="playRecord(alarm)">回 看</el-button>
             <el-button v-if="alarm.statusNum == 0 || alarm.statusNum == 1"  type="primary" @click="showDetail(alarm)">处 理</el-button>
             <el-button v-else type="primary" @click="dialogVisible = false">确 定</el-button>
           </template>
@@ -218,6 +246,7 @@ import {
 import Pagination from '@/components/Pagination';
 import { mapGetters, mapState } from 'vuex';
 import ToggleSwitch from '@/views/inspectionRecord/realTimeAlarm/toggleSwitch.vue'
+import moment from 'moment'
 export default {
   components: { ToggleSwitch, Pagination },
   data() {
@@ -240,6 +269,14 @@ export default {
       detailsList: '',
       detailes: [],
       imageUrl: null,
+      showImg: true,
+      nvrRecordData: {src:''},
+      nvrVideoSrc: '',
+      recordReload: true,
+      recordTimer: null,
+      recordStart: null,
+      recordStop: null,
+      recordTimerCount: 0,
       alarm: [],
       dialogVisible: false,
       dialogFormVisible: false,
@@ -662,6 +699,155 @@ export default {
         })
       );
     },
+
+
+    //录像预览
+    playRecord(row){
+      if(!this.showImg){
+        this.showImg = true
+        return
+      }
+
+      this.showImg = false
+
+      console.log("查看详情数据",row)
+
+      this.nvrVideoSrc= row.id+'.mp4'
+      // this.nvrVideoSrc= '/static/video/'+row.id+'.mp4'
+      this.$refs.nvrVideo.load()
+      // this.$refs.nvrVideo.onerror = function(){
+      //   this.recordReload = false
+      // }
+      // this.$nextTick(()=>{
+      // })
+      // console.log("this.nvrRecordData--->",this.nvrRecordData)
+
+      this.$forceUpdate()
+
+      // this.nvrRecordData= {src:''}
+      //
+      // if(this.recordTimer){
+      //   clearInterval(this.recordTimer)
+      // }
+      // let alarmTime = new Date(row.happenTime).getTime()
+      // // let alarmTime = moment(row).format("YYYY-MM-DD HH:mm:ss")
+      // console.log('row.happenTime--->',row.happenTime)
+      // console.log('alarmTime--->',alarmTime)
+      //
+      // this.recordStart = alarmTime-1000*10
+      // this.recordStop = alarmTime+1000*10
+      //
+      // let startTime = moment(this.recordStart).format("YYYY-MM-DD HH:mm:ss").replace(/-|:|\.\d+/g, '').replace(' ','T')+'Z'
+      // let endTime  = moment(this.recordStop).format("YYYY-MM-DD HH:mm:ss").replace(/-|:|\.\d+/g, '').replace(' ','T')+'Z'
+      // let channel = '101'
+      // let webRtcIP = window.location.hostname
+      // let port = '554'
+      // // console.log('playRecord---webRtcIP',webRtcIP)
+      // // if (webRtcIP == 'localhost' || webRtcIP == '127.0.0.1'){
+      //   webRtcIP = '192.168.20.23'
+      // // }
+      // let nvrData = {
+      //   userName: "user",
+      //   passWord: "password2023",
+      //   ip: "192.168.20.65",
+      // }
+      // this.nvrRecordData = {src : `/static/record.html?data=`+encodeURIComponent(`rtsp://${nvrData.userName}:${nvrData.passWord}@${nvrData.ip}:${port}/Streaming/tracks/${channel}?starttime=${startTime}&endtime=${endTime}`)+`&serve=${webRtcIP}`}
+      //
+      // this.reloadIframe()
+    },
+
+    //重载iframe
+    reloadIframe(){
+      this.recordReload = false
+      this.$forceUpdate()
+      let webRtcIP = window.location.hostname
+      // console.log('reloadIframe---webRtcIP',webRtcIP)
+      // if (webRtcIP == 'localhost' || webRtcIP == '127.0.0.1'){
+      //   webRtcIP = '192.168.20.23'
+      // }
+      this.getPeerConnectionList(webRtcIP)
+      setTimeout(()=>{
+        this.recordReload = true
+        this.$forceUpdate()
+      },100)
+    },
+
+    //获取webrtcstreamer中正在播放的连接
+    getPeerConnectionList(srvurl){
+      fetch('http://'+srvurl+ ':8001'+'/api/getPeerConnectionList')
+        .then((response) => response.json())
+        .then((response) => {
+          // console.log('getPeerConnectionList--->',response)
+          if(response.length > 0){
+            response.forEach((item,index) => {
+              // console.log(Object.keys(item)[0])
+              let peer = Object.keys(item)[0]
+              //踢掉所有播放连接
+              fetch('http://'+srvurl + ':8001'+'/api/hangup?peerid=' + peer)
+                .then((res)=>{
+                  console.log('断连hangup '+peer,res)
+                })
+                .catch((error) => this.onError('hangup ' + error));
+            })
+          }
+        })
+        .catch((e) => {
+          console.log('获取所有链接失败 ',e)});
+    },
+
+    //视频开始播放的触发方法
+    onVideoLoaded(){
+      if(this.recordTimer){
+        clearInterval(this.recordTimer)
+      }
+      let video = this.$refs.nvrRecord.contentDocument.getElementById('video')
+      console.log('onVideoLoaded---->',video)
+      if(video != null){
+
+        //视频播放计时器
+        this.recordTimer = setInterval(()=>{
+          if(!this.dialogVisible){
+            clearInterval(this.recordTimer)
+          }
+
+          if(video.currentTime >= this.recordTotalTime && !this.autoContinuePlay){
+            //视频播放时长超过视频播放时间就暂停
+            clearInterval(this.recordTimer)
+            video.pause()
+          }
+          // else {
+          //   //其他情况暂停播放
+          //   clearInterval(this.recordTimer)
+          //   video.pause()
+          // }
+          // console.log("recordNow",recordNow)
+
+          // 播放重载定时器 设定一直不播放10秒后自动重载
+          if(video.currentTime == 0){
+            // console.log('this.recordTimerCount',this.recordTimerCount)
+            this.recordTimerCount ++
+            if(this.recordTimerCount > 20){
+              console.log('iframe reload')
+              this.recordTimerCount = 0
+              this.reloadIframe()
+            }
+          }else {
+            this.recordTimerCount = 0
+          }
+        },500)
+      }
+    },
+
+    closeDetailDialog(){
+      this.showImg = true
+      console.log("this.showImg ",this.showImg)
+      if(this.recordTimer){
+        clearInterval(this.recordTimer)
+      }
+      let rtcURL = window.location.hostname
+      // rtcURL = '192.168.20.23'
+      this.getPeerConnectionList(rtcURL)
+    },
   },
 };
 </script>
@@ -871,5 +1057,12 @@ export default {
   width: 540px;
 }
 
+.nvrRecord{
+  background-color: #000000;
+  width: 100%;
+  border: none;
+  display: inline-block;
+  margin-top: 1rem;
+}
 
 </style>

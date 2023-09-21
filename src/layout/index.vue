@@ -4,15 +4,19 @@
   <div class="container">
     <div class="header">
       <div>
-        <img src="../assets/img/logo@2x.png" style="width:10.125rem ;height: 2rem;">
-        <!-- <div style="font-weight: bold;font-size: 2rem;color: #64C8C8;
-                  font-style: italic;">
+<!--        <img src="../assets/img/logo@2x.png" style="width:10.125rem ;height: 2rem;">-->
+         <div style="font-weight: bold;font-size: 2rem;color: #64C8C8;
+                  font-style: italic;text-shadow: 0px 3px 10px 0px rgba(255,255,255,0.15);">
           机器人管理系统
-        </div> -->
+        </div>
       </div>
       <div class="changeRoad">
         <el-select v-model="choosedArea" placeholder="请选择">
-          <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
           </el-option>
         </el-select>
 
@@ -351,7 +355,7 @@ export default {
   // width: 120rem;
   display: flex;
   flex-direction: column;
-  background-color: var(--theme-color);
+  background: transparent;
   >.manue {
     margin: 0 .625rem;
 
@@ -378,6 +382,12 @@ export default {
 
     .changeRoad {
       margin-left: 2rem;
+      ::v-deep .el-input__inner{
+        color: #64c8c8;
+      }
+      ::v-deep .el-select .el-input__inner{
+        border: 1px solid #64c8c8;
+      }
     }
 
     .nav {

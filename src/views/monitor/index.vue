@@ -47,7 +47,7 @@
             </div>
 
             <div class="electri">
-              <el-progress :width="40" color="#66b3b2" text-color="#fff" type="circle"
+              <el-progress :width="40" color="#64C8C8" text-color="#64C8C8" type="circle"
                 :percentage="carList.batteryLevel"></el-progress>
               <div style="font-size: 0.8rem;margin-left: 0.5rem">当前电量</div>
             </div>
@@ -242,8 +242,8 @@
             <div style="display:flex">
               <div class="enviroDetail">
                 <div class="detail_icon">
-                  <svg-icon icon-class="tempicture" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
-                  <div style="color:rgba(100 200 200) ;">温度</div>
+                  <svg-icon icon-class="tempicture" style="font-size:1.25rem;margin-left: 0.5rem;color: var(--font-color);"></svg-icon>
+                  <div >温度</div>
                 </div>
                 <div class="gasDetail">
                   {{ isNaN(gasList.Temperature) ?   '0': parseFloat((gasList.Temperature / 100).toFixed(1))}}℃
@@ -252,7 +252,7 @@
               <div class="enviroDetail">
                 <div class="detail_icon">
                   <svg-icon icon-class="shidu" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
-                  <div style="color:rgba(100 200 200) ;">湿度</div>
+                  <div>湿度</div>
                 </div>
                 <div class="gasDetail">
                   {{ isNaN( gasList.Humidity) ? '0' : (gasList.Humidity / 100).toFixed(1) }}<span
@@ -260,7 +260,7 @@
                 </div>
               </div>
               <div class="enviroDetail">
-                <div style="color:rgba(100 200 200);margin: 1.25rem 0 0 0.375rem;">烟雾</div>
+                <div style="color:var(--font-color);margin: 1.25rem 0 0 0.375rem;">烟雾</div>
                 <div class="gasDetail">
                   {{ gasList.Smoke == null ? '0' : (gasList.Smoke / 100).toFixed(1) }}<span
                     style="font-size: 0.625rem;">ppm</span>
@@ -269,21 +269,21 @@
             </div>
             <div style="display:flex;margin-top: 0.625rem;">
               <div class="enviroDetail">
-                <div style="color:rgba(100 200 200);margin: 0.625rem 0 0 0.375rem;">硫化氢</div>
+                <div style="color:var(--font-color);margin: 0.625rem 0 0 0.375rem;">硫化氢</div>
                 <div class="gasDetail">
                   {{ gasList.H2S == null ? '0' : (gasList.H2S / 100).toFixed(1) }}<span
                     style="font-size: 0.625rem;">ppm</span>
                 </div>
               </div>
               <div class="enviroDetail">
-                <div class="gas" style="color:rgba(100 200 200);">一氧化碳</div>
+                <div class="gas">一氧化碳</div>
                 <div class="gasDetail">
                   {{ gasList.CO == null ? '0' : (gasList.CO / 100).toFixed(1) }}<span
                     style="font-size: 0.625rem;">ppm</span>
                 </div>
               </div>
               <div class="enviroDetail">
-                <div class="gas" style="color:rgba(100 200 200);margin: 1.25rem 0 0 0.375rem;">甲烷</div>
+                <div class="gas" style="margin: 1.25rem 0 0 0.375rem;">甲烷</div>
                 <div class="gasDetail">
                   {{ gasList.CH4 == null ? '0' : (gasList.CH4 / 100).toFixed(1) }}<span
                     style="font-size: 0.625rem;">ppm</span>
@@ -1680,7 +1680,7 @@ export default {
 .tempicture {
   position: absolute;
   bottom: 26rem;
-  color: black;
+  color: var(--font-color);
 }
 
 .content {
@@ -1757,21 +1757,25 @@ export default {
       display: flex;
       flex: 1;
       font-size: 1.125rem;
-      color: #fff;
+      color: var(--font-color);
 
       .arrow {
-        font-size: 2rem;
+        font-size: 3rem;
+        color: #64C8C8;
+
       }
 
       .arrow:active {
-        color: #64C8C8;
+        opacity: 0.5;
       }
 
       .onLine,.outLine {
         width: 10rem;
         background-color: #67B3B2;
         text-align: center;
-        line-height: 1.875rem;
+        height: 2rem;
+        margin-top: 0.5rem;
+        line-height: 2rem;
       }
       .outLine{
         background-color: gray;
@@ -1818,7 +1822,7 @@ export default {
 
     .electri {
       position: absolute;
-      color: #fff;
+      color: var(--font-color);
       top: 15.875rem;
       left: 1.8125rem;
       width: 80%;
@@ -1828,7 +1832,7 @@ export default {
       }
 
       ::v-deep .el-progress__text {
-        color: #fff;
+        color: var(--active-color);
       }
     }
 
@@ -1906,7 +1910,9 @@ export default {
       width: 100%;
 
       ::v-deep .el-input__inner {
-        background-color: rgba($color: #071828, $alpha: 0.5);
+        background-color: #fff;
+        border: 1px soild #64C8C8;
+        color:#000;
         width: 14rem;
         height: 1.875rem;
       }
@@ -1938,7 +1944,7 @@ export default {
       overflow: hidden;
 
       .gas {
-        color: #66B3B2;
+        color: var(--font-color);
         margin: 0.625rem 0 0 0.375rem;
 
       }
@@ -1947,6 +1953,7 @@ export default {
         margin: 1.625rem 0 0 0.5rem;
         width: 4rem;
         word-break: keep-all;
+        color: var(--active-color);
       }
 
       div {
@@ -1957,6 +1964,7 @@ export default {
         margin-left: 0.375rem;
         margin-top: 0.625rem;
         word-break: keep-all;
+        color: var(--font-color);
       }
 
     }
@@ -2138,7 +2146,7 @@ export default {
     height: 1.875rem;
     // background-color: rgba($color: #071828, $alpha: 1);
     background-color: transparent;
-    color: #fff;
+    color:var(--font-color);
   }
 
   .hkControl {

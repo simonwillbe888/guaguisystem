@@ -1,5 +1,5 @@
 <template>
-  <div style="padding: 1%; background: rgb(6,30,51);">
+  <div style="padding: 1%; background:var(--tablebody);">
     <div class="robot-header content-header">
       <!-- <h3 class="robot-setting-title">
         {{ $t("equip_setting.equip_list_label") }}
@@ -530,7 +530,7 @@ export default {
 
 >>> .el-table th,
 .el-table tr {
-  background-color: transparent;
+  background-color: rgb(11, 113, 124);
 }
 
 >>> .header-row-class {

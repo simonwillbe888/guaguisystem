@@ -622,7 +622,7 @@ export default {
       recordPlayTime: null,
       autoContinuePlay: false,
       videoPlaying: false,
-      autoCoutinueCount: 0,
+      autoPlayCount: 0,
       playDirection: -1,
       headerCellStyle: {"text-align":"center"},
       cellStyle: { "text-align":"center" },
@@ -931,7 +931,7 @@ export default {
       // console.log("playRecordFile",+row)
       this.nvrRecordData = {src:''}
       this.titleName = '回看 '+ row.start + ' - ' + row.stop +' '
-      // this.recordVideoSrc = '/'+row.name+".mp4"
+      this.recordVideoSrc = '/'+row.name+".mp4"
       // this.recordVideoSrc = '/static/video/'+row.name+".mp4"
 
       this.recordStart = row.start
@@ -1037,9 +1037,9 @@ export default {
 
     loadNextRecord(i){
       this.playDirection = i
-      console.log('this.ids,i',this.ids,i)
-      console.log('this.fileList.length',this.fileList.length)
-      console.log('(this.ids+i >= 0) && (this.ids+i < this.fileList.length)',(this.ids+i >= 0) , (this.ids+i < this.fileList.length))
+      // console.log('this.ids,i',this.ids,i)
+      // console.log('this.fileList.length',this.fileList.length)
+      // console.log('(this.ids+i >= 0) && (this.ids+i < this.fileList.length)',(this.ids+i >= 0) , (this.ids+i < this.fileList.length))
 
       if((this.ids+i >= 0) && (this.ids+i < this.fileList.length) ){
         // console.log('row--->',this.fileList[this.ids+i])
@@ -1086,9 +1086,9 @@ export default {
           this.recordPlayTime = moment(new Date(this.recordStart).getTime()+video.currentTime*1000).format("YYYY-MM-DD HH:mm:ss")
 
           //当开启了自动续播后在播放结束后3秒会自动播放
-          if(this.autoContinuePlay && new Date(this.recordPlayTime) - new Date(this.recordStop) < 5*1000 && this.autoCoutinueCount >= 6) {
+          if(this.autoContinuePlay && new Date(this.recordPlayTime) - new Date(this.recordStop) < 5*1000 && this.autoPlayCount >= 6) {
             // console.log('autoContinuePlay')
-            this.autoCoutinueCount = 0
+            this.autoPlayCount = 0
             console.log('autoContinuePlay',this.playDirection)
             this.loadNextRecord(this.playDirection)
           }
@@ -1098,9 +1098,9 @@ export default {
             console.log('onVideoLoaded --- this.timingTimeline',this.recordPlayTime)
             this.timingTimeline(this.recordPlayTime)
             if(lastPlayTime == this.recordPlayTime && video.currentTime!= 0){
-              this.autoCoutinueCount ++
+              this.autoPlayCount ++
             }else {
-              this.autoCoutinueCount = 0
+              this.autoPlayCount = 0
             }
           }else if(video.currentTime >= this.recordTotalTime && !this.autoContinuePlay){
             //视频播放时长超过视频播放时间就暂停
@@ -1137,7 +1137,7 @@ export default {
       let webRtcIP = window.location.hostname
       // console.log('reloadIframe---webRtcIP',webRtcIP)
       // if (webRtcIP == 'localhost' || webRtcIP == '127.0.0.1'){
-      //   webRtcIP = '192.168.20.23'
+        webRtcIP = '192.168.20.23'
       // }
       this.getPeerConnectionList(webRtcIP)
       setTimeout(()=>{
@@ -1147,8 +1147,8 @@ export default {
     },
 
     //获取webrtcstreamer中正在播放的连接
-    getPeerConnectionList(srvurl){
-      fetch('http://'+srvurl+ ':8001'+'/api/getPeerConnectionList')
+    getPeerConnectionList(rtcURL){
+      fetch('http://'+rtcURL+ ':8001'+'/api/getPeerConnectionList')
         .then((response) => response.json())
         .then((response) => {
           // console.log('getPeerConnectionList--->',response)
@@ -1157,7 +1157,7 @@ export default {
               // console.log(Object.keys(item)[0])
               let peer = Object.keys(item)[0]
               //踢掉所有播放连接
-              fetch('http://'+srvurl + ':8001'+'/api/hangup?peerid=' + peer)
+              fetch('http://'+rtcURL + ':8001'+'/api/hangup?peerid=' + peer)
                 .then((res)=>{
                   console.log('断连hangup '+peer,res)
                 })
@@ -1175,6 +1175,9 @@ export default {
       if(this.recordTimer){
         clearInterval(this.recordTimer)
       }
+      let rtcURL = window.location.hostname
+      rtcURL = '192.168.20.23'
+      this.getPeerConnectionList(rtcURL)
     },
 
     initTimeLine() {

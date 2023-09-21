@@ -1,5 +1,5 @@
 <template>
-  <div id="app"
+  <div id="app" :class="themeClass"
        v-cloak>
     <router-view />
     <iframe id="startTalk" hidden="hidden" src="/demo/cn/demo.html" frameborder="0" style="width: 0;height: 0;" ></iframe>
@@ -8,8 +8,16 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'App',
+  computed: {
+    ...mapGetters(['theme']),
+    themeClass(){
+      return this.theme === 'theme-1' ? 'theme-1' :'theme-2';
+    }
+  },
   created(){
     const targetRoute = sessionStorage.getItem('sessionRoles');
     //跳转到授权验证页面
@@ -66,12 +74,14 @@ function resizeWeb(){
   width: 100%;
   height: 100%;
   // min-width: 1180px;
+  background: var(--theme-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  
 }
 /* 解决element-ui的table表格控件表头与内容列不对齐问题 */
 .el-table th.gutter {
