@@ -179,7 +179,7 @@
         </div>
         <span slot="footer" class="dialog-footer">
           <template>
-            <el-button type="success" style="margin-right: 3rem" @click="playRecord(alarm)">回 看</el-button>
+            <el-button type="success" style="margin-right: 3rem" v-if="alarmJudge(alarm.alarmCode)" @click="playRecord(alarm)">回 看</el-button>
             <el-button v-if="alarm.statusNum == 0 || alarm.statusNum == 1"  type="primary" @click="showDetail(alarm)">处 理</el-button>
             <el-button v-else type="primary" @click="dialogVisible = false">确 定</el-button>
           </template>
@@ -439,6 +439,10 @@ export default {
           }
         })
         .catch(() => { });
+    },
+    alarmJudge(code){
+      let alarm = [1004,1005,1006,1014,1015]
+      return !alarm.includes(code)
     },
     // 详情
     showDetail(item) {

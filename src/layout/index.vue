@@ -6,8 +6,12 @@
       <div>
 <!--        <img src="../assets/img/logo@2x.png" style="width:10.125rem ;height: 2rem;">-->
          <div style="font-weight: bold;font-size: 2rem;color: #64C8C8;
-                  font-style: italic;text-shadow: 0px 3px 10px 0px rgba(255,255,255,0.15);">
+                  font-style: italic;text-shadow: 0px 3px 10px 0px rgba(255,255,255,0.15);
+                  position: relative;z-index: 2;">
           机器人管理系统
+        </div>
+        <div style="width:15rem;height:3rem;position: absolute;z-index: 1;margin-top: -2.5rem;
+        background: radial-gradient(rgba(255, 255, 255, 0.3) 35%, rgba(255, 255, 255, 0.2) 45%, rgba(255, 255, 255, 0.1) 60%, transparent 70%);">
         </div>
       </div>
       <div class="changeRoad">

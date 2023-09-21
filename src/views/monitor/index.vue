@@ -152,13 +152,18 @@
               </div>
               <div class="taskDetail">
                 <div>
-                  当前任务  <span style="color:var(--font-color) ;">{{ realTimeTask == '' ? '空闲状态' : realTimeTask }} </span>
+                  当前任务&nbsp;
+                  <span style="color:var(--data-color) ;">
+                    {{ realTimeTask == '' ? '空闲状态' : realTimeTask }}
+                  </span>
                 </div>
 
               <span style="margin-left: 1.875rem;">
-
-                  预计完成 <span style="color:var(--font-color) ;"></span>{{ finishTime ==
-                    '' ? '0' : Math.abs(finishTime) }}分钟 </span>
+                  预计完成&nbsp;
+                <span style="color:var(--data-color) ;">
+                  {{ finishTime == '' ? '0' : Math.abs(finishTime) }}分钟
+                </span>
+              </span>
               </div>
               <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0rem;">
                 任务下发
@@ -414,12 +419,10 @@
                   应急速度
                 </div>
               </div>
+              <hr style="border-color: rgb(100 200 200)">
             </div>
-
-            <hr style="border-color: rgb(100 200 200)">
-
-            <div class="hkControl">
-              <div class="leftTitle" widht="6.25rem">
+            <div class="hkControl back-shaodow">
+              <div class="leftTitle" widht="6.25rem;" style="margin-top: 1rem">
                 云台控制
               </div>
               <div style="display:flex ;">

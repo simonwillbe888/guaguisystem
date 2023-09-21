@@ -125,7 +125,7 @@
                 <div class="robotEletri">
                   <div style="display:flex;">
                     <i class="el-icon-caret-left arrow" @click="changeRobotLeft"></i>
-                    <div class="onLine">{{ carrierName }} ({{ carList.inSystem ? '在线' : '离线' }})</div>
+                    <div :class="[carList.inSystem ? 'onLine':'outLine']">{{ carrierName }} ({{ carList.inSystem ? '在线' : '离线' }})</div>
                     <i class="el-icon-caret-right arrow" @click="changeRobotRight"></i>
                   </div>
                 </div>
@@ -962,11 +962,13 @@ export default {
       console.log('切换机器')
 
       this.$store.dispatch('global/setCloseAll', '待机')
+      this.locationName = ''
+
       setTimeout(()=>{
         if (this.robotOpen == 1) {
             this.logoutCar()
           }
-        this.$store.dispatch('global/setCloseAll', '待机')
+
         this.carrierSelected = this.carrierArr[this.carrierIndex]
         this.carID = this.carrierSelected.CarrierID
         this.carrierName = this.carrierSelected.CarrierName
@@ -984,12 +986,13 @@ export default {
         }
         this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
         this.getVideo()
+        console.log('this.carList----->',this.carList)
         },1000)
       },
 
       //切换隧道
       areaId() {
-        console.log("areaId running")
+
         this.$store.dispatch('global/setCloseAll', '待机')
 
         setTimeout(() => {
@@ -1009,6 +1012,7 @@ export default {
           }, 2000);
           this.getVideo()
         },1000)
+
     },
 
     logoutAuto(old) {
@@ -1410,8 +1414,7 @@ export default {
       }
     },
     async getCarList() {
-      if(this.carrierSelected == null || this.carrierSelected.CarrierID == null ||
-        this.carrierSelected.CarrierID == undefined || this.carrierSelected.CarrierID == ''){
+      if(this.carrierSelected.CarrierID == undefined || this.carrierSelected.CarrierID == ''){
         console.log('CarrierID is null')
         return
       }
@@ -1420,10 +1423,8 @@ export default {
       const buttery = await getChargingStateByCarrierID(this.carrierSelected.CarrierID)
       // console.log('小车具体速度,总运行时间,',res.data.realTimeSpeed,res.data.totalRunTime)
       this.butteryInfo = buttery.data
-      // console.log('气体',gas)
       let robot = document.getElementById('robot')
-      // console.log("model----->",this.$refs.model)
-      if (res.code === '20000') {
+      if (res.code == '20000') {
         this.carList = res.data || [];
 
         // if (this.carList.x >= 1) {
@@ -1436,6 +1437,8 @@ export default {
       //气体
       if (gas.code == '20000') {
         this.gasList = gas.data
+      }else {
+        this.gasList = []
       }
       const car = await GetRealPatrolTaskByCarrierId(this.carID)
       if (car.data != null) {
@@ -3089,14 +3092,25 @@ export default {
         color: #64c8c8;
       }
 
+      .outLine{
+        height: 1.5rem;
+        width: 7rem;
+        margin-top: 0.5rem;
+        border-radius: 2px;
+        background-color: gray;
+        text-align: center;
+        line-height: 1.575rem;
+      }
+
       .onLine {
         height: 1.5rem;
         width: 7rem;
         margin-top: 0.5rem;
         border-radius: 2px;
-        background-color: #67B3B2;
+        background-color: gray;
         text-align: center;
         line-height: 1.575rem;
+        background-color: #67B3B2;
       }
     }
 
