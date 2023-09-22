@@ -912,7 +912,7 @@ export default {
       menuItems.forEach(menuItem => {
         if (menuItem.querySelector('span').textContent == '巡检流程配置') {
           menuItem.classList.toggle('is-active')
-          menuItem.style = 'color: rgb(100, 200, 200); border-bottom-color: rgb(100, 200, 200); background-color: rgb(3, 27, 49);'
+          menuItem.style = 'color: #fff; border-bottom-color: rgb(100, 200, 200); background-color: rgb(3, 27, 49);'
         }
       });
     })
@@ -1518,7 +1518,6 @@ export default {
     // padding: 10px;
     // min-height: calc(100vh - 123px);
     .page-left {
-      opacity: 0.7;
       font-size: initial;
       // margin-right: 10px;
       background: transparent;
@@ -1563,7 +1562,6 @@ export default {
       }
     }
     .page-main {
-      opacity: 0.7;
       .header-label {
         border-radius: 0;
         line-height: 40px;
@@ -1756,6 +1754,7 @@ export default {
   }
 }
 ::v-deep .el-descriptions__body{
+  color: var(--font-color);
   background-color: transparent;
 }
 

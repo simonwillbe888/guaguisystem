@@ -401,7 +401,7 @@ export default {
     async getDetailMessage(e) {
       if (this.alarmType == 2) {
         this.alarm = e
-        if(e.alarmCode == 1014){
+        if(e.alarmCode == 1014 ||e.alarmCode == 1013  ){
           this.imageUrl =  process.env.VUE_APP_BASE_API + '/images/' + e.Image
         }
         else{
