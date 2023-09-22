@@ -1,14 +1,15 @@
-import Vue from 'vue';
-import Vcomp from './components/index';
-import 'normalize.css/normalize.css'; // A modern alternative to CSS resets
+/* eslint-disable */
+import Vue from 'vue'
+import Vcomp from './components/index'
+import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import enLocale from 'element-ui/lib/locale/lang/en'; // lang i18n
-import zhLocale from 'element-ui/lib/locale/lang/zh-CN'; // lang i18n
+import zhLocale from 'element-ui/lib/locale/lang/zh-CN' // lang i18n
 ElementUI.Dialog.props.closeOnClickModal.default = false
 
-import '@/styles/index.scss'; // global css
+import '@/styles/index.scss' // global css
 
 import App from './App';
 import store from './store';
@@ -16,16 +17,20 @@ import router from './router';
 import VueAwesomeSwiper from 'vue-awesome-swiper';
 import VueClipboard from 'vue-clipboard2'
 import '@/icons'; // icon
-import '@/permission'; // permission control
-import i18n from './langs/index';
-import moment from 'moment';
-import './assets/css/casun.scss';
-import './utils/directives.js';
-import JSEncrypt from 'jsencrypt';
-import echarts from 'echarts';
-import dataV from '@jiaminghi/data-view';
-import { getPageTitle } from './assets/js/title';
-import 'swiper/dist/css/swiper.css';
+import '@/permission' // permission control
+import i18n from './langs/index'
+import moment from 'moment'
+import './assets/css/casun.scss'
+import './utils/directives.js'
+import JSEncrypt from 'jsencrypt'
+import echarts from 'echarts'
+import dataV from '@jiaminghi/data-view'
+import { getPageTitle } from './assets/js/title'
+import 'swiper/dist/css/swiper.css'
+import flv from 'flv.js'
+import "font-awesome/css/font-awesome.min.css"
+
+
 // import style (>= Swiper 6.x)
 // import 'swiper/swiper-bundle.css'
 
@@ -48,7 +53,7 @@ import 'swiper/dist/css/swiper.css';
 
 // 全局视频图片地址根路径
 // Vue.prototype.$baseUrl = 'http://192.168.0.101:9096'
-Vue.prototype.$baseUrl = 'http://192.168.0.120:9096';
+Vue.prototype.$baseUrl = 'http://192.168.0.120:9096'
 
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
@@ -66,6 +71,7 @@ Vue.use(VueClipboard)
 Vue.use(Vcomp);
 Vue.use(dataV);
 Vue.use(VueAwesomeSwiper);
+Vue.use(flv)
 
 Vue.config.productionTip = false;
 Vue.prototype.$moment = moment;
@@ -80,6 +86,12 @@ Vue.prototype.$getRsaCode = function(str) {
   let data = encryptStr.encrypt(str.toString()); // 进行加密
   return data;
 };
+
+if (process.env.NODE_ENV === 'production') {
+  if (window) {
+    window.console.log = function () {};
+  }
+}
 
 new Vue({
   el: '#app',

@@ -1,8 +1,8 @@
 <template>
-  <div class="screen">
+  <div class="screen" :class="{'bgShow':!themeMode}">
     <div class="content" v-loading="loading">
       <div style="height: 6rem;margin-bottom: 1rem;background-color: transparent;display: flex;position: relative;justify-content: center;">
-        <div style="position: absolute;left: 0;">
+        <div style="position: absolute;left: 0;" class="area-select">
           <el-select v-model="choosedArea" placeholder="请选择" style="width: 8rem;margin: 3rem 3rem;">
             <el-option
               v-for="item in options"
@@ -12,15 +12,28 @@
             </el-option>
           </el-select>
         </div>
-        <div>
-          <h1 style="color: white;" class="screenTitle">应急巡检机器人管理系统</h1>
+        <div @click="switchTheme" style="display: flex;align-items: center">
+          <div style="display: flex;position:relative;margin-right: 2rem" v-if="this.themeMode">
+            <div style="width: 0.3rem;height: 1rem;opacity: 0.3;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(340deg);margin-left: 0.3rem"></div>
+            <div style="width: 0.3rem;height: 1rem;opacity: 0.5;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.4), rgb(99,182,182));transform: skewX(340deg);margin-left: 0.3rem"></div>
+            <div style="width: 8rem;height: 1rem;background: linear-gradient(90deg,transparent,rgba(99,182,182,0.15),rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(340deg);"></div>
+          </div>
+          <h1 style="color: var(--title-color);" class="screenTitle" >应急巡检机器人管理系统</h1>
+<!--          <div style="width:30rem;height:3rem;position: absolute;margin-left: 10rem;-->
+<!--            background: radial-gradient(var(&#45;&#45;logo-color-core) 25%, var(&#45;&#45;logo-color-around) 35%, var(&#45;&#45;logo-color-edge) 60%, var(&#45;&#45;logo-color-border) 80%, transparent 70%);">-->
+<!--          </div>-->
+          <div style="display: flex;position:relative;margin-left: 2rem" v-if="this.themeMode">
+            <div style="width: 8rem;height: 1rem;background: linear-gradient(270deg,transparent,rgba(99,182,182,0.25),rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(20deg);"></div>
+            <div style="width: 0.3rem;height: 1rem;opacity: 0.5;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(20deg);margin-left: 0.3rem"></div>
+            <div style="width: 0.3rem;height: 1rem;opacity: 0.3;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.4), rgb(99,182,182));transform: skewX(20deg);margin-left: 0.3rem"></div>
+          </div>
         </div>
-        <div style="position: absolute;right: 0;top: 2rem">
-          <div >
-            <span style="color: white;font-size: 0.8rem;">{{ this.$store.getters.account }}，您好</span>
+        <div style="position: absolute;right: 0;top: 3rem;">
+          <div style="display: flex;margin-right: 3rem;margin-bottom:0.5rem;align-items: center;justify-content: flex-end;">
+            <span style="color: white;font-size: 1.2rem;">{{ this.$store.getters.account }}，您好！</span>
           </div>
           <div style="display: flex;margin-right: 2rem;align-items: center;">
-            <Clock style="color: #5ea19f;margin-right: 1rem;font-size: 1.5rem"></Clock>
+            <Clock style="color: var(--clock-color);margin-right: 1rem;font-size: 1.5rem"></Clock>
             <span  @click="$router.push('/dashboard/monitor')"><svg-icon icon-class="exit" style="width: 2rem;margin: auto"/></span>
           </div>
         </div>
@@ -28,67 +41,66 @@
       <el-col :span="6">
         <!--隧道环境信息-->
         <div style="margin-bottom: 0.5rem">
-          <div class="enviroment back-shaodow threeRow" style="height: 9rem">
+          <div class="enviroment back-shadow threeRow" style="height: 9rem">
             <div class="leftTitle" style="padding-bottom: 0;display: flex">
-              <div style="z-index: 10;margin-left: 0.5rem">环境信息</div>
+              <div style="z-index: 10;margin-left: 0.5rem;color: var(--font-color)">环境信息</div>
               <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
-                <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
-                <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
-                <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+                <div style="width: 12rem;height: 0.7rem;background: linear-gradient(270deg,transparent,rgba(99,182,182,0.25),rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);"></div>
+                <div style="width: 0.6rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
+                <div style="width: 0.6rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.4), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
               </div>
             </div>
             <div style="display:flex">
               <div class="enviroDetail">
                 <div class="detail_icon">
                   <svg-icon icon-class="tempicture" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
-                  <div style="color:#0FB1CBFF;width: 3rem">温度</div>
+                  <div style="color:var(--data-screen-font-color);width: 3rem">温度</div>
                 </div>
-                <div class="gasDetail" style="margin-left: 0.7rem;">
+                <div class="gasDetail" style="margin-left: 1rem;">
                   {{ isNaN(gasList.Temperature) ?   '0': parseFloat((gasList.Temperature / 100).toFixed(1))}}℃
                 </div>
               </div>
               <div class="enviroDetail">
                 <div class="detail_icon">
                   <svg-icon icon-class="shidu" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
-                  <div style="color:#0FB1CBFF;width: 3rem">湿度</div>
+                  <div style="color:var(--data-screen-font-color);width: 3rem">湿度</div>
                 </div>
-                <div class="gasDetail" style="margin-left: 0.7rem;">
+                <div class="gasDetail" style="margin-left: 1rem;">
                   {{ isNaN( gasList.Humidity) ? '0' : (gasList.Humidity / 100).toFixed(1) }}
-                  <span style="font-size: 0.625rem;">%</span>
+                  <span style="font-size: 0.825rem;">%</span>
                 </div>
               </div>
               <div class="enviroDetail">
                 <div class="detail_icon">
                   <svg-icon icon-class="fog" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
-                  <div style="color:#0FB1CBFF;width: 3rem">烟雾</div>
+                  <div style="color:var(--data-screen-font-color);width: 3rem">烟雾</div>
                 </div>
-                <div class="gasDetail" style="margin-left: 0.7rem;">
+                <div class="gasDetail" style="margin-left: 1rem;">
                   {{ gasList.Smoke == null ? '0' : (gasList.Smoke / 100).toFixed(1) }}
-                  <span style="font-size: 0.625rem;">ppm</span>
+                  <div style="font-size: 0.825rem;">ppm</div>
                 </div>
               </div>
             </div>
             <div style="display:flex;margin-top: 0.325rem;">
               <div class="enviroDetail">
-<!--                <div style="color:#0FB1CBFF;margin: 1rem 0 0 0.375rem;width: 3.5rem">H₂S<br>硫化氢</div>-->
-                <div style="color:#0FB1CBFF;margin-left:0.375rem;width: 3.5rem"><br>硫化氢</div>
+                <div style="color:var(--data-screen-font-color);margin-left:0.375rem;width: 3.5rem;text-align: center"><br>硫化氢</div>
                 <div class="gasDetail">
                   {{ gasList.H2S == null ? '0' : (gasList.H2S / 100).toFixed(1) }}
-                  <span style="font-size: 0.625rem;">ppm</span>
+                  <div style="font-size: 0.825rem;">ppm</div>
                 </div>
               </div>
               <div class="enviroDetail">
-                <div style="color:#0FB1CBFF;margin-left:0.375rem;width: 3.5rem"><br>一氧化碳</div>
+                <div style="color:var(--data-screen-font-color);margin-left:0.375rem;width: 3.5rem"><br>一氧化碳</div>
                 <div class="gasDetail">
                   {{ gasList.CO == null ? '0' : (gasList.CO / 100).toFixed(1) }}
-                  <span style="font-size: 0.625rem;">ppm</span>
+                  <div style="font-size: 0.825rem;">ppm</div>
                 </div>
               </div>
               <div class="enviroDetail">
-                <div style="color:#0FB1CBFF;margin: 1.5rem 0 0 0.375rem;width: 3.5rem">甲烷</div>
+                <div style="color:var(--data-screen-font-color);margin: 1.5rem 0 0 0.375rem;width: 3.5rem">甲烷</div>
                 <div class="gasDetail">
                   {{ gasList.CH4 == null ? '0' : (gasList.CH4 / 100).toFixed(1) }}
-                  <span style="font-size: 0.625rem;">ppm</span>
+                  <div style="font-size: 0.825rem;">ppm</div>
                 </div>
               </div>
             </div>
@@ -98,9 +110,9 @@
         <!--机器人信息-->
         <div style="margin-bottom: 0.5rem">
 
-          <div class="robot back-shaodow">
+          <div class="robot back-shadow">
             <div class="leftTitle" style="display:flex">
-              <div style="z-index: 10;margin-left: 0.5rem;width: 100%">
+              <div style="z-index: 10;margin-left: 0.5rem;width: 100%;color: var(--font-color)">
                 机器人信息
                 <div style="color:#67B3B2;display: inline-block;z-index: 10;" v-if="butteryInfo">
                   <svg-icon icon-class="battery" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>{{ butteryInfo }}
@@ -111,9 +123,9 @@
                 </div>
               </div>
               <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
-                <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
-                <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
-                <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+                <div style="width: 12rem;height: 0.7rem;background: linear-gradient(270deg,transparent,rgba(99,182,182,0.25),rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);"></div>
+                <div style="width: 0.6rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
+                <div style="width: 0.6rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.4), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
               </div>
             </div>
 
@@ -124,9 +136,9 @@
                 </div>
                 <div class="robotEletri">
                   <div style="display:flex;">
-                    <i class="el-icon-caret-left arrow" @click="changeRobotLeft"></i>
+                    <i class="el-icon-caret-left arrow" style="color:rgb(100,200,200)" @click="changeRobotLeft"></i>
                     <div :class="[carList.inSystem ? 'onLine':'outLine']">{{ carrierName }} ({{ carList.inSystem ? '在线' : '离线' }})</div>
-                    <i class="el-icon-caret-right arrow" @click="changeRobotRight"></i>
+                    <i class="el-icon-caret-right arrow" style="color:rgb(100,200,200)" @click="changeRobotRight"></i>
                   </div>
                 </div>
               </div>
@@ -135,31 +147,31 @@
                 <div style="display: flex;position: relative;margin: -1.5rem 0 0 1rem;justify-items: center;align-items: flex-end;">
 
                   <div class="runtimeinfo-first">
-                    <div style="font-size: 0.8rem;color: #0FB1CBFF;white-space: nowrap;">运行里程</div>
-                    <div style="margin-top: 0.5rem;white-space: nowrap;">
+                    <div style="font-size: 0.8rem;color: var(--font-color);white-space: nowrap;">运行里程</div>
+                    <div style="margin-top: 0.5rem;white-space: nowrap;color: rgb(100,200,200);">
                       {{carList.totalDistance == null?'0':(carList.totalDistance/100000).toFixed(2) }} Km
                     </div>
                   </div>
 
                   <div class="runtimeinfo-second">
-                    <div style="font-size: 0.8rem;color: #0FB1CBFF;white-space: nowrap;">运行时间</div>
-                    <div style="margin-top: 0.5rem;white-space: nowrap;">
+                    <div style="font-size: 0.8rem;color: var(--font-color);white-space: nowrap;">运行时间</div>
+                    <div style="margin-top: 0.5rem;white-space: nowrap;color: rgb(100,200,200);">
                       {{carList.totalRunTime == null?'0': (carList.totalRunTime/1440).toFixed(1) }} Day
                     </div>
                   </div>
                 </div>
 
-                <div style="display: flex;position: relative;margin: 0.5rem 0 0 1rem;justify-items: center">
+                <div style="display: flex;position: relative;margin: 0 0 0 1rem;justify-items: center">
                   <div class="runtimeinfo-third">
-                    <div style="font-size: 0.8rem;color: #0FB1CBFF;white-space: nowrap;">当前速度</div>
-                    <div style="margin-top: 0.5rem;white-space: nowrap;">
+                    <div style="font-size: 0.8rem;color: var(--font-color);white-space: nowrap;">当前速度</div>
+                    <div style="margin-top: 0.5rem;white-space: nowrap;color: rgb(100,200,200);">
                       {{ carList.realTimeSpeed == null ? '0' : (carList.realTimeSpeed/1000).toFixed(1) }} m/s
                     </div>
                   </div>
 
                   <div class="electri">
-                    <div style="font-size: 0.8rem;color: #0FB1CBFF;white-space: nowrap;">剩余电量</div>
-                    <el-progress :width="40" text-color="#fbf9ea" type="circle" style="margin-top: 0.2rem"
+                    <div style="font-size: 0.8rem;color: var(--font-color);white-space: nowrap;">剩余电量</div>
+                    <el-progress :width="45" text-color="#59B2B2FF" color="#59B2B2FF" type="circle" style="margin-top: 0.2rem"
                                  :percentage="carList.batteryLevel"></el-progress>
                   </div>
                 </div>
@@ -170,10 +182,10 @@
           </div>
         </div>
 
-        <div class="back-shaodow" style="height: 13rem; margin-bottom: 0.5rem;width: auto">
-          <div class="leftTitle" style="white-space: nowrap;display: flex">
+        <div class="back-shadow" style="height: 13rem; margin-bottom: 0.5rem;width: auto">
+          <div class="leftTitle" style="white-space: nowrap;display: flex;color: var(--font-color)">
             <div style="z-index: 10;margin-left: 0.5rem;width: 100%;">告警数据统计
-              <div style="float: right;margin-right: 3rem;z-index: 10">
+              <div style="float: right;margin-right: 1rem;z-index: 10">
                 <span :class="{buttonInactive:alarmSumButtonActive !== 'day',buttonActive:alarmSumButtonActive === 'day'}"  style="cursor: pointer;font-size: 0.8rem" @click="alarmSumButton('day')">今日</span>
                 <span style="color:#67B3B2"> | </span>
                 <span :class="{buttonInactive:alarmSumButtonActive !== 'week',buttonActive:alarmSumButtonActive === 'week'}" style="cursor: pointer;font-size: 0.8rem"  @click="alarmSumButton('week')">近一周</span>
@@ -182,9 +194,9 @@
               </div>
             </div>
             <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
-              <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
-              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
-              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+              <div style="width: 12rem;height: 0.7rem;background: linear-gradient(270deg,transparent,rgba(99,182,182,0.25),rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);"></div>
+              <div style="width: 0.6rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
+              <div style="width: 0.6rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.4), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
             </div>
           </div>
 
@@ -194,15 +206,15 @@
 <!--              <el-button :class="{buttonInactive:alarmSumButtonActive !== 'month',buttonActive:alarmSumButtonActive === 'month'}" size="mini" round @click="alarmSumButton('month')">近30天</el-button>-->
 <!--            </el-button-group>-->
           <div style="height: 10rem;">
-            <span v-if="alarmSumData.length == 0" style="color: #FFFFFF;position: absolute;margin: 4rem 0 0 12rem;">暂无数据</span>
-            <AlarmSumEcharts :hidden="alarmSumData.length == 0" :alarmData="alarmSumData" style="width: 100%;"></AlarmSumEcharts>
+            <span v-if="alarmSumData.length == 0" style="position: absolute;margin: 4rem 0 0 12rem;color: var(--font-color)">暂无数据</span>
+            <AlarmSumEcharts :hidden="alarmSumData.length == 0" :alarmData="alarmSumData" :chartColor="chartColor"  style="width: 100%;"></AlarmSumEcharts>
           </div>
         </div>
 
-        <div class="back-shaodow" style="height: 14rem;width: auto">
-          <div class="leftTitle" style="white-space: nowrap;display: flex;z-index: 20;position: relative;">
+        <div class="back-shadow" style="height: 14rem;width: auto">
+          <div class="leftTitle" style="white-space: nowrap;display: flex;z-index: 20;position: relative;color: var(--font-color)">
             <div style="z-index: 10;margin-left: 0.5rem;width: 100%;">告警数据分析
-              <div style="margin-right: 3rem;float: right">
+              <div style="margin-right: 1rem;float: right">
                 <span :class="{buttonInactive:alarmAnalysisButtonActive !== 'day',buttonActive:alarmAnalysisButtonActive === 'day'}"  style="cursor: pointer;font-size: 0.8rem" @click="alarmAnalysisButton('day')">今日</span>
                 <span style="color:#67B3B2"> | </span>
                 <span :class="{buttonInactive:alarmAnalysisButtonActive !== 'week',buttonActive:alarmAnalysisButtonActive === 'week'}" style="cursor: pointer;font-size: 0.8rem"  @click="alarmAnalysisButton('week')">近一周</span>
@@ -211,15 +223,15 @@
               </div>
             </div>
             <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
-              <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
-              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
-              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+              <div style="width: 12rem;height: 0.7rem;background: linear-gradient(270deg,transparent,rgba(99,182,182,0.25),rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);"></div>
+              <div style="width: 0.6rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
+              <div style="width: 0.6rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.4), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
             </div>
           </div>
 
           <div style="height: 8rem;">
-            <span v-if="alarmAnalData.xAxisData.length == 0" style="color: #FFFFFF;position: absolute;margin: 4rem 0 0 12rem;">暂无数据</span>
-            <AlarmAnalysisEcharts :hidden="alarmAnalData.xAxisData.length == 0" :alarmData="alarmAnalData"  style="width: 100%;"></AlarmAnalysisEcharts>
+            <span v-if="alarmAnalData.xAxisData.length == 0" style="position: absolute;margin: 4rem 0 0 12rem;color: var(--font-color)">暂无数据</span>
+            <AlarmAnalysisEcharts :hidden="alarmAnalData.xAxisData.length == 0" :alarmData="alarmAnalData" :chartColor="chartColor"  style="width: 100%;"></AlarmAnalysisEcharts>
           </div>
         </div>
 
@@ -243,7 +255,7 @@
 
             <el-button style="position:absolute;margin-left: 0; top:7rem;background-color:transparent;border-color: transparent" size="mini"
                        @click="glassCameraSwitch">
-              <svg-icon icon-class="cameraSwitch" style="font-size: 2rem"></svg-icon>
+              <svg-icon :className="svgThemeColor" icon-class="cameraSwitch" style="font-size: 2rem"></svg-icon>
             </el-button>
           </div>
         </div>
@@ -278,15 +290,15 @@
           <div style="position: absolute;top: 0;left: 0;width: 100%;z-index: 889;" :class="{'loaderFSB':loaderFS}">
             <el-button style="position:absolute;margin-left: 0; top:0.5rem;background-color:transparent;border-color: transparent;z-index: 101" size="mini"
                        @click="topVision()">
-              <svg-icon icon-class="top-vision" style="font-size: 1.7rem"></svg-icon>
+              <svg-icon :className="svgThemeColor" icon-class="top-vision" style="font-size: 1.7rem"></svg-icon>
             </el-button>
             <el-button style="position:absolute;margin-left: 0; top:2.5rem;background-color:transparent;border-color: transparent;z-index: 101" size="mini"
                        @click="followAgv()">
-              <svg-icon icon-class="follow" style="font-size: 2rem"></svg-icon>
+              <svg-icon :className="svgThemeColor" icon-class="follow" style="font-size: 2rem"></svg-icon>
             </el-button>
             <el-button style="margin-top:0.5rem;float: right;background-color:transparent;border-color: transparent;z-index: 101" size="mini"
                        @click="vue3dLoaderFullScreen()">
-              <svg-icon icon-class="fullscreen" style="font-size: 1rem"></svg-icon>
+              <svg-icon :className="svgThemeColor" icon-class="fullscreen" style="font-size: 1rem"></svg-icon>
             </el-button>
           </div>
 
@@ -312,7 +324,7 @@
 <!--          </div>-->
           <div style="position:relative;" v-if="!controlManager">
             <div class="button-box" v-drag draggable="false">
-              <div class="hkControl back-shaodow" style="width: 54rem;height: 12rem;display: flex;">
+              <div class="hkControl back-shadow" style="width: 54rem;height: 12rem;display: flex;">
                 <div style="margin:1rem">
                   <div>
                     <svg-icon icon-class="mark" style="width: 1rem;margin: auto"/>
@@ -401,7 +413,7 @@
       </el-col>
 
       <el-col :span="6">
-        <div class="right">
+        <div class="right" style="margin-right: 0.5rem">
           <iframe
             :myData="currentAdvices[1]"
             style="width:100%; height:20.5rem; border: none; "
@@ -456,22 +468,27 @@
 
       <!--      <el-row :gutter="10">-->
       <el-col :span="6">
-        <div class="alarm-list back-shaodow">
+        <div class="alarm-list back-shadow" style="background-size: 100%;margin-left: 0;margin-right: 0.5rem">
           <div class="leftTitle" style="padding-top: 0.5rem;padding-bottom: 0.5rem;display: flex">
-            <div style="z-index: 10;margin-left: 0.5rem;width: 100%;">
+            <div style="z-index: 10;margin-left: 0.5rem;width: 100%;color: var(--font-color)">
               告警列表
               <div style="float:right;color:#64c8c8;margin-right: 2rem;cursor: pointer" @click="goRealAlarm()">更多》</div>
             </div>
             <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
-              <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
-              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
-              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+              <div style="width: 15rem;height: 0.7rem;background: linear-gradient(270deg,transparent,rgba(99,182,182,0.25),rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);"></div>
+              <div style="width: 0.6rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
+              <div style="width: 0.6rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.4), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
             </div>
           </div>
 
           <div class="alarm">
             <div class="myTable">
-              <el-table :data="showTable" @row-click="(e)=>getDetailMessage(e,true)" style="width: 100%;" height="10rem">
+              <el-table
+                  :data="showTable"
+                  @row-click="(e)=>getDetailMessage(e,true)"
+                  style="width: 100%;" height="10rem"
+                  :row-class-name="onTableRowClassName"
+                  >
                 <el-table-column width="55" label="序号" type="index" align="center">
                 </el-table-column>
                 <!--                  <el-table-column prop="AlarmCode" :label="'告警码'" width="80" align="center">-->
@@ -546,11 +563,11 @@
           </div>
 
           <div class="leftTitle" style="display:flex;padding-top: 0.5rem;padding-bottom: 0.5rem;">
-            <div style="z-index: 10;margin-left: 0.5rem">告警信息</div>
+            <div style="z-index: 10;margin-left: 0.5rem;color: var(--font-color)">告警信息</div>
             <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
-              <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
-              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
-              <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+              <div style="width: 15rem;height: 0.7rem;background: linear-gradient(270deg,transparent,rgba(99,182,182,0.25),rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);"></div>
+              <div style="width: 0.6rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
+              <div style="width: 0.6rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.4), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
             </div>
           </div>
 
@@ -564,26 +581,27 @@
                     align-items:center;
                     font-weight: bold;">
                 <div>
+                  <i :class="alarmIcon(alarm.AlarmCode)" style="font-size:1.5rem;margin-left: 0.5rem;color: red;"></i>
                   {{this.alarmJudge(alarm.AlarmCode)}}
                 </div>
               </div>
 
               <div style="margin: 0.5rem 0 0 0;vertical-align:top;" >
-                <div style="color:#0FB0CAFF;font-size: 15px">
+                <div style="color:var(--data-screen-font-color);font-size: 15px">
                   <i class="el-icon-time" style="margin-right: 0.5rem"></i>告警时间：
-                  <span style="color: #FFFFFF">{{ alarm.ReportTime }}</span>
+                  <span style="color: var(--font-color)">{{ alarm.ReportTime }}</span>
                 </div>
               </div>
               <div style="margin: 1rem 0 0 0; vertical-align:top;">
-                <div style="color:#0FB0CAFF;font-size: 15px">
+                <div style="color:var(--data-screen-font-color);font-size: 15px">
                   <i class="el-icon-location" style="margin-right: 0.5rem"></i>告警位置：
-                  <span style="color: #FFFFFF">{{ alarm.Location }}</span>
+                  <span style="color: var(--font-color)">{{ alarm.Location }}</span>
                 </div>
               </div>
               <div style="margin: 1rem 0 0 0;">
-                <div style="color:#0FB0CAFF;font-size: 15px">
+                <div style="color:var(--data-screen-font-color);font-size: 15px">
                   <i class="el-icon-document" style="margin-right: 0.5rem"></i>告警描述：
-                  <span style="color: #FFFFFF">{{ alarm.Description }}</span>
+                  <span style="color: var(--font-color)">{{ alarm.Description }}</span>
                 </div>
               </div>
 
@@ -653,6 +671,7 @@ import { getCountByCode, getCountByDate, getCountByLevelAndStatus } from '@/api/
 import Clock from '@/layout/components/Sidebar/Clock.vue'
 import WebSocket from '@/components/WebSocket/index.vue'
 import { getExistCarrierAreaList } from '@/api/areaConfig'
+import { none } from 'html-webpack-plugin/lib/chunksorter'
 
 export default {
   components: {
@@ -695,10 +714,11 @@ export default {
       alarmSumRequest: true,
       alarmAnalysisRequest : true,
       controlManager: true,
-      vue3dLoaderHeight: 275,
+      vue3dLoaderHeight: 350,
       vue3dLoaderWidth: 943,
       vue3dShow:false,
       loaderFS: false,
+      svgThemeColor: 'themeColor',
       alarmAnalData: {
         xAxisData: [],
         legendData: [],
@@ -780,6 +800,8 @@ export default {
       tranLeft: 100,
       moveSet: null,
       loading:false,
+      chartColor: '#FFFFFF',
+      themeMode: true,
       // batteryLevelColors: [
       //   {color: '#ff0000', percentage: 20},
       //   {color: '#e6a23c', percentage: 50},
@@ -840,6 +862,8 @@ export default {
 
     this.judgeIsFullScreen()
     // this.initHT();
+    console.log('theme--->',this.theme)
+    this.themeChange(this.theme,null)
   },
 
   beforeDestroy() {
@@ -866,7 +890,7 @@ export default {
       systemConfig: (state) => state.sysConfig.systemConfig,
     }),
     ...mapGetters(['realTimeAlarm', 'cameraOut', 'carrierSelectedIp', 'locationTips', 'locationBoolen',
-      'closeAll', 'closeBroadcast','closeWarnL', 'dealwithAlarm', 'areaId']),
+      'closeAll', 'closeBroadcast','closeWarnL', 'dealwithAlarm', 'areaId','theme']),
     realTimeAlarminfo() {
       return this.realTimeAlarm[0]
     },
@@ -879,6 +903,23 @@ export default {
     showTable() {
       const now = 0
       const next = this.pageSize * this.pageNum
+      // return [{
+      //   AlarmName:"行人告警1",
+      //   ReportTime:"2023-09-22 10:00:00",
+      //   MaxLevel: "危险"
+      // },{
+      //   AlarmName:"行人告警2",
+      //   ReportTime:"2023-09-22 10:00:00",
+      //   MaxLevel: "危险"
+      // },{
+      //   AlarmName:"行人告警3",
+      //   ReportTime:"2023-09-22 10:00:00",
+      //   MaxLevel: "危险"
+      // },{
+      //   AlarmName:"行人告警4",
+      //   ReportTime:"2023-09-22 10:00:00",
+      //   MaxLevel: "危险"
+      // }]
       return this.alarmList.slice(now, next);
     },
     carrierIp() {
@@ -893,6 +934,12 @@ export default {
   },
 
   watch: {
+    theme(nv,ov){
+      // console.log('themeClass',nv,ov)
+      this.themeChange(nv,ov)
+      // console.log('this.themeMode--->',this.themeMode)
+      // console.log('this.echartColor--->',this.chartColor)
+    },
     // filterText(val) {
     //   this.$refs.tree.filter(val);
     // },
@@ -1200,6 +1247,26 @@ export default {
       })
       this.choosedArea = this.areaId
     },
+    switchTheme(){
+      // console.log(this.themeMode)
+      this.themeMode = !this.themeMode
+      // console.log(this.themeMode)
+      this.$store.commit('global/set_theme',this.themeMode)
+    },
+    themeChange(nv,ov){
+      switch (nv) {
+        case 'theme-1':
+          this.themeMode = true;
+          this.chartColor = '#000000';
+          break;
+        case 'theme-2':
+          this.themeMode = false;
+          this.chartColor = '#FFFFFF';
+          break;
+      }
+      this.$forceUpdate()
+      // console.log('themeChange --this.themeMode ' +this.themeMode+ ' --chartColor '+this.chartColor)
+    },
 
     vue3dLoaderFullScreen(){
       const vue3dLoader = document.getElementById('vue3dLoader')
@@ -1211,7 +1278,7 @@ export default {
         })
       }else {
         this.vue3dLoaderWidth = 943
-        this.vue3dLoaderHeight = 275
+        this.vue3dLoaderHeight = 300
       }
       this.$refs.model.$forceUpdate()
     },
@@ -1225,7 +1292,7 @@ export default {
         if(!this.loaderFS){
           this.$nextTick(()=>{
             this.vue3dLoaderWidth = document.documentElement.clientWidth*950/1920
-            this.vue3dLoaderHeight = document.documentElement.clientHeight*290/955
+            this.vue3dLoaderHeight = document.documentElement.clientHeight*345/955
 
             // const menuItems = document.querySelectorAll('.viewer-canvas');
             // console.log('viewer-canvas',menuItems,document.documentElement.clientHeight)
@@ -2093,7 +2160,31 @@ export default {
           default: return '机体告警'
         }
       }
-
+    },
+    alarmIcon(alarmCode){
+      if(alarmCode != null && alarmCode != undefined){
+        switch (alarmCode) {
+          case 1001: return 'fa fa-male fa-lg'
+          case 1002: return 'fa fa-bicycle fa-lg'
+          case 1003: return 'fa fa-cube fa-lg'
+          case 1004: return 'fa fa-thermometer fa-lg'
+          case 1005: return 'fa fa-tint fa-lg'
+          case 1006: return 'fa fa-cloud fa-lg'
+          case 1007: return 'fa fa-lightbulb-o fa-lg'
+          case 1008: return 'fa fa-ban fa-lg'
+          case 1009: return 'fa fa-tachometer fa-lg'
+          case 1010: return 'fa fa-paw fa-lg'
+          case 1011: return 'fa fa-exclamation-circle fa-lg'
+          case 1012: return 'fa fa-fire-extinguisher fa-lg'
+          case 1013: return 'fa fa-fire fa-lg'
+          case 1014: return 'fa fa-eercast fa-lg'
+          case 1015: return 'fa fa-bug fa-lg'
+          case 1016: return 'fa fa-exchange fa-lg'
+          case 1017: return 'fa fa-superpowers fa-lg'
+          case 1018: return 'fa fa-sun-o fa-lg'
+          default: return 'fa fa-trash fa-lg'
+        }
+      }
     },
     chart() {
       this.$router.push({
@@ -2128,6 +2219,13 @@ export default {
       this.alarm = e
       if(dialog){
         this.dialogVisible = true
+      }
+    },
+    onTableRowClassName({row, rowIndex}){
+      if (rowIndex%2==1) {
+        return 'odd-row';
+      } else {
+        return 'even-row';
       }
     },
     //树结构 隧道
@@ -2768,9 +2866,18 @@ export default {
 
 .screen {
   background-image: url(../../assets/img/screenBackground.png);
+  background: linear-gradient(149.069deg, rgba(183, 230, 230, 0) 19.0241%, rgba(89, 179, 179, 0.5) 83.6362%);;
   background-size: cover;
   background-repeat: no-repeat;
   height: 56.25rem;
+}
+
+.bgShow {
+  background-image: url(../../assets/img/screenBackground.png);
+}
+
+.bgHide {
+  background-image: none;
 }
 
 .page-title {
@@ -2804,11 +2911,6 @@ export default {
   z-index: 890;
 }
 
-.myTable ::v-deep .el-table__body-wrapper::-webkit-scrollbar {
-  width: auto !important;
-  background-color: rgb(9, 43, 46,0.8) !important;
-}
-
 .htView {
   margin: 0;
   padding: 0;
@@ -2819,23 +2921,53 @@ export default {
   right: 0;
 }
 
-.myTable ::v-deep .el-table td.el-table__cell{
-  border-bottom: 0.5px solid rgba(235, 238, 245, 0.5) !important;
-}
+.alarm {
+  .myTable ::v-deep .el-table__body-wrapper::-webkit-scrollbar {
+    width: auto !important;
+    background-color: transparent !important;
+  }
 
-.myTable ::v-deep .el-table tbody .el-table__cell {
-  background: rgb(9, 43, 46)!important;
-  font-size: 14px;
-}
+  .myTable ::v-deep .el-table{
+    background-color: transparent!important;
+  }
 
-.myTable ::v-deep .el-table thead .el-table__cell{
-  background: rgb(9, 43, 46)!important;
+  .myTable ::v-deep .el-table__row.odd-row .cell {
+    background-color: var(--data-screen-alarm-table-color);
+  }
+
+  .myTable ::v-deep .el-table__row.even-row .cell {
+    background-color: var(--data-screen-alarm-table-even-row-color);
+  }
+
+  .myTable ::v-deep .el-table td.el-table__cell,
+  .myTable ::v-deep .el-table th.el-table__cell.is-leaf{
+    border-bottom: 1px solid rgb(100,200,200) !important;
+  }
+
+  .myTable ::v-deep .el-table tbody .el-table__cell {
+    background: transparent!important;
+    font-size: 14px;
+  }
+
+  .myTable ::v-deep .el-table thead .el-table__cell{
+    background: var(--data-screen-alarm-table-color)!important;
+  }
 }
 
 .content {
 
+  .area-select{
+    ::v-deep .el-input__inner{
+      background: transparent;
+      border-color: rgb(100,200,200);
+      color: var(--tableborder);
+    }
+  }
+
   .screenTitle{
     font-style: italic;
+    //filter: drop-shadow(3px 3px 2px rgba(100, 200, 200, 0.2));
+    filter: drop-shadow(0px 0px 30px rgba(100, 200, 200, 1));
   }
 
   font-size: 1.25rem;
@@ -2850,7 +2982,7 @@ export default {
 
   .visibleLight{
     width: 100%;
-    height: 30.5rem;
+    height: 27.5rem;
     border: none;
   }
 
@@ -2892,23 +3024,17 @@ export default {
     text-align: center;
   }
 
-  .el-table{
-    background-color: rgb(9, 43, 46,0.8)!important;
-  }
-
-  .back-shaodow {
+  .back-shadow {
+    margin-left: 0.5rem;
     position: relative;
-    background-color: rgb(9, 43, 46,0.8);
-    background: linear-gradient(135deg, transparent 15px, rgb(9, 43, 46,0.8) 0) top left,
-                linear-gradient(-135deg, transparent 0, rgb(9, 43, 46,0.8) 0) top right,
-                linear-gradient(-45deg, rgb(103, 178, 177) 10px, transparent 11px,transparent 15px, rgb(9, 43, 46,0.8) 0) bottom right,
-                linear-gradient(45deg, rgb(103, 178, 177) 10px, transparent 11px,transparent 15px, rgb(9, 43, 46,0.8) 0) bottom left;
-    background-size: 50.1% 50.1%;
+    background-color: var(--data-scrren-back-shadow-bg-color);
+    background: var(--data-scrren-back-shadow-bg);
+    background-size: var(--data-scrren-back-shadow-bg-size);
+    filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.2));
     background-repeat: no-repeat;
-    //border: 1px solid rgba(255, 255, 255, 0.5);
   }
 
-  //.back-shaodow::before {
+  //.back-shadow::before {
   //  content: '';
   //  position: absolute;
   //  width: 0;
@@ -2919,7 +3045,7 @@ export default {
   //  border-top-color: transparent;
   //  border-left-color: transparent;
   //}
-  //.back-shaodow::after{
+  //.back-shadow::after{
   //  content: '';
   //  position: absolute;
   //  width: 0;
@@ -3039,7 +3165,7 @@ export default {
   .buttonInactive {
     //color: #FFFFFF;
     //background-color: rgba(103, 179, 178, 0.20);
-    color: #FFFFFF;
+    color: var(--font-color);
     margin-top: 0.5rem;
   }
 
@@ -3095,22 +3221,21 @@ export default {
       .outLine{
         height: 1.5rem;
         width: 7rem;
-        margin-top: 0.5rem;
-        border-radius: 2px;
+        margin-top: 0.4rem;
         background-color: gray;
         text-align: center;
         line-height: 1.575rem;
+        border: 1px solid rgb(100,200,200);
       }
 
       .onLine {
         height: 1.5rem;
         width: 7rem;
-        margin-top: 0.5rem;
-        border-radius: 2px;
-        background-color: gray;
+        margin-top: 0.4rem;
         text-align: center;
         line-height: 1.575rem;
-        background-color: #67B3B2;
+        background-color: transparent;
+        border: 1px solid rgb(100,200,200);
       }
     }
 
@@ -3121,11 +3246,11 @@ export default {
       margin-left: 0;
 
       .el-progress {
-        margin-left: 0.5rem;
+        margin-left: 0.25rem;
       }
 
       ::v-deep .el-progress__text {
-        color: #fff;
+        //color: #fff;
       }
     }
 
@@ -3210,7 +3335,7 @@ export default {
   }
 
   .alarm-list{
-    height: 28rem;
+    height: 27.5rem;
   }
 
   .task {
@@ -3265,8 +3390,9 @@ export default {
       }
 
       .gasDetail {
-        margin: 1.625rem 0 0 0.5rem;
+        margin: 1.025rem 0 0 0.9rem;
         width: 6rem;
+        color: var(--font-color);
       }
 
       div {
@@ -3405,6 +3531,10 @@ export default {
       text-align: center;
       margin-left: 1.5rem;
     }
+  }
+
+  .icon-color {
+    color: rgb(100,200,200);
   }
 
   .map {

@@ -2,7 +2,7 @@
   <div>
     <div class="licenseSetting">
       <div
-        style="text-align: center;color: white;margin: 10px auto;height:450px;width:500px;background-color: var(--tablebody);border:1px solid var(--tableborder);">
+        style="text-align: center;color: white;margin: 10px auto;height:450px;width:500px;background-color: var(--tablebody);">
         <el-result :icon="result.icon" :title="result.title" :subTitle="result.subTitle">
         </el-result>
         <div style="">

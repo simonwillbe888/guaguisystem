@@ -5,13 +5,13 @@
     <div class="header">
       <div>
 <!--        <img src="../assets/img/logo@2x.png" style="width:10.125rem ;height: 2rem;">-->
-         <div style="font-weight: bold;font-size: 2rem;color: #64C8C8;
-                  font-style: italic;text-shadow: 0px 3px 10px 0px rgba(255,255,255,0.15);
-                  position: relative;z-index: 2;">
+         <div style="font-weight: bold;font-size: 2rem;color: #64C8C8;font-style: italic;
+                  text-shadow: 0px 3px 10px 0px rgba(255,255,255,0.15); position: relative;z-index:2;
+          ">
           机器人管理系统
         </div>
         <div style="width:15rem;height:3rem;position: absolute;z-index: 1;margin-top: -2.5rem;
-        background: radial-gradient(rgba(255, 255, 255, 0.3) 35%, rgba(255, 255, 255, 0.2) 45%, rgba(255, 255, 255, 0.1) 60%, transparent 70%);">
+        background: radial-gradient(var(--logo-color-core) 25%, var(--logo-color-around) 35%, var(--logo-color-edge) 50%, var(--logo-color-border) 70%, transparent 70%);">
         </div>
       </div>
       <div class="changeRoad">
@@ -86,10 +86,13 @@
       </route-view>
       <el-dialog title="关于" :visible.sync="DialogVisible" width="30%" center :close-on-click-modal="false">
         <div style="line-height:2.5rem;color:var(--font-color)">
-          <div>
-            <span>产品名称：</span><span>隧道智能巡检系统</span>
+          <div style="color: var(--font-color)">
+            <span>产品名称：</span>
+            <span>隧道智能巡检系统</span>
           </div>
-          <div><span>版本号：</span><span>V2.0.0.0</span></div>
+          <div style="color: var(--font-color)">
+            <span>版本号：</span>
+            <span>V2.0.0.0</span></div>
         </div>
       </el-dialog>
     </div>

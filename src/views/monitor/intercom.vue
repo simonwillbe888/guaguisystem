@@ -1,9 +1,8 @@
 <template>
   <div>
-
     <iframe id="startTalk" hidden="hidden" src="/demo/cn/demo.html" frameborder="0" style="width: 0;height: 0;" ></iframe>
-    <i class="el-icon-microphone" style="border: solid white;border-radius: 20px;color:white;font-size: 2rem" v-if="!speak" @click="begin()"></i>
-    <i class="el-icon-turn-off-microphone" style="border: solid #15B3B4;border-radius: 20px;color:#15B3B4;font-size: 2rem" v-if="speak" @click="end()"></i>
+    <i class="el-icon-microphone" style="border-radius: 20px;color:rgb(100,200,200);font-size: 2rem" v-if="!speak" @click="begin()"></i>
+    <i class="el-icon-turn-off-microphone" style="border-radius: 20px;color:rgb(100,200,200);font-size: 2rem" v-if="speak" @click="end()"></i>
 
   </div>
 </template>

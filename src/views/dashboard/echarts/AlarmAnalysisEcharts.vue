@@ -1,5 +1,5 @@
 <template>
-  <div id="alarmAnalysisEcharts">
+  <div ref="alarmAnalysisEcharts" id="alarmAnalysisEcharts" style="color: var(--font-color)">
 
   </div>
 </template>
@@ -15,10 +15,20 @@ export default {
         legendData: [],
         seriesData: []
       }
+    },
+    chartColor:{
+      type: String,
+      default: '#FFFFFF'
     }
   },
   watch:{
     alarmData: {
+      deep: true,
+      handler(val) {
+        this.updateOption();
+      }
+    },
+    chartColor: {
       deep: true,
       handler(val) {
         this.updateOption();
@@ -52,22 +62,22 @@ export default {
         xAxis: {
           data: [],
           nameTextStyle: {
-            color: '#fff',
+            color: this.chartColor,
           },
           axisLine: {
             lineStyle: {
-              color: '#fff',
+              color: this.chartColor,
             }
           },
         },
         yAxis: {
           axisLine: {
             lineStyle: {
-              color: '#fff',
+              color: this.chartColor,
             }
           },
           splitLine:{
-            show:true,
+            show:false,
             lineStyle:{
               type: 'dashed',
             }
@@ -89,7 +99,7 @@ export default {
           itemStyle: {},//设置图例前面的图标样式
           textStyle: {//设置图例文字样式
             fontSize: 12,
-            color: '#FFFFFF'
+            color: this.chartColor
           },
           itemWidth: 20,
           itemHeight: 7,
@@ -100,6 +110,15 @@ export default {
     }
   },
   mounted() {
+    // 获取目标元素
+
+//     const element = document.getElementById('your-element-id');
+//
+// // 获取元素的计算后的样式
+//     const computedStyle = window.getComputedStyle(element);
+//
+// // 读取指定的类名的值
+//     const fontColor = computedStyle.getPropertyValue('--font-color');
     // 初始化数据的总数
     // this.option.series[0].data.forEach(v => {
     //   this.echartsSumnum += v.value
@@ -119,10 +138,15 @@ export default {
         this.option.series = this.alarmData.seriesData
         this.option.xAxis.data = this.alarmData.xAxisData
         this.option.legend.data = this.alarmData.legendData
+        this.option.xAxis.nameTextStyle.color = this.chartColor
+        this.option.xAxis.axisLine.lineStyle.color = this.chartColor
+        this.option.yAxis.axisLine.lineStyle.color = this.chartColor
+        this.option.legend.textStyle.color = this.chartColor
         this.chart.clear()
         this.chart.setOption(this.option)
         this.chart.resize()
       }
+
     }
   }
 }
@@ -133,5 +157,8 @@ export default {
   height: 13.5rem;
   //height: 100%;
   top: -2.5rem;
+}
+.color{
+  color: var(--font-color)
 }
 </style>

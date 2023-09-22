@@ -60,4 +60,12 @@ export default {
   mask-size: cover!important;
   display: inline-block;
 }
+
+.themeColor {
+  color: rgb(100,200,200);
+}
+
+.themeColor:hover {
+  color: #409eff;
+}
 </style>
