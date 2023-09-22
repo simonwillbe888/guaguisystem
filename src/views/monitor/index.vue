@@ -3,15 +3,15 @@
     <div class="content"  v-loading="loading">
       <el-row :gutter="10">
         <el-col :span="6">
-          <div class="robot back-shaodow">
+          <div class="robot chamfer" >
             <div class="leftTitle" style="padding-bottom: 0;display: flex;margin-bottom: 1.5rem">
-              <div style="z-index: 10;margin-left: 0.5rem">机器人信息
+              <div style="z-index: 10;margin-left: 0.5rem;font-weight: var(--title-bolder)">机器人信息
                 <span v-if="butteryInfo">({{ butteryInfo }})</span>
               </div>
               <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
-                <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
-                <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
-                <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+                <div style="width: 17rem;height: 0.7rem;background: linear-gradient(270deg,transparent,rgba(99,182,182,0.25),rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);"></div>
+                <div style="width: 0.6rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
+                <div style="width: 0.6rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.4), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
               </div>
             </div>
             <div class="robotMessage">
@@ -46,29 +46,29 @@
             </div>
             <div class="warnL" style="position:absolute;top: 9.2rem;left: 2.7rem;">
               <div
-                style="border-radius: 0.625rem;;width: 3.1rem;background-color: #66B3B2;display: flex;height: 3rem;line-height: 2rem;align-items: center;justify-items: center;"
+                style="border-radius: 0.625rem;;width: 3.1rem;border: 1px solid #66B3B2;display: flex;height: 3rem;line-height: 2rem;align-items: center;justify-items: center;"
                 @click="setWarnLight()" :class="{ 'warning_light_active': warnLightOpen == 1 }">
                 <img src="../../assets/img/warnLight.png" style="margin: auto;width: 2.3rem">
                 <!--                <svg-icon icon-class="warnLight" style="margin:auto;width: 2.5rem;height: 2.5rem;"></svg-icon>-->
               </div>
-              <div class="warning_light" style="font-size: 0.875rem;margin: 0.5rem 0.2rem"> 警示灯</div>
+              <div class="warning_light" style="font-size: 0.875rem;margin: 0.5rem 0.2rem;color: var(--font-color)"> 警示灯</div>
 
             </div>
 
             <div class="electri">
-              <el-progress :width="40" color="#64C8C8" text-color="#64C8C8" type="circle"
+              <el-progress :width="45" color="#64C8C8" text-color="#64C8C8" type="circle"
                 :percentage="carList.batteryLevel"></el-progress>
-              <div style="font-size: 0.8rem;margin-left: 0.5rem">当前电量</div>
+              <div style="font-size: 0.85rem;margin: 0.5rem 0 0 0.5rem">当前电量</div>
             </div>
             <div class="microphone">
               <Intercom ref="closeIntercom" :key="carID" :carID="carID" :hkPlugin="hkPlugin" ></Intercom>
-              <div class="speak_detail" style="font-size: 0.875rem;">语音对讲</div>
+              <div class="speak_detail" style="color: var(--font-color)">语音对讲</div>
             </div>
             <div class="broadcast" @click="broadcastVisible = true">
-              <svg-icon icon-class="broadcast"></svg-icon>
+              <svg-icon icon-class="horn"></svg-icon>
               <!-- <svg-icon icon-class="stopBroadcast" v-show="broadcasting == true"></svg-icon> -->
+              <div class="broadcast_detail" style="color: var(--font-color)">语音播报</div>
             </div>
-            <div class="broadcast_detail">语音播报</div>
           </div>
 
         </el-col>
@@ -141,13 +141,13 @@
 
         <el-col :span="16" style="padding: 0">
           <el-col :span="9">
-            <div class="task back-shaodow">
+            <div class="task chamfer">
               <div class="leftTitle" style="padding-bottom: 0;display: flex;margin-bottom: 1rem">
-                <div style="z-index: 10;margin-left: 0.5rem">任务信息</div>
+                <div style="z-index: 10;margin-left: 0.5rem;font-weight: var(--title-bolder)">任务信息</div>
                 <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
-                  <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
-                  <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
-                  <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+                  <div style="width: 17rem;height: 0.7rem;background: linear-gradient(270deg,transparent,rgba(99,182,182,0.25),rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);"></div>
+                  <div style="width: 0.6rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
+                  <div style="width: 0.6rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.4), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
                 </div>
               </div>
               <div class="taskDetail">
@@ -159,9 +159,9 @@
                 </div>
 
               <span style="margin-left: 1.875rem;">
-                  预计完成&nbsp;
+                  预计完成时间&nbsp;
                 <span style="color:var(--data-color) ;">
-                  {{ finishTime == '' ? '0' : Math.abs(finishTime) }}分钟
+                  {{ finishTime == '' ? '0' : Math.abs(finishTime) }} 分钟
                 </span>
               </span>
               </div>
@@ -178,7 +178,7 @@
                 </span>
                 <el-popconfirm title="确定执行任务吗?" @confirm="startPlan()">
                   <div
-                    style="background-color:#66B3B2 ; color:#ffffff;margin-left: 7.5rem;width: 3.75rem; text-align: center; height: 1.875rem;line-height: 1.875rem;"
+                    style="border-radius:10px;background-color:#66B3B2 ; color:#ffffff;margin-left: 5.5rem;width: 3.75rem; text-align: center; height: 1.875rem;line-height: 1.875rem;"
                     slot="reference">执行</div>
                 </el-popconfirm>
               </div>
@@ -200,6 +200,7 @@
                   <!-- <el-input class="location_Detail" v-model="locationID" :placeholder="areaName">
                     <template slot="prefix">去往</template>
                   </el-input> -->
+                      <span style="font-size: 1rem;margin-right: 0.5rem">去往</span>
                       <el-autocomplete
                         class="location_Detail"
                         v-model="locationName"
@@ -208,9 +209,6 @@
                         placeholder="请输入内容"
                         @select="handleSelect"
                       >
-                      <template slot="prefix" >
-                        去往
-                      </template>
                       <!-- <template slot="prefix">去往</template> -->
                      </el-autocomplete>
                   <el-popconfirm title="确定去往桩号?" @confirm="goLocation">
@@ -228,63 +226,65 @@
           </el-col>
 
           <el-col :span="9">
-            <div class="enviroment back-shaodow threeRow">
+            <div class="enviroment chamfer threeRow">
               <div class="leftTitle" style="padding-bottom: 0;display: flex;margin-bottom: 1rem">
-                <div style="z-index: 10;margin-left: 0.5rem">环境信息</div>
+                <div style="z-index: 10;margin-left: 0.5rem;font-weight: var(--title-bolder)">环境信息</div>
                 <div style="display: flex;position: absolute;margin-top: 0.7rem;z-index: 9">
-                  <div style="width: 13rem;height: 0.7rem;background: linear-gradient(270deg,#092b2e, #2c9ea9);transform: skewX(45deg);"></div>
-                  <div style="width: 0.5rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(270deg,rgba(44,156,167,0.49), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
-                  <div style="width: 0.5rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(270deg,rgba(44,156,167,0.21), #23757d);transform: skewX(45deg);margin-left: 0.3rem"></div>
+                  <div style="width: 17rem;height: 0.7rem;background: linear-gradient(270deg,transparent,rgba(99,182,182,0.25),rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);"></div>
+                  <div style="width: 0.6rem;height: 0.7rem;opacity: 0.5;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.5), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
+                  <div style="width: 0.6rem;height: 0.7rem;opacity: 0.3;background: linear-gradient(0deg,transparent,rgba(99,182,182,0.4), rgb(99,182,182));transform: skewX(45deg);margin-left: 0.3rem"></div>
                 </div>
               </div>
               <div style="display:flex">
                 <div class="enviroDetail">
                   <div class="detail_icon">
-                    <svg-icon icon-class="tempicture" style="font-size:1.25rem;margin-left: 0.5rem;color: var(--font-color);"></svg-icon>
-                    <div>温度</div>
+                    <i class="fa fa-thermometer fa-lg" style="font-size:1.25rem;margin-left: 0.5rem;color: var(--font-color);"></i>
+<!--                    <svg-icon icon-class="tempicture" style="font-size:1.25rem;margin-left: 0.5rem;color: var(font-color);"></svg-icon>-->
+                    <div style="margin-top: 0.25rem">温度</div>
                   </div>
-                  <div class="gasDetail">
+                  <div class="gasDetail" style="margin: 1.625rem 0 0 0;">
                     {{ isNaN(gasList.Temperature) ?   '0': parseFloat((gasList.Temperature / 100).toFixed(1))}}℃
                   </div>
                 </div>
                 <div class="enviroDetail">
                   <div class="detail_icon">
-                    <svg-icon icon-class="shidu" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>
-                    <div>湿度</div>
+                    <i class="fa fa-tint fa-lg" style="font-size:1.25rem;margin-left: 0.5rem;color: var(--font-color);"></i>
+<!--                    <svg-icon icon-class="shidu" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>-->
+                    <div style="margin-top: 0.25rem">湿度</div>
                   </div>
-                  <div class="gasDetail">
-                    {{ isNaN( gasList.Humidity) ? '0' : (gasList.Humidity / 100).toFixed(1) }}<span
-                      style="font-size: 0.625rem;">%</span>
+                  <div class="gasDetail" style="margin: 1.625rem 0 0 0;">
+                    {{ isNaN( gasList.Humidity) ? '0' : (gasList.Humidity / 100).toFixed(1) }}
+                    <span style="font-size: 1rem;">%</span>
                   </div>
                 </div>
                 <div class="enviroDetail">
-                  <div style="color:var(--font-color);margin: 1.25rem 0 0 0.375rem;">烟雾</div>
+                  <div class="gas" style="margin: 1.5rem 0 0 0.75rem">烟雾</div>
                   <div class="gasDetail">
-                    {{ gasList.Smoke == null ? '0' : (gasList.Smoke / 100).toFixed(1) }}<span
-                      style="font-size: 0.625rem;">ppm</span>
+                    {{ gasList.Smoke == null ? '0' : (gasList.Smoke / 100).toFixed(1) }}
+                    <div style="font-size: 1rem;">ppm</div>
                   </div>
                 </div>
               </div>
               <div style="display:flex;margin-top: 0.625rem;">
                 <div class="enviroDetail">
-                  <div style="color:var(--font-color);margin: 0.625rem 0 0 0.375rem;">硫化氢</div>
+                  <div class="gas" style="text-align:center;margin-left: 0.75rem">硫化氢</div>
                   <div class="gasDetail">
-                    {{ gasList.H2S == null ? '0' : (gasList.H2S / 100).toFixed(1) }}<span
-                      style="font-size: 0.625rem;">ppm</span>
+                    {{ gasList.H2S == null ? '0' : (gasList.H2S / 100).toFixed(1) }}
+                    <div style="font-size: 1rem;">ppm</div>
                   </div>
                 </div>
                 <div class="enviroDetail">
-                  <div class="gas">一氧化碳</div>
+                  <div class="gas" style="margin-left: 0.75rem;">一氧化碳</div>
                   <div class="gasDetail">
-                    {{ gasList.CO == null ? '0' : (gasList.CO / 100).toFixed(1) }}<span
-                      style="font-size: 0.625rem;">ppm</span>
+                    {{ gasList.CO == null ? '0' : (gasList.CO / 100).toFixed(1) }}
+                    <div style="font-size: 1rem;">ppm</div>
                   </div>
                 </div>
                 <div class="enviroDetail">
-                  <div class="gas" style="margin: 1.25rem 0 0 0.375rem;">甲烷</div>
+                  <div class="gas" style="margin: 1.5rem 0 0 0.75rem">甲烷</div>
                   <div class="gasDetail">
-                    {{ gasList.CH4 == null ? '0' : (gasList.CH4 / 100).toFixed(1) }}<span
-                      style="font-size: 0.625rem;">ppm</span>
+                    {{ gasList.CH4 == null ? '0' : (gasList.CH4 / 100).toFixed(1) }}
+                    <div style="font-size: 1rem;">ppm</div>
                   </div>
                 </div>
               </div>
@@ -292,8 +292,8 @@
           </el-col>
           <el-col :span="15">
             <div class="alarm_2 back-shaodow threeRow">
-              <div class="alarm_title" style="margin-bottom: 0.5rem">告警信息
-                <div class="chart" @click="chart()">告警分析</div>
+              <div class="alarm_title" style="margin-bottom: 0.5rem;font-weight: var(--title-bolder)">告警信息
+                <div class="chart" style="font-weight: normal" @click="chart()">告警分析</div>
               </div>
               <div class="alarm">
                 <div class="myTable">
@@ -390,8 +390,8 @@
         </el-col>
 
         <el-col :span="8">
-          <div class="robotControl back-shaodow">
-            <div class="leftTitle" style="display: flex;position: relative;">
+          <div class="robotControl back-shaodow" style="border-bottom: 1px solid rgb(100, 200, 200)">
+            <div class="leftTitle" style="display: flex;position: relative;;font-weight: var(--title-bolder)">
               机器人控制
               <div>
                 <el-switch :disabled="!carID" style="height: 1.25rem;margin-left:1rem ;" v-model="robotOpen"
@@ -419,10 +419,9 @@
                   应急速度
                 </div>
               </div>
-              <hr style="border-color: rgb(100 200 200)">
             </div>
             <div class="hkControl back-shaodow">
-              <div class="leftTitle" widht="6.25rem;" style="margin-top: 1rem">
+              <div class="leftTitle" width="6.25rem;" style="margin-top: 1rem;font-weight: var(--title-bolder)">
                 云台控制
               </div>
               <div style="display:flex ;">
@@ -614,6 +613,7 @@ export default {
       warnLightOpen: 0,
       hkPlugin:{},
       loading:false,
+      frameShadow: true,
       };
   },
   created() {
@@ -692,6 +692,15 @@ export default {
     },
   },
   watch: {
+    themeClass(nv,ov){
+      // console.log('themeClass',nv,ov)
+      switch (nv) {
+        case 'theme-1': this.frameShadow = true;break;
+        case 'theme-2': this.frameShadow = false;break;
+      }
+      // console.log('this.frameShadow--->',this.frameShadow)
+    },
+
     filterText(val) {
       this.$refs.tree.filter(val);
     },
@@ -1682,9 +1691,14 @@ export default {
 <style lang="scss" scoped>
 .back-shaodow {
   background-color: var(--back-shadow);
-  // box-shadow: 1px 1px 2px 1px rgba(255, 255, 255, 0.50) inset;
-
+  box-shadow: 2px 2px 3px 0px var(--shadow-color);
 }
+
+.chamfer {
+  background: var(--chamfer-background);
+  filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.2));
+}
+
 .page-title {
   line-height: 1.75rem;
   font-size: 0.875rem;
@@ -1801,11 +1815,12 @@ export default {
 
       .onLine,.outLine {
         width: 10rem;
-        background-color: #67B3B2;
+        background-color: var(--online);
         text-align: center;
         height: 2rem;
         margin-top: 0.5rem;
         line-height: 2rem;
+        border: 1px solid #67B3B2;
       }
       .outLine{
         background-color: gray;
@@ -1870,15 +1885,16 @@ export default {
     .broadcast {
       position: absolute;
       margin-bottom: 3.125rem;
-      top: 16.875rem;
-      left: 20.3%;
+      top: 16.675rem;
+      left: 80%;
       border-radius: 0.625rem;
       font-size: 2.5rem;
       color: #fff;
-      width: 3.75rem;
+      width: 3.25rem;
       height: 3.125rem;
       line-height: 3.125rem;
-      background-color: #66B3B2;
+      //background-color: #66B3B2;
+      border: 1px solid #66B3B2;
       text-align: center;
     }
 
@@ -1916,8 +1932,10 @@ export default {
       color: #fff;
       position: absolute;
       font-size: 0.8rem;
-      left: 20.3%;
-      top: 48%;
+      width: 6.5rem;
+      text-align: left;
+      //left: 20.3%;
+      //top: 48%;
     }
 
     .broadcast:active {
@@ -1942,8 +1960,8 @@ export default {
       ::v-deep .el-input__inner {
         background-color: #fff;
         border: 1px solid #64C8C8;
-        color:#000;
-        width: 14rem;
+        color:  #000;
+        width: 12rem;
         height: 1.875rem;
       }
     }
@@ -1975,12 +1993,12 @@ export default {
 
       .gas {
         color: var(--font-color);
-        margin: 0.625rem 0 0 0.375rem;
+        margin: 1.125rem 0 0 0.375rem;
 
       }
 
       .gasDetail {
-        margin: 1.625rem 0 0 0.5rem;
+        margin: 1rem 0 0 0.75rem;
         width: 4rem;
         word-break: keep-all;
         color: var(--active-color);
@@ -1991,8 +2009,8 @@ export default {
       }
 
       .detail_icon {
-        margin-left: 0.375rem;
-        margin-top: 0.625rem;
+        margin-left: 0.575rem;
+        margin-top: 1.025rem;
         word-break: keep-all;
         color: var(--font-color);
       }
@@ -2003,7 +2021,7 @@ export default {
   .alarm_2 {
 
     .alarm_title {
-      width: 95%;
+      width: 97%;
       position: relative;
       display: flex;
       font-size: 1.125rem;
@@ -2131,12 +2149,12 @@ export default {
       margin-right: 1rem;
 
       .location_Detail {
-        width: 12rem;
-        min-width: 11.5rem;
+        width: 8rem;
+        min-width: 8rem;
 
         ::v-deep .el-input__inner {
-
-          padding-left: 3.25rem;
+          //padding-left: 3.25rem;
+          background-color: #FFFFFF;
         }
       }
 
@@ -2184,6 +2202,7 @@ export default {
     //border-radius: 0.625rem;
     margin: 0 0 0.875rem 0;
     color: var(--font-color);
+    height: 13.5rem;
 
     border: 0.0625rem solid transparent;
 

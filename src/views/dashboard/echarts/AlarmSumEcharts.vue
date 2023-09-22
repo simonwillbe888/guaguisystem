@@ -11,10 +11,20 @@ export default {
     alarmData:{
       type: Array,
       default: []
-    }
+    },
+    chartColor:{
+      type: String,
+      default: '#FFFFFF'
+    },
   },
   watch:{
     alarmData: {
+      deep: true,
+      handler(val) {
+        this.updateOption();
+      }
+    },
+    chartColor: {
       deep: true,
       handler(val) {
         this.updateOption();
@@ -50,7 +60,7 @@ export default {
           //文本样式
           textStyle: {
             fontSize: 12, // 改变标示文字的大小
-            color: "#fff",
+            color: this.chartColor,
           },
           formatter: "{c}", //提示文本内容 d代表百分比，b代表name文本
           position: "outside",//控制文字显示的位置，center居中显示
@@ -73,7 +83,7 @@ export default {
           itemWrap: false,
           textStyle: {//设置图例文字样式
             fontSize: 14,
-            color: '#ffffff'
+            color: this.chartColor
           },
         },
         // 设置主体
@@ -87,7 +97,7 @@ export default {
             center: ['75%', '50%'],//设置饼图位置 （center:['x轴位置','y轴位置']不设置默认在中间）
             label:{
               show: true,
-              color: '#ffffff',
+              color: this.chartColor,
               // position: 'center'
 
             },
@@ -122,6 +132,9 @@ export default {
     updateOption(val){
       if(this.alarmData.length >0){
         this.option.series[0].data = this.alarmData
+        this.option.label.textStyle.color = this.chartColor
+        this.option.legend.textStyle.color = this.chartColor
+        this.option.series[0].label.color = this.chartColor
         this.chart.setOption(this.option)
         this.chart.resize()
       }

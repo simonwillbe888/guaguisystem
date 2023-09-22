@@ -23,11 +23,11 @@
         <div class="iconTitle" style="top:21% ;left:36.5%;">
           <span>
             报警联动
-          </span>       
+          </span>
           <div class="box" style="background: #7aebeb;">
             <svg-icon icon-class="loginconnect"></svg-icon>
           </div>
-          
+
         </div>
         <div class="iconTitle" style="top:45%;left:5%">
           <div class="box" style="background: #7aebeb;">
@@ -51,7 +51,7 @@
           </div>
           <span>
             隧道巡检
-          </span>        
+          </span>
         </div>
         <div class="iconTitle" style="bottom: 21%;left:44%">
           <div class="box">
@@ -59,7 +59,7 @@
           </div>
           <span>
             数据分析
-          </span>  
+          </span>
         </div>
 
 
@@ -267,12 +267,12 @@ export default {
 
     .slash1 {
       position: absolute;
-   
+
     }
 
     .slash2 {
       position: absolute;
-    
+
     }
    .iconTitle{
     display: flex;
@@ -498,9 +498,9 @@ input:-ms-input-placeholder {
   }
 }
 
-::v-deep .el-input__inner,
+.form ::v-deep .el-input__inner,
 .el-range-editor.el-input__inner {
-  color: #fff;
+  color: #606266;
 }
 
 >>>.el-form-item__error {
