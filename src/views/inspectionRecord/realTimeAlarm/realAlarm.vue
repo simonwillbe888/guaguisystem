@@ -135,7 +135,7 @@
       </el-table>
 
       <el-dialog title="告警详情" :visible.sync="dialogVisible" width="60%" @close="closeDetailDialog">
-        <div style="display:flex">
+        <div style="display:flex;color: var(--font-color);">
           <div style="width:70%;height: 24rem;position: relative">
             <img v-if="showImg"  :src="imageUrl" alt="" style="width:100%">
             <div v-if="!recordReload"
@@ -941,11 +941,6 @@ export default {
     padding: 0px;
   }
 
-  .el-divider__text {
-    font-size: 16px;
-    color: #fff !important;
-    background-color: rgb(9, 78, 107) !important;
-  }
 
   >>>.el-select .el-input .el-select__caret {
     line-height: 24px;

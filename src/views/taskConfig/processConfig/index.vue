@@ -43,7 +43,7 @@
           fit
           highlight-current-row
           size="small"
-          height="39rem"
+          height="35.5rem"
         >
           <el-table-column
             type="index"
@@ -131,6 +131,9 @@
             </template>
           </el-table-column>
         </el-table>
+        <div>
+         <pagination v-show="total > 0" :total="total" :page.sync="page" :limit.sync="limit" @pagination="getTaskPrograssList" />
+        </div>
       </div>
     </div>
     <div class="dialog-sty" >
@@ -238,14 +241,19 @@ import Sortable from 'sortablejs';
 import {
   getAllPatrolLocation,
   getPatrolTemplate,
+  getPatrolTemplatePageList,
   getAllPatrolTemplate,
   addPatrolTemplate,
   deletePatrolTemplate,
   updatePatrolTemplate,
 } from '@/api/taskConfig';
+import Pagination from '@/components/Pagination';
+
 import {getArea} from '@/api/areaConfig.js'
 const inspectOptions = [];
 export default {
+  components:{Pagination},
+
   data() {
     const generateData = (_) => {
       const data = [];
@@ -303,7 +311,10 @@ export default {
       currentRow: null,
       hasCheckedWHLeftData: [],
       ID: 0,
-      bigAreaOptions:[]
+      bigAreaOptions:[],
+      total:0,
+      page:1,
+      limit:10
     };
   },
   mounted() {
@@ -313,9 +324,15 @@ export default {
     getTaskPrograssList() {
       let self = this;
       self.processTaskArr = [];
-      getAllPatrolTemplate()
+      let params ={
+        current:self.page,
+        limit:self.limit,
+        templateName:''
+      }
+      getPatrolTemplatePageList(params)
         .then((response) => {
-          let processArr = response.data;
+          let processArr = response.data.records;
+          self.total = response.data.total
           if (processArr.length) {
             for (let i = 0, len = processArr.length; i < len; i++) {
               let inspectObj = {
@@ -879,9 +896,9 @@ export default {
 }
 ::v-deep  .el-input__inner
  {
-  width: 12.5rem;
-  height: 1.875rem;
+  // width: 12.5rem;
+  // height: 1.875rem;
   background-color: transparent;
-  color: #fff;
+  color: var(--font-color);
 }
 </style>

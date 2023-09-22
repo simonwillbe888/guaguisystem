@@ -115,12 +115,13 @@ export default {
     end() {
       // console.log('关闭按下了')
       if(this.speak){
-        this.stopSpeak().then((res)=>{
-         stopTalk(this.carID).then((res)=>{
+        stopTalk(this.carID).then((res)=>{
            if(res.code == 20000){
             this.speak = false
            }
          })
+        this.stopSpeak().then((res)=>{
+
        })
       }
 

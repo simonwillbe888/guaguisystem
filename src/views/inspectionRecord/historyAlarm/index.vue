@@ -108,7 +108,7 @@
         </el-table-column>
       </el-table>
       <el-dialog title="告警详情" :visible.sync="dialogVisible" width="60%" @close="closeDetailDialog">
-        <div style="display:flex">
+        <div style="display:flex;color: var(--font-color);">
           <div style="width:70%;height: 24rem;position: relative">
             <img v-if="showImg" :src="imageUrl" alt="" style="width:100%;">
             <div v-if="!recordReload"
@@ -920,7 +920,7 @@ export default {
 }
 ::v-deep .el-input__inner,
 .el-range-editor.el-input__inner {
-  color: #fff;
+  color: var(--font-color);
 }
 .equip-body {
   padding: 0 10px;
@@ -985,7 +985,7 @@ export default {
 
   ::v-deep .el-dialog__body {
     padding: 20px;
-    color: #fff;
+    color: var(--font-color);
 
     // margin-left: 100px;
     .el-descriptions {
@@ -1004,14 +1004,14 @@ export default {
       margin-bottom: 10px;
     }
 
-    .el-divider__text {
+    ::v-deep .el-divider__text {
       font-size: 16px;
-      color: #fff !important;
-      background-color: rgb(9, 78, 107) !important;
+      padding:0 20px ;
+
     }
 
     .el-table {
-      color: #fff !important;
+      color: var(--font-color) !important;
 
       // background-color: rgb(9, 78, 107) !important;
       .header-row-class {

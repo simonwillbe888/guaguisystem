@@ -22,7 +22,7 @@
     <div class="robot-body content-body">
       <div class="inspectTask-table">
         <el-table class="inspect-task" ref="singleTable" :data="planTasks" header-row-class-name="header-row-class"
-          row-class-name="row-class" style="width:100%" size="small" height="39rem">
+          row-class-name="row-class" style="width:100%" size="small" height="35.5rem">
           <!-- <el-table-column prop="id" label="计划编号" align="center" width="70">
             <template slot-scope="{ row }">
               <span>{{ row.id }}</span>
@@ -158,6 +158,9 @@
             </template>
           </el-table-column>
         </el-table>
+        <div>
+         <pagination v-show="total > 0" :total="total" :page.sync="page" :limit.sync="limit" @pagination="init" />
+        </div>
       </div>
     </div>
     <el-dialog :title="taskDialog[dialogType]" :visible.sync="dialogFormVisible" :close-on-click-modal="false"
@@ -325,7 +328,7 @@
 import {
   getCarTypeByType,
   getPatrolPlan,
-  getAllPatrolPlan,
+  getAllPatrolPlan,getPatrolPlanPageList,
   getPatrolTemplateSelectList,
   addPatrolPlan,
   deletePatrolPlan,
@@ -339,8 +342,12 @@ import {
 } from '../../../api/taskConfig';
 import { getCarrierList } from '@/api/robot';
 import { mapGetters } from 'vuex';
+import Pagination from '@/components/Pagination';
+
 const inspectOptions = ['1#凝结水泵', '中压蒸汽发生器', '碱液储罐', '充电屋'];
 export default {
+  components:{Pagination},
+
   data() {
     return {
       planType: '',
@@ -474,7 +481,10 @@ export default {
       runTypeList: [],
       enableList: [],
       frequencyTypeList: [],
-      lowButtery: false
+      lowButtery: false,
+      total:0,
+      page:1,
+      limit:10
     };
   },
   computed: {
@@ -612,13 +622,16 @@ export default {
     initPlanList() {
       let self = this;
       self.planTaskArr = [];
-      const { keyWord, planType } = self;
-      getAllPatrolPlan({
-        keyWord,
-        planType: planType || -1,
-      })
+      let params ={
+        keyWord:self.keyWord,
+        planType:self.planType || -1,
+        current:self.page,
+        limit:self.limit
+      }
+      getPatrolPlanPageList(params)
         .then((response) => {
-          let planArr = response.data || [];
+          let planArr = response.data.records || [];
+          self.total = response.data.total
           if (planArr.length) {
             //表格数据重构
             planArr.forEach((item) => {
@@ -1171,8 +1184,8 @@ export default {
 
 ::v-deep .el-input__inner {
   height: 1.875rem;
-  background-color: transparent;
-  color: #fff;
+  background: transparent;
+  color: var(--font-color);
 }
 
 .dialog-header {

@@ -9,7 +9,7 @@
 
     <el-container class="page-container">
       <el-aside class="page-left">
-        <div style="border-radius: 15px;background-color: #7f93a6;height: 26rem">
+        <div style="border-radius: 15px;background: var(--taskbgd);height: 26rem">
           <el-tree
             :data="templateList"
             :props="templateList"
@@ -96,13 +96,13 @@
           <div
             v-for="(item, index) in actionsList"
             :key="item.id"
-            style="margin: 15px;height: 2.5rem; background: rgba(255,255,255,0.8); position: relative; display: flex;border-radius: 5px;align-items: center;"
+            style="margin: 15px;height: 2.5rem; background: var(--taskbgd); position: relative; display: flex;border-radius: 5px;align-items: center;"
           >
             <!-- <div class="act-icon">
               <i class="el-icon-info"></i>
             </div> -->
             <div style="flex:1;">
-              <div style="width:50%;padding-left: 2.5rem;color: #000000;font-size: 18px;">
+              <div style="width:50%;padding-left: 2.5rem;color:var(--font-color); ;font-size: 18px;">
                 <el-descriptions>
                   <el-descriptions-item style="margin-left:40px ;" label="名称">{{
                     taskName(item.type)
@@ -1495,12 +1495,12 @@ export default {
 
 <style lang="scss" scoped>
 .page {
-  background: rgb(6,30,51);
+  background: var(--tablebody);
   .page-title {
     line-height: 28px;
     font-size: 13px;
     font-weight: 700;
-    color: rgb(243, 239, 239);
+    color: var(--font-color);
     padding-left: 15px;
     //background: rgb(46, 80, 104);
     // border-bottom: 1px solid rgb(4, 114, 141);
@@ -1514,6 +1514,7 @@ export default {
     }
   }
   .page-container {
+    color:var(--font-color);
     // padding: 10px;
     // min-height: calc(100vh - 123px);
     .page-left {
@@ -1614,14 +1615,16 @@ export default {
   margin: 5px 0;
   height: 2rem;
   text-align: left;
-  color: black;
   font-size: 12px;
 }
 
-.comp {
-  background-color: #b3bfca;
+.comp,::v-deep .el-tree-node__content {
+  background-color: var(--taskbgd);
+  color:var(--font-color)
 }
-
+::v-deep .el-tree-node__content {
+  color:var(--font-color)!important;
+}
 .file {
   background-color: lightskyblue;
 }

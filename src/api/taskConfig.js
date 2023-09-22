@@ -13,7 +13,13 @@ export function getAllPatrolLocation(areaid,name) {
     method: 'get',
   });
 }
-
+export function getPatrolLocationPageList(data) {
+  return request({
+    url: '/api/PatrolLocation/getPatrolLocationPageList',
+    method: 'post',
+    data,
+  });
+}
 export function addPatrolLocation(data) {
   return request({
     url: '/api/PatrolLocation/AddPatrolLocation',
@@ -97,7 +103,13 @@ export function getAllPatrolPlan(data) {
     data,
   });
 }
-
+export function getPatrolPlanPageList(data) {
+  return request({
+    url: '/api/PatrolPlan/getPatrolPlanPageList',
+    method: 'post',
+    data,
+  });
+}
 export function addPatrolPlan(data) {
   return request({
     url: '/api/PatrolPlan/addPatrolPlan',
@@ -144,6 +156,15 @@ export function getAllPatrolTemplate() {
   return request({
     url: '/api/PatrolTemplate/getPatrolTemplateList',
     method: 'get',
+  });
+}
+
+
+export function getPatrolTemplatePageList(data) {
+  return request({
+    url: '/api/PatrolTemplate/getPatrolTemplatePageList',
+    method: 'post',
+    data,
   });
 }
 

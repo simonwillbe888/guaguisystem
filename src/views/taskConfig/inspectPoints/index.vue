@@ -52,7 +52,7 @@
         header-row-class-name="header-row-class"
         row-class-name="row-class"
         fit
-        height="39rem"
+        height="35.5rem"
         highlight-current-row
         size="small"
         @current-change="handleCurrentChange"
@@ -129,10 +129,11 @@
           </template>
         </el-table-column>
       </el-table>
+      <div>
+         <pagination v-show="total > 0" :total="total" :page.sync="page" :limit.sync="limit" @pagination="init" />
+        </div>
     </div>
-    <!-- <div>
-        <pagination v-show="total > 0" :total="total" :page.sync="page" :limit.sync="limit" @pagination="init" />
-    </div> -->
+ 
     <el-dialog
       :title="inspectDialog[dialogType]"
       :visible.sync="dialogFormVisible"
@@ -233,6 +234,7 @@ import {
   addPatrolLocation,
   deletePatrolLocation,
   updatePatrolLocation,
+  getPatrolLocationPageList
 } from '@/api/taskConfig';
 import { getArea } from '@/api/areaConfig.js';
 import Pagination from '@/components/Pagination';
@@ -312,10 +314,17 @@ export default {
     init() {
       let self = this;
       self.inspectInfoArr = [];
-      getAllPatrolLocation(this.siteName,this.inquireVal)
+      let params = {
+        current:self.page,
+        limit:self.limit,
+        areaId:this.siteName,
+        locationName:self.inquireVal
+      }
+      getPatrolLocationPageList(params)
         .then((response) => {
-          self.inspectPoints = response.data;
+          self.inspectPoints = response.data.records;
            console.log("巡检点",response)
+           self.total = response.data.total;
            self.inspectInfoArr = self.inspectPoints
           // if (self.inspectPoints.length) {
           //   for (let i = 0, len = self.inspectPoints.length; i < len; i++) {

@@ -1,45 +1,113 @@
 <template>
   <div class="login-container">
     <div class="layer">
-      <div class="some-space">
-        <img src="../../assets/img/logo@2x.png" alt="" class="logo">
-        <div class="form">
+      <div class="bgd">
 
-          <h2>隧道智能巡检系统</h2>
+        <div class="slash1"
+          style="width: 43rem; height: 9.375rem; border-width: 2px; border-color: rgb(255, 255, 255); border-style: dashed; transition: unset; border-radius: 50%;   transform: rotate(40deg);">
 
-          <el-form :inline-message="true" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left"
-            label-width="0rem" class="demo-ruleForm">
-            <el-form-item prop="username">
-              <div class="item">
-                <i class="el-icon-user-solid"></i>
-                <el-input type="text" class="input" v-model.trim="loginForm.username" auto-complete="off" placeholder="账号"
-                  clearable>
-                </el-input>
-              </div>
-            </el-form-item>
+        </div>
+        <div class="slash2"
+          style="width: 43rem; height: 9.375rem; border-width: 2px; border-color: rgb(255, 255, 255); border-style: dashed; transition: unset; border-radius: 50%;  transform: rotate(140deg);">
 
-            <el-form-item prop="password">
-              <div class="item">
-                <i class="el-icon-lock"></i>
-                <el-input type="password" v-model.trim="loginForm.password" auto-complete="off" placeholder="密码"
-                  clearable>
-                </el-input>
-              </div>
-            </el-form-item>
-            <el-checkbox class="remember" v-model="checked">记住密码</el-checkbox>
-
-            <el-form-item style="width: 100%;margin-top:1.25rem">
-              <el-button type="primary" class="loginBtn" @click.native.prevent="handleLogin" :loading="loading">{{
-                $t('login.login') }}</el-button>
-            </el-form-item>
-            <!-- <div class="tip">默认用户名：jiaqi ，默认密码：JQ2022</div> -->
-          </el-form>
+        </div>
+        <img src="../../assets/img/loginComputer.png" alt="">
+        <div class="iconTitle" style="top:21% ;left:13%;">
+          <div class="box">
+            <svg-icon icon-class="loginvideo"></svg-icon>
+          </div>
+          <span>
+            实时监控
+          </span>
+        </div>
+        <div class="iconTitle" style="top:21% ;left:36.5%;">
+          <span>
+            报警联动
+          </span>       
+          <div class="box" style="background: #7aebeb;">
+            <svg-icon icon-class="loginconnect"></svg-icon>
+          </div>
+          
+        </div>
+        <div class="iconTitle" style="top:45%;left:5%">
+          <div class="box" style="background: #7aebeb;">
+            <svg-icon icon-class="logindeal"> </svg-icon>
+          </div>
+          <span>
+            应急处置
+          </span>
+        </div>
+        <div class="iconTitle" style="bottom: 21%;left: 13%;">
+          <div class="box" style="background: #7aebeb;">
+            <svg-icon icon-class="loginalarm"> </svg-icon>
+          </div>
+          <span>
+            AI告警
+          </span>
+        </div>
+        <div class="iconTitle" style="top: 45%;left:44%">
+          <div class="box">
+            <svg-icon icon-class="loginsetting"> </svg-icon>
+          </div>
+          <span>
+            隧道巡检
+          </span>        
+        </div>
+        <div class="iconTitle" style="bottom: 21%;left:44%">
+          <div class="box">
+            <svg-icon icon-class="logindata"> </svg-icon>
+          </div>
+          <span>
+            数据分析
+          </span>  
         </div>
 
+
+
       </div>
-      <div class="copyright">
+      <div class="some-space">
+        <div>
+          <img src="../../assets/img/logo@2x.png" alt="" class="logo">
+          <div class="form">
+
+            <div style="color:#000000;font-size: 4rem;font-weight: bold;">应急机器人管理系统</div>
+
+            <el-form :inline-message="true" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left"
+              label-width="0rem" class="demo-ruleForm">
+              <el-form-item prop="username">
+                <div class="item">
+                  <i class="el-icon-user-solid"></i>
+                  <el-input type="text" class="input" v-model.trim="loginForm.username" auto-complete="off"
+                    placeholder="账号" clearable>
+                  </el-input>
+                </div>
+              </el-form-item>
+
+              <el-form-item prop="password">
+                <div class="item">
+                  <i class="el-icon-lock" style="color: #64C8C8;"></i>
+                  <el-input type="password" v-model.trim="loginForm.password" auto-complete="off" placeholder="密码"
+                    clearable>
+                  </el-input>
+                </div>
+              </el-form-item>
+              <!-- <el-checkbox class="remember" v-model="checked">记住密码</el-checkbox> -->
+
+              <el-form-item style="width: 100%;margin-top:1.25rem">
+                <el-button type="primary" class="loginBtn" @click.native.prevent="handleLogin" :loading="loading">{{
+                  $t('login.login') }}</el-button>
+              </el-form-item>
+              <!-- <div class="tip">默认用户名：jiaqi ，默认密码：JQ2022</div> -->
+            </el-form>
+
+
+          </div>
+        </div>
+        <div class="copyright">
         <div>Copyright@广州市佳启智能科技有限责任公司</div>
       </div>
+      </div>
+
     </div>
 
   </div>
@@ -168,11 +236,11 @@ export default {
 .login-container {
   .layer {
     position: absolute;
-    height: 100%;
+    display: flex;
+    align-items: center;
     width: 100%;
-    // min-height: 41.875rem;
-    background-image: url('../../assets/img/loginBackground.png');
-    background-size: 120rem 60.5rem;
+    height: 100vh;
+    background: transparent;
   }
 
   #particles-js {
@@ -184,38 +252,73 @@ export default {
     z-index: 1000;
   }
 
-  .some-space {
-    color: white;
-    font-weight: 100;
-    letter-spacing: .125rem;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 1001;
-    -webkit-transform: translate3d(-50%, -50%, 0);
-    transform: translate3d(-50%, -50%, 0);
+  .bgd {
+    width: 60%;
+    height: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    // -ms-animation: cloud 2s 3s ease-in infinite alternate;
-    // -moz-animation: cloud 2s 3s ease-in infinite alternate;
-    // -webkit-animation: cloud 2s 3s ease-in infinite alternate;
-    // -o-animation: cloud 2s 3s ease-in infinite alternate;
-    // -webkit-animation: cloud 2s 3s ease-in infinite alternate;
-    // animation: cloud 2s 3s ease-in infinite alternate;
+    img {
+      width: 27rem;
+      height: 22.5rem;
+      z-index: 999;
+    }
+
+    .slash1 {
+      position: absolute;
+   
+    }
+
+    .slash2 {
+      position: absolute;
+    
+    }
+   .iconTitle{
+    display: flex;
+    align-items: center;
+    position: absolute;
+    color: var(--font-color);
+    font-size: 1.5rem;
+    span{
+      padding:0 15px;
+    }
+    .box {
+      width: 3.75rem;
+      height: 3.75rem;
+      background: #59b3b3;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      .svg-icon {
+        width: 2rem;
+        height: 2rem;
+      }
+    }
+    }
+  }
+
+  .some-space {
+    background: var(--loginbgd);
+    font-weight: 100;
+    position: relative;
+    width: 40%;
+    padding-left: 2%;
+    // top: 17.6875rem;
+    z-index: 1001;
+    height: 100%;
+    display: flex;
+    align-items: center;
     .logo {
-      width: 17.5rem;
-      height: 3.5rem;
+      width: 25rem;
+      height: 5.3125rem;
       margin-left: 5.625rem;
       margin-bottom: 2.5rem;
     }
 
     .form {
-      width: 31.25rem;
-      height: auto;
-      background: rgba($color: #5F829F, $alpha: 0.5);
-      margin: 0 auto;
-      padding: 2.1875rem 1.875rem 1.5625rem;
-      box-shadow: 0 0 1.5625rem rgba(22, 43, 102, 0.5);
-      border-radius: .625rem;
 
       .item {
         display: flex;
@@ -223,9 +326,15 @@ export default {
 
         // margin-bottom: 1.5625rem;
         i {
-          color: #d3d7f7;
+          color: #64C8C8;
+          width: 30px;
+          height: 30px;
           margin-right: .625rem;
           font-size: 1.5rem;
+        }
+
+        .input {
+          margin: 40px 0;
         }
       }
 
@@ -239,65 +348,47 @@ export default {
         padding-bottom: 1rem;
       }
 
-      //   .input {
-      //     font-size: 1rem;
-      //     line-height: 2rem;
-      //     height: 2rem;
-      //     width: 100%;
-      //     color: #d3d7f7;
-      //     outline: none;
-      //     border: none;
-      //     background-color: rgba(0, 0, 0, 0);
-      //     padding: .625rem 0;
-      //   }
-      >>>.el-input {
-        height: 3.25rem;
-        line-height: 3.1875rem;
-        background-color: #2A3940;
-
-        .el-input__inner {
-          height: 2rem;
-          background-color: #2A3940;
-        }
-      }
-
-      .loginBtn {
-        width: 100%;
-        padding: .75rem 0;
-        border: .0625rem solid #d3d7f7;
-        font-size: 1rem;
-        color: #d3d7f7;
-        cursor: pointer;
-        background: #64C8C8;
-        border-radius: .25rem;
-        margin-top: .625rem;
-
-        &:hover {
-          color: #fff;
-          background: #0090ff;
-          border-color: #0090ff;
-        }
-      }
-
-      .tip {
-        font-size: .75rem;
-        padding-top: 1.25rem;
-      }
     }
 
+    .loginBtn {
+      width: 33.5rem;
+      padding: .75rem 0;
+      border: .0625rem solid #d3d7f7;
+      font-size: 1rem;
+      margin-left: 40px;
+      color: #fff;
+      cursor: pointer;
+      background: #64C8C8;
+      border-radius: .25rem;
+      margin-top: .625rem;
+    }
+
+    .tip {
+      font-size: .75rem;
+      padding-top: 1.25rem;
+    }
   }
 }
 
+
 .copyright {
   position: absolute;
-  width: 100%;
-  color: #fff;
-  // left: 36.5%;
-  text-align: center;
+  color: #000;
+  left: 20.5%;
   bottom: 2rem;
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 
+::v-deep .el-input__inner {
+  color: #64C8C8 !important;
+  height: 3.125rem;
+  width:33.5rem;
+  border: 2px solid #59b3b3;
+  border-radius: 5px;
+}
+::v-deep .el-input__clear {
+  display: none;
+}
 input::-webkit-input-placeholder {
   color: #d3d7f7;
 }
@@ -415,4 +506,5 @@ input:-ms-input-placeholder {
 >>>.el-form-item__error {
   margin-left: 2.5rem;
   top: 72% !important;
-}</style>
+}
+</style>

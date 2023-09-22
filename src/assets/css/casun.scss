@@ -5,6 +5,7 @@
 .el-table__fixed-right::before {
   height: 0;
 }
+//浅色主题
 .theme-1 {
   --theme-color:linear-gradient(149.069deg, rgba(183, 230, 230, 0) 19.0241%, rgba(89, 179, 179, 0.5) 83.6362%);
   --header-color:tranparent;
@@ -18,8 +19,10 @@
   --tableHead:#b1e3e3;
   --tableborder:#64c8c8;
   --dialoghead:#64c8c8;
-
+  --loginbgd:transparent;
+  --taskbgd:rgba(100,200,200,0.5)
 }
+//深色
 .theme-2 {
   --theme-color: rgb(8, 46, 80);
   --active-color:#64C8C8;
@@ -32,6 +35,8 @@
   --tableHead:#33717c;
   --tableborder:#fff;
   --dialoghead:#042A4A;
+  --loginbgd:#fff;
+  --taskbgd:#042A4A;
 }
 img {
   -webkit-user-drag: none;
@@ -99,7 +104,18 @@ img {
 .el-input__suffix {
   color: #fff;
 }
+.el-divider{
+ background: var(--font-color);
+ margin: 40px 0;
+}
+.el-divider__text {
+  display: inline-block;
 
+  font-size: 16px;
+  padding: 0 20px ;
+  color: var(--font-color) ;
+  background: var(--tablebody);
+}
 .el-input__inner,
 .el-range-editor.el-input__inner {
   height: 1.875rem;
@@ -401,10 +417,9 @@ img {
   }
 
   .el-menu-item {
-    margin: 0 auto;
     height: 2.5rem;
     line-height: 2.5rem;
-    width: 9.4rem;
+    text-align: center;
     font-size: 1.125rem;
     border-bottom: 1px solid;
 

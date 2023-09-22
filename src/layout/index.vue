@@ -85,7 +85,7 @@
         <router-view />
       </route-view>
       <el-dialog title="关于" :visible.sync="DialogVisible" width="30%" center :close-on-click-modal="false">
-        <div style="line-height:2.5rem">
+        <div style="line-height:2.5rem;color:var(--font-color)">
           <div>
             <span>产品名称：</span><span>隧道智能巡检系统</span>
           </div>
