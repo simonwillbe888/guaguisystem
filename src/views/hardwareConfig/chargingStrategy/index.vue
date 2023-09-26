@@ -8,7 +8,13 @@
       </div>
       <div class="content-body">
         <template>
-          <el-table :data="strategyList" style="width: 100%"  height="39rem"  :empty-text="'暂无数据'">
+          <el-table
+              :data="strategyList"
+              style="width: 100%"
+              height="39rem"
+              header-row-class-name="header-row-class"
+              row-class-name="row-class"
+              :empty-text="'暂无数据'">
             <el-table-column
               type="index"
               label="序号"
@@ -444,7 +450,7 @@ export default {
 </script>
 <style scoped lang="scss">
 .content-header {
- 
+
   >>> .el-button {
     float: right;
   }
@@ -461,4 +467,15 @@ export default {
   background-color: transparent;
   color: #fff;
 }
+
+::v-deep .header-row-class {
+  background-color: transparent;
+  height:50px;
+}
+
+::v-deep .row-class {
+  background-color: transparent;
+  height:50px;
+}
+
 </style>

@@ -3,11 +3,11 @@
     <div class="equip-header content-header">
       <!-- <h3 class="equip-setting-title">{{ $t('inspect_record.real_alarm_list') }}</h3> -->
       <div style="display:inline;float:right">
-        <span>{{ $t('comment_vary.default_time_label') }}</span>
+        <span style="color: var(--font-color)">{{ $t('comment_vary.default_time_label') }}</span>
         <el-date-picker v-model="startVal" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
           :placeholder="$t('comment_vary.start_time_label')">
         </el-date-picker>
-        <span>--</span>
+        <span style="color: var(--font-color)">--</span>
         <el-date-picker v-model="endVal" type="datetime" :placeholder="$t('comment_vary.end_time_label')"
           style="margin-right: 1.25rem" value-format="yyyy-MM-dd HH:mm:ss">
         </el-date-picker>
@@ -19,7 +19,7 @@
     </div>
     <div class="equip-body content-body">
       <div class="container" >
-        <el-row style="height: 37rem;background:var(--tablebody);">
+        <el-row style="height: 39.5rem;background:var(--tablebody);">
           <el-col :xs="24" :sm="12" :md="6" v-for="(item, index) in list" :key="index">
             <el-card class="box" :style="{ width: '21.5rem', height: '18rem'}">
               <div class="box-content">
@@ -32,7 +32,7 @@
                     :preview-src-list="imgaeList"></el-image>
                   <!-- <img @click="largerPic(item.FilePath)" :src="item.FilePath" style="width: 20.625rem;height: 14.0625rem;" v-if="item.fileType == 1"> -->
                   <!-- <video ></video>     -->
-                  <iframe :src="item.FilePath" style="width: 21.5rem;height: 12rem;" v-if="item.fileType == 4"
+                  <iframe :src="item.FilePath" style="width: 21.5rem;height: 12rem;color: var(--font-color)" v-if="item.fileType == 4"
                     allowfullscreen="true" frameborder="0"></iframe>
                 </div>
                 <div class="box-content-detail">
@@ -254,7 +254,7 @@ export default {
             duration: 1000,
           });
           this.$parent.downloadMedia(params)
-        
+
         }
   },
     largerPic(src) {
@@ -378,9 +378,8 @@ export default {
 
     .box-content-detail {
       height: 7.1875rem;
-
       .line {
-        color: #000;
+        color: var(--font-color);
         margin-left: 1.625rem;
         margin-top: .625rem;
         font-size: 1rem;
@@ -395,12 +394,14 @@ export default {
   background-color: transparent;
 }
 
->>>.header-row-class {
+::v-deep .header-row-class {
   background-color: transparent;
+  height:50px;
 }
 
->>>.row-class {
+::v-deep .row-class {
   background-color: transparent;
+  height:50px;
 }
 
 >>>.el-table thead {

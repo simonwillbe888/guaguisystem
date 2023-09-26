@@ -8,7 +8,13 @@
       </div>
       <div class="content-body">
         <template>
-          <el-table :data="strategyList" style="width: 100%"  height="39rem" :empty-text="'暂无数据'">
+          <el-table
+              :data="strategyList"
+              style="width: 100%"
+              height="39rem"
+              header-row-class-name="header-row-class"
+              row-class-name="row-class"
+              :empty-text="'暂无数据'">
             <el-table-column
               type="index"
               align="center"
@@ -67,7 +73,7 @@
               label="活动站点编号"
               align="center"
             >
-            
+
             </el-table-column>
             <el-table-column
               prop="parameter1"
@@ -126,7 +132,7 @@
             </el-table-column>
           </el-table>
         </template>
-      
+
     </div>
 
     <el-dialog
@@ -193,7 +199,7 @@
             clearable
           >
             <el-option
-            
+
               v-for="item in station"
               :key="item"
               :label="item"
@@ -470,5 +476,13 @@ export default {
   font-size: 12px;
   color: #fff;
 }
+::v-deep .header-row-class {
+  background-color: transparent;
+  height:50px;
+}
 
+::v-deep .row-class {
+  background-color: transparent;
+  height:50px;
+}
 </style>

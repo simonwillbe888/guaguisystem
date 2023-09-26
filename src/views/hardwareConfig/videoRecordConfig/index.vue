@@ -40,7 +40,12 @@
     </div>
     <div class="content-body">
       <template>
-        <el-table :data="videoRecordList" style="width: 100%"  height="39rem" :empty-text="'暂无数据'">
+        <el-table :data="videoRecordList"
+                  header-row-class-name="header-row-class"
+                  row-class-name="row-class"
+                  style="width: 100%"
+                  height="39rem"
+                  :empty-text="'暂无数据'">
           <el-table-column type="index" label="序号" align="center" width="150">
           </el-table-column>
           <!-- <el-table-column prop="dvrbrand" label="配件ID"> </el-table-column> -->
@@ -58,15 +63,15 @@
               <el-button
                 icon="el-icon-document"
                 type="plain"
-                style="color: #64C8C8;"
+                style="color: #64C8C8;background-color: var(--title-bg)"
                 @click="edit(row, true)"
                 size="mini"
-                
+
               >
                 详情
               </el-button>
             </template>
- 
+
           </el-table-column>
           <el-table-column
             align="center"
@@ -317,13 +322,13 @@
       :close-on-click-modal="false"
       @close="closeRecordDialog"
     >
-      <div class="content-body">
+      <div class="content-body" style="height: auto">
         <div style="display: flex;position:relative;width: 100%">
-          <div style="align-items: center;width: 45%;display: flex;justify-content: center;font-size: 1.5rem;margin-right: 2rem">
+          <div style="color:var(--font-color);align-items: center;width: 45%;display: flex;justify-content: center;font-size: 1.5rem;margin-right: 2rem">
             {{ this.titleName }}
           </div>
           <div style="position:relative;display: flex;align-items: center;width: 55%">
-            <span>{{ $t('comment_vary.default_time_label') }}</span>
+            <span style="color: var(--font-color)">{{ $t('comment_vary.default_time_label') }}</span>
             <el-date-picker v-model="startVal" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
                             @input="startTimeCheck"
                             :clearable=false
@@ -418,12 +423,12 @@
       </div>
 
       <span slot="footer" class="dialog-footer">
-        <div style="display: flex;justify-content: center;align-items: center;margin-top: 0.5rem">
+        <div style="display: flex;justify-content: center;align-items: center;margin-top: 0.5rem;color: var(--font-color)">
           <el-button type="success" size="mini" @click="loadNextRecord(1)" :disabled="ids >= fileList.length">
             ←
           </el-button>
           <div style="margin: auto 1rem;width: 5rem;text-align: center;justify-content:center;">
-            <span style="color: #FFFFFF;">
+            <span style="color: var(--font-color);">
               {{ this.searchResultText }}
             </span>
           </div>
@@ -432,9 +437,9 @@
           </el-button>
         </div>
         <div style="position: absolute;left: 1rem;bottom: 1.5rem;justify-content:center;text-align: center">
-          <span style="color: #FFFFFF;">自动续播</span>
+          <span  style="color: var(--font-color)">自动续播</span>
           <el-switch active-text="开" inactive-text="关" v-model="autoContinuePlay" :active-value=true :inactive-value=false ></el-switch>
-          <span style="color: #FFFFFF;margin-left: 1rem;cursor: pointer" v-if="autoContinuePlay" @click="()=>{this.playDirection=this.playDirection*-1}">方向 {{ this.playDirection == 1? "←" : "→"}}</span>
+          <span style="color: var(--font-color);margin-left: 1rem;cursor: pointer" v-if="autoContinuePlay" @click="()=>{this.playDirection=this.playDirection*-1}">方向 {{ this.playDirection == 1? "←" : "→"}}</span>
         </div>
         <div style="position: absolute;right: 1rem;bottom: 1.5rem;">
           <el-button type="primary" size="mini" @click="nvrRecordVisible = false">
@@ -450,7 +455,7 @@
 <!--      </span>-->
 
       <div class="timeLineContainer" ref="timeLineContainer">
-        <div style="margin: auto;display: flex;justify-content: center;">{{this.middleTime}}</div>
+        <div style="color:var(--font-color);margin: auto;display: flex;justify-content: center;">{{this.middleTime}}</div>
         <canvas
           ref="canvas"
           @mousemove="onMousemove"
@@ -1178,7 +1183,7 @@ export default {
         clearInterval(this.recordTimer)
       }
       let rtcURL = window.location.hostname
-      rtcURL = '192.168.20.23'
+      // rtcURL = '192.168.20.23'
       this.getPeerConnectionList(rtcURL)
     },
 
@@ -1209,7 +1214,7 @@ export default {
       // 线的x坐标是时间轴的中点，y坐标即时间轴的高度
       let x = this.width / 2;
       //划线
-      this.drawLine(x, 0, x, this.height, lineWidth, "#fff");
+      this.drawLine(x, 0, x, this.height, lineWidth, "#f67106");
     },
 
     // 画线段方法
@@ -1217,7 +1222,7 @@ export default {
       // 开始一段新路径
       this.ctx.beginPath();
       // 设置线段颜色
-      this.ctx.strokeStyle =color || "#fff";
+      this.ctx.strokeStyle = color || "#fff";
       // 设置线段宽度
       this.ctx.lineWidth = lineWidth || 1;
       // 将路径起点移到x1,y1
@@ -1288,7 +1293,7 @@ export default {
           // 其他根据判断条件来显示
           h = this.height * 0.3;
           // 刻度线颜色
-          this.ctx.fillStyle = "rgba(151,158,167,1)";
+          this.ctx.fillStyle = "rgb(255,129,0)";
           // 显示时间
           this.ctx.fillText(
             this.graduationTitle(graduationTime),
@@ -1297,7 +1302,7 @@ export default {
           );
         } else if (ZOOM_DATE_SHOW_RULE[this.currentZoomIndex](date)) {
           h = this.height * 0.2;
-          this.ctx.fillStyle = "rgba(151,158,167,1)";
+          this.ctx.fillStyle = "rgb(255,129,0)";
           this.ctx.fillText(
             this.graduationTitle(graduationTime),
             x - 13,
@@ -1307,7 +1312,7 @@ export default {
           // 其他不显示时间
           h = this.height * 0.15;
         }
-        this.drawLine(x, 0, x, h, 1, "#fff");
+        this.drawLine(x, 0, x, h, 1, "rgb(255,129,0)");
       }
     },
 
@@ -1375,12 +1380,12 @@ export default {
         this.ctx.clearRect(0, 0, this.width, this.height)
         this.draw()
         // 绘制实时的竖线及时间
-        this.drawLine(x, 0, x, this.height * 0.3, "#fff", 1)
-        this.ctx.fillStyle = "#fff"
+        this.drawLine(x, 0, x, this.height * 0.3, 2, "rgb(255,129,0)")
+        this.ctx.fillStyle = "rgb(255,129,0)"
         this.ctx.fillText(
           moment(time).format("YYYY-MM-DD HH:mm:ss"),
           x - 20,
-          this.height * 0.3 + 20
+          this.height * 0.3 + 25
         );
       }
     },
@@ -1808,7 +1813,7 @@ export default {
     margin-left: 20px;
   }
 }
-::v-deep  .el-input__inner
+::v-deep .el-input__inner
  {
   height: 1.875rem;
   background-color: transparent;
@@ -1832,6 +1837,16 @@ export default {
 ::v-deep .rowStyle {
   background-color: #64c8c8 !important;
 
+}
+
+::v-deep .header-row-class {
+  background-color: transparent;
+  height:50px;
+}
+
+::v-deep .row-class {
+  background-color: transparent;
+  height:50px;
 }
 
 //// 鼠标滑过背景颜色

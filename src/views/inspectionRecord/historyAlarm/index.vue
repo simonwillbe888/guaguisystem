@@ -1,3 +1,4 @@
+<!--历史告警-->
 <template>
   <div style="padding: 1%; background: rgb(6,30,51);">
     <div class="equip-header content-header">
@@ -46,9 +47,16 @@
       </el-collapse> -->
     </div>
     <div class="equip-body content-body">
-      <el-table @row-click="getDetailMessage"    class="equip-data" :data="alarmInfoArr"
-        header-row-class-name="header-row-class" row-class-name="row-class" fit height="35.5rem" highlight-current-row
-        size="small" :empty-text="'暂无数据'">
+      <el-table @row-click="getDetailMessage"
+                class="equip-data"
+                :data="alarmInfoArr"
+                header-row-class-name="header-row-class"
+                row-class-name="row-class"
+                fit
+                height="39.5rem"
+                highlight-current-row
+                size="small"
+                :empty-text="'暂无数据'">
         <el-table-column type="index" label="序号" align="center" width="80">
         </el-table-column>
         <el-table-column prop="alarmCode" :label="$t('alarm_dealWith.alarm_code_label')" align="center">
@@ -84,11 +92,16 @@
             <span>{{ row.machineName }}</span>
           </template>
         </el-table-column> -->
-        <el-table-column prop="maxAlarmValue" :label="'机器名称'" align="center">
+        <el-table-column prop="equipmentName" :label="'机器名称'" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.equipmentName }}</span>
           </template>
         </el-table-column>
+<!--        <el-table-column prop="equipmentName" :label="'设备名称'" align="center">-->
+<!--          <template slot-scope="{ row }">-->
+<!--            <span>{{ row }}</span>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
         <el-table-column prop="happenTime" :label="$t('alarm_dealWith.happen_time')" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.happenTime }}</span>
@@ -103,7 +116,7 @@
           <template slot-scope="{ row }">
             <el-button class="greenButton" v-if="row.statusNum == 0 || row.statusNum == 1"  icon="el-icon-edit" size="mini"
               plain @click.stop="showDetail(row)">处理</el-button>
-            <el-button style="color:#64C8C8" v-else  icon="el-icon-document" size="mini" plain>详情</el-button>
+            <el-button style="color:#64C8C8;background-color: var(--title-bg)" v-else  icon="el-icon-document" size="mini" plain>详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -659,7 +672,7 @@ export default {
           '告警名称',
           //   '区域名称',
           '告警状态',
-          '最大告警级别',
+          '告警级别',
           '最大告警数值',
           '设备名称',
           '发生时间',
@@ -950,12 +963,14 @@ export default {
   background-color: transparent;
 }
 
->>>.header-row-class {
+::v-deep .header-row-class {
   background-color: transparent;
+  height:50px;
 }
 
->>>.row-class {
+::v-deep .row-class {
   background-color: transparent;
+  height:50px;
 }
 
 >>>.el-table thead {

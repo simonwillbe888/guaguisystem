@@ -5,7 +5,13 @@
     </div>
     <div class="content-body">
       <template>
-        <el-table :data="roleList" style="width: 100%" height="36.5rem">
+        <el-table
+            :data="roleList"
+            style="width: 100%"
+            height="39.5rem"
+            header-row-class-name="header-row-class"
+            row-class-name="row-class"
+            :empty-text="'暂无数据'">
           <el-table-column type="index" label="序号" align="center" width="80">
           </el-table-column>
           <el-table-column prop="RoleCode" align="center" label="角色编号">
@@ -460,8 +466,6 @@ export default {
   background-color: #64C8C8 !important;
 }
 
-
-
 .form {
   width: 70%;
   margin-left: 10%;
@@ -475,4 +479,13 @@ export default {
   font-size: 12px;
 }
 
+::v-deep .header-row-class {
+  background-color: transparent;
+  height:50px;
+}
+
+::v-deep .row-class {
+  background-color: transparent;
+  height:50px;
+}
 </style>

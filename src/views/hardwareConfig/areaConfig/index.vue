@@ -37,8 +37,10 @@
           :data="accessoInfoArr"
           header-row-class-name="header-row-class"
           row-class-name="row-class"
+          :header-row-style="{height:'50px'}"
+          :row-style="{height:'50px'}"
           fit
-          height="37rem"
+          height="39.5rem"
           highlight-current-row
           size="small"
           @current-change="handleCurrentChange"
@@ -97,7 +99,7 @@
           @pagination="init"
         />
       </div>
-   
+
     <el-dialog
       :title="accessoDialog[dialogType]"
       :visible.sync="dialogFormVisible"
@@ -153,7 +155,7 @@
         <el-form-item class="common-form-footer">
           <div style="margin-right: 8% ;">
 
-          
+
           <el-button
             class="greenButton"
             @click="
@@ -528,12 +530,14 @@ export default {
   background-color: rgb(11, 113, 124);
 }
 
->>> .header-row-class {
+::v-deep .header-row-class {
   background-color: transparent;
+  height:50px;
 }
 
->>> .row-class {
+::v-deep .row-class {
   background-color: transparent;
+  height:50px;
 }
 
 >>> .el-table thead {

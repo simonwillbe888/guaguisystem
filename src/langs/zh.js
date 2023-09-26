@@ -99,7 +99,7 @@ module.exports = {
     alarm_code_label: '告警码',
     alarm_name_label: '告警名称',
     alarm_status_label: '告警状态',
-    maxAlarm_level_label: '最大告警级别',
+    maxAlarm_level_label: '告警级别',
     maxAlarm_value_label: '最大告警数值',
     machine_name_label: '机器名称',
     equipment_name_label: '设备名称',

@@ -81,8 +81,15 @@
       </el-collapse> -->
     </div>
     <div class="equip-body content-body">
-      <el-table @row-click="getDetailMessage" class="equip-data" :data="alarmInfoArr" :empty-text="'暂无数据'"
-        height="35.5rem" header-row-class-name="header-row-class" row-class-name="row-class" fit highlight-current-row
+      <el-table @row-click="getDetailMessage"
+                class="equip-data"
+                :data="alarmInfoArr"
+                :empty-text="'暂无数据'"
+                height="39.5rem"
+                header-row-class-name="header-row-class"
+                row-class-name="row-class"
+                fit
+                highlight-current-row
         size="small">
         <el-table-column type="index" label="序号" align="center" width="100">
         </el-table-column>
@@ -606,7 +613,7 @@ export default {
           '告警名称',
           //   '区域名称',
           '告警状态',
-          '最大告警级别',
+          '告警级别',
           '最大告警数值',
           '机器名称',
           '设备名称',
@@ -903,12 +910,14 @@ export default {
   background-color: transparent;
 }
 
->>>.header-row-class {
+::v-deep .header-row-class {
   background-color: transparent;
+  height:50px;
 }
 
->>>.row-class {
+::v-deep .row-class {
   background-color: transparent;
+  height:50px;
 }
 
 >>>.el-table thead {

@@ -368,13 +368,14 @@ export default {
   background-color: transparent;
 }
 
->>> .header-row-class {
+::v-deep .header-row-class {
   background-color: transparent;
-  color: rgb(48, 29, 15);
+  height:50px;
 }
 
->>> .row-class {
+::v-deep .row-class {
   background-color: transparent;
+  height:50px;
 }
 
 >>> .el-table th > .cell {

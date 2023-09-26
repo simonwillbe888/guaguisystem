@@ -84,12 +84,11 @@
          prop="details"
          label="配件详情"
          align="center"
-
        >
          <template slot-scope="{ row }">
            <el-button
              type="plain"
-             style="color: #64C8C8;"
+             style="color: #64C8C8;background-color: var(--title-bg)"
              icon="el-icon-document"
              size="mini"
              plain
@@ -905,12 +904,14 @@ export default {
   background-color: transparent;
 }
 
->>> .header-row-class {
+::v-deep .header-row-class {
   background-color: transparent;
+  height:50px;
 }
 
->>> .row-class {
+::v-deep .row-class {
   background-color: transparent;
+  height:50px;
 }
 
 >>> .el-table thead {

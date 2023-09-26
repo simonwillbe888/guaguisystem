@@ -11,9 +11,17 @@
         @click="plusRobot()">新增机器人</el-button>
     </div>
     <div class="robot-body content-body">
-      <el-table height="39rem" class="robot-data" ref="singleTable" :data="robotInfoArr"
-        header-row-class-name="header-row-class" row-class-name="row-class" fit highlight-current-row size="small"
-        @current-change="handleCurrentChange" :empty-text="'暂无数据'">
+      <el-table
+          height="39rem"
+          class="robot-data"
+          ref="singleTable"
+          :data="robotInfoArr"
+          header-row-class-name="header-row-class"
+          row-class-name="row-class"
+          fit
+          highlight-current-row size="small"
+          @current-change="handleCurrentChange"
+          :empty-text="'暂无数据'">
         <el-table-column type="index" label="序号" align="center" width="100">
         </el-table-column>
         <!-- <el-table-column
@@ -58,7 +66,7 @@
                  <template slot-scope="{ row }">
                    <el-button
                      type="plain"
-                     style="color: #64C8C8;"
+                     style="color: #64C8C8;background-color: var(--title-bg)"
                      icon="el-icon-document"
                      size="mini"
                      plain
@@ -195,7 +203,7 @@
         }}</el-button>
       </div>
     </el-dialog>
-    
+
   </div>
 </template>
 
@@ -587,7 +595,7 @@ export default {
                 duration: 3000,
               });
             return
-            }  
+            }
             param.homeStation = Number(this.vertex);
           } else {
             param.isHomeStation = false;
@@ -690,7 +698,7 @@ export default {
                 duration: 3000,
               });
             return
-            }            
+            }
               param.homeStation = Number(this.vertex);
 
           } else {
@@ -997,12 +1005,14 @@ export default {
 //   color: #fff;
 // }
 
->>>.header-row-class {
+::v-deep .header-row-class {
   background-color: transparent;
+  height:50px;
 }
 
->>>.row-class {
+::v-deep .row-class {
   background-color: transparent;
+  height:50px;
 }
 
 >>>.el-table thead {

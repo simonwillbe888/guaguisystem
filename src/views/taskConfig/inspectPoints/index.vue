@@ -52,7 +52,7 @@
         header-row-class-name="header-row-class"
         row-class-name="row-class"
         fit
-        height="35.5rem"
+        height="39.5rem"
         highlight-current-row
         size="small"
         @current-change="handleCurrentChange"
@@ -133,7 +133,7 @@
          <pagination v-show="total > 0" :total="total" :page.sync="page" :limit.sync="limit" @pagination="init" />
         </div>
     </div>
- 
+
     <el-dialog
       :title="inspectDialog[dialogType]"
       :visible.sync="dialogFormVisible"
@@ -553,6 +553,7 @@ export default {
     display: inline;
   }
   .robot-operate {
+    border-radius: 5px;
       background-color: #64C8C8 !important;
     }
   .inspec-setting-inquire {
@@ -618,12 +619,14 @@ export default {
   background-color: transparent;
 }
 
->>> .header-row-class {
+::v-deep .header-row-class {
   background-color: transparent;
+  height:50px;
 }
 
->>> .row-class {
+::v-deep .row-class {
   background-color: transparent;
+  height:50px;
 }
 
 >>> .el-table thead {

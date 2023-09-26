@@ -70,15 +70,19 @@
           <img src="../../assets/img/logo@2x.png" alt="" class="logo">
           <div class="form">
 
-            <div style="color:#000000;font-size: 4rem;font-weight: bold;">应急机器人管理系统</div>
+            <div style="color:#000000;font-size: 4rem;font-weight: bold;margin-bottom: 1.5rem">应急机器人管理系统</div>
 
-            <el-form :inline-message="true" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left"
-              label-width="0rem" class="demo-ruleForm">
-              <el-form-item prop="username">
+            <el-form :inline-message="true" :show-message="false" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left"
+              label-width="0rem">
+              <el-form-item prop="username" >
                 <div class="item">
                   <i class="el-icon-user-solid"></i>
-                  <el-input type="text" class="input" v-model.trim="loginForm.username" auto-complete="off"
-                    placeholder="账号" clearable>
+                  <el-input type="text"
+                            class="loginInput"
+                            v-model.trim="loginForm.username"
+                            auto-complete="off"
+                            placeholder="请输入账号"
+                            clearable>
                   </el-input>
                 </div>
               </el-form-item>
@@ -86,7 +90,11 @@
               <el-form-item prop="password">
                 <div class="item">
                   <i class="el-icon-lock" style="color: #64C8C8;"></i>
-                  <el-input type="password" v-model.trim="loginForm.password" auto-complete="off" placeholder="密码"
+                  <el-input type="password"
+                            class="loginInput"
+                            v-model.trim="loginForm.password"
+                            auto-complete="off"
+                            placeholder="请输入密码"
                     clearable>
                   </el-input>
                 </div>
@@ -103,11 +111,10 @@
 
           </div>
         </div>
-        <div class="copyright">
-        <div>Copyright@广州市佳启智能科技有限责任公司</div>
+        <div class="copyright" ref="copyright">
+          <div>Copyright@广州市佳启智能科技有限责任公司</div>
+        </div>
       </div>
-      </div>
-
     </div>
 
   </div>
@@ -116,19 +123,25 @@
 <script>
 import { validUsername } from '@/utils/validate';
 import { getSystemXmlConfig } from '../../api/sysCtrl';
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Login',
+
+  computed: {
+    ...mapGetters(['theme']),
+  },
+
   data() {
     const validateUsername = (rule, value, callback) => {
-      if (!value) {
+      if (value!=null && value=='') {
         callback(new Error('请输入用户名'));
       } else {
         callback();
       }
     };
     const validatePassword = (rule, value, callback) => {
-      if (!value) {
+      if (value!=null && value=='') {
         callback(new Error('请输入密码'));
       } else {
         callback();
@@ -171,12 +184,27 @@ export default {
       },
       immediate: true,
     },
+    theme(nv,ov) {
+      this.themeChange(nv,ov)
+    }
   },
   mounted() {
     this.loginForm.username = localStorage.getItem('username')
     this.loginForm.password = localStorage.getItem('password')
+    this.themeChange(this.theme,null)
   },
   methods: {
+    themeChange(nv,ov){
+      switch (nv) {
+        case 'theme-1':
+          this.$refs.copyright.style.left="-50%"
+          break;
+        case 'theme-2':
+          this.$refs.copyright.style.left="20.5%"
+          break;
+      }
+      this.$forceUpdate()
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = '';
@@ -323,7 +351,7 @@ export default {
       .item {
         display: flex;
         align-items: center;
-
+        margin: 1rem 0;
         // margin-bottom: 1.5625rem;
         i {
           color: #64C8C8;
@@ -333,9 +361,10 @@ export default {
           font-size: 1.5rem;
         }
 
-        .input {
-          margin: 40px 0;
+        ::v-deep .el-input__inner::placeholder{
+          color: rgb(100,200,200);
         }
+
       }
 
       h2 {

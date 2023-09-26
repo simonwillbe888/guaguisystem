@@ -49,12 +49,12 @@
                 :src="item.src"
                 :key="index"
               ></iframe>
-              <div class="bgdimg" style="width:102%;height:100%;margin:1vh;position: relative;right: 3.5%;bottom: 3%;">                      
+              <div class="bgdimg" style="width:102%;height:100%;margin:1vh;position: relative;right: 3.5%;bottom: 3%;">
                       <div style="padding-top: 18%;padding-left: 3.5%;">
                         <div id="robot" style="position:relative;width: 5vh;">
                           <img  src="../../assets/img/robot1.png" style="width:3.5vw">
-                        </div>      
-                     
+                        </div>
+
                       </div>
               </div>
               <!-- <Map></Map> -->
@@ -68,7 +68,7 @@
             </div>
             <div class="alarm_title" style="color:#ffffff;font-size:18px;margin:1vh;padding-left: 1vh;">{{ $t('home_page.current_alarm') }}</div>
             <div class="alarm" style="margin-left:1vh">
-             
+
              <div class="myTable">
                <el-table :data="showTable" style="width: 100%" @row-click="getDetailMessage" height="30vh"  :empty-text="'加载中...'">
                  <el-table-column width="80" label="序号">
@@ -116,11 +116,11 @@
          <div style="display:flex">
           <img :src="imageUrl" alt="" style="width:70%">
           <div style="margin-left:2vw">
-            <div style="margin: 1vh  0;">告警级别: 
+            <div style="margin: 1vh  0;">告警级别:
               <span v-if="alarm.MaxLevel ==4" style="border: red 1px solid; color: red;font-size: 1.2vw;">致命</span>
               <span v-if="alarm.MaxLevel ==3" style="border: red 1px solid; color: orange;font-size: 1.2vw;">严重</span>
               <span v-if="alarm.MaxLevel ==2" style="border: red 1px solid; color: yellow;font-size: 1vw;">一般</span>
-              <span v-if="alarm.MaxLevel ==1" style="border: red 1px solid; color: #08F9EB ;font-size: 1vw;">提示</span>      
+              <span v-if="alarm.MaxLevel ==1" style="border: red 1px solid; color: #08F9EB ;font-size: 1vw;">提示</span>
             </div>
             <div style="margin: 2vh  0;">
               告警名称：{{ alarm.AlarmName }}
@@ -129,7 +129,7 @@
               告警编号：{{ alarm.ID }}
             </div>
             <div style="margin: 3vh  0;">
-              告警类型：{{  alarm.AlarmCode ==1001?"行人告警": alarm.AlarmCode ==1002?"非机动车告警": alarm.AlarmCode ==1003?"异物告警": alarm.AlarmCode ==1004?"温度告警": 
+              告警类型：{{  alarm.AlarmCode ==1001?"行人告警": alarm.AlarmCode ==1002?"非机动车告警": alarm.AlarmCode ==1003?"异物告警": alarm.AlarmCode ==1004?"温度告警":
             alarm.AlarmCode ==1005?"湿度告警": alarm.AlarmCode ==1006?"气体告警":alarm.AlarmCode ==1007?"灯光告警": alarm.AlarmCode ==1008?"违停逆行告警": alarm.AlarmCode ==1009?"超速告警":alarm.AlarmCode ==1010?"动物告警":alarm.AlarmCode ==1012?"消防设备告警": alarm.AlarmCode ==1011?"井盖异常告警":alarm.AlarmCode ==1013?"火灾烟雾告警":row.AlarmType ==1014?"红外测温告警":"机体告警"}}            </div>
             <div style="margin: 3vh 0;">
               事件描述：{{ alarm.Description }}
@@ -144,8 +144,8 @@
               修复时间：{{alarm.RecoveryTime==null?"未修复":alarm.RecoveryTime}}
             </div>
           </div>
-         </div>           
-            <span slot="footer" class="dialog-footer">           
+         </div>
+            <span slot="footer" class="dialog-footer">
            <el-button @click="dialogVisible = false">取 消</el-button>
             <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
             </span>
@@ -160,7 +160,7 @@
                 <span>对讲</span>
                 <span style="margin:0 5px;font-size:14px">({{ currentNode.label }})</span>
               </div>
-              <Intercom></Intercom>          
+              <Intercom></Intercom>
             </div>
           </div>
           <div class="control_yuntai">
@@ -176,9 +176,9 @@
               </div> -->
               <div class="content">
  <!--    云台控制器             -->
- <template v-if="activeName === '云台'">               
-                  <div class="control_centerbox">  
-                  <el-row class="el-row">                              
+ <template v-if="activeName === '云台'">
+                  <div class="control_centerbox">
+                  <el-row class="el-row">
                     <el-col :span="15">
                       <div>
                         <el-button :disabled="!currentCamera.configObj"  @mousedown.native="setCameraOperate(1)" @mouseup.native="stopCam()"  size="mini"
@@ -187,7 +187,7 @@
                         </el-button>
                       </div>
                     </el-col>
-                  
+
                     <el-col :span="9">
                       <div style="width:5vw;height: 3vh; background-color: #B8D5E0;margin-left: 4.5vw;margin-bottom: 1.5vh;">
                         <span class="left">
@@ -204,7 +204,7 @@
                         </span>
                       </div>
                     </el-col>
-                  
+
                   </el-row>
                   <el-row class="el-row">
                     <el-col :span="5">
@@ -215,7 +215,7 @@
                         </el-button>
                       </div>
                     </el-col>
-                       
+
                     <!-- <el-col :span="5">
                       <div style="position: relative; left: 0.9vw; bottom: 1.2vh;">
                         <el-button :disabled="!currentCamera.configObj" @click="stopCam"  size="mini"
@@ -249,7 +249,7 @@
                       </div>
                     </el-col>
                   </el-row>
-                  <el-row class="el-row">                 
+                  <el-row class="el-row">
                    <el-col :span="9">
                       <div >
                         <el-button :disabled="!currentCamera.configObj" @mousedown.native="setCameraOperate(3)" @mouseup.native="stopCam()"   size="mini"
@@ -275,7 +275,7 @@
                       </div>
                     </el-col>
                   </el-row>
-                </div> 
+                </div>
                   <el-row>
                     <div style="margin:5vh 1vw 1vh 1vw;font-size: 0.9vw;">云台速度
                       <el-slider :disabled="!currentCamera.configObj" :max="64" v-model="speed"></el-slider>
@@ -313,12 +313,12 @@
                           <i class="el-icon-video-pause" style="font-size:1vw;color: black;"></i>
                         </el-button>
                       </span>
-                    </el-col> 
+                    </el-col>
                        <!--视频照片播放  -->
                     <el-dialog   title="详情" :visible.sync="videoPhoto" width="50%">
                       <img :src="takevideoPhoto" alt="">
                     </el-dialog>
-                  </el-row>             
+                  </el-row>
                 </template>
               </div>
             </div>
@@ -345,7 +345,7 @@
                     </div>
                   </el-col>
                 </el-row>
-                
+
                 <el-row>
                   <div style="font-size:1.5vh;padding:4vh 0 0 1vw;color: #ffffff;">机器人速度（{{robotSpeed}}mm/s）</div>
                   <div class="speed" style="margin: 1vh 1vh 0 1vh;">
@@ -402,7 +402,6 @@ export default {
       currentAdvices: [{}, {}],
       robotOpen: 2,
       catId: '',
-      robotSpeed: 0,
       robotDrict: 1,
       robotStop: 1,
       currentCamera: {},
@@ -468,7 +467,7 @@ export default {
             const scrollDistance = e.target.scrollHeight - e.target.scrollTop- 1 - e.target.clientHeight;
             if (scrollDistance <= 0) {
               // console.log("滚动事件监听")
-                this.pageNum++;        
+                this.pageNum++;
             }
      },
 
@@ -499,7 +498,7 @@ export default {
             this.alarmList.forEach((item, index) => {
               item.index = index + 1;
             });
-            
+
           }
         }
         // let flag = false;
@@ -561,7 +560,7 @@ export default {
     async setRobotMoveCrl(flag) {
       const time = this.getNowtime()
       if(flag == 1){
-      
+
         moveCar(flag,this.robotSpeed,10000,time).then((res)=>{
           // console.log("前进",res)
         })
@@ -574,7 +573,7 @@ export default {
         stopCar(time).then((res)=>{
           //  console.log("停止了",res)
         })
-       
+
       }
     },
     async getDetailMessage(e){
@@ -631,6 +630,10 @@ export default {
         this.currentNode = node;
         // 获取地图节点信息 移动
           this.move = setInterval(() => {
+            if(this.carrierSelected.CarrierID == undefined || this.carrierSelected.CarrierID == ''){
+              console.log('CarrierID is null')
+              return
+            }
             getCarrierDetailInfo(this.catId).then((res)=>{
             // console.log("查看x坐标",res.data.x,this.catId)
             this.distance = res.data.x
@@ -638,10 +641,10 @@ export default {
             // 总长尺寸1430px 路程47500mm
             const left = (1430/47500)*this.distance
             robot.style.left = left + 'px'
-          })  
+          })
           }, 1000);
-         
-        
+
+
       }
       if (arr.length < 1) {
         this.arr = [{}, {}];
@@ -776,7 +779,7 @@ export default {
         background: rgba(16, 74, 182, 0);
         color: #e1ecf1;
       }
-   
+
     }
     ::v-deep .el-tree {
       background-color: #384C55;
@@ -802,7 +805,7 @@ export default {
  .contorl {
     // height: 84vh;
     // background: rgba(9, 86, 158, 0.2);
-    margin:2vh 10px 0 10px; 
+    margin:2vh 10px 0 10px;
   .control_box{
     width: 15vw;
     height: 12vh;
@@ -814,15 +817,15 @@ export default {
     margin-top: 1.5vh;
     overflow: hidden;
   }
-    .title {  
+    .title {
       padding: 20px 0 0 20px;
       font-size: 0.9vw;
       line-height: 1.66vh;
-      color: #ffffff;      
+      color: #ffffff;
     }
-  
+
     .tab {
- 
+
       color: #ffffff;
 
       .tabs {
@@ -831,7 +834,7 @@ export default {
         .tab-item {
           flex: 1;
           width: 80px;
-          height: 40px;        
+          height: 40px;
           line-height: 40px;
           font-size: 12px;
           margin: 10px;
@@ -849,20 +852,20 @@ export default {
         width: 5vw;
         height: 5vw;
         border-radius: 50%;
-        background-color: #B8D5E0;  
-        margin-left: 10px;   
-        
+        background-color: #B8D5E0;
+        margin-left: 10px;
+
           .el-button:active{
-            
+
             background-color: #384C55;
           }
-              
+
       }
- 
- 
+
+
         >>>.el-col {
           text-align: center;
-         
+
           div {
             display: inline-block;
             background: #fff;
@@ -870,10 +873,10 @@ export default {
             // line-height: 28px;
             // padding: 5px;
             margin-bottom: 6px;
-            
+
             .left:nth-of-type(1) {
               //   border-right: 1px solid #333;
-              //   padding-right: 5px;  
+              //   padding-right: 5px;
             }
 
             .left:nth-of-type(2) {
@@ -918,7 +921,7 @@ export default {
     }
   }
   .control_direction:active{
-         color: red;       
+         color: red;
         }
   .robotCrl {
     margin-top: 10px;
@@ -963,7 +966,7 @@ export default {
   }
   .center {
     // height: 84vh;
-  
+
     .video {
       // display: flex;
       // height: calc(100vh - 320px);

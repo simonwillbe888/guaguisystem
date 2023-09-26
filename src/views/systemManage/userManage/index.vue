@@ -1,3 +1,4 @@
+<!--/用户管理-->
 <template>
   <div>
     <div class="content-header">
@@ -31,41 +32,45 @@
     </div>
     <div class="content-body">
       <template>
-        <el-table :data="userList" style="width: 100%" height="36.5rem">
+        <el-table
+            :data="userList"
+            style="width: 100%"
+            height="39.5rem"
+            header-row-class-name="header-row-class"
+            row-class-name="row-class"
+            :empty-text="'暂无数据'">
           <el-table-column type="index" label="序号" align="center" width="80">
           </el-table-column>
           <el-table-column
             prop="UserName"
             align="center"
             label="账号"
-            width="120"
           >
           </el-table-column>
           <el-table-column
             prop="NickName"
             align="center"
             label="用户姓名"
-            width="120"
           >
           </el-table-column>
-          <el-table-column align="center" label="用户类型">
+          <el-table-column align="center" label="用户类型" >
             <template slot-scope="{ row }">
               {{
                 row.UserType === 1 ? '永久' : row.UserType === 2 ? '临时' : ''
               }}
             </template>
           </el-table-column>
-          <el-table-column align="center" label="创建时间">
+          <el-table-column align="center" label="创建时间" >
             <template slot-scope="{ row }">
               {{ row.CreateTime }}
             </template>
           </el-table-column>
-          <el-table-column align="center" label="到期时间">
+          <el-table-column align="center" label="到期时间" >
             <template slot-scope="{ row }">
               {{ row.DueTime }}
             </template>
           </el-table-column>
-          <el-table-column align="center" label="状态">
+          <el-table-column align="center" label="状态" width="80">
             <template slot-scope="{ row }">
               {{ row.State === 1 ? '正常' : row.State === 2 ? '冻结' : '' }}
             </template>
@@ -402,6 +407,7 @@ export default {
 .content-body {
   margin-top: 10px;
 }
+
 .headerBtn {
   // width: 8vw;
   margin-top: 0.5rem;
@@ -412,6 +418,16 @@ export default {
   width: 70%;
   //margin-left: 10%;
   margin: auto;
+}
+
+::v-deep .header-row-class {
+  background-color: transparent;
+  height:50px;
+}
+
+::v-deep .row-class {
+  background-color: transparent;
+  height:50px;
 }
 
 </style>
