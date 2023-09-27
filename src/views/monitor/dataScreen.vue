@@ -240,7 +240,7 @@
 
       <el-col :span="12">
         <div class="center">
-          <div class="video" v-if="currentAdvices.length">
+          <div class="video iframeShadow" v-if="currentAdvices.length">
             <!--              :class="[-->
             <!--              currentCamera.accessoryID === currentAdvices.accessoryID-->
             <!--              ? 'active'-->
@@ -253,14 +253,14 @@
               :src="currentAdvices[0].src">
             </iframe>
 
-            <el-button style="position:absolute;margin-left: 0; top:7rem;background-color:transparent;border-color: transparent" size="mini"
+            <el-button style="position:absolute;margin-left: 0; top:0rem;background-color:transparent;border-color: transparent" size="mini"
                        @click="glassCameraSwitch">
               <svg-icon :className="svgThemeColor" icon-class="cameraSwitch" style="font-size: 2rem"></svg-icon>
             </el-button>
           </div>
         </div>
         <div style="margin: 0.5rem 0.5rem 0;
-                position:relative;"
+             position:relative;"
              ref="vue3dLoaderDiv" >
 
           <vue3dLoader
@@ -413,7 +413,7 @@
       </el-col>
 
       <el-col :span="6">
-        <div class="right" style="margin-right: 0.5rem">
+        <div class="right iframeShadow" style="margin-right: 0.5rem;margin-bottom: 0.5rem">
           <iframe
             :myData="currentAdvices[1]"
             style="width:100%; height:20.5rem; border: none; "
@@ -2941,7 +2941,7 @@ export default {
 
   .myTable ::v-deep .el-table td.el-table__cell,
   .myTable ::v-deep .el-table th.el-table__cell.is-leaf{
-    border-bottom: 1px solid rgb(100,200,200) !important;
+    border-bottom: 1px solid var(--tableheader) !important;
   }
 
   .myTable ::v-deep .el-table tbody .el-table__cell {
@@ -2984,6 +2984,12 @@ export default {
     width: 100%;
     height: 27.5rem;
     border: none;
+  }
+
+  .iframeShadow{
+    background-color: var(--data-scrren-back-shadow-bg-color);
+    background-size: 100%;
+    filter: var(--data-screen-back-shadow-filter);
   }
 
   .iframe-fullScreen{
@@ -3030,9 +3036,14 @@ export default {
     background-color: var(--data-scrren-back-shadow-bg-color);
     background: var(--data-scrren-back-shadow-bg);
     background-size: var(--data-scrren-back-shadow-bg-size);
-    filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.2));
+    filter: var(--data-screen-back-shadow-filter);
     background-repeat: no-repeat;
   }
+
+  //.back-shadow::after {
+    //background-color: #fff;
+    //clip-path: polygon(0 20px, 20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 20px 100%, 0 calc(100% - 20px));
+  //}
 
   //.back-shadow::before {
   //  content: '';
@@ -3075,9 +3086,9 @@ export default {
     background: rgb(9, 43, 46,0.9);
   }
 
-  ::v-deep .el-input__inner{
-    color: #FFFFFF;
-  }
+  //::v-deep .el-input__inner{
+  //  color: #FFFFFF;
+  //}
 
   //::v-deep .el-select-dropdown,
   //::v-deep .el-select-dropdown__item.hover{

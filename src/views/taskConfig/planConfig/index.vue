@@ -22,7 +22,7 @@
     <div class="robot-body content-body">
       <div class="inspectTask-table">
         <el-table class="inspect-task" ref="singleTable" :data="planTasks" header-row-class-name="header-row-class"
-          row-class-name="row-class" style="width:100%" size="small" height="35.5rem">
+          row-class-name="row-class" style="width:100%" size="small" height="39.5rem">
           <!-- <el-table-column prop="id" label="计划编号" align="center" width="70">
             <template slot-scope="{ row }">
               <span>{{ row.id }}</span>
@@ -290,15 +290,15 @@
           </el-radio-group>
           <el-checkbox-group v-model="taskAi" >
           <div v-if="taskForm.DetectionClass == 1" >
-              <el-checkbox :disabled="taskForm.isDetail" 	 label="1001" style="width: 70px;">行人</el-checkbox>
-              <el-checkbox :disabled="taskForm.isDetail"  label="1002" style="width: 75px;">非机动车</el-checkbox>
-              <el-checkbox :disabled="taskForm.isDetail"  label="1008" style="width: 75px;">违停</el-checkbox>
-              <el-checkbox :disabled="taskForm.isDetail"  label="1016" style="width: 70px;">逆行</el-checkbox>
+              <el-checkbox :disabled="taskForm.isDetail" 	 label="1001" style="width: 70px;color: var(--font-color)">行人</el-checkbox>
+              <el-checkbox :disabled="taskForm.isDetail"  label="1002" style="width: 75px;;color: var(--font-color)">非机动车</el-checkbox>
+              <el-checkbox :disabled="taskForm.isDetail"  label="1008" style="width: 75px;;color: var(--font-color)">违停</el-checkbox>
+              <el-checkbox :disabled="taskForm.isDetail"  label="1016" style="width: 70px;;color: var(--font-color)">逆行</el-checkbox>
             </div>
             <div v-if="taskForm.DetectionClass == 3">
-              <el-checkbox 	:disabled="taskForm.isDetail"  label="1012" style="width: 70px;">消防设备</el-checkbox>
-              <el-checkbox :disabled="taskForm.isDetail"  label="1017" style="width: 75px;">风机</el-checkbox>
-              <el-checkbox :disabled="taskForm.isDetail"  label="1018" style="width: 75px;">指示灯</el-checkbox>
+              <el-checkbox 	:disabled="taskForm.isDetail"  label="1012" style="width: 70px;;color: var(--font-color)">消防设备</el-checkbox>
+              <el-checkbox :disabled="taskForm.isDetail"  label="1017" style="width: 75px;;color: var(--font-color)">风机</el-checkbox>
+              <el-checkbox :disabled="taskForm.isDetail"  label="1018" style="width: 75px;;color: var(--font-color)">指示灯</el-checkbox>
             </div>
           </el-checkbox-group>
         </el-form-item>
@@ -1212,12 +1212,14 @@ export default {
   width: 200px;
 }
 
->>>.header-row-class {
+::v-deep .header-row-class {
   background-color: transparent;
+  height:50px;
 }
 
->>>.row-class {
+::v-deep .row-class {
   background-color: transparent;
+  height:50px;
 }
 
 >>>.el-table thead {

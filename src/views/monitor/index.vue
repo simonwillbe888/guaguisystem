@@ -171,7 +171,7 @@
               <div class="taskDetail">
                 <span style="width: 6rem;line-height: 2rem;height: 2rem;overflow: hidden;">任务模板  </span>
                 <span style="color:#66B3B2;width: 7rem">
-                  <el-select v-model="taskID" placeholder="请选择">
+                  <el-select v-model="taskID" placeholder="任务选择">
                     <el-option v-for="item in taskList" :key="item.value" :label="item.label" :value="item.value">
                     </el-option>
                   </el-select>
@@ -190,7 +190,7 @@
               <img src="../../assets/img/route.png" class="backgroundIm">
               <div style="display: flex;">
                 <div class="nowPosition">
-                  <span style="margin:0.125rem 0.625rem 0  0.625rem ;font-size: 1.25rem;">巡检地图</span>
+                  <span style="margin:0.125rem 0.625rem 0  0.625rem ;font-size: 1.25rem;font-weight: var(--title-bolder);">巡检地图</span>
                   <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }}当前位置：{{ carList.pileNumber == null ?
                     (isNaN(carList.x) ? '未知' : carList.x / 1000) :
                     '站点' + carList.pileNumber
@@ -206,7 +206,7 @@
                         v-model="locationName"
                         value-key="areaName"
                         :fetch-suggestions="querySearch"
-                        placeholder="请输入内容"
+                        placeholder="如K19+20"
                         @select="handleSelect"
                       >
                       <!-- <template slot="prefix">去往</template> -->
@@ -2181,6 +2181,12 @@ export default {
         text-align: center;
         margin-left: 0.8rem;
       }
+    }
+  }
+
+  .el-autocomplete {
+    ::v-deep .el-input__inner{
+      color: #000;
     }
   }
 

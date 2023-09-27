@@ -2,11 +2,11 @@
   <div style="padding:1%; background: rgb(6,30,51);">
     <div class="content-header">
       <div style="display:inline;float: right;">
-        <span>{{ $t('comment_vary.default_time_label') }}</span>
+        <span style="color: var(--font-color)">{{ $t('comment_vary.default_time_label') }}</span>
         <el-date-picker v-model="startVal" type="date" value-format="yyyy-MM-dd"
           :placeholder="$t('comment_vary.start_time_label')">
         </el-date-picker>
-        <span>--</span>
+        <span style="color: var(--font-color)">--</span>
         <el-date-picker v-model="endVal" type="date" :placeholder="$t('comment_vary.end_time_label')"
           style="margin-right: 20px" value-format="yyyy-MM-dd">
         </el-date-picker>
@@ -17,8 +17,15 @@
 
     </div>
     <div class="equip-body content-body">
-      <el-table class="equip-data" :data="alarmInfoArr" header-row-class-name="header-row-class" height="35.5rem"
-        row-class-name="row-class" fit highlight-current-row size="small" :empty-text="'暂无数据'"><el-table-column
+      <el-table class="equip-data"
+                :data="alarmInfoArr"
+                header-row-class-name="header-row-class"
+                height="39.5rem"
+                row-class-name="row-class"
+                fit
+                highlight-current-row size="small"
+                :empty-text="'暂无数据'">
+        <el-table-column
           type="index" label="序号" align="center" width="100">
         </el-table-column>
         <el-table-column prop="account" label="账号" align="center">
@@ -48,7 +55,7 @@
             <span>{{ row.ip }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="details" label="详细信息" align="center" width="120">
+        <el-table-column prop="details" label="详细信息" align="center">
           <template slot-scope="{ row }">
             <!-- <el-button :disabled="row.operationType=='拍照'?false:row.operationType=='结束录像'?false:true" type="primary" icon="el-icon-picture" size="mini" plain @click="showDetail(row)">详情</el-button> -->
             <span>{{ row.information }}</span>
@@ -245,6 +252,16 @@ export default {
 
 ::v-deep .el-input__icon {
   line-height: 20px;
+}
+
+::v-deep .header-row-class {
+  background-color: transparent;
+  height:50px;
+}
+
+::v-deep .row-class {
+  background-color: transparent;
+  height:50px;
 }
 
 .equip-body {

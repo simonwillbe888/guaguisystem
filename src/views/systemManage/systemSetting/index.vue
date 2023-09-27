@@ -34,7 +34,7 @@
         </div>
 
       </div>
-      <el-dialog title="提示" :visible.sync="restartTips" width="30%" 
+      <el-dialog title="提示" :visible.sync="restartTips" width="30%"
       >
         <span>{{tipsText}}</span>
         <span slot="footer" class="dialog-footer">
@@ -44,11 +44,11 @@
       </el-dialog>
       <el-dialog title="下载视频图片" :visible.sync="download">
         <div>
-          <span>{{ $t('comment_vary.default_time_label') }}</span>
+          <span style="color: var(--font-color)">{{ $t('comment_vary.default_time_label') }}</span>
           <el-date-picker v-model="startVal" type="date" value-format="yyyy-MM-dd"
             :placeholder="$t('comment_vary.start_time_label')">
           </el-date-picker>
-          <span>--</span>
+          <span style="color: var(--font-color)">--</span>
           <el-date-picker v-model="endVal" type="date" :placeholder="$t('comment_vary.end_time_label')"
             style="margin-right: 20px" value-format="yyyy-MM-dd">
           </el-date-picker>

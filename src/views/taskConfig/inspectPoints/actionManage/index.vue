@@ -30,7 +30,7 @@
 <!--            </div>-->
 <!--          </el-collapse-item>-->
 <!--        </el-collapse>-->
-        <el-tag class="header-label" style="margin-bottom:10px">动作</el-tag>
+        <el-tag class="header-label" style="font-weight:normal;margin-top:1rem;color: var(--font-color)">动作</el-tag>
         <el-scrollbar>
           <el-button
             class="common-btn comp"
@@ -75,16 +75,16 @@
           >{{ $t('process_config.action_list') }}
 
           <el-button
-            size="small"
-            style="background-color:#64C8C8 ;color:#fff;float: right;margin-left: 1rem; margin-top: 10px;font-size: 20px"
+            size="mini"
+            style="border:none;background-color:#64C8C8 ;color:#fff;float: right;margin-left: 1rem; margin-top: 10px;font-size: 20px"
             @click="$router.back()">
             <svg-icon icon-class="goback" />
             返回
           </el-button>
 
           <el-button
-            size="small"
-            style="background-color:#64C8C8 ;color:#fff;float: right; margin-top: 10px;font-size: 20px"
+            size="mini"
+            style="border:none;background-color:#64C8C8 ;color:#fff;float: right; margin-top: 10px;font-size: 20px"
             @click="saveTemplate">
             <svg-icon icon-class="save" />
             保存
@@ -96,7 +96,7 @@
           <div
             v-for="(item, index) in actionsList"
             :key="item.id"
-            style="margin: 15px;height: 2.5rem; background: var(--taskbgd); position: relative; display: flex;border-radius: 5px;align-items: center;"
+            style="margin: 15px;height: 3.5rem; background: var(--taskbgd); position: relative; display: flex;border-radius: 5px;align-items: center;"
           >
             <!-- <div class="act-icon">
               <i class="el-icon-info"></i>
@@ -104,15 +104,13 @@
             <div style="flex:1;">
               <div style="width:50%;padding-left: 2.5rem;color:var(--font-color); ;font-size: 18px;">
                 <el-descriptions>
-                  <el-descriptions-item style="margin-left:40px ;" label="名称">{{
-                    taskName(item.type)
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="顺序">{{
-                    item.sequence
-                  }}</el-descriptions-item>
-                  <el-descriptions-item label="巡检点名称">{{
-                    showInfo(item.locationID)
-                  }}</el-descriptions-item>
+                  <el-descriptions-item style="margin-left:40px;color: var(--font-color)" label="名称">
+                    {{taskName(item.type)}}</el-descriptions-item>
+                  <el-descriptions-item style="color: var(--font-color)" label="顺序">
+                    {{item.sequence}}</el-descriptions-item>
+                  <el-descriptions-item style="color: var(--font-color)" label="巡检点名称">
+                    {{showInfo(item.locationID)}}
+                  </el-descriptions-item>
                 </el-descriptions>
               </div>
             </div>
@@ -129,6 +127,7 @@
                 class="edit-btn"
                 icon="el-icon-edit"
                 size="mini"
+                style="margin-right: 1rem"
                 plain
                 @click="editParam(item, index)"
                 >修改</el-button
@@ -670,7 +669,7 @@ export default {
           },
         ],
         yunPAngle:[
-          
+
         { validator: this.validateYunPAngle, trigger: 'blur' }
         ],
         yunTAngle:[
@@ -925,7 +924,7 @@ export default {
         menuItems.forEach(menuItem => {
           if (menuItem.querySelector('span').textContent == '巡检流程配置') {
             menuItem.classList.toggle('is-active')
-            menuItem.style = 'color: rgb(255, 255, 255); border-bottom-color: transparent; background-color: rgb(3, 27, 49);'
+            menuItem.style = 'border-bottom-color: transparent; background-color: #6fbcbf;'
           }
         });
       })
@@ -996,7 +995,7 @@ export default {
           this.patrolLocationList.push(element)
         })
       }
-      
+
       // } catch (error) {}
     },
     async getAllTemplate() {
@@ -1446,7 +1445,7 @@ export default {
     showInfo(val) {
       if (!val || !this.patrolLocationList.length){
         return;
-      } 
+      }
       let txt = '';
       this.patrolLocationList.forEach((item) => {
         if (item.locationID == val) {
@@ -1472,7 +1471,7 @@ export default {
         callback();
       }
     },
-    
+
     validateYunPAngle(rule, value, callback) {
       const volume = Number(value);
       if (isNaN(volume) || volume < 0 || volume > 360) {
@@ -1499,7 +1498,6 @@ export default {
   .page-title {
     line-height: 28px;
     font-size: 13px;
-    font-weight: 700;
     color: var(--font-color);
     padding-left: 15px;
     //background: rgb(46, 80, 104);
@@ -1566,6 +1564,7 @@ export default {
         border-radius: 0;
         line-height: 40px;
         height: 40px;
+        color: var(--font-color);
         //background: rgba(43, 69, 125, 0.3);
       }
     }
@@ -1588,7 +1587,7 @@ export default {
   background-color: transparent;
   color: #FFFFFF;
   font-size: 14px;
-  font-weight: bold;
+  font-weight: normal;
   border: none;
   // margin-bottom: 10px;
 }
@@ -1614,15 +1613,18 @@ export default {
   height: 2rem;
   text-align: left;
   font-size: 12px;
+  border-color: transparent;
 }
 
-.comp,::v-deep .el-tree-node__content {
-  background-color: var(--taskbgd);
+.comp,
+::v-deep .el-tree-node__content {
+  background-color: var(--task-action-bg);
   color:var(--font-color)
 }
 ::v-deep .el-tree-node__content {
   color:var(--font-color)!important;
 }
+
 .file {
   background-color: lightskyblue;
 }
@@ -1700,6 +1702,7 @@ export default {
 }
 
 .edit-btn {
+  border:none;
   background-color: #64C8C8;
   color: #fff;
   margin: 3px 0;
@@ -1708,6 +1711,7 @@ export default {
 }
 
 .delete-btn {
+  border:none;
   background-color: red;
   margin: 3px 0;
   text-align: left;
@@ -1762,6 +1766,7 @@ export default {
   padding-bottom: 0 !important;
   font-size: 1rem !important;
   line-height: 32px !important;
+  color: var(--font-color)
 }
 ::v-deep  .el-input__inner
  {
@@ -1776,6 +1781,7 @@ export default {
 }
 
 ::v-deep .el-tree-node__content{
+  height: 2.5rem;
   background-color: transparent;
   color: #000000;
 }

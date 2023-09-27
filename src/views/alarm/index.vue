@@ -77,7 +77,7 @@
         fit
         size="small"
         :empty-text="'暂无数据'"
-        height="37rem"
+        height="39.5rem"
       >
         <el-table-column type="index" label="序号" align="center" width="150">
         </el-table-column>
@@ -332,7 +332,7 @@
         <el-form-item class="common-form-footer">
           <div style="margin-right:16%">
 
-          
+
           <el-button
             type="primary"
             @click="
@@ -580,7 +580,7 @@ export default {
               }
             })
             .catch(() => {
-  
+
             });
         })
         .catch(() => {});
@@ -643,7 +643,7 @@ export default {
             this.alarmForm.OccurThreshold=  this.alarmForm.OccurThreshold/100
           this.alarmForm.RecoveryThreshold = this.alarmForm.RecoveryThreshold/100
           }
-       
+
           // this.alarmForm.gasType = obj.AlarmName
     },
     // 修改成功
@@ -932,12 +932,14 @@ export default {
   background-color: transparent;
 }
 
->>> .header-row-class {
+::v-deep .header-row-class {
   background-color: transparent;
+  height:50px;
 }
 
->>> .row-class {
+::v-deep .row-class {
   background-color: transparent;
+  height:50px;
 }
 
 >>> .el-table thead {

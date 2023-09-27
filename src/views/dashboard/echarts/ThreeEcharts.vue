@@ -16,16 +16,35 @@ export default {
       // 总数
       count: [],
       dealCount: [],
+      option:{},
     };
   },
   mounted() {
     this.init();
+  },
+  computed:{
+   changTheme(){
+    return this.$store.state.global.theme
+   }
   },
   watch:{
    date(newValue,old){
     if(newValue !== ''){
     this.init()
     }
+   },
+   changTheme(newV,oldV){
+     var tablebody = document.querySelector('#echarts3')
+     if(newV == 'theme-1'){
+      tablebody.style.setProperty('--box-shadow','2px 2px 2px 0px rgba(204,204,204,0.89)')
+      this.getEchartLeft3('#000')
+
+    }
+     else{
+      this.getEchartLeft3('#fff')
+
+      tablebody.style.setProperty('--box-shadow', 'none');
+     }
    } 
   },
   methods: {
@@ -44,27 +63,32 @@ export default {
             self.count.unshift(item.count)
             
           });
-          this.getEchartLeft3();
+          if (this.$store.state.global.theme == 'theme-1') {
+              this.getEchartLeft3('#000');
+            }
+            else {
+              this.getEchartLeft3('#fff');
+            }
         }
       }).catch(() => {
       })
       
     },
-    getEchartLeft3() {
+    getEchartLeft3(color) {
       let myChart = echarts.init(document.getElementById("echarts3"));
-      let option = {
+      this.option = {
         textStyle: {
           fontSize: 11,
           color: "#bae1f3",
         },
     
         title: {
-          text: "告警级别",
+          text: "| 告警级别",
           left: 10,
           top: 10,
           textStyle: {
             fontSize: 18,
-            color: "#ffffff",
+            color: color,
             fontWeight: "normal",
           },
         },
@@ -78,10 +102,13 @@ export default {
           nameLocation: "start",
           axisLine: {
             lineStyle: {
-              color: "#fff",
+              color: "#9ed0ce",
             },
-            show: true,
+            show: false,
           },
+          axisLabel:{
+              color:'#64C8C8'
+            }
         },
         tooltip: {
           trigger: "axis",
@@ -109,27 +136,33 @@ export default {
             position: "left",
             // interval:5,   //间隔
             splitLine: {
-              show: false,
+              show: true,
+              lineStyle:{
+                type:'dashed'
+              }
             },
             name: "",
             axisLine: {
               lineStyle: {
-                color: "#fff",
+                color: "#9ed0ce",
               },
               show: true,
             },
             axisTick: {
               show: false,
             },
+            axisLabel:{
+              color:'#64C8C8'
+            }
           },
         ],
         series: [
           {
             type: "bar",
-            barWidth: 10,
+            barWidth: 30,
             label: {
               show: false,
-              color: "#fff",
+              color: "#64C8C8",
               position: 'top',
               formatter(params) {
                 if (params.value > 0) {
@@ -145,11 +178,11 @@ export default {
                 
                 borderWidth: 1,
                 // borderColor: "#18CEE2",
-                barBorderRadius: 6,
-                color: function(params){
-                  var colorlist = [  "#DD41BE", "#EB772F","#6E3DC4","#13C8AC","#fff" ]
-                   return colorlist[params.dataIndex]
-                }
+                color: '#64C8C8'
+                // function(params){
+                //   var colorlist = [  "#DD41BE", "#EB772F","#6E3DC4","#13C8AC","#fff" ]
+                //    return colorlist[params.dataIndex]
+                // }
                 // color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
                 //   { offset: 0, color: "#2dc3db" },
                 //   { offset: 1, color: "#0f88c0" },
@@ -165,7 +198,7 @@ export default {
           },
         ],
       };
-      myChart.setOption(option, true);
+      myChart.setOption(this.option, true);
       window.addEventListener("resize", () => {
         myChart.resize();
       });
@@ -175,13 +208,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:root {
+  --box-shadow:none;
+}
 #echarts3 {
   width: 100%;
   height: 100%;
-  background: #46555B;
-  background-color:  rgba($color: #031B31, $alpha: 0.7);
-  box-shadow: 0 0 0 0.5px #fff, 0 0 0 1px #ccc;
+  background-color:  var(--tablebody);
+  box-shadow: var(--box-shadow); 
   transform: translateZ(0);
-  border-radius: 10px;
 }
 </style>

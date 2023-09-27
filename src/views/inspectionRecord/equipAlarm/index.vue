@@ -6,11 +6,11 @@
       </h3> -->
       <div class="robot-setting-inquire" style="float: right">
 
-        <span>{{ $t('comment_vary.default_time_label') }}</span>
+        <span style="color: var(--font-color)">{{ $t('comment_vary.default_time_label') }}</span>
         <el-date-picker v-model="startVal" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
           :placeholder="$t('comment_vary.start_time_label')">
         </el-date-picker>
-        <span>--</span>
+        <span style="color: var(--font-color)">--</span>
         <el-date-picker v-model="endVal" type="datetime" :placeholder="$t('comment_vary.end_time_label')"
           style="margin-right: 20px" value-format="yyyy-MM-dd HH:mm:ss">
         </el-date-picker>
@@ -37,9 +37,15 @@
 
 
     <div class="equip-body content-body">
-      <el-table class="equip-data" :data="alarmInfoArr" header-row-class-name="header-row-class"
-        row-class-name="row-class" fit height="37rem" highlight-current-row size="small"
-        :empty-text="'暂无数据'"><el-table-column type="index" label="序号" align="center" width="100">
+      <el-table class="equip-data"
+                :data="alarmInfoArr"
+                header-row-class-name="header-row-class"
+                row-class-name="row-class"
+                fit
+                height="39.5rem"
+                highlight-current-row size="small"
+                :empty-text="'暂无数据'">
+        <el-table-column type="index" label="序号" align="center" width="100">
         </el-table-column>
         <el-table-column prop="PlanName" label="计划名称" align="center">
           <template slot-scope="{ row }">
@@ -79,7 +85,7 @@
         </el-table-column>
         <el-table-column prop="details" label="详细信息" align="center" width="160">
           <template slot-scope="{ row }">
-            <el-button  style="background-color:#64C8C8 ;color:#fff"  icon="el-icon-document" size="mini"
+            <el-button  style="background-color: var(--title-bg) ;color:rgb(100,200,200)"  icon="el-icon-document" size="mini"
               :disabled="row.operateType === 7 ? true : row.operateType === 14 ? true : false" @click="showDetail(row)">{{
                 $t('plan_config.inqireDetail_label') }}</el-button>
           </template>
@@ -89,11 +95,12 @@
         <pagination v-show="total > 0" :total="total" :page.sync="page" :limit.sync="limit" @pagination="setPage" />
       </div>
     </div>
+
     <el-dialog :title="'巡检记录详情'" :visible.sync="dialogDetailFlag" class="detail-dialog">
       <div style="  width: 100%;
-  padding: 20px;
-  display: flex;
-  margin-bottom: 1vh;">
+        padding: 20px;
+        display: flex;
+        margin-bottom: 1vh;">
         <div class="name">
           计划名称：{{ planDetail.PlanName }}
         </div>
@@ -103,14 +110,22 @@
         <div class="name">
           结束时间：{{ planDetail.EndTime }}
         </div>
-        <div style="margin-left: auto;">
+        <div style="margin-left: auto;color: var(--font-color)">
+          <el-button
+              style="background-color: var(--title-bg);margin-right: 3rem;color:rgb(100,200,200)"
+              icon="el-icon-download"
+              size="mini"
+              @click="exportDetailReport(row)">
+            导出报告
+          </el-button>
           告警数量：{{ planDetail.AlarmCount }}
         </div>
       </div>
       <div class="countData">
         <el-table :data="planDetailArr" header-row-class-name="header-row-class" @row-click="getDetailMessage"
           row-class-name="row-class" fit highlight-current-row size="small" height="51vh"
-          :empty-text="'暂无数据'"><el-table-column type="index" label="序号" align="center" width="100">
+          :empty-text="'暂无数据'">
+          <el-table-column type="index" label="序号" align="center" width="80">
           </el-table-column>
           <el-table-column prop="AlarmCode" label="告警码" align="center">
           </el-table-column>
@@ -123,9 +138,13 @@
                 5 ? '重新检测恢复':scope.row.Status ==
                 6 ? '归档': '异常值' }}
             </template>
-
           </el-table-column>
-          <el-table-column prop="HighValue" label="最大告警值" align="center" width="130">
+          <el-table-column prop="MaxLevel" label="告警级别" align="center" width="60">
+            <template slot-scope="scope">
+              {{ alarmLevelIdentify(scope.row.MaxLevel) }}
+            </template>
+          </el-table-column>
+          <el-table-column prop="HighValue" label="最大告警值" align="center" width="120">
           </el-table-column>
           <el-table-column prop="details" label="机器名称" align="center" width="160">
             <template slot-scope="{ row }">
@@ -137,12 +156,12 @@
               <span>{{ row.EquipmentName }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="ReportTime" label="发生时间" align="center">
+          <el-table-column prop="ReportTime" label="发生时间" align="center"  width="160">
             <template slot-scope="{ row }">
               <span>{{ row.ReportTime }}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="RecoveryTime" label="处理时间" align="center">
+          <el-table-column prop="RecoveryTime" label="处理时间" align="center"  width="160">
             <template slot-scope="{ row }">
               <span>{{ row.RecoveryTime }}</span>
             </template>
@@ -165,10 +184,14 @@ import {
 } from '@/api/inspectRecord';
 import Pagination from '@/components/Pagination';
 import { mapGetters } from 'vuex';
+import exportReport from '@/views/exportReport/index.vue'
 
 export default {
   components: { Pagination },
   computed: {
+    exportReport() {
+      return exportReport
+    },
     ...mapGetters(['webSocketUrl']),
   },
 
@@ -330,9 +353,13 @@ export default {
         this.findInfo();
       }
     },
+    //导出巡检记录详情
+    exportDetailReport(){
+      //TODO
+    },
+
     // 导出列表
     exportAll() {
-
       if (this.startVal == '' && this.endVal == '') {
         var params = {
           endTime: '2999-12-31 23:59:59',
@@ -393,7 +420,6 @@ export default {
 
     },
     // 导出本页
-
     formatJson(filterVal) {
       return this.alarmInfoArr.map((v) =>
         filterVal.map((j) => {
@@ -407,11 +433,13 @@ export default {
         })
       );
     },
+
     cancel() {
       this.dialogFormVisible = false;
       this.fileName = '';
       this.textType = 'xlsx';
     },
+
     showDetail(item) {
       console.log("查看详情", item)
       let self = this;
@@ -429,9 +457,20 @@ export default {
       // this.detailForm.location = item.location
 
     },
+
+    alarmLevelIdentify(data){
+      switch (data) {
+        case 1: return "提示";
+        case 2: return "一般";
+        case 3: return "严重";
+        case 4: return "致命";
+      }
+    },
+
     getDetailMessage(e) {
       console.log('告警信息', e)
     },
+
     async getTaskType() {
       await getTaskTypeList().then(res=>{
         if (res.code === 20000) {
@@ -488,6 +527,7 @@ export default {
   color: var(--font-color);
   border: 1px solid var(--tableborder);
 }
+
 .equip-body {
   padding: 0 10px;
   // background-color: lightblue;
@@ -496,46 +536,50 @@ export default {
   .equip-data {
     font-size: 13px;
     width: 100%;
-    color: #301d0f;
+    color: var(--font-color);
   }
 }
 
 .detail-dialog {
 
   ::v-deep .el-dialog {
-    background-color: #132B41 !important;
+    background-color: var(--tablebody) !important;
 
   }
 
   ::v-deep .el-dialog__body {
     margin-left: 0px;
-    background-color: #132B41 !important;
+    background-color: var(--tablebody) !important;
 
   }
 }
 
-
-
-
 ::v-deep .el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
-  background-color: #031B31;
+  background-color: rgb(100,200,200);
 }
 
 ::v-deep .el-table__body tr.current-row>td.el-table__cell {
-  background-color: #031B31;
+  background-color: rgb(100,200,200);
 }
 
 ::v-deep .header-row-class {
   background-color: transparent;
+  height: 50px;
 }
 
 ::v-deep .row-class {
+  color: var(--font-color);
   background-color: transparent;
+  height: 50px;
 }
 
 ::v-deep .el-table thead {
-  color: black;
+  color: var(--font-color);
+  .el-table__cell{
+    background-color: var(--tableHead);
+  }
 }
+
 
 ::v-deep .el-table th>.cell {
   padding-left: 0;
@@ -552,7 +596,7 @@ export default {
   padding: 20px;
   display: flex;
   margin-bottom: 1vh;
-  background-color: #1E3B54 !important;
+  background-color: var(--dialoghead) !important;
   .countData {
     margin-top: 10vh;
   }
@@ -561,17 +605,13 @@ export default {
 }
   .name {
     margin-left: 2%;
-    color: #fff;
+    color: var(--font-color);
   }
 
 
 ::v-deep.el-dialog__body {
   padding: 20px;
   margin-left: 90px;
-}
-.el-dialog{
-  background-color: #132B41 !important;
-
 }
 
 .detail-form {
@@ -610,4 +650,5 @@ export default {
   background-color: #132B41;
   height: calc(100vh - 200px)
 }
+
 </style>

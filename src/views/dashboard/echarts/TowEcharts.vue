@@ -22,19 +22,36 @@ export default {
         },
         { value: 0, name: "告警次数" },
       ],
-      percent:0
+      percent:0,
+      option:{}
     };
   },
   mounted() {
     // this.getEchartLeft3(this.echartsData);
     this.init()
   },
+  computed:{
+   changTheme(){
+    return this.$store.state.global.theme
+   }
+  },
   watch:{
    date(newValue,old){
     if(newValue !== ''){
     this.init()
     }
-   } 
+   },
+   changTheme(newV,oldV){
+     var tablebody = document.querySelector('#echarts2')
+     if(newV == 'theme-1'){
+      this.getEchartLeft3(self.echartsData,'#000');
+      tablebody.style.setProperty('--box-shadow','2px 2px 2px 0px rgba(204,204,204,0.89)')
+     }
+     else{
+      this.getEchartLeft3(self.echartsData,'#fff');
+      tablebody.style.setProperty('--box-shadow', 'none');
+     }
+   }  
   },
   methods: {
     init(){
@@ -61,27 +78,31 @@ export default {
         
         }
         // console.log("查看发生率",this.occurCount/this.count)
-        self.getEchartLeft3(self.echartsData);
+        if(this.$store.state.global.theme == 'theme-1'){
+          self.getEchartLeft3(self.echartsData,'#000');
+        }else{
+          self.getEchartLeft3(self.echartsData,'#fff');
+        }
       }).catch(() => {
       })
       
     },
-    getEchartLeft3(data) {
+    getEchartLeft3(data,titleColor) {
       let myChart = echarts.init(document.getElementById("echarts2"));
-      let option = {
+      this.option = {
         color: ["#08F9EB", "#FCD14E", "#eeeeee"],
         textStyle: {
           fontSize: 11,
-          color: "#bae1f3",
+          color: titleColor,
         },
 
         title: {
-          text:  "告警发生率",
+          text:  "| 告警发生率",
           left: 10,
           top: 8,
           textStyle: {
             fontSize: 18,
-            color: "#ffffff",
+            color: titleColor,
             fontWeight: "normal",
           },
         },
@@ -96,18 +117,18 @@ export default {
           left: "55%",
           bottom: "10%",
           textStyle: {
-            color: "#bae1f3",
+            color: titleColor,
           },
           // data: data,
-          formatter: (name) => {
-            let label = "";
-            data.forEach((item) => {
-              if (item.name === name) {
-                label = name + "：" + item.value;
-              }
-            });
-            return label;
-          },
+          // formatter: (name) => {
+          //   let label = "";
+          //   data.forEach((item) => {
+          //     if (item.name === name) {
+          //       label = name + "：" + item.value;
+          //     }
+          //   });
+          //   return label;
+          // },
         },
         grid: {
           left: "3%",
@@ -131,6 +152,7 @@ export default {
               position: "center",
               formatter: this.percent +'%' ,
               fontSize: 13,
+              color:titleColor
             },
             labelLine: {
               show: false,
@@ -143,7 +165,7 @@ export default {
                 label: {
                   show: true, //默认显示第一块
                   fontSize: "20",
-                  color: "#fff",
+                  color: titleColor,
                   fontWeight: "bold",
                 },
               },
@@ -153,7 +175,7 @@ export default {
           },
         ],
       };
-      myChart.setOption(option, true);
+      myChart.setOption(this.option, true);
       window.addEventListener("resize", () => {
         myChart.resize();
       });
@@ -163,12 +185,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:root {
+  --box-shadow:none;
+}
 #echarts2 {
   width: 100%;
   height: 100%;
-  background-color:  rgba($color: #031B31, $alpha: 0.7);
-  box-shadow: 0 0 0 0.5px #fff, 0 0 0 1px #ccc;
+  background-color:  var(--tablebody);
+  box-shadow: var(--box-shadow); 
   transform: translateZ(0);
-  border-radius: 10px;
 }
 </style>

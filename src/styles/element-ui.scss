@@ -73,16 +73,21 @@
 .content-body .el-table__body,
 .content-body .el-table__footer,
 .content-body .el-table__header{
-  border-top: 1px solid rgba(235,238,245,.5);
+  //border-top: 1px solid rgba(235,238,245,.5);
   border-left: 1px solid var(--tableborder)!important;
-  border-right: 1px solid var(--tableborder)!important;
+  border-right: 2px solid var(--tableborder)!important;
   table-layout: auto;
 }
 
+.content-body .el-table__header{
+  border-bottom: 1px solid var(--tableborder)!important
+}
+
+
 .content-body .el-table__footer-wrapper,
 .content-body .el-table__header-wrapper{
-  border-top: 1px solid rgba(235,238,245,.5);
-  border-right: 2px solid rgba(235,238,245,.5);
+  border-top: 1px solid var(--tableborder);
+  border-right: 1px solid var(--tableborder);
 }
 
 .el-pagination.is-background .el-pager li:not(.disabled).active{

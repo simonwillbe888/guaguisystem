@@ -2,11 +2,24 @@
   <div style="height: 100%;background-color: transparent;">
     <div class="selectDate">
       <div style="margin:.625rem ;flex: 1;display: flex;position: relative;i">
-        <div class="block">
-          <span>{{ $t('comment_vary.default_time_label') }}</span>
+        <div class="block" style="border: none;">
+          <!-- <span style="color: var(--font-color)">{{ $t('comment_vary.default_time_label') }}</span> -->
           <el-date-picker v-model="date"   value-format="yyyy-MM-dd"   type="daterange" align="right" unlink-panels range-separator="至"
             start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
+            <template #default="{ value, text }">
+      <el-input
+        v-bind="{
+          value,
+          text,
+          'suffix-icon': 'el-icon-time' // 设置后缀图标
+        }"
+        :readonly="true"
+        placeholder="开始日期"
+      >
+      </el-input>
+    </template>
           </el-date-picker>
+          
         </div>
         <!-- <el-input placeholder="请输入日期" @blur="date = day" v-model.number="day" class="day">
           <template slot="suffix">
@@ -14,7 +27,7 @@
           </template>
         </el-input> -->
         <!-- <span class="day">告警数据</span> -->
-        <div class="search" @click="search()">查询</div>
+        <div class="search" @click="search()"><svg-icon icon-class="echartsearch" style="font-size:1rem"></svg-icon> 查询</div>
         <div class="back" @click="$router.back();">
           <img src="../../assets/img/fanhui.png">返回
         </div>
@@ -120,13 +133,16 @@ export default {
 </script>
 <style scoped lang="scss">
 .selectDate {
-  width: 100%;
+  margin-top: 10px;
+  width: 99%;
   display: flex;
   color: #fff;
   text-align: center;
+  background-color: var(--tablebody);
+  box-shadow: var(--shadow-color); 
 
   .search {
-    width: 3.125rem;
+    width: 5rem;
     height: 1.875rem;
     background-color: #64C8C8;
     border-radius: .625rem;
@@ -167,9 +183,14 @@ export default {
     width: 3.75rem;
   }
 }
-::v-deep .el-input__inner, .el-range-editor.el-input__inner{
-  background-color: #071828;
+::v-deep .el-range-separator{
+  align-items: center;
+  line-height:1.5rem
 }
+::v-deep .el-input__inner, .el-range-editor.el-input__inner{
+  background:  var(--tablebody);
+}
+ 
 .echarts-container {
   display: flex;
 

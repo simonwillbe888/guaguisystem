@@ -20,12 +20,30 @@ export default {
   mounted() {
     this.init();
   },
+  computed:{
+   changTheme(){
+    return this.$store.state.global.theme
+   }
+  },
   watch:{
    date(newValue,old){
     if(newValue !== ''){
     this.init()
     }
-   }
+   },
+   changTheme(newV,oldV){
+     var tablebody = document.querySelector('#echarts4')
+     if(newV == 'theme-1'){
+      this.getEchartLeft3('#000')
+
+      tablebody.style.setProperty('--box-shadow','2px 2px 2px 0px rgba(204,204,204,0.89)')
+     }
+     else{
+      this.getEchartLeft3('#fff')
+
+      tablebody.style.setProperty('--box-shadow', 'none');
+     }
+   } 
   },
   methods: {
     init() {
@@ -96,11 +114,16 @@ export default {
             self.count = [];
             self.alarmName = [];
           }
-          this.getEchartLeft3();
+          if (this.$store.state.global.theme == 'theme-1') {
+              this.getEchartLeft3('#000');
+            }
+            else {
+              this.getEchartLeft3('#fff');
+            }
         })
         .catch(() => {});
     },
-    getEchartLeft3() {
+    getEchartLeft3(color) {
       let myChart = echarts.init(document.getElementById('echarts4'));
       let option = {
         color: ["#08CEF9"],
@@ -109,12 +132,12 @@ export default {
           color: '#bae1f3',
         },
         title: {
-          text: '告警类别',
+          text: '| 告警类别',
           left: 10,
           top: 10,
           textStyle: {
             fontSize: 18,
-            color: '#ffffff',
+            color: color,
             fontWeight: 'normal',
           },
         },
@@ -131,14 +154,16 @@ export default {
             formatter: function(value) {
               return value.length > 6 ? value.substring(0, 6) + '...' : value;
             },
+            color:'#64C8C8'
           },
           name: '',
           nameLocation: 'start',
           axisLine: {
-            lineStyle: {
-              color: '#fff',
-            },
-            show: true,
+            // lineStyle: {
+            //   color: '#64C8C8',
+            //   type:'dashed'
+            // },
+            show: false,
           },
         },
         tooltip: {
@@ -166,30 +191,32 @@ export default {
             type: 'value',
             position: 'left',
             // interval: 1, //间隔
-            minInterval: 1,
-            // min: 10,
             splitLine: {
-              show: false,
+              show: true,
+              lineStyle:{
+                type:'dashed'
+              }
             },
             name: '',
             axisLine: {
-              lineStyle: {
-                color: '#fff',
-              },
-              show: true,
-            },
-            axisTick: {
+     
               show: false,
             },
+            axisTick: {
+              show: true,
+            },
+            axisLabel:{
+              color:'#64C8C8'
+            }
           },
         ],
         series: [
           {
             type: 'bar',
-            barWidth: 10,
+            barWidth: 30,
             label: {
               show: false,
-              color: '#fff',
+              color: '#02bfbf',
               position: 'top',
               formatter(params) {
                 if (params.value > 0) {
@@ -202,8 +229,8 @@ export default {
             itemStyle: {
               normal: {
                 borderWidth: 1,
+                color:'#02bfbf'
                 // borderColor: "#18CEE2",
-                barBorderRadius: 6,
                 // color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
                 //   { offset: 0, color: "#2dc3db" },
                 //   { offset: 1, color: "#0f88c0" },
@@ -229,12 +256,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:root {
+  --box-shadow:2px 2px 2px 0px rgba(204,204,204,0.89);
+  // box-shadow: 2px 2px 2px 0px rgba(204,204,204,0.89);
+}
 #echarts4 {
   width: 100%;
   height: 100%;
-  background-color:  rgba($color: #031B31, $alpha: 0.7);
-  box-shadow: 0 0 0 0.5px #fff, 0 0 0 1px #ccc;
+  background-color:  var(--tablebody);
+  box-shadow: var(--box-shadow); 
   transform: translateZ(0);
-  border-radius: 10px;
 }
 </style>

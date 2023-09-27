@@ -61,7 +61,7 @@
               <span style="display: block">关于</span>
             </el-dropdown-item>
             <el-dropdown-item @click.native="switchTheme">
-              <span style="display: block">主题</span>
+              <span style="display: block">{{currentTheme}}</span>
             </el-dropdown-item>
             <el-dropdown-item @click.native="logout">
               <span style="display: block">退出</span>
@@ -177,6 +177,10 @@ export default {
     },
     themeClass(){
       return this.theme === 'theme-1' ? 'theme-1' :'theme-2';
+    },
+    currentTheme(){
+      // return this.theme === 'theme-1' ? '科技蓝' : '简约白';
+      return '主题'
     }
   },
   beforeDestroy() {
@@ -417,15 +421,15 @@ export default {
         color: var(--font-color);
 
         .svg-icon {
-          font-size: 1rem;
+          font-size: 1.5rem;
           // margin-bottom: .5rem;
           margin-top: .25rem;
         }
 
         .name {
-          font-size: 1rem;
+          font-size: 1.25rem;
           // height: 3.75rem;
-          line-height: 1.5rem;
+          line-height: 2rem;
           width: 100%;
           overflow: hidden;
         }

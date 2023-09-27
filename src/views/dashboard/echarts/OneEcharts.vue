@@ -1,5 +1,5 @@
 <template>
-  <div id="echarts1" ></div>
+  <div id="echarts1"></div>
 </template>
 
 <script>
@@ -7,9 +7,9 @@ import * as echarts from 'echarts';
 import { getCountByLevelAndStatus } from '@/api/homepageAlarm.js';
 import { type } from 'os';
 export default {
-  props:{
-    date:Number,
-    required:true
+  props: {
+    date: Number,
+    required: true
   },
   data() {
     return {
@@ -18,21 +18,39 @@ export default {
       // 总数
       count: [],
       dealCount: [],
-      noDealCount: [],
+      count: [],
       alarmLevelDesc: [],
       // dealCount: 0,
-      // noDealCount: 0,
+      // count: 0,
+      option: {}
     };
   },
   mounted() {
     this.init();
   },
-  watch:{
-   date(newValue,old){
-    if(newValue !== ''){
-    this.init()
+  computed: {
+    changTheme() {
+      return this.$store.state.global.theme
     }
-   } 
+  },
+  watch: {
+    date(newValue, old) {
+      if (newValue !== '') {
+        this.init()
+      }
+    },
+    changTheme(newV, oldV) {
+      var tablebody = document.querySelector('#echarts1')
+      if (newV == 'theme-1') {
+        this.getEchartLeft3('#000')
+        tablebody.style.setProperty('--box-shadow', '2px 2px 2px 0px rgba(204,204,204,0.89)')
+      }
+      else {
+        console.log('bbb')
+        this.getEchartLeft3('#fff')
+        tablebody.style.setProperty('--box-shadow', 'none');
+      }
+    }
   },
   methods: {
     init() {
@@ -45,52 +63,58 @@ export default {
         .then((response) => {
           if (response && response.data.length) {
             self.dealCount = [];
-            self.noDealCount = [];
+            self.count = [];
             self.alarmLevelDesc = [];
             response.data.forEach((item) => {
               self.alarmLevelDesc.unshift(item.alarmLevelDesc);
               self.dealCount.unshift(item.dealCount);
-              self.noDealCount.unshift(item.noDealCount);
+              self.count.unshift(item.count);
             });
-            this.getEchartLeft3();
+            if (this.$store.state.global.theme == 'theme-1') {
+              this.getEchartLeft3('#000');
+            }
+            else {
+              this.getEchartLeft3('#fff');
+            }
           }
         })
-        .catch(() => {});
+        .catch(() => { });
     },
-    getEchartLeft3() {
+    getEchartLeft3(titleColor) {
       // debugger
       let self = this;
       let myChart = echarts.init(document.getElementById('echarts1'));
-      let option = {
-        color: ['#08F9EB', '#FCD14E',],
+      this.option = {
+        color: ['#08F9EB', '#f59b22',],
         textStyle: {
           fontSize: 11,
           color: '#bae1f3',
         },
         title: {
-          text: '告警信息',
+          text: '| 告警信息',
           left: 10,
           top: 10,
           textStyle: {
             fontSize: 18,
-            color: '#ffffff',
+            color: titleColor,
             fontWeight: 'normal',
           },
         },
 
         xAxis: {
           data: this.alarmLevelDesc,
-          axisTick: {
-            show: false,
-          },
+
           name: "",
           nameLocation: "start",
           axisLine: {
             lineStyle: {
               color: "#fff",
             },
-            show: true,
+            show: false,
           },
+          axisLabel:{
+              color:'#64C8C8'
+            }
         },
         tooltip: {
           trigger: 'axis',
@@ -100,10 +124,10 @@ export default {
         },
         legend: {
           top: '8%',
-          data: ['已处理', '未处理'],
+          data: ['已处理', '告警数据'],
           textStyle: {
             fontSize: 12, //字体大小
-            color: '#ffffff', //字体颜色
+            color: '#64C8C8', //字体颜色
           },
         },
         // 图 位置
@@ -121,25 +145,33 @@ export default {
         // 纵坐标
         yAxis: {
           type: 'value',
-          position:'left',
+          position: 'left',
           splitLine: {
-              show: false,
+              show: true,
+              lineStyle:{
+                type:'dashed'
+              }
             },
           axisLine: {
             lineStyle: {
-                color: "#fff",
-              },
-              show: true,
+              color: "#fff",
+            },
+            show: true,
           },
           axisTick: {
-              show: false,
-            },
+            show: false,
+          },
+          axisLabel:{
+              color:'#64C8C8'
+            }
         },
         series: [
           {
             name: '已处理',
             type: 'bar',
-            barWidth: 10,
+            barWidth: 30,
+            seriesLayoutBy: 'row',
+
             label: {
               show: false,
               color: '#fff',
@@ -153,20 +185,20 @@ export default {
               },
             },
             itemStyle: {
-              barBorderRadius: 6,
-              normal:{ color:'#08F9EB'}
+              normal: { color: '#64C8C8' }
             },
             emphasis: {
               focus: 'series',
             },
             data: this.dealCount,
-            barGap: '-100%',
+            barGap: '-5%',
           },
           {
-            name: '未处理',
+            name: '告警数据',
             type: 'bar',
             stack: 'total',
-            barWidth: 10,
+            barWidth: 30,
+            seriesLayoutBy: 'row',
             label: {
               show: false,
               color: '#fff',
@@ -181,16 +213,16 @@ export default {
             emphasis: {
               focus: 'series',
             },
-            data: this.noDealCount,
+            data: this.count,
             itemStyle: {
-              barBorderRadius: 6,
               // borderRadius: [0, 7, 7, 0],
-              normal:{color:'rgba(252,209,78,0.7)'}
+              normal: { color: '#f59b22' }
+
             },
           },
         ],
       };
-      myChart.setOption(option, true);
+      myChart.setOption(this.option, true);
       //监听屏幕尺寸
       window.addEventListener('resize', () => {
         myChart.resize();
@@ -201,12 +233,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+:root {
+  --box-shadow: none;
+  // box-shadow: 2px 2px 2px 0px rgba(204,204,204,0.89);
+}
+
 #echarts1 {
   width: 100%;
   height: 100%;
-  background-color:  rgba($color: #031B31, $alpha: 0.7);
-  box-shadow: 0 0 0 0.5px #fff, 0 0 0 1px #ccc;
+  background-color: var(--tablebody);
+  box-shadow: var(--box-shadow);
   transform: translateZ(0);
-  border-radius: 10px;
 }
 </style>

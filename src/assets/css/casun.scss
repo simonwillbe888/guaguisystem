@@ -21,14 +21,16 @@
   --logo-color-edge:rgba(100, 200, 200, 0.1);
   --logo-color-border:rgba(100, 200, 200, 0.05);
   --shadow-color:rgba(204,204,204,0.89);
-  --filter:drop-shadow(rgba(204, 204, 204, 0.89) 2px 2px 2px);
+  --filter:drop-shadow(2px 2px 2px rgba(204, 204, 204, 0.89));
   --chamfer-background:linear-gradient(-45deg, transparent 20px, var(--back-shadow) 0) right;
   --title-bolder: normal;
   --title-color: rgb(43, 121, 121);
+  --title-bg: rgb(253, 238, 241);
   --online: #FFFFFF;
   --tableHead:#b1e3e3;
   --tableborder:#64c8c8;
   --dialoghead:#64c8c8;
+  --dialog-shadow: rgba(255, 255, 255, 0.5);
   --data-scrren-back-shadow-bg-color: #FFFFFF;
   --data-scrren-back-shadow-bg:
           linear-gradient(135deg, transparent 15px, #FFFFFF 0) top left,
@@ -36,12 +38,14 @@
           linear-gradient(-45deg, #FFFFFF 10px, transparent 11px,transparent 15px, #FFFFFF 0) bottom right,
           linear-gradient(45deg, rgb(103, 178, 177) 10px, transparent 11px,transparent 15px, #FFFFFF 0) bottom left;
   --data-scrren-back-shadow-bg-size: 50.1% 50.2%;
+  --data-screen-back-shadow-filter: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.2));
   --clock-color: #000000;
   --data-screen-alarm-table-color: #b1e3e3;
   --data-screen-alarm-table-even-row-color: transparent;
   --data-screen-font-color: rgb(100,200,200);
   --loginbgd:transparent;
-  --taskbgd:rgba(100,200,200,0.5)
+  --taskbgd:rgba(100,200,200,0.5);
+  --task-action-bg: rgb(218, 226, 229);
 }
 //深色
 .theme-2 {
@@ -54,7 +58,7 @@
   --back-shadow:rgba(7,24,40,0.5);
   --tablebody:#031b31;
   --tableheader:rgb(51,113,124);
-  --filter:drop-shadow(rgba(204, 204, 204, 0.89) 2px 2px 2px);
+  --filter:none;
   --logo-color-core:rgba(255, 255, 255, 0.3);
   --logo-color-around:rgba(255, 255, 255, 0.2);
   --logo-color-edge:rgba(255, 255, 255, 0.1);
@@ -63,10 +67,12 @@
   --chamfer-background: var(--back-shadow);
   --title-bolder: bolder;
   --title-color: #FFFFFF;
+  --title-bg: rgb(23, 30, 53);
   --online: #67B3B2;
   --tableHead:#33717c;
   --tableborder:#fff;
   --dialoghead:#042A4A;
+  --dialog-shadow:#fff;
   --loginbgd:#fff;
   --taskbgd:#042A4A;
   --data-scrren-back-shadow-bg-color: rgb(9, 43, 46,0.8);
@@ -75,12 +81,15 @@
           linear-gradient(-135deg, transparent 0, rgb(9, 43, 46,0.8) 0) top right,
           linear-gradient(-45deg, rgb(103, 178, 177) 10px, transparent 11px,transparent 15px, rgb(9, 43, 46,0.8) 0) bottom right,
           linear-gradient(45deg, rgb(103, 178, 177) 10px, transparent 11px,transparent 15px, rgb(9, 43, 46,0.8) 0) bottom left;
-  --data-scrren-back-shadow-bg-size: 50.1% 50.2%;
+  --data-scrren-back-shadow-bg-size: 50.0% 50.2%;
+  --data-screen-back-shadow-filter:  drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.2));
   --clock-color: #67B3B2;
   --data-screen-alarm-table-color: #2b6163;
   --data-screen-alarm-table-even-row-color: #092b2e;
   --data-screen-font-color: rgb(100,200,200);
+  --task-action-bg: rgb(23, 36, 64);
 }
+
 img {
   -webkit-user-drag: none;
 }
@@ -144,8 +153,9 @@ img {
 
 .el-input__prefix,
 .el-input__suffix {
-  color: #fff;
+  color: var(--font-color);
 }
+
 .el-divider{
  background: var(--font-color);
  margin: 40px 0;
@@ -158,22 +168,25 @@ img {
   color: var(--font-color) ;
   background: var(--tablebody);
 }
+
 .el-input__inner,
 .el-range-editor.el-input__inner {
   height: 1.875rem;
-    // border:1px solid var(--tableborder);
-    color: var(--font-color);
-
+    border:none;
+  color: var(--font-color);
+  background:  var(--tablebody);
   // color: #fff; //修改了 timepicker样式改不回来
 }
 
 .el-date-editor .el-range-input {
-  background-color: #071828;
-  color: #fff;
+  background:  var(--tablebody);
+  color: var(--font-color);
+  border: 1px solid #64C8C8;
+
 }
 
 .el-date-editor .el-range-separator {
-  color: #fff;
+  color: var(--font-color);
   line-height: 1.3;
   width: 2.2rem;
   text-align: center;
@@ -250,7 +263,7 @@ img {
 
 .myTable .el-table td.el-table__cell,
 .myTable .el-table th.el-table__cell.is-leaf {
-  border-bottom: 0.5px solid #ebeef5;
+  border-bottom: 0.5px solid var(--tableheader);
 }
 
 .oneLine {
@@ -268,6 +281,7 @@ img {
       }
     }
     .greenButton{
+      border: none;
       background-color:#64C8C8 ;
       color:#fff;
     }
@@ -321,6 +335,7 @@ img {
       padding: 0 10px;
       border: none;
       background-color: var(--tablebody);
+      height: 43rem;
       .el-table .el-table__cell {
         padding: 0;
         color: var(--font-color);
@@ -347,7 +362,7 @@ img {
 
       .el-table td.el-table__cell,
       .el-table th.el-table__cell.is-leaf {
-        // border-bottom: 0.5px solid #ebeef5;
+         border-bottom: 0.5px solid var(--tableheader);
       }
     }
 
@@ -378,6 +393,7 @@ img {
       // position: absolute;
       // max-width: 40vw;
       // min-height: 30vw;
+      filter: drop-shadow(0px 0px 2px var(--dialog-shadow));
       padding: 0;
       margin: 0;
       top: 40%;
@@ -462,16 +478,16 @@ img {
     height: 2.5rem;
     line-height: 2.5rem;
     text-align: center;
-    font-size: 1.125rem;
-    border-bottom: 1px solid;
-
+    font-size: 1rem;
+    //border-bottom: 1px solid;
+    background-color: var(--title-bg) !important;
   }
 
   .el-menu-item.is-active {
     color: #fff;
-    padding-bottom: 20px !important;
-    background-color: #64C8C8 !important;
-
+    //padding-bottom: 20px !important;
+    background-color: #6fbcbf !important;
+    border-radius: 5px;
   }
 }
 
