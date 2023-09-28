@@ -124,8 +124,8 @@
             </el-select>
           </el-form-item>
           <el-form-item :label="'是否绑定待命点'" prop="stand">
-            <el-checkbox :label="$t('robot_setting.bind_standby_label')" v-model="standByChecked"></el-checkbox>
-            <el-select v-if="standByChecked" :disabled="robotForm.isEdit" v-model="vertex" placeholder="请选择">
+            <el-checkbox style="color: var(--font-color)" :disabled="robotForm.isEdit" :label="$t('robot_setting.bind_standby_label')" v-model="standByChecked"></el-checkbox>
+            <el-select v-if="standByChecked" :disabled="robotForm.isEdit" v-model="vertex" placeholder="请选择待命点">
               <el-option v-for="item in StationVertex" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>
@@ -135,75 +135,76 @@
               dialogType === 'addRobots'
                 ? addSuccess('robotForm', robotForm)
                 : editSuccess('robotForm', robotForm)
-              ">{{ $t('robot_setting.sure_label') }}</el-button>
-            <el-button type="primary" plain @click="cancelOperate('robotForm')">{{ $t('robot_setting.cancel_label')
+              " style="background-color: var(--bt-confirm-bg)">{{ $t('robot_setting.sure_label') }}</el-button>
+            <el-button type="primary" style="background-color: var(--bt-cancel-bg);color: var(--font-color)" plain @click="cancelOperate('robotForm')">{{ $t('robot_setting.cancel_label')
             }}</el-button>
           </el-form-item>
         </el-form>
       </el-dialog>
     </div>
     <!-- 关联配件设置 -->
-    <el-dialog :title="$t('robot_setting.access_operate_label')" :visible.sync="dialogAccessFlag"
-      :close-on-click-modal="false" width="70%">
-      <div style="margin-bottom: 20px; font-size: 13px">
-        <span>{{ $t('robot_setting.accesso_type_label') }}</span>
-        <el-select class="access-select" v-model="value1" placeholder="请选择" @change="initListOption" clearable>
-          <el-option v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item"
-            :disabled="item.disabled">
-          </el-option>
-        </el-select>
-        &nbsp;
-        <span>{{ $t('robot_setting.accesso_list_label') }}</span>
-        <el-select class="access-select" v-model="value2" placeholder="请选择" @focus="listPrompt" clearable>
-          <el-option v-for="item in listOptions" :key="item.value" :label="item.label" :value="item">
-          </el-option>
-        </el-select>
-        &nbsp;
-        <span>{{ $t('robot_setting.accesso_feature_label') }}</span>
-        <el-select class="access-select" v-model="value3" placeholder="请选择" multiple clearable>
-          <el-option v-for="item in featureOptions" :key="item.value" :label="item.label" :value="item"
-            :disabled="item.disabled">
-          </el-option>
-        </el-select>
-        &nbsp;
-        <el-button type="primary" size="mini" plain style="margin-top: 10px;margin-left:10vw;" @click="addAccesso()">{{
-          $t('robot_setting.add_related_label') }}</el-button>
-        <br />
-      </div>
-      <div class="content-body">
-        <el-table class="charge-data" :data="accessoInfoArr" header-row-class-name="header-row-class"
-          row-class-name="row-class" fit highlight-current-row size="mini" @current-change="handleCurrentChange">
-          <el-table-column type="index" label="序号" align="center" width="80">
-          </el-table-column>
-          <el-table-column prop="type" label="配件类型" align="center">
-            <template slot-scope="{ row }">
-              <span>{{ row.type }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="AccessoryName" label="配件名称" align="center">
-          </el-table-column>
-          <el-table-column prop="AccessoryCode" label="配件编号" align="center">
-          </el-table-column>
-          <el-table-column prop="feature" label="配件功能" align="center">
-            <template slot-scope="{ row }">
-              <span>{{ row.EquipFunctionsDesc }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column prop="operate" label="操作" align="center" width="80">
-            <template slot-scope="scope">
-              <el-button type="danger" size="mini" @click="deleteAccesso(scope)">{{ $t('charge_config.delete_label')
-              }}</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <div class="detail-dialog-footer">
-        <el-button size="mini" @click="save">{{
-          $t('plan_config.sure_label')
-        }}</el-button>
-      </div>
-    </el-dialog>
-
+    <div class="dialog-robot-setting">
+      <el-dialog :title="$t('robot_setting.access_operate_label')" :visible.sync="dialogAccessFlag"
+        :close-on-click-modal="false" width="55%">
+        <div style="margin-bottom: 20px; margin-left: 1rem;font-size: 1rem;color: var(--font-color)">
+          <span>{{ $t('robot_setting.accesso_type_label') }}</span>
+          <el-select class="access-select" v-model="value1" placeholder="请选择配件类型" @change="initListOption" clearable>
+            <el-option v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item"
+              :disabled="item.disabled">
+            </el-option>
+          </el-select>
+          &nbsp;
+          <span>{{ $t('robot_setting.accesso_list_label') }}</span>
+          <el-select class="access-select" v-model="value2" placeholder="请选择" @focus="listPrompt" clearable>
+            <el-option v-for="item in listOptions" :key="item.value" :label="item.label" :value="item">
+            </el-option>
+          </el-select>
+          &nbsp;
+          <span>{{ $t('robot_setting.accesso_feature_label') }}</span>
+          <el-select class="access-select" v-model="value3" placeholder="请选择" multiple clearable>
+            <el-option v-for="item in featureOptions" :key="item.value" :label="item.label" :value="item"
+              :disabled="item.disabled">
+            </el-option>
+          </el-select>
+          &nbsp;
+          <el-button size="mini" plain style="margin-top: 10px;margin-left:1rem;background-color: var(--bt-confirm-bg);border-color: transparent;color: #fff" @click="addAccesso()">{{
+            $t('robot_setting.add_related_label') }}</el-button>
+          <br />
+        </div>
+        <div class="content-body" style="height: 18rem">
+          <el-table class="charge-data" :data="accessoInfoArr" header-row-class-name="header-row-class"
+            row-class-name="row-class" height="18rem" fit highlight-current-row size="mini" @current-change="handleCurrentChange">
+            <el-table-column type="index" label="序号" align="center" width="80">
+            </el-table-column>
+            <el-table-column prop="type" label="配件类型" align="center">
+              <template slot-scope="{ row }">
+                <span>{{ row.type }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="AccessoryName" label="配件名称" align="center">
+            </el-table-column>
+            <el-table-column prop="AccessoryCode" label="配件编号" align="center">
+            </el-table-column>
+            <el-table-column prop="feature" label="配件功能" align="center">
+              <template slot-scope="{ row }">
+                <span>{{ row.EquipFunctionsDesc }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="operate" label="操作" align="center" width="80">
+              <template slot-scope="scope">
+                <el-button type="danger" size="mini" @click="deleteAccesso(scope)">{{ $t('charge_config.delete_label')
+                }}</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div class="detail-dialog-footer">
+          <el-button type="primary" size="mini" @click="save" style="background-color: var(--bt-confirm-bg);border-color: transparent">{{
+            $t('plan_config.sure_label')
+          }}</el-button>
+        </div>
+      </el-dialog>
+    </div>
   </div>
 </template>
 
@@ -641,7 +642,7 @@ export default {
     editRobot(item, flag) {
       let that = this
       this.vertex = item.homeStation
-      console.log('啊啊啊啊', item)
+      // console.log('啊啊啊啊', item)
       if (item) {
         this.dialogFormVisible = true;
         this.dialogType = 'editRobots';
@@ -1089,6 +1090,12 @@ export default {
 .detail-dialog-footer {
   margin: 10px;
   text-align: right;
+}
+
+.dialog-robot-setting{
+  ::v-deep .el-dialog__body  {
+    height: 25%!important;
+  }
 }
 
 .dialog-sty {

@@ -9,12 +9,37 @@
 
     <el-container class="page-container">
       <el-aside class="page-left">
-        <div style="border-radius: 15px;background: var(--taskbgd);height: 26rem">
+        <div style="border-radius: 15px;background: var(--taskbgd);height:28.5rem">
           <el-tree
             :data="templateList"
             :props="templateList"
             :default-expand-all="true"
-            @node-click=""></el-tree>
+            @node-click="">
+            <div class="comp-tr-node" slot-scope="{ node, data }">
+              <span :title="node.label">{{ node.label }}</span>
+<!--              <el-popover placement="right" width="110" trigger="hover">-->
+<!--                <div class="qpdiv">-->
+<!--                  <div>-->
+<!--                    <el-button type="text">编辑</el-button>-->
+<!--                  </div>-->
+<!--                  <div>-->
+<!--                    <el-button type="text">删除</el-button>-->
+<!--                  </div>-->
+<!--                  <div>-->
+<!--                    <el-button type="text">添加节点</el-button>-->
+<!--                  </div>-->
+<!--                  <div>-->
+<!--                    <el-button type="text">上移</el-button>-->
+<!--                  </div>-->
+<!--                  <div>-->
+<!--                    <el-button type="text">下移</el-button>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--                <i class="el-icon-more nodeIcon" slot="reference" title="悬停菜-->
+<!--                单"></i>-->
+<!--              </el-popover>-->
+            </div>
+          </el-tree>
         </div>
 <!--        <el-collapse v-model="activeName" accordion>-->
 <!--          <el-collapse-item title="任务模板列表" name="1">-->
@@ -153,8 +178,8 @@
     >
       <div class="common-tip">配置子模版</div>
       <div class="common-sty">
-        <span style="margin: 10px 0; display: inline-block">参数类型</span
-        ><br />
+<!--        <span style="margin: 10px 0; display: inline-block">参数类型</span-->
+<!--        ><br />-->
         <div class="form-sty">
           <el-form
             label-width="80px"
@@ -283,10 +308,12 @@
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cameraDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="addAction(2, 'videoForm')"
-          >确 定</el-button
-        >
+                   style="background-color: var(--bt-confirm-bg)">确 定
+        </el-button>
+        <el-button @click="cameraDialogVisible = false"
+                   style="background-color: var(--bt-cancel-bg);color: var(--bt-cancel-color)">取 消
+        </el-button>
       </div>
     </el-dialog>
     <el-dialog
@@ -298,8 +325,8 @@
         预置点通过在浏览器中输入摄像头IP可登陆摄像头管理系统，查看摄像头预置点ID
       </div> -->
       <div class="common-sty">
-        <span style="margin: 0.7vh 0; display: inline-block">参数类型</span
-        ><br />
+<!--        <span style="margin: 0.7vh 0; display: inline-block">参数类型</span-->
+<!--        ><br />-->
         <div class="form-sty" v-if="cameraVal == '1' ? true : false">
           <el-form
             label-width="110px"
@@ -376,18 +403,18 @@
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="thermalCameDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="addAction(3, 'photoForm')"
-          >确 定</el-button
-        >
+                   style="background-color: var(--bt-confirm-bg)">确 定
+        </el-button>
+        <el-button @click="thermalCameDialogVisible = false"
+                   style="background-color: var(--bt-cancel-bg);color: var(--bt-cancel-color)" >取 消
+        </el-button>
       </div>
     </el-dialog>
     <el-dialog
       :title="dialogTitle == '移动' ? '新增移动' : '修改移动'"
       :visible.sync="roboticDialogVisible"
       :close-on-click-modal="false"
-      center
-
     >
       <div class="common-photo" style="width: 25vw;">
         <el-form
@@ -461,10 +488,12 @@
         </el-form>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="roboticDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="addAction(4, 'moveForm')"
-          >确 定</el-button
-        >
+                   style="background-color: var(--bt-confirm-bg)">确 定
+        </el-button>
+        <el-button style="background-color: var(--bt-cancel-bg);color: var(--font-color)"
+                   @click="roboticDialogVisible = false" >取 消
+        </el-button>
       </div>
     </el-dialog>
     <el-dialog
@@ -512,10 +541,13 @@
         </el-form>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="infraDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="addAction(5, 'infraForm')"
-          >确 定</el-button
+                   style="background-color: var(--bt-confirm-bg)"
+        >确 定</el-button
         >
+        <el-button @click="infraDialogVisible = false"
+                   style="background-color: var(--bt-cancel-bg);color: var(--bt-cancel-color)"
+        >取 消</el-button>
       </div>
     </el-dialog>
     <el-dialog
@@ -602,10 +634,12 @@
         </el-form>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="fireDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="addAction(6, 'broadcast')"
-          >确 定</el-button
-        >
+                   style="background-color: var(--bt-confirm-bg)">确 定
+        </el-button>
+        <el-button @click="fireDialogVisible = false"
+                   style="background-color: var(--bt-cancel-bg);color: var(--bt-cancel-color)">取 消
+        </el-button>
       </div>
     </el-dialog>
   </div>
@@ -620,8 +654,10 @@ import {
 } from '@/api/taskConfig';
 import { getPatrolPointListByAreaId} from '@/api/map.js'
 import { getMapData } from '@/api/map.js';
+import { mapGetters } from 'vuex'
 
 export default {
+
   data() {
     return {
       dialogTitle: '',
@@ -899,7 +935,7 @@ export default {
     };
   },
   computed:{
-
+    ...mapGetters(['theme']),
   },
   mounted() {
     this.getAllTemplate();
@@ -910,8 +946,11 @@ export default {
       const menuItems = document.querySelectorAll('.el-menu-item');
       menuItems.forEach(menuItem => {
         if (menuItem.querySelector('span').textContent == '巡检流程配置') {
+          menuItem.classList.toggle('titleTheme')
           menuItem.classList.toggle('is-active')
-          menuItem.style = 'color: #fff; border-bottom-color: rgb(100, 200, 200); background-color: rgb(3, 27, 49);'
+          if(this.theme == 'theme-1'){
+            menuItem.classList.toggle('titleThemeColor')
+          }
         }
       });
     })
@@ -923,8 +962,11 @@ export default {
         const menuItems = document.querySelectorAll('.el-menu-item');
         menuItems.forEach(menuItem => {
           if (menuItem.querySelector('span').textContent == '巡检流程配置') {
+            menuItem.classList.toggle('titleTheme')
             menuItem.classList.toggle('is-active')
-            menuItem.style = 'border-bottom-color: transparent; background-color: #6fbcbf;'
+            if(this.theme == 'theme-1'){
+              menuItem.classList.toggle('titleThemeColor')
+            }
           }
         });
       })
@@ -960,6 +1002,7 @@ export default {
           });
         });
     },
+
     taskName(val) {
       switch (val) {
         case 1:
@@ -1610,7 +1653,7 @@ export default {
 .common-btn {
   width: 100%;
   margin: 5px 0;
-  height: 2rem;
+  height: 2.5rem;
   text-align: left;
   font-size: 12px;
   border-color: transparent;
@@ -1785,5 +1828,16 @@ export default {
   background-color: transparent;
   color: #000000;
 }
+
+.titleTheme{
+  color: var(--font-color);
+  background-color: #6fbcbf;
+}
+
+.titleThemeColor{
+  color: #FFFFFF !important;
+}
+
+
 
 </style>

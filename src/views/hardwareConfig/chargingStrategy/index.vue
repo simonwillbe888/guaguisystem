@@ -81,6 +81,7 @@
                   @click="setStatus(0, row.id)"
                   size="mini"
                   icon="el-icon-delete"
+                  style="margin-right: 1rem"
                 >
                   删除
                 </el-button>
@@ -227,8 +228,8 @@
           </el-switch>
         </el-form-item>
         <el-form-item class="common-form-footer">
-          <el-button type="primary" @click="saveStrategy">保存</el-button>
-          <el-button type="primary" @click="centerDialogVisible = false" plain
+          <el-button type="primary" @click="saveStrategy" style="background-color: var(--bt-confirm-bg)">保存</el-button>
+          <el-button type="primary" @click="centerDialogVisible = false" plain style="background-color: var(--bt-cancel-bg);color: var(--font-color)"
             >取消</el-button
           >
         </el-form-item>

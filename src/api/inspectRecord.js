@@ -25,7 +25,7 @@ export function downLoadPTZFile(data) {
     url: '/api/HKControl/downLoadPTZFile?ID=' + data,
     method: 'GET',
     responseType: "blob"
-    
+
   });
 }
 // 获取巡检文件视频
@@ -87,6 +87,15 @@ export function patrolRecordExportExcel(data){
     data,
   })
 }
+
+export function exportPatrolRecordDetailById(data){
+  return request3({
+    url:'/api/PatrolRecord/exportPatrolRecordDetailById?PatrolRecordID='+data,
+    responseType:'blob',
+    method:'post'
+  })
+}
+
 export function exportRecord(data){
   return request3({
     url:'/api/SystemLog/systemLogExportExcel',

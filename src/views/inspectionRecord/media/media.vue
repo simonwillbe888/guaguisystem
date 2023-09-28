@@ -51,7 +51,7 @@
         <div>
           <div style="margin: auto; "></div>
           <el-checkbox-group v-model="Checked" @change="handleCheckedCitiesChange">
-            <el-checkbox v-for="file in fileType" :label="file" :key="file">{{ file }}</el-checkbox>
+            <el-checkbox v-for="file in fileType" :label="file" :key="file" style="color: var(--font-color)">{{ file }}</el-checkbox>
           </el-checkbox-group>
         </div>
         <span slot="footer" class="dialog-footer">

@@ -31,8 +31,8 @@
             </el-select>
           </el-form-item>
           <el-form-item class="common-form-footer">
-            <el-button type="primary" :loading="downloadLoading" @click="handleDownload()">确认</el-button>
-            <el-button type="primary" plain @click="(dialogFormVisible = false)">{{
+            <el-button type="primary" style="background-color: var(--bt-confirm-bg)" :loading="downloadLoading" @click="handleDownload()">确认</el-button>
+            <el-button type="primary" style="background-color: var(--bt-confirm-bg)" plain @click="(dialogFormVisible = false)">{{
               $t('inspect_record.cancel_label')
             }}</el-button>
           </el-form-item>
@@ -114,7 +114,7 @@
         </el-table-column>
         <el-table-column prop="details" label="操作" v-if="alarmType == 2" align="center" width="120">
           <template slot-scope="{ row }">
-            <el-button class="greenButton" v-if="row.statusNum == 0 || row.statusNum == 1"  icon="el-icon-edit" size="mini"
+            <el-button style="background-color: var(--bt-confirm-bg)" v-if="row.statusNum == 0 || row.statusNum == 1"  icon="el-icon-edit" size="mini"
               plain @click.stop="showDetail(row)">处理</el-button>
             <el-button style="color:#64C8C8;background-color: var(--title-bg)" v-else  icon="el-icon-document" size="mini" plain>详情</el-button>
           </template>
@@ -122,22 +122,35 @@
       </el-table>
       <el-dialog title="告警详情" :visible.sync="dialogVisible" width="60%" @close="closeDetailDialog">
         <div style="display:flex;color: var(--font-color);">
-          <div style="width:70%;height: 24rem;position: relative">
-            <img v-if="showImg" :src="imageUrl" alt="" style="width:100%;">
-            <div v-if="!recordReload"
-                 class="nvrRecord"
-                 style="font-size: 1.5rem;align-items: center;justify-content: center;display: flex;">
-              正在获取录像文件
+          <div style="width:70%;position: relative;">
+            <div style="height:60%;display: flex;margin-bottom: 1rem">
+              <div style="width:50%;background-color: #8c939d;margin-right: 1rem">
+                <el-img :src="imageUrl"
+                        style="width: 100%;height: 100%;display: flex;justify-content: center;align-items: center"
+                        :preview-src-list="imageUrl">
+                  <div slot="error" class="image-slot">
+                    <div style="font-size: 2rem;">暂无图片</div>
+                  </div>
+                </el-img>
+              </div>
+              <div v-if="nvrVideoSrc == ''"
+                   class="nvrRecord"
+                   style="width:50%;background-color: #8c939d;font-size: 2rem;align-items: center;justify-content: center;display: flex;">
+                暂无视频
+              </div>
+              <video
+                style="width:50%;background-color: #8c939d;"
+                class="nvrRecord"
+                ref="nvrVideo"
+                v-if="nvrVideoSrc != ''"
+                :src="nvrVideoSrc"
+                autoplay controls
+              >
+              </video>
             </div>
-            <video
-              v-show="!showImg && nvrVideoSrc != ''"
-              class="nvrRecord"
-              ref="nvrVideo"
-              v-if="recordReload"
-              :src="nvrVideoSrc"
-              autoplay controls
-            >
-            </video>
+            <div style="width: 100%;height:40%;position: relative;display: flex;justify-content: center;align-items: center;">
+              <span style="font-size: 2.5rem;color: rgb(100,200,200)">{{this.alarm.statusNum == 0 || this.alarm.statusNum == 1 ? "未处理":"已处理"}}</span>
+            </div>
             <!--          <iframe-->
             <!--            v-show="!showImg && nvrRecordData.src != ''"-->
             <!--            class="nvrRecord"-->
@@ -151,13 +164,14 @@
           </div>
 
           <div style="margin-left:2vw">
-            <div style="margin: 1vh  0;">告警级别:
-              <span v-if="alarm.maxAlarmLevel == 4" style="border: red 1px solid; color: red;font-size: 1.2vw;">致命</span>
-              <span v-if="alarm.maxAlarmLevel == 3"
-                style="border: red 1px solid; color: orange;font-size: 1.2vw;">严重</span>
-              <span v-if="alarm.maxAlarmLevel == 2" style="border: red 1px solid; color: yellow;font-size: 1vw;">一般</span>
-              <span v-if="alarm.maxAlarmLevel == 1"
-                style="border: red 1px solid; color: #08F9EB ;font-size: 1vw;">提示</span>
+            <div style="margin: 1rem 0; display: flex;position:relative;    align-items: center">告警级别:
+              <div style="margin: 0 1rem;border: red 1px solid;width: 3rem;height: 1.5rem;display: flex;align-items: center;justify-content: center;">
+                <span v-if="alarm.maxAlarmLevel == 4" style="color: red;font-size: 1rem;text-shadow: 0 0 3px #000000;">致命</span>
+                <span v-if="alarm.maxAlarmLevel == 3" style="color: orange;font-size: 1rem;text-shadow: 0 0 3px #000000;">严重</span>
+                <span v-if="alarm.maxAlarmLevel == 2" style="color: yellow;font-size: 1rem;text-shadow: 0 0 3px #000000;">一般</span>
+                <span v-if="alarm.maxAlarmLevel == 1" style="color: #08F9EB ;font-size: 1rem;text-shadow: 0 0 3px #000000;">提示</span>
+              </div>
+
             </div>
             <div style="margin: 2vh  0;">
               告警名称：{{ alarm.alarmName }}
@@ -192,9 +206,9 @@
         </div>
         <span slot="footer" class="dialog-footer">
           <template>
-            <el-button type="success" style="margin-right: 3rem" v-if="alarmJudge(alarm.alarmCode)" @click="playRecord(alarm)">回 看</el-button>
-            <el-button v-if="alarm.statusNum == 0 || alarm.statusNum == 1"  type="primary" @click="showDetail(alarm)">处 理</el-button>
-            <el-button v-else type="primary" @click="dialogVisible = false">确 定</el-button>
+<!--            <el-button type="success" style="margin-right: 3rem" v-if="alarmJudge(alarm.alarmCode)" @click="playRecord(alarm)">回 看</el-button>-->
+            <el-button v-if="alarm.statusNum == 0 || alarm.statusNum == 1" style="background-color: var(--bt-confirm-bg)" type="primary" @click="showDetail(alarm)">处 理</el-button>
+            <el-button v-else type="primary" style="background-color: var(--bt-confirm-bg)"  @click="dialogVisible = false">确 定</el-button>
           </template>
 
         </span>
@@ -235,9 +249,9 @@
           </el-input>
         </el-form-item>
         <el-form-item class="common-form-footer">
-          <el-button type="primary" @click="addSuccess('alarmForm', alarmForm)">{{ $t('inspection_setting.sure_add_label')
+          <el-button type="primary" style="background-color: var(--bt-confirm-bg)" @click="addSuccess('alarmForm', alarmForm)">{{ $t('inspection_setting.sure_add_label')
           }}</el-button>
-          <el-button type="primary" plain @click="cancel('alarmForm')">{{
+          <el-button style="background-color: var(--bt-cancel-bg);color: var(--font-color)" plain @click="cancel('alarmForm')">{{
             $t('inspection_setting.cancel_add_label')
           }}</el-button>
         </el-form-item>
@@ -346,7 +360,7 @@ export default {
         limit: self.limit,
         status: self.alarmState,
         alarmName: self.alarmName,
-        alarmCode: self.alarmCode,
+        alarmCode: parseInt(self.alarmCode),
         alarmType: parseInt(self.alarmType)
       };
       const powelist = self.$store.getters.roles
@@ -420,12 +434,17 @@ export default {
         else{
           this.imageUrl = 'http://'+ this.$store.state.global.fileAddress + ':8888/images/' + e.Image
           console.log('看图片',this.imageUrl)
-
         }
         this.dialogVisible = true
 
+        this.alarm.hasMedia = this.alarmJudge(this.alarm.alarmCode)
+        if(this.alarm.hasMedia){
+          this.playRecord(e)
+        }else {
+          this.imageUrl = ''
+          this.nvrVideoSrc = ''
+        }
       }
-
     },
     switchAlarm(e){
       if(e){
@@ -720,25 +739,10 @@ export default {
 
     //录像预览
     playRecord(row){
-      if(!this.showImg){
-        this.showImg = true
-        return
-      }
-
-      this.showImg = false
-
       console.log("查看详情数据",row)
-
-      this.nvrVideoSrc= row.id+'.mp4'
+      this.nvrVideoSrc = row.id+'.mp4'
       // this.nvrVideoSrc= '/static/video/'+row.id+'.mp4'
       this.$refs.nvrVideo.load()
-      // this.$refs.nvrVideo.onerror = function(){
-      //   this.recordReload = false
-      // }
-      // this.$nextTick(()=>{
-      // })
-      // console.log("this.nvrRecordData--->",this.nvrRecordData)
-
       this.$forceUpdate()
 
       // this.nvrRecordData= {src:''}
@@ -1076,12 +1080,17 @@ export default {
   width: 540px;
 }
 
+.image-slot{
+  font-size: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
 .nvrRecord{
   background-color: #000000;
-  width: 100%;
   border: none;
   display: inline-block;
-  margin-top: 1rem;
 }
 
 </style>

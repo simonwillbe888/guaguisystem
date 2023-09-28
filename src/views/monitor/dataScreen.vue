@@ -34,7 +34,7 @@
           </div>
           <div style="display: flex;margin-right: 2rem;align-items: center;">
             <Clock style="color: var(--clock-color);margin-right: 1rem;font-size: 1.5rem"></Clock>
-            <span  @click="$router.push('/dashboard/monitor')"><svg-icon icon-class="exit" style="width: 2rem;margin: auto"/></span>
+            <span style="cursor: pointer" title="切换到监控主页"  @click="$router.push('/dashboard/monitor')"><svg-icon icon-class="exit" style="width: 2rem;margin: auto"/></span>
           </div>
         </div>
       </div>
@@ -57,7 +57,7 @@
                   <div style="color:var(--data-screen-font-color);width: 3rem">温度</div>
                 </div>
                 <div class="gasDetail" style="margin-left: 1rem;">
-                  {{ isNaN(gasList.Temperature) ?   '0': parseFloat((gasList.Temperature / 100).toFixed(1))}}℃
+                  {{ isNaN(gasList.Temperature) ?   '0': parseFloat((gasList.Temperature / 100).toFixed(1))}} ℃
                 </div>
               </div>
               <div class="enviroDetail">
@@ -66,8 +66,7 @@
                   <div style="color:var(--data-screen-font-color);width: 3rem">湿度</div>
                 </div>
                 <div class="gasDetail" style="margin-left: 1rem;">
-                  {{ isNaN( gasList.Humidity) ? '0' : (gasList.Humidity / 100).toFixed(1) }}
-                  <span style="font-size: 0.825rem;">%</span>
+                  {{ isNaN( gasList.Humidity) ? '0' : (gasList.Humidity / 100).toFixed(1) }} %
                 </div>
               </div>
               <div class="enviroDetail">
@@ -413,10 +412,11 @@
       </el-col>
 
       <el-col :span="6">
-        <div class="right iframeShadow" style="margin-right: 0.5rem;margin-bottom: 0.5rem">
+        <div class="right" style="margin-right: 0.5rem;">
           <iframe
+              class="iframeShadow"
             :myData="currentAdvices[1]"
-            style="width:100%; height:20.5rem; border: none; "
+            style="width:100%; height:21rem; border: none;bottom: 0 "
             name="infrared"
             :id="'infrared'"
             :src="currentAdvices[1].src">
@@ -862,7 +862,6 @@ export default {
 
     this.judgeIsFullScreen()
     // this.initHT();
-    console.log('theme--->',this.theme)
     this.themeChange(this.theme,null)
   },
 
@@ -1233,19 +1232,27 @@ export default {
     },
 
     async AreaSwap(){
+      console.log('this.areaId--->',this.areaId)
       getExistCarrierAreaList().then((res) => {
         console.log('区域',res)
-        let accessTypeArr = res.data
-        this.choosedArea = accessTypeArr[1].id
-        for (let i = 0, len = accessTypeArr.length; i < len; i++) {
-          let optionObj = {
-            value: accessTypeArr[i].id,
-            label: accessTypeArr[i].areaName,
-          };
-          this.options.push(optionObj);
+        let areas = []
+        if(res.code == 20000){
+          let accessTypeArr = res.data
+          for (let i = 0, len = accessTypeArr.length; i < len; i++) {
+            areas.push(accessTypeArr[i].id)
+            let optionObj = {
+              value: accessTypeArr[i].id,
+              label: accessTypeArr[i].areaName,
+            };
+            this.options.push(optionObj);
+          }
+        }
+        if(!isNaN(this.areaId) && areas.includes(this.areaId)){
+          this.choosedArea = this.areaId
+        }else {
+          this.choosedArea = accessTypeArr[0].id
         }
       })
-      this.choosedArea = this.areaId
     },
     switchTheme(){
       // console.log(this.themeMode)
@@ -3403,6 +3410,7 @@ export default {
       .gasDetail {
         margin: 1.025rem 0 0 0.9rem;
         width: 6rem;
+        white-space: nowrap;
         color: var(--font-color);
       }
 
@@ -3534,6 +3542,7 @@ export default {
     }
 
     .goYes {
+      cursor: pointer;
       width: 3.75rem;
       height: 1.875rem;
       line-height: 1.9375rem;

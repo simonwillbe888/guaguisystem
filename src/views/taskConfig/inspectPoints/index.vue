@@ -214,11 +214,12 @@
                 ? addInspects('inspectForm', inspectForm)
                 : editSuccess('inspectForm', inspectForm)
             "
+            style="background-color: var(--bt-confirm-bg)"
             >{{ $t('inspection_setting.sure_add_label') }}</el-button
           >
           <el-button
-            type="primary"
             plain
+            style="background-color: var(--bt-cancel-bg);color: var(--font-color)"
             @click="cancelOperate('inspectForm')"
             >{{ $t('inspection_setting.cancel_add_label') }}</el-button
           >

@@ -37,17 +37,17 @@
           </div>
         </template>
       </div>
-      <i class="el-icon-sort" style="rotate:90deg;color: var(--font-color);margin-right: 2rem"
-        @click="() => { this.$router.push('/dataScreen') }"></i>
+      <i class="el-icon-sort" style="rotate:90deg;color: var(--font-color);margin-right: 2rem;cursor: pointer"
+        title="切换到监控大屏" @click="() => { this.$router.push('/dataScreen') }"></i>
 
-      <screenfull id="screenfull" class="right-menu-item hover-effect" style="margin-right: 1.875rem;color: var(--font-color)" />
+      <screenfull title="全屏预览" id="screenfull" class="right-menu-item hover-effect" style="cursor:pointer;margin-right: 1.875rem;color: var(--font-color)" />
       <div class="right">
         <div class="message-container" v-show="show" @mouseenter="showCloseIcon = true"
           @mouseleave="showCloseIcon = false">
           <el-progress :percentage="progressPercentage" style="width: 9rem;" color="#66b3b2"></el-progress>
           <i class="el-icon-close" style="color: #fff;" v-show="showCloseIcon" @click="closeProgress"></i>
         </div>
-        <el-dropdown class="avatar-container" trigger="click">
+        <el-dropdown class="avatar-container" trigger="click"  style="cursor: pointer">
           <div class="avatar-wrapper">
             <!-- <img
               src="@/assets/img/dynamic/info-icon-2.png"
@@ -255,17 +255,25 @@ export default {
         this.$store.dispatch('global/setFileAddress',res.data.fileAddress)
       })
       getExistCarrierAreaList().then((res) => {
-        let accessTypeArr = res.data
-        this.choosedArea = accessTypeArr[0].id
-        for (let i = 0, len = accessTypeArr.length; i < len; i++) {
-          let optionObj = {
-            value: accessTypeArr[i].id,
-            label: accessTypeArr[i].areaName,
-          };
-          this.options.push(optionObj);
+        let areas = []
+        if(res.code == 20000) {
+          let accessTypeArr = res.data
+          this.choosedArea = accessTypeArr[0].id
+          for (let i = 0, len = accessTypeArr.length; i < len; i++) {
+            areas.push(accessTypeArr[i].id)
+            let optionObj = {
+              value: accessTypeArr[i].id,
+              label: accessTypeArr[i].areaName,
+            };
+            this.options.push(optionObj);
+          }
+        }
+        if(!isNaN(this.areaId) && areas.includes(this.areaId)){
+          this.choosedArea = this.areaId
+        }else {
+          this.choosedArea = accessTypeArr[0].id
         }
       })
-      this.choosedArea = this.areaId
     },
     async logout() {
       loginOut().then((res) => {

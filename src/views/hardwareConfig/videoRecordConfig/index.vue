@@ -79,20 +79,22 @@
             width="420"
           >
             <template slot-scope="{ row }">
+
+              <el-button
+                  class="greenButton"
+                  icon="el-icon-video-camera-solid"
+                  size="mini"
+                  @click="nvrRecord(row,true)"
+              >录像回看</el-button
+              >
+
               <el-button
                 class="greenButton"
                 icon="el-icon-setting"
                 size="mini"
                 @click="connentAdvices(row)"
-                >{{ $t('robot_setting.accessory_operate_label') }}</el-button
-              >
+              >{{ $t('robot_setting.accessory_operate_label') }}</el-button
 
-              <el-button
-                class="greenButton"
-                icon="el-icon-video-camera-solid"
-                size="mini"
-                @click="nvrRecord(row,true)"
-                >录像回看</el-button
               >
 
               <el-button
@@ -216,10 +218,10 @@
           class="common-form-footer"
         >
           <div style="margin-right: 6% ;">
-            <el-button type="primary" size="mini" @click="save">{{
+            <el-button type="primary" size="mini" @click="save" style="background-color: var(--bt-confirm-bg)">{{
               form.isEdit ? '保存编辑' : '立即新增'
             }}</el-button>
-            <el-button type="primary" size="mini" @click="cancel"
+            <el-button type="primary" size="mini" @click="cancel" style="background-color: var(--bt-cancel-bg);color: var(--font-color)"
               >取消</el-button
             >
           </div>
@@ -229,96 +231,104 @@
       <!-- <span slot="footer" class="dialog-footer"> </span> -->
     </el-dialog>
 
-    <el-dialog
-      title="添加通道"
-      :visible.sync="DialogVisible"
-      width="60%"
-      :close-on-click-modal="false"
-    >
-      <el-form
-        ref="form2"
-        class="form2"
-        :rules="rules2"
-        :inline="true"
-        :model="form2"
-        label-width="100px"
+    <div class="dialog-accessory">
+      <el-dialog
+        title="添加通道"
+        :visible.sync="DialogVisible"
+        width="60%"
+        :close-on-click-modal="false"
       >
-        <el-form-item label="输入通道号" prop="channel">
-          <el-input
-            placeholder="请输入通道号"
-            oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
-            v-model.number="form2.channel"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="选择相机" prop="accessoryCode">
-          <el-select
-            size="mini"
-            v-model="form2.accessoryCode"
-            placeholder="请选择品牌"
-            clearable
-          >
-            <el-option
-              v-for="item in sysCameraList"
-              :key="item.id"
-              :label="item.accessoryName"
-              :value="item.id"
+        <el-form
+          ref="form2"
+          class="form2"
+          :rules="rules2"
+          :inline="true"
+          :model="form2"
+          label-width="100px"
+        >
+          <el-form-item label="输入通道号" prop="channel">
+            <el-input
+              placeholder="请输入通道号"
+              oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
+              v-model.number="form2.channel"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="相机品牌" prop="accessoryCode">
+            <el-select
+              size="mini"
+              v-model="form2.accessoryCode"
+              placeholder="请选择"
+              clearable
             >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" size="mini" @click="saveChannel"
-            >新增通道</el-button
-          ></el-form-item
-        >
-      </el-form>
-      <div class="content-body">
-        <template>
-          <el-table :data="details" style="width: 100%">
-            <el-table-column type="index" label="序号" width="80">
-            </el-table-column>
-            <el-table-column prop="accessoryName" label="相机名称">
-              <template slot-scope="{ row }">
-                <span>
-                  {{ cameraName(row.accessoryID) }}
-                </span>
-              </template>
-            </el-table-column>
-            <el-table-column label="IP">
-              <template slot-scope="{ row }">
-                <span>
-                  {{ cameraName(row.accessoryID, 'ip') }}
-                </span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="channel" label="通道号"> </el-table-column>
-            <el-table-column label="操作" width="70">
-              <template slot-scope="{ row }">
-                <el-button type="danger" @click="delDetail(row)" size="mini">
-                  删除
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </template>
-      </div>
+              <el-option
+                v-for="item in sysCameraList"
+                :key="item.id"
+                :label="item.accessoryName"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" size="mini" @click="saveChannel" style="background-color: var(--bt-confirm-bg)"
+              >新增通道</el-button
+            ></el-form-item
+          >
+        </el-form>
+        <div class="content-body" style="height: 25rem">
+          <template>
+            <el-table :data="details"
+                      style="width: 100%"
+                      header-row-class-name="header-row-class"
+                      row-class-name="row-class"
+                      :empty-text="'暂无数据'"
+                      height="25rem"
+            >
+              <el-table-column type="index" label="序号" width="80">
+              </el-table-column>
+              <el-table-column prop="accessoryName" label="相机名称">
+                <template slot-scope="{ row }">
+                  <span>
+                    {{ cameraName(row.accessoryID) }}
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column label="IP">
+                <template slot-scope="{ row }">
+                  <span>
+                    {{ cameraName(row.accessoryID, 'ip') }}
+                  </span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="channel" label="通道号"> </el-table-column>
+              <el-table-column label="操作" width="70">
+                <template slot-scope="{ row }">
+                  <el-button type="danger" @click="delDetail(row)" size="mini">
+                    删除
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+          </template>
+        </div>
 
-      <span slot="footer" class="dialog-footer">
-        <el-button type="primary" size="mini" @click="savelinked"
-          >保存</el-button
-        >
-        <el-button type="primary" size="mini" @click="DialogVisible = false"
-          >取消</el-button
-        >
-      </span>
-    </el-dialog>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="primary" size="mini" @click="savelinked" style="background-color: var(--bt-confirm-bg)"
+            >确定</el-button
+          >
+          <el-button type="primary" size="mini" @click="DialogVisible = false" style="background-color: var(--bt-cancel-bg);color: var(--bt-cancel-color)"
+            >取消</el-button
+          >
+        </span>
+      </el-dialog>
+    </div>
 
     <el-dialog
       ref="nvrDialog"
       id="nvrDialog"
-      title="录像回看"
+      title="录像回放"
       :visible.sync="nvrRecordVisible"
-      width="80%"
+      width="90%"
       :close-on-click-modal="false"
       @close="closeRecordDialog"
     >
@@ -328,20 +338,20 @@
             {{ this.titleName }}
           </div>
           <div style="position:relative;display: flex;align-items: center;width: 55%">
-            <span style="color: var(--font-color)">{{ $t('comment_vary.default_time_label') }}</span>
+<!--            <span style="color: var(&#45;&#45;font-color)">{{ $t('comment_vary.default_time_label') }}</span>-->
             <el-date-picker v-model="startVal" type="datetime" value-format="yyyy-MM-dd HH:mm:ss"
                             @input="startTimeCheck"
                             :clearable=false
                             :placeholder="$t('comment_vary.start_time_label')">
             </el-date-picker>
-            <span> -- </span>
+            <span style="margin: 0 1rem;color: var(--font-color)">至</span>
             <el-date-picker v-model="endVal" type="datetime" :placeholder="$t('comment_vary.end_time_label')"
                             @input="endTimeCheck"
                             :clearable=false
-                            style="margin-right: 20px" value-format="yyyy-MM-dd HH:mm:ss">
+                            style="margin-right: 2rem" value-format="yyyy-MM-dd HH:mm:ss">
             </el-date-picker>
-            <el-button @click="getNVRRecord()" type="primary" size="mini" :loading="searchLoading">搜索</el-button>
-            <el-button @click="resetting()" type="info" size="mini" :loading="searchLoading">重置</el-button>
+            <el-button @click="getNVRRecord()" type="primary" size="mini" :loading="searchLoading" icon="el-icon-search">查询</el-button>
+            <el-button @click="resetting()" type="info" size="mini" :loading="searchLoading" icon="el-icon-refresh">重置</el-button>
           </div>
         </div>
 
@@ -392,25 +402,28 @@
               <el-table-column type="index" label="序号" width="60"></el-table-column>
               <el-table-column prop="start" label="开始时间"> </el-table-column>
               <el-table-column prop="stop" label="结束时间"> </el-table-column>
-              <el-table-column prop="size" label="录像大小" width="100">
+              <el-table-column prop="size" label="录像大小">
                 <template slot-scope="{ row }">
                 <span>
                   {{ (row.size/1024/1024).toFixed(1) }}M
                 </span>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="200">
+              <el-table-column label="操作" width="360">
                 <template slot-scope="{ row,$index }">
                   <div style="display: flex;position: relative">
                     <el-progress v-if="row.downloading" style="margin-right: auto;margin-left: 1rem" :percentage="row.progress" :show-text="false" type="circle" :width="30"></el-progress>
-                    <el-button v-if="!row.downloading" type="primary" @click="downloadRecord(row,$index)" size="mini">
+                    <el-button v-if="!row.downloading" type="primary" @click="downloadRecord(row,$index)" size="mini" icon="el-icon-loading">
                       加载
                     </el-button>
-                    <el-button type="success" @click="playRecordFile(row)" :disabled="!row.download" size="mini">
+                    <el-button type="info" @click="playRecordFile(row)" :disabled="!row.download" size="mini" :class="[row.download?'play-record-button-active':'play-record-button-inactive']" icon="el-icon-video-camera">
                       回看
                     </el-button>
-                    <el-button type="info" @click="playRecord(row,true)" size="mini">
+                    <el-button type="success" @click="playRecord(row,true)" size="mini" icon="el-icon-view">
                       预览
+                    </el-button>
+                    <el-button type="danger" @click="deleteRecord(row,$index)" size="mini" icon="el-icon-delete">
+                      删除
                     </el-button>
                   </div>
 
@@ -424,28 +437,36 @@
 
       <span slot="footer" class="dialog-footer">
         <div style="display: flex;justify-content: center;align-items: center;margin-top: 0.5rem;color: var(--font-color)">
-          <el-button type="success" size="mini" @click="loadNextRecord(1)" :disabled="ids >= fileList.length">
-            ←
-          </el-button>
-          <div style="margin: auto 1rem;width: 5rem;text-align: center;justify-content:center;">
-            <span style="color: var(--font-color);">
-              {{ this.searchResultText }}
-            </span>
+<!--          <el-button type="success" size="mini" @click="loadNextRecord(1)" :disabled="ids >= fileList.length">-->
+<!--            ←-->
+<!--          </el-button>-->
+          <div style="margin: auto 1rem;text-align: center;justify-content:center;">
+<!--            <span style="color: var(&#45;&#45;font-color);">-->
+<!--              {{ this.searchResultText }}-->
+<!--            </span>-->
+            <el-pagination @current-change="handleCurrentRecordChange"
+                           :current-page="currentRecord"
+                           :page-size="1"
+                           background
+                           layout="prev, pager, next"
+                           :total="fileList.length"
+                           size="mini">
+            </el-pagination>
           </div>
-          <el-button type="success" size="mini" @click="loadNextRecord(-1)" :disabled="ids <= 0">
-            →
-          </el-button>
+<!--          <el-button type="success" size="mini" @click="loadNextRecord(-1)" :disabled="ids <= 0">-->
+<!--            →-->
+<!--          </el-button>-->
         </div>
         <div style="position: absolute;left: 1rem;bottom: 1.5rem;justify-content:center;text-align: center">
           <span  style="color: var(--font-color)">自动续播</span>
           <el-switch active-text="开" inactive-text="关" v-model="autoContinuePlay" :active-value=true :inactive-value=false ></el-switch>
           <span style="color: var(--font-color);margin-left: 1rem;cursor: pointer" v-if="autoContinuePlay" @click="()=>{this.playDirection=this.playDirection*-1}">方向 {{ this.playDirection == 1? "←" : "→"}}</span>
         </div>
-        <div style="position: absolute;right: 1rem;bottom: 1.5rem;">
-          <el-button type="primary" size="mini" @click="nvrRecordVisible = false">
-          关闭
-          </el-button>
-        </div>
+<!--        <div style="position: absolute;right: 1rem;bottom: 1.5rem;">-->
+<!--          <el-button type="primary" size="mini" @click="nvrRecordVisible = false">-->
+<!--          关闭-->
+<!--          </el-button>-->
+<!--        </div>-->
       </span>
 
 <!--      <span slot="footer" class="dialog-footer" style="align-self: flex-end;">-->
@@ -461,7 +482,7 @@
           @mousemove="onMousemove"
           @mousedown="onMousedown"
           @mousewheel="onMouseweel"
-          @mouseup="onMouseup(null,true,true)"
+          @mouseup="onMouseup(null,true,true,'canvas')"
           @mouseout="onMouseout"
         ></canvas>
       </div>
@@ -478,11 +499,15 @@ import {
   delVideoRecordList,
   getCameraList,
   getSysCameraes,
-  updateDetails, findRecordList, downloadRecordByFile, getRecordByName
+  updateDetails,
+  findRecordList,
+  downloadRecordByFile,
+  getRecordByName, deleteRecord
 } from '@/api/robot'
 import moment from "moment"
 import flvjs from 'flv.js'
 import { error } from 'autoprefixer/lib/utils'
+import { mapGetters } from 'vuex'
 
 // 一小时的毫秒数
 const ONE_HOUR_STAMP = 60 * 60 * 1000;
@@ -494,6 +519,7 @@ export default {
   },
   data() {
     return {
+      fontColor: '#000',
       keyWord: '',
       centerDialogVisible: false,
       DialogVisible: false,
@@ -636,13 +662,24 @@ export default {
       cleanBuff: null,
       currentTableRow: 0,
       ids: null,
+      currentRecord: 1,
+      totalRecord: 0,
     }
   },
   mounted() {
     this.init()
+    this.themeChange(this.theme,null)
   },
   beforeDestroy() {
     this.destroy()
+  },
+  computed:{
+    ...mapGetters(['theme']),
+  },
+  watch:{
+    theme(nv,ov){
+      this.themeChange(nv,ov)
+    },
   },
   methods: {
     init() {
@@ -650,6 +687,19 @@ export default {
       this.getVideoRecords()
       this.getSysCameraList()
     },
+
+    themeChange(nv,ov){
+      switch (nv) {
+        case 'theme-1':
+          this.fontColor = '#000000';
+          break;
+        case 'theme-2':
+          this.fontColor = '#FFFFFF';
+          break;
+      }
+      this.$forceUpdate()
+    },
+
     async getVideoRecords() {
       const { currentPage, form1 } = this;
       const res = await getVideoRecordList({
@@ -663,7 +713,7 @@ export default {
         this.total = (res.data || {}).length || 0;
       }
     },
-    destroy() {
+    async destroy() {
       clearInterval(this.timer)
       clearInterval(this.recordTimer)
       let video = this.$refs.recordVideo
@@ -732,7 +782,7 @@ export default {
           }else {
             return
           }
-          this.searchResultText = (this.ids+1)+' / '+ res.data.length
+          // this.searchResultText = (this.ids+1)+' / '+ res.data.length
           this.recordTimerCount = res.data.length
 
           this.timeSegments = []
@@ -750,7 +800,7 @@ export default {
             this.middleTime = res.data[0].start
             this.currentTime = new Date(this.middleTime).getTime()
             this.startTimestamp = this.currentTime - 15 * 60 * 1000
-            this.onMouseup(res.data[0],false,false)
+            this.onMouseup(0,false,false)
             this.ctx.clearRect(0, 0, this.width, this.height)
           }
           this.draw();
@@ -833,7 +883,7 @@ export default {
         // console.log('res--->',res)
         if(res.code == 20000){
           this.fileList = [...res.data]
-          this.searchResultText = (this.ids+1)+' / '+res.data.length
+          // this.searchResultText = (this.ids+1)+' / '+res.data.length
           this.recordTimerCount = res.data.length
 
           this.timeSegments = []
@@ -1002,7 +1052,7 @@ export default {
       this.currentTime = new Date(time).getTime()
 
       this.middleTime = time
-      this.onMouseup(null,false,false)
+      this.onMouseup(null,false,false,"timingTimeline")
       this.ctx.clearRect(0, 0, this.width, this.height);
       this.draw();
     },
@@ -1043,23 +1093,14 @@ export default {
     },
 
     loadNextRecord(i){
-      this.playDirection = i
-      // console.log('this.ids,i',this.ids,i)
-      // console.log('this.fileList.length',this.fileList.length)
-      // console.log('(this.ids+i >= 0) && (this.ids+i < this.fileList.length)',(this.ids+i >= 0) , (this.ids+i < this.fileList.length))
-
+      this.destroy()
       if((this.ids+i >= 0) && (this.ids+i < this.fileList.length) ){
-        // console.log('row--->',this.fileList[this.ids+i])
-        // if(this.fileList[this.ids+i].download){
-        //   console.log('loadNextRecord --- 录像回看')
-        //   this.playRecordFile(this.fileList[this.ids+i],true)
-        // }else {
-        //   console.log('loadNextRecord --- 录像预览')
-        //   this.playRecord(this.fileList[this.ids+i],true)
-        // }
-        this.onMouseup(this.fileList[this.ids+i],true,true)
+
+        // this.startTimestamp = new Date(this.fileList[this.ids+i].start).getTime()
+        console.log('loadNextRecord number--->',this.ids+i)
+        this.onMouseup(this.ids+i,true,true,"loadNextRecord")
       }else {
-        console.log('this.ids+i越界',this.ids+i)
+        // console.log('this.ids+i越界',this.ids+i)
       }
     },
 
@@ -1096,7 +1137,6 @@ export default {
           if(this.autoContinuePlay && new Date(this.recordPlayTime) - new Date(this.recordStop) < 5*1000 && this.autoPlayCount >= 6) {
             // console.log('autoContinuePlay')
             this.autoPlayCount = 0
-            console.log('autoContinuePlay',this.playDirection)
             this.loadNextRecord(this.playDirection)
           }
 
@@ -1137,6 +1177,47 @@ export default {
       }
     },
 
+    deleteRecord(row,index){
+      console.log('row--->',row)
+
+      deleteRecord(row.name).then((res)=>{
+        if(res.code == 20000){
+           if(res.data){
+             this.$set(this.fileList[index],'download',false)
+             this.$forceUpdate()
+
+             this.$notify({
+               message: '录像已删除',
+               type: 'success',
+               title: '提示',
+               duration: 1000,
+             });
+           }else {
+             this.$notify({
+               message: '录像删除失败',
+               type: 'error',
+               title: '错误',
+               duration: 1000,
+             });
+           }
+        }else {
+          this.$notify({
+            message: '删除失败',
+            type: 'warning',
+            title: '提示',
+            duration: 1000,
+          });
+        }
+      }).catch((res)=>{
+        this.$notify({
+          message: '网络异常 操作失败',
+          type: 'error',
+          title: '提示',
+          duration: 1000,
+        });
+      })
+    },
+
     //重载iframe
     reloadIframe(){
       this.recordReload = false
@@ -1144,7 +1225,7 @@ export default {
       let webRtcIP = window.location.hostname
       // console.log('reloadIframe---webRtcIP',webRtcIP)
       // if (webRtcIP == 'localhost' || webRtcIP == '127.0.0.1'){
-        webRtcIP = '192.168.20.23'
+      //   webRtcIP = '192.168.20.23'
       // }
       this.getPeerConnectionList(webRtcIP)
       setTimeout(()=>{
@@ -1214,7 +1295,7 @@ export default {
       // 线的x坐标是时间轴的中点，y坐标即时间轴的高度
       let x = this.width / 2;
       //划线
-      this.drawLine(x, 0, x, this.height, lineWidth, "#f67106");
+      this.drawLine(x, 0, x, this.height, lineWidth, 'rgb(255,0,0)');
     },
 
     // 画线段方法
@@ -1293,7 +1374,7 @@ export default {
           // 其他根据判断条件来显示
           h = this.height * 0.3;
           // 刻度线颜色
-          this.ctx.fillStyle = "rgb(255,129,0)";
+          this.ctx.fillStyle = this.fontColor;
           // 显示时间
           this.ctx.fillText(
             this.graduationTitle(graduationTime),
@@ -1302,7 +1383,7 @@ export default {
           );
         } else if (ZOOM_DATE_SHOW_RULE[this.currentZoomIndex](date)) {
           h = this.height * 0.2;
-          this.ctx.fillStyle = "rgb(255,129,0)";
+          this.ctx.fillStyle = this.fontColor;
           this.ctx.fillText(
             this.graduationTitle(graduationTime),
             x - 13,
@@ -1312,7 +1393,7 @@ export default {
           // 其他不显示时间
           h = this.height * 0.15;
         }
-        this.drawLine(x, 0, x, h, 1, "rgb(255,129,0)");
+        this.drawLine(x, 0, x, h, 1, this.fontColor);
       }
     },
 
@@ -1380,8 +1461,8 @@ export default {
         this.ctx.clearRect(0, 0, this.width, this.height)
         this.draw()
         // 绘制实时的竖线及时间
-        this.drawLine(x, 0, x, this.height * 0.3, 2, "rgb(255,129,0)")
-        this.ctx.fillStyle = "rgb(255,129,0)"
+        this.drawLine(x, 0, x, this.height * 0.3, 2, this.fontColor)
+        this.ctx.fillStyle = this.fontColor
         this.ctx.fillText(
           moment(time).format("YYYY-MM-DD HH:mm:ss"),
           x - 20,
@@ -1391,15 +1472,15 @@ export default {
     },
 
     //鼠标起来的操作
-    onMouseup(data,play,timing) {
-
+    onMouseup(ids,play,timing,from) {
+      console.log('onMouseup from--->',from)
+      let data = {}
       // 设置一下标志位 移动取消
       this.mousedown = false;
       //中间刻度距离左侧画布左侧距离
       let x = this.width / 2;
       // 计算出时间轴上每毫秒多少像素
-      const PX_PER_MS =
-        this.width / (ZOOM[this.currentZoomIndex] * ONE_HOUR_STAMP); // px/ms
+      const PX_PER_MS = this.width / (ZOOM[this.currentZoomIndex] * ONE_HOUR_STAMP); // px/ms
       // 计算中间位置刻度的时间位置的时间
       this.currentTime = this.startTimestamp + x / PX_PER_MS;
 
@@ -1407,16 +1488,19 @@ export default {
       let ctime = this.currentTime
 
       // console.log('this.currentTime',moment(this.currentTime).format("YYYY-MM-DD HH:mm:ss"),)
-      let findout = false
+      let findOut = false
       let closestTime = null
+
       //给播放区段赋浅蓝色
       this.timeSegments.forEach((item,index)=>{
-        if(ctime >= item.beginTime && ctime < item.endTime && !findout){
-          findout = true
+        if(ctime >= item.beginTime && ctime < item.endTime && !findOut){
+          findOut = true
           this.$set(this.timeSegments[index],'style',{background: "#64c8c8"})
           this.ids = index
+          this.currentRecord = index + 1
+          console.log('this.ids--->',this.ids)
           closestTime = item
-          this.searchResultText = (index+1)+' / '+this.fileList.length
+          // this.searchResultText = (index+1)+' / '+this.fileList.length
           //滚动到录像指定行
           this.$nextTick(()=>{
             if (index !== this.currentTableRow) {
@@ -1446,20 +1530,25 @@ export default {
         //暂时未处理未找到指定播放段情况
         return
       }
-      if(data == null){
+      if(ids == null){
+        console.log('data == null 补齐数据')
         data = {
           name: this.fileList[this.ids].name,
           jump: (this.currentTime - closestTime.beginTime)/1000,
           start: moment(this.currentTime).format("YYYY-MM-DD HH:mm:ss"),
           stop: moment(closestTime.endTime).format("YYYY-MM-DD HH:mm:ss")
         }
+        ids = this.ids
+      }else {
+        data = this.fileList[ids]
       }
-      // console.log('jump',data)
-      // console.log('this.fileList[this.ids]',this.fileList[this.ids])
+
+      // console.log('jump',data,this.ids,this.fileList[this.ids].name)
+      // console.log('this.fileList[this.ids]',this.fileList,this.fileList[this.ids],this.fileList[this.ids].download,play)
       if(play){
         //移动到指定点后启动播放 不执行跳转
         //判断是否已经缓存了 如果已缓存则直接播放 否则使用预览
-        if(this.fileList[this.ids].download){
+        if(this.fileList[ids].download){
           console.log('onMouseup --- 录像回看')
           this.playRecordFile(data,timing)
         }else {
@@ -1583,6 +1672,14 @@ export default {
       this.currentPage = val;
       this.getVideoRecords();
     },
+
+    handleCurrentRecordChange(val){
+      //TODO 播放val号视频
+      this.currentRecord = val
+      console.log('val--->',val)
+      this.onMouseup(val-1,true,true,"handleCurrentRecordChange")
+    },
+
     delVideoRecord(id) {
       this.$confirm('此操作将永久删除数据，是否继续？', '提示', {
         confirmButtonText: '确定',
@@ -1774,7 +1871,11 @@ export default {
   margin-top: 1rem;
 }
 
-  .content-header {
+#recordTable ::v-deep .el-icon-loading{
+  animation: none;
+}
+
+.content-header {
   padding:5px 10px 10px 10px;
   // margin-bottom: 10px;
   .inquireCamera{
@@ -1824,11 +1925,22 @@ export default {
   //display: none;
 }
 
->>> .dialog-footer {
-  .el-button {
-    background: #565f65;
-    border-color: #2e3235;
-    margin-left: 10px;
+::v-deep .dialog-footer {
+  //.el-button {
+  //  background: #565f65;
+  //  border-color: #2e3235;
+  //  margin-left: 10px;
+  //  color: #fff;
+  //}
+  .el-pagination.is-background .btn-next,
+  .el-pagination.is-background .btn-prev,
+  .el-pagination.is-background .el-pager li{
+    background-color: transparent;
+    color: var(--font-color);
+  }
+
+  .el-pagination.is-background .el-pager li:not(.disabled).active{
+    background-color: #60bcbc;
     color: #fff;
   }
 }
@@ -1847,6 +1959,16 @@ export default {
 ::v-deep .row-class {
   background-color: transparent;
   height:50px;
+}
+
+.play-record-button-active {
+  background-color: var(--bt-confirm-bg);
+  border-color: var(--data-scrren-back-shadow-bg-color)
+}
+
+.play-record-button-inactive {
+  background-color: #8c939d;
+  border-color: var(--data-scrren-back-shadow-bg-color)
 }
 
 //// 鼠标滑过背景颜色

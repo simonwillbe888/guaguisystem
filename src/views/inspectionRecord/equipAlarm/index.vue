@@ -115,10 +115,10 @@
               style="background-color: var(--title-bg);margin-right: 3rem;color:rgb(100,200,200)"
               icon="el-icon-download"
               size="mini"
-              @click="exportDetailReport(row)">
+              @click="exportDetailReport()">
             导出报告
           </el-button>
-          告警数量：{{ planDetail.AlarmCount }}
+          <span style="font-size: 1rem">告警数量：{{ planDetail.AlarmCount }}</span>
         </div>
       </div>
       <div class="countData">
@@ -180,8 +180,8 @@ import {
   getPatrolFiles,
   getTaskTypeList,
   patrolRecordExportExcel,
-  getAlarmListByPatrolRecordID
-} from '@/api/inspectRecord';
+  getAlarmListByPatrolRecordID, exportPatrolRecordDetailById
+} from '@/api/inspectRecord'
 import Pagination from '@/components/Pagination';
 import { mapGetters } from 'vuex';
 import exportReport from '@/views/exportReport/index.vue'
@@ -355,7 +355,50 @@ export default {
     },
     //导出巡检记录详情
     exportDetailReport(){
-      //TODO
+      console.log('this.planDetail--->',this.planDetail)
+      let _this = this
+      // console.log("查看导出参数",params)
+      if (_this.exportRole) {
+        exportPatrolRecordDetailById(this.planDetail.TaskID).then(function (res) { //导出流
+          // console.log('导出的参数', params)
+          _this.$notify({
+            type: 'success',
+            message: '导出成功',
+            title: '提示',
+            duration: 1000,
+          });
+          let blob = new Blob([res], { type: "application/vnd.ms-excel" });
+          // let blob = new Blob([res]);//response.data为后端传的流文件
+          let downloadFilename = '巡检报告' + _this.$moment(new Date()).format('YYYY-MM-DD HH:mm:ss') + ".xlsx";//设置导出的文件名  用moment时间插件对文件命名防止每次都是一样的文件名
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            //兼容ie浏览器
+            window.navigator.msSaveOrOpenBlob(blob, downloadFilename)
+          } else {
+            //谷歌,火狐等浏览器
+            let url = window.URL.createObjectURL(blob);
+            let downloadElement = document.createElement("a");
+            downloadElement.style.display = "none";
+            downloadElement.href = url;
+            downloadElement.download = downloadFilename;
+            document.body.appendChild(downloadElement);
+            downloadElement.click();
+            document.body.removeChild(downloadElement);
+            window.URL.revokeObjectURL(url);
+          }
+        }).catch(function (err) {
+          // console.log(err)
+        }).finally(function () {
+
+        })
+
+      } else {
+        _this.$notify({
+          type: 'error',
+          message: '您当前未拥有系统权限',
+          title: '提示',
+          duration: 2000,
+        });
+      }
     },
 
     // 导出列表
@@ -604,6 +647,7 @@ export default {
 
 }
   .name {
+    font-size: 1rem;
     margin-left: 2%;
     color: var(--font-color);
   }
@@ -648,7 +692,11 @@ export default {
 ::v-deep .el-dialog {
   width: 1200px;
   background-color: #132B41;
-  height: calc(100vh - 200px)
+  height: calc(100vh - 200px);
+
+  .el-table .cell{
+    font-size: 0.8rem;
+  }
 }
 
 </style>

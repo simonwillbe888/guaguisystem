@@ -26,6 +26,9 @@
   --title-bolder: normal;
   --title-color: rgb(43, 121, 121);
   --title-bg: rgb(253, 238, 241);
+  --bt-confirm-bg: #64c8c8;
+  --bt-cancel-color: #000;
+  --bt-cancel-bg: rgb(253, 238, 241);
   --online: #FFFFFF;
   --tableHead:#b1e3e3;
   --tableborder:#64c8c8;
@@ -68,6 +71,9 @@
   --title-bolder: bolder;
   --title-color: #FFFFFF;
   --title-bg: rgb(23, 30, 53);
+  --bt-confirm-bg: #64c8c8;
+  --bt-cancel-color: #fff;
+  --bt-cancel-bg: transparent;
   --online: #67B3B2;
   --tableHead:#33717c;
   --tableborder:#fff;
@@ -110,8 +116,8 @@ img {
 }
 
 .el-dialog__title {
-  line-height: 14px;
-  font-size: 14px;
+  line-height: 1.5rem;
+  font-size: 1.25rem;
   color: rgb(230, 255, 255);
 }
 

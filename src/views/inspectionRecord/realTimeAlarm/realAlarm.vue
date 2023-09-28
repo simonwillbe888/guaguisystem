@@ -144,14 +144,14 @@
       <el-dialog title="告警详情" :visible.sync="dialogVisible" width="60%" @close="closeDetailDialog">
         <div style="display:flex;color: var(--font-color);">
           <div style="width:70%;height: 24rem;position: relative">
-            <img v-if="showImg"  :src="imageUrl" alt="" style="width:100%">
+            <img :src="imageUrl" alt="" style="width:100%">
             <div v-if="!recordReload"
                  class="nvrRecord"
                  style="font-size: 1.5rem;align-items: center;justify-content: center;display: flex;">
               正在获取录像文件
             </div>
             <video
-              v-show="!showImg && nvrVideoSrc != ''"
+              v-show="nvrVideoSrc != ''"
               class="nvrRecord"
               ref="nvrVideo"
               v-if="recordReload"
@@ -162,13 +162,14 @@
           </div>
 
           <div style="margin-left:2vw">
-            <div style="margin: 1vh  0;">告警级别:
-              <span v-if="alarm.maxAlarmLevel == 4" style="border: red 1px solid; color: red;font-size: 1.2vw;">致命</span>
-              <span v-if="alarm.maxAlarmLevel == 3"
-                style="border: red 1px solid; color: orange;font-size: 1.2vw;">严重</span>
-              <span v-if="alarm.maxAlarmLevel == 2" style="border: red 1px solid; color: yellow;font-size: 1vw;">一般</span>
-              <span v-if="alarm.maxAlarmLevel == 1"
-                style="border: red 1px solid; color: #08F9EB ;font-size: 1vw;">提示</span>
+            <div style="margin: 1rem 0; display: flex;position:relative;    align-items: center">告警级别:
+              <div style="margin: 0 1rem;border: red 1px solid;width: 3rem;height: 1.5rem;display: flex;align-items: center;justify-content: center;">
+                <span v-if="alarm.maxAlarmLevel == 4" style="color: red;font-size: 1rem;text-shadow: 0 0 3px #000000;">致命</span>
+                <span v-if="alarm.maxAlarmLevel == 3" style="color: orange;font-size: 1rem;text-shadow: 0 0 3px #000000;">严重</span>
+                <span v-if="alarm.maxAlarmLevel == 2" style="color: yellow;font-size: 1rem;text-shadow: 0 0 3px #000000;">一般</span>
+                <span v-if="alarm.maxAlarmLevel == 1" style="color: #08F9EB ;font-size: 1rem;text-shadow: 0 0 3px #000000;">提示</span>
+              </div>
+
             </div>
             <div style="margin: 2vh  0;">
               告警名称：{{ alarm.alarmName }}
@@ -245,10 +246,10 @@
           </el-input>
         </el-form-item>
         <el-form-item class="common-form-footer">
-          <el-button type="primary" @click="addSuccess('alarmForm', alarmForm)">{{
+          <el-button type="primary" style="background-color: var(--bt-confirm-bg)" @click="addSuccess('alarmForm', alarmForm)">{{
             $t('inspection_setting.sure_add_label')
           }}</el-button>
-          <el-button type="primary" plain @click="cancel('alarmForm')">{{
+          <el-button style="background-color: var(--bt-cancel-bg);color: var(--font-color)" plain @click="cancel('alarmForm')">{{
             $t('inspection_setting.cancel_add_label')
           }}</el-button>
         </el-form-item>
@@ -356,7 +357,7 @@ export default {
         current: self.page,
         limit: self.limit,
         status: self.alarmState,
-        alarmCode: self.alarmCode,
+        alarmCode: parseInt(self.alarmCode),
         alarmName: self.alarmName,
         alarmType: parseInt(self.alarmType)
 
@@ -1020,10 +1021,8 @@ export default {
 
 .nvrRecord{
   background-color: #000000;
-  width: 100%;
   border: none;
   display: inline-block;
-  margin-top: 1rem;
 }
 
 </style>

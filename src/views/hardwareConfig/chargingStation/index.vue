@@ -102,6 +102,7 @@
                   @click="setChargingStrategy(1, row.id)"
                   size="mini"
                   icon="el-icon-delete"
+                  style="margin-right: 1rem"
                 >
                   删除
                 </el-button>
@@ -216,10 +217,13 @@
         </el-form-item>
 
         <el-form-item class="common-form-footer">
-          <el-button type="primary" @click="chargeStation">保存</el-button>
+          <el-button type="primary"
+                     @click="chargeStation"
+                     style="background-color: var(--bt-confirm-bg)">
+            保存</el-button>
           <el-button type="primary" plain @click="centerDialogVisible = false"
-            >取消</el-button
-          >
+                     style="background-color: var(--bt-cancel-bg);color: var(--font-color)">
+            取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>

@@ -307,8 +307,8 @@
         </el-form-item>
 
         <el-form-item v-if="!taskForm.isDetail" class="common-form-footer">
-          <el-button type="primary" @click="addSuccess">确定</el-button>
-          <el-button type="primary" plain @click="cancelOperate()">{{
+          <el-button type="primary" @click="addSuccess" style="background-color: var(--bt-confirm-bg)">确定</el-button>
+          <el-button plain @click="cancelOperate()" style="background-color: var(--bt-cancel-bg);color: var(--font-color)">{{
             $t('inspection_setting.cancel_add_label')
           }}</el-button>
         </el-form-item>
@@ -317,8 +317,8 @@
     <el-dialog :visible.sync="lowButtery" title="低电量提示" width="30%">
       <span style="font-size:1.5rem ;">机器人低电量,确定启动该任务吗? </span>
       <span slot="footer">
-        <el-button @click="lowButtery = false">取 消</el-button>
-        <el-button type="primary" @click="goLocation()">确 定</el-button>
+        <el-button type="primary" @click="goLocation()" style="background-color: var(--bt-confirm-bg)">确 定</el-button>
+        <el-button @click="lowButtery = false" style="background-color: var(--bt-cancel-bg);color: var(--font-color)">取 消</el-button>
       </span>
     </el-dialog>
   </div>

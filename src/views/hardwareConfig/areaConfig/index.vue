@@ -163,10 +163,12 @@
                 ? addSuccess('accessoForm', accessoForm)
                 : editSuccess('accessoForm', accessoForm)
             "
+            style="background-color: var(--bt-confirm-bg)"
             >保存</el-button
           >
           <el-button
             plain
+            style="background-color: var(--bt-cancel-bg);color: var(--font-color)"
             @click="cancelOperate('accessoForm')"
             >{{ $t('equip_setting.cancel_label') }}</el-button
           >
@@ -558,6 +560,7 @@ export default {
   padding: 20px;
   background-color: lightgray;
 }
+
 .dialog-class {
   ::v-deep .el-dialog__body {
     padding: 20px;

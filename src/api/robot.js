@@ -334,6 +334,13 @@ export function downloadRecordByFile(id,fileName) {
   });
 }
 
+export function deleteRecord(fileName) {
+  return request({
+    url: '/api/DVR/deleteRecord?fileName='+fileName,
+    method: 'get'
+  });
+}
+
 //获取摄像头集合信息
 export function getCameraList() {
   return request({

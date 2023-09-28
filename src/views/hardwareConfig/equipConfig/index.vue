@@ -302,12 +302,13 @@
                 ? addSuccess('accessoForm', accessoForm)
                 : editSuccess('accessoForm', accessoForm)
             "
+            style="background-color: var(--bt-confirm-bg)"
             >{{ $t('equip_setting.sure_label') }}</el-button
           >
           <el-button
-            type="primary"
             size="mini"
             @click="cancelOperate('accessoForm')"
+            style="background-color: var(--bt-cancel-bg);color: var(--font-color)"
             >{{ $t('equip_setting.cancel_label') }}</el-button
           >
         </el-form-item>

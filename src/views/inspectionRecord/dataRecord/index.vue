@@ -33,7 +33,7 @@
             <span>{{ row.account }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="姓名" align="center">
+        <el-table-column prop="name" label="用户名" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.name }}</span>
           </template>

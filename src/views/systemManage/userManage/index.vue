@@ -193,9 +193,9 @@
         </el-form-item>
 
         <el-form-item>
-          <el-button type="primary" style="background-color: #64C8C8FF" @click="save">确认</el-button>
+          <el-button type="primary" style="background-color: var(--bt-confirm-bg)" @click="save">确认</el-button>
 
-          <el-button type="primary" style="background-color: #FFFFFF;color: #000000" @click="cancel">取消</el-button>
+          <el-button style="background-color: var(--bt-cancel-bg);color: var(--font-color)" @click="cancel">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -405,7 +405,7 @@ export default {
 </script>
 <style scoped lang="scss">
 .content-body {
-  margin-top: 10px;
+  //margin-top: 10px;
 }
 
 .headerBtn {

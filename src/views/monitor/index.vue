@@ -39,12 +39,12 @@
             </div>
             <div class="robotEletri">
               <div style="display:flex;margin:2rem auto;">
-                <i class="el-icon-caret-left arrow" @click="changeRobotLeft"></i>
+                <i class="el-icon-caret-left arrow" style="cursor: pointer" @click="changeRobotLeft"></i>
                 <div :class="[ carList.inSystem ? 'onLine': 'outLine']">{{ carrierName }}({{ carList.inSystem ? '在线' : '离线' }})</div>
-                <i class="el-icon-caret-right arrow" @click="changeRobotRight"></i>
+                <i class="el-icon-caret-right arrow" style="cursor: pointer" @click="changeRobotRight"></i>
               </div>
             </div>
-            <div class="warnL" style="position:absolute;top: 9.2rem;left: 2.7rem;">
+            <div class="warnL" style="cursor: pointer;position:absolute;top: 9.2rem;left: 2.7rem;">
               <div
                 style="border-radius: 0.625rem;;width: 3.1rem;border: 1px solid #66B3B2;display: flex;height: 3rem;line-height: 2rem;align-items: center;justify-items: center;"
                 @click="setWarnLight()" :class="{ 'warning_light_active': warnLightOpen == 1 }">
@@ -60,11 +60,11 @@
                 :percentage="carList.batteryLevel"></el-progress>
               <div style="font-size: 0.85rem;margin: 0.5rem 0 0 0.5rem">当前电量</div>
             </div>
-            <div class="microphone">
+            <div class="microphone" style="cursor: pointer">
               <Intercom ref="closeIntercom" :key="carID" :carID="carID" :hkPlugin="hkPlugin" ></Intercom>
               <div class="speak_detail" style="color: var(--font-color)">语音对讲</div>
             </div>
-            <div class="broadcast" @click="broadcastVisible = true">
+            <div class="broadcast" style="cursor: pointer" @click="broadcastVisible = true">
               <svg-icon icon-class="horn"></svg-icon>
               <!-- <svg-icon icon-class="stopBroadcast" v-show="broadcasting == true"></svg-icon> -->
               <div class="broadcast_detail" style="color: var(--font-color)">语音播报</div>
@@ -178,7 +178,7 @@
                 </span>
                 <el-popconfirm title="确定执行任务吗?" @confirm="startPlan()">
                   <div
-                    style="border-radius:10px;background-color:#66B3B2 ; color:#ffffff;margin-left: 5.5rem;width: 3.75rem; text-align: center; height: 1.875rem;line-height: 1.875rem;"
+                    style="cursor: pointer;border-radius:10px;background-color:#66B3B2 ; color:#ffffff;margin-left: 5.5rem;width: 3.75rem; text-align: center; height: 1.875rem;line-height: 1.875rem;"
                     slot="reference">执行</div>
                 </el-popconfirm>
               </div>
@@ -238,23 +238,21 @@
               <div style="display:flex">
                 <div class="enviroDetail">
                   <div class="detail_icon">
-                    <i class="fa fa-thermometer fa-lg" style="font-size:1.25rem;margin-left: 0.5rem;color: var(--font-color);"></i>
-<!--                    <svg-icon icon-class="tempicture" style="font-size:1.25rem;margin-left: 0.5rem;color: var(font-color);"></svg-icon>-->
+                    <i class="fa fa-thermometer fa-lg" style="font-size:1.25rem;margin-left: 0.75rem;color: var(--font-color);"></i>
                     <div style="margin-top: 0.25rem">温度</div>
                   </div>
-                  <div class="gasDetail" style="margin: 1.625rem 0 0 0;">
-                    {{ isNaN(gasList.Temperature) ?   '0': parseFloat((gasList.Temperature / 100).toFixed(1))}}℃
+                  <div class="gasDetail" style="margin: 1.625rem 0 0 0.25rem;">
+                    {{ isNaN(gasList.Temperature) ?   '0': parseFloat((gasList.Temperature / 100).toFixed(1))}} ℃
                   </div>
                 </div>
                 <div class="enviroDetail">
                   <div class="detail_icon">
-                    <i class="fa fa-tint fa-lg" style="font-size:1.25rem;margin-left: 0.5rem;color: var(--font-color);"></i>
+                    <i class="fa fa-tint fa-lg" style="font-size:1.25rem;margin-left: 0.75rem;color: var(--font-color);"></i>
 <!--                    <svg-icon icon-class="shidu" style="font-size:1.25rem;margin-left: 0.5rem;"></svg-icon>-->
                     <div style="margin-top: 0.25rem">湿度</div>
                   </div>
-                  <div class="gasDetail" style="margin: 1.625rem 0 0 0;">
-                    {{ isNaN( gasList.Humidity) ? '0' : (gasList.Humidity / 100).toFixed(1) }}
-                    <span style="font-size: 1rem;">%</span>
+                  <div class="gasDetail" style="margin: 1.625rem 0 0 0.25rem;">
+                    {{ isNaN( gasList.Humidity) ? '0' : (gasList.Humidity / 100).toFixed(1) }} %
                   </div>
                 </div>
                 <div class="enviroDetail">
@@ -293,7 +291,7 @@
           <el-col :span="15">
             <div class="alarm_2 back-shaodow threeRow">
               <div class="alarm_title" style="margin-bottom: 0.5rem;font-weight: var(--title-bolder)">告警信息
-                <div class="chart" style="font-weight: normal" @click="chart()">告警分析</div>
+                <div class="chart" style="font-weight: normal;cursor: pointer" @click="chart()">告警分析</div>
               </div>
               <div class="alarm">
                 <div class="myTable">
@@ -402,19 +400,19 @@
             </div>
 
             <div style="display:flex;margin: 0.75rem 0;">
-              <div class="robotDirec" @mousedown="setRobotMoveCrl(2)" @mouseup="setRobotMoveCrl(3)">
+              <div class="robotDirec" style="cursor: pointer" @mousedown="setRobotMoveCrl(2)" @mouseup="setRobotMoveCrl(3)">
                 <img src="../../assets/img/back.png" style="width:3rem" alt="">
                 <!--                <span style="position: relative;;bottom: 0.3125rem;">后退</span>-->
               </div>
-              <div class="robotDirec" @mousedown="setRobotMoveCrl(1)" @mouseup="setRobotMoveCrl(3)">
+              <div class="robotDirec" style="cursor: pointer" @mousedown="setRobotMoveCrl(1)" @mouseup="setRobotMoveCrl(3)">
                 <!--                <span style="position: relative;;bottom: 0.3125rem;">前进</span> -->
                 <img src="../../assets/img/front.png" style="width:3rem" alt="">
               </div>
               <div class="speed">
-                <div @click="robotSpeed = 1000" :class="robotSpeed == 1000 ? 'speed_detail_active' : 'speed_detail'">
+                <div @click="robotSpeed = 1000" style="cursor: pointer" :class="robotSpeed == 1000 ? 'speed_detail_active' : 'speed_detail'">
                   巡检速度
                 </div>
-                <div style="margin-top:0.4375rem ;" @click="robotSpeed = 8000"
+                <div style="margin-top:0.4375rem; cursor: pointer;" @click="robotSpeed = 8000"
                      :class="robotSpeed == 8000 ? 'speed_urgency_active' : 'speed_urgency'">
                   应急速度
                 </div>
@@ -426,46 +424,46 @@
               </div>
               <div style="display:flex ;">
                 <div class="hkMove">
-                  <img src="../../assets/img/hkUp.png" @mousedown="setCameraOperate(1)" @mouseup="stopCam()" class="hkUp">
+                  <img src="../../assets/img/hkUp.png" style="cursor: pointer" @mousedown="setCameraOperate(1)" @mouseup="stopCam()" class="hkUp">
                   <div style="display: flex;">
-                    <img src="../../assets/img/hkLeft.png" @mousedown="setCameraOperate(5)" @mouseup="stopCam()"
+                    <img src="../../assets/img/hkLeft.png" style="cursor: pointer" @mousedown="setCameraOperate(5)" @mouseup="stopCam()"
                          class="hkLeft">
-                    <img src="../../assets/img/hkConnect.png" @click="HKlogin()"
+                    <img src="../../assets/img/hkConnect.png" @click="HKlogin()" style="cursor: pointer"
                          :class="[YTlogin == true ? 'HKloading' : 'hkConnect']">
-                    <img src="../../assets/img/hkRight.png" @mousedown="setCameraOperate(7)" @mouseup="stopCam()"
+                    <img src="../../assets/img/hkRight.png" style="cursor: pointer" @mousedown="setCameraOperate(7)" @mouseup="stopCam()"
                          class="hkRight">
                   </div>
-                  <img src="../../assets/img/hkDown.png" @mousedown="setCameraOperate(3)" @mouseup="stopCam()"
+                  <img src="../../assets/img/hkDown.png" style="cursor: pointer" @mousedown="setCameraOperate(3)" @mouseup="stopCam()"
                        class="hkDown">
                 </div>
                 <div style="margin-left: 4.125rem;width:18.75rem;position: relative;">
                   <div class="hkAction">
-                    <div title="放大" class="action_detail" @mousedown="setCameraOperate(9)" @mouseup="stopCam()">
+                    <div title="放大" class="action_detail" style="cursor: pointer" @mousedown="setCameraOperate(9)" @mouseup="stopCam()">
                       <img src="../../assets/img/fangda.png" alt="">
                     </div>
-                    <div title="照相" class="action_detail">
+                    <div title="照相" class="action_detail" style="cursor: pointer">
                       <img src="../../assets/img/takephoto.png" @click="setCameraOperate(20)">
                     </div>
-                    <div title="清洗" class="action_detail" @mousedown="setCameraOperate(16)" @mouseup="stopCam()">
+                    <div title="清洗" class="action_detail" style="cursor: pointer" @mousedown="setCameraOperate(16)" @mouseup="stopCam()">
                       <img src="../../assets/img/clean.png" alt="">
                     </div>
-                    <div title="聚焦" class="action_detail" @mousedown="setCameraOperate(13)" @mouseup="stopCam(13)">
+                    <div title="聚焦" class="action_detail" style="cursor: pointer" @mousedown="setCameraOperate(13)" @mouseup="stopCam(13)">
                       <img src="../../assets/img/jujiao.png" alt="">
                     </div>
                   </div>
                   <div class="hkAction">
-                    <div title="缩小" class="action_detail" @mousedown="setCameraOperate(11)" @mouseup="stopCam(11)">
+                    <div title="缩小" class="action_detail" style="cursor: pointer" @mousedown="setCameraOperate(11)" @mouseup="stopCam(11)">
                       <img src="../../assets/img/suoxiao.png" alt="">
                     </div>
-                    <div class="action_detail">
+                    <div class="action_detail" style="cursor: pointer">
                       <img title="录像" src="../../assets/img/video.png" v-if="!videoOn" @click="setCameraOperate(21)">
                       <img title="关闭录像" src="../../assets/img/closeVideo.png" v-if="videoOn" @click="setCameraOperate(23)">
                     </div>
-                    <div class="action_detail">
+                    <div class="action_detail" style="cursor: pointer">
                       <img title="开灯" src="../../assets/img/light.png" v-if="!lightOn" @click="setCameraOperate(12)">
                       <img title="关灯" src="../../assets/img/closeLiht.png" v-if="lightOn" @click="setCameraOperate(14)">
                     </div>
-                    <div class="action_detail" @mousedown="setCameraOperate(15)" @mouseup="stopCam(15)">
+                    <div class="action_detail" style="cursor: pointer" @mousedown="setCameraOperate(15)" @mouseup="stopCam(15)">
                       <img title="远焦" src="../../assets/img/yuanjiao.png" alt="">
                     </div>
                   </div>
@@ -1999,8 +1997,9 @@ export default {
 
       .gasDetail {
         margin: 1rem 0 0 0.75rem;
-        width: 4rem;
+        width: 3rem;
         word-break: keep-all;
+        white-space: nowrap;
         color: var(--active-color);
       }
 
@@ -2173,6 +2172,7 @@ export default {
       }
 
       .goYes {
+        cursor: pointer;
         width: 3.75rem;
         height: 1.875rem;
         line-height: 1.9375rem;

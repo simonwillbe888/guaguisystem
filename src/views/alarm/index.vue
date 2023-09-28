@@ -340,9 +340,10 @@
                 ? addSuccess(alarmForm)
                 : editSuccess(alarmForm)
             "
+            style="background-color: var(--bt-confirm-bg)"
             >确定</el-button
           >
-          <el-button type="primary" plain @click="cancel('alarmForm')">{{
+          <el-button style="background-color: var(--bt-cancel-bg);color: var(--font-color)" plain @click="cancel('alarmForm')">{{
             $t('inspection_setting.cancel_add_label')
           }}</el-button>
           </div>

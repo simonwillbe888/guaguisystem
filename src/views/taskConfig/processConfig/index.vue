@@ -184,9 +184,12 @@
                   ? addSuccess('taskForm', taskForm)
                   : editSuccess('taskForm', taskForm)
               "
+              style="background-color: var(--bt-confirm-bg)"
               >{{ $t('inspection_setting.sure_add_label') }}</el-button
             >
-            <el-button type="primary" plain @click="cancel('taskForm')">{{
+            <el-button
+                style="background-color: var(--bt-cancel-bg);color: var(--font-color)"
+                plain @click="cancel('taskForm')">{{
               $t('inspection_setting.cancel_add_label')
             }}</el-button>
           </el-form-item>
