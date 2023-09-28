@@ -52,6 +52,7 @@
 import OneEcharts from './echarts/OneEcharts.vue';
 import TowEcharts from './echarts/TowEcharts.vue';
 import ThreeEcharts from './echarts/ThreeEcharts.vue';
+import moment from "moment"
 import FourEcharts from './echarts/FourEcharts.vue';
 import { getCurrentAlarmRecordList } from '../../api/inspectRecord';
 import { getAllCarrierDetailInfo } from '../../api/robot';
@@ -116,14 +117,17 @@ export default {
   mounted() {
 
   },
-  beforeDestroy() {
+  beforeDestroy() { 
 
   },
 
   methods: {
    search(){
-    // console.log('查询日期')
+    this.date[0]=  moment(this.date[0]).format("YYYY-MM-DD HH:mm:ss")
+    this.date[1]=  moment(this.date[1]).format("YYYY-MM-DD HH:mm:ss")
     this.time = this.date
+        console.log('查询日期',this.time)
+
    }
 
 

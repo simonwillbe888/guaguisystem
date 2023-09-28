@@ -902,7 +902,7 @@ export default {
 }
 ::v-deep  .el-input__inner
  {
-  width: 12.5rem;
+  // width: 12.5rem;
   // height: 1.875rem;
   background-color: transparent;
   color: var(--font-color);

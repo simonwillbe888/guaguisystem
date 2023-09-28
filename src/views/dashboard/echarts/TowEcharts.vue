@@ -77,7 +77,7 @@ export default {
           
         
         }
-        console.log("查看发生率",this.occurCount/this.count,this.occurCount,this.count)
+        // console.log("查看发生率",this.occurCount/this.count,this.occurCount,this.count)
         if(this.$store.state.global.theme == 'theme-1'){
           self.getEchartLeft3(self.echartsData,'#000');
         }else{
