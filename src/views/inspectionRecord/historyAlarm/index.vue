@@ -286,6 +286,7 @@ export default {
       page: 1,
       limit: 10,
       detailsList: '',
+      previewSrcList: [],
       detailes: [],
       imageUrl: null,
       showImg: true,

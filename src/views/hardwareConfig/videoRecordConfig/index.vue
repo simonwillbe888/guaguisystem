@@ -664,6 +664,7 @@ export default {
       ids: null,
       currentRecord: 1,
       totalRecord: 0,
+      previewSrcList: [],
     }
   },
   mounted() {
@@ -1652,6 +1653,7 @@ export default {
         this.$refs.form2.clearValidate();
       });
     },
+
     add() {
       this.form.isEdit = false;
       this.form = {
