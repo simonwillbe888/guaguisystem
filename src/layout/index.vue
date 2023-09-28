@@ -256,8 +256,9 @@ export default {
       })
       getExistCarrierAreaList().then((res) => {
         let areas = []
+        let accessTypeArr
         if(res.code == 20000) {
-          let accessTypeArr = res.data
+          accessTypeArr = res.data
           this.choosedArea = accessTypeArr[0].id
           for (let i = 0, len = accessTypeArr.length; i < len; i++) {
             areas.push(accessTypeArr[i].id)

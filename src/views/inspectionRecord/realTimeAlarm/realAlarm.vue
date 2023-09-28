@@ -143,22 +143,35 @@
 
       <el-dialog title="告警详情" :visible.sync="dialogVisible" width="60%" @close="closeDetailDialog">
         <div style="display:flex;color: var(--font-color);">
-          <div style="width:70%;height: 24rem;position: relative">
-            <img :src="imageUrl" alt="" style="width:100%">
-            <div v-if="!recordReload"
-                 class="nvrRecord"
-                 style="font-size: 1.5rem;align-items: center;justify-content: center;display: flex;">
-              正在获取录像文件
+          <div style="width:70%;position: relative;">
+            <div style="height:60%;display: flex;margin-bottom: 1rem">
+              <div style="width:50%;background-color: #8c939d;margin-right: 1rem">
+                <el-image :src="imageUrl"
+                        style="width: 100%;height: 100%;display: flex;justify-content: center;align-items: center"
+                        :preview-src-list="imageUrl">
+                  <div slot="error" class="image-slot">
+                    <div style="font-size: 2rem;">暂无图片</div>
+                  </div>
+                </el-image>
+              </div>
+              <div v-if="nvrVideoSrc == ''"
+                   class="nvrRecord"
+                   style="width:50%;background-color: #8c939d;font-size: 2rem;align-items: center;justify-content: center;display: flex;">
+                暂无视频
+              </div>
+              <video
+                  style="width:50%;background-color: #8c939d;"
+                  class="nvrRecord"
+                  ref="nvrVideo"
+                  v-if="nvrVideoSrc != ''"
+                  :src="nvrVideoSrc"
+                  autoplay controls
+              >
+              </video>
             </div>
-            <video
-              v-show="nvrVideoSrc != ''"
-              class="nvrRecord"
-              ref="nvrVideo"
-              v-if="recordReload"
-              :src="nvrVideoSrc"
-              autoplay controls
-            >
-            </video>
+            <div style="width: 100%;height:40%;position: relative;display: flex;justify-content: center;align-items: center;">
+              <span style="font-size: 2.5rem;color: rgb(100,200,200)">{{this.alarm.statusNum == 0 || this.alarm.statusNum == 1 ? "未处理":"已处理"}}</span>
+            </div>
           </div>
 
           <div style="margin-left:2vw">
@@ -204,7 +217,6 @@
         </div>
         <span slot="footer" class="dialog-footer">
           <template>
-            <el-button type="success" style="margin-right: 3rem" @click="playRecord(alarm)">回 看</el-button>
             <el-button v-if="alarm.statusNum == 0 || alarm.statusNum == 1"  type="primary" @click="showDetail(alarm)">处 理</el-button>
             <el-button v-else type="primary" @click="dialogVisible = false">确 定</el-button>
           </template>
@@ -441,8 +453,22 @@ export default {
           this.imageUrl ='http://'+ this.$store.state.global.fileAddress + ':8888/images/' + e.Image
         }
         this.dialogVisible = true
+
+        this.alarm.hasMedia = this.alarmJudge(this.alarm.alarmCode)
+        if(this.alarm.hasMedia){
+          this.playRecord(e)
+        }else {
+          this.imageUrl = ''
+          this.nvrVideoSrc = ''
+        }
       }
     },
+
+    alarmJudge(code){
+      let alarm = [1004,1005,1006,1014,1015]
+      return !alarm.includes(code)
+    },
+
     switchAlarm(e){
       if(e){
         this.alarmType = 2
@@ -663,57 +689,11 @@ export default {
 
     //录像预览
     playRecord(row){
-      if(!this.showImg){
-        this.showImg = true
-        return
-      }
-
-      this.showImg = false
-
       console.log("查看详情数据",row)
-
-      this.nvrVideoSrc= row.id+'.mp4'
+      this.nvrVideoSrc = row.id+'.mp4'
       // this.nvrVideoSrc= '/static/video/'+row.id+'.mp4'
       this.$refs.nvrVideo.load()
-      // this.$refs.nvrVideo.onerror = function(){
-      //   this.recordReload = false
-      // }
-      // this.$nextTick(()=>{
-      // })
-      // console.log("this.nvrRecordData--->",this.nvrRecordData)
-
       this.$forceUpdate()
-
-      // this.nvrRecordData= {src:''}
-      //
-      // if(this.recordTimer){
-      //   clearInterval(this.recordTimer)
-      // }
-      // let alarmTime = new Date(row.happenTime).getTime()
-      // // let alarmTime = moment(row).format("YYYY-MM-DD HH:mm:ss")
-      // console.log('row.happenTime--->',row.happenTime)
-      // console.log('alarmTime--->',alarmTime)
-      //
-      // this.recordStart = alarmTime-1000*10
-      // this.recordStop = alarmTime+1000*10
-      //
-      // let startTime = moment(this.recordStart).format("YYYY-MM-DD HH:mm:ss").replace(/-|:|\.\d+/g, '').replace(' ','T')+'Z'
-      // let endTime  = moment(this.recordStop).format("YYYY-MM-DD HH:mm:ss").replace(/-|:|\.\d+/g, '').replace(' ','T')+'Z'
-      // let channel = '101'
-      // let webRtcIP = window.location.hostname
-      // let port = '554'
-      // // console.log('playRecord---webRtcIP',webRtcIP)
-      // // if (webRtcIP == 'localhost' || webRtcIP == '127.0.0.1'){
-      //   webRtcIP = '192.168.20.23'
-      // // }
-      // let nvrData = {
-      //   userName: "user",
-      //   passWord: "password2023",
-      //   ip: "192.168.20.65",
-      // }
-      // this.nvrRecordData = {src : `/static/record.html?data=`+encodeURIComponent(`rtsp://${nvrData.userName}:${nvrData.passWord}@${nvrData.ip}:${port}/Streaming/tracks/${channel}?starttime=${startTime}&endtime=${endTime}`)+`&serve=${webRtcIP}`}
-      //
-      // this.reloadIframe()
     },
 
     //重载iframe
@@ -1017,6 +997,13 @@ export default {
 
 ::v-deep .el-dialog {
   width: 540px;
+}
+
+.image-slot{
+  font-size: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
 }
 
 .nvrRecord{

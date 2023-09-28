@@ -120,91 +120,86 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-dialog title="告警详情" :visible.sync="dialogVisible" width="60%" @close="closeDetailDialog">
-        <div style="display:flex;color: var(--font-color);">
-          <div style="width:70%;position: relative;">
-            <div style="height:60%;display: flex;margin-bottom: 1rem">
-              <div style="width:50%;background-color: #8c939d;margin-right: 1rem">
-                <el-img :src="imageUrl"
-                        style="width: 100%;height: 100%;display: flex;justify-content: center;align-items: center"
-                        :preview-src-list="imageUrl">
-                  <div slot="error" class="image-slot">
-                    <div style="font-size: 2rem;">暂无图片</div>
-                  </div>
-                </el-img>
-              </div>
-              <div v-if="nvrVideoSrc == ''"
-                   class="nvrRecord"
-                   style="width:50%;background-color: #8c939d;font-size: 2rem;align-items: center;justify-content: center;display: flex;">
-                暂无视频
-              </div>
-              <video
+      <div>
+        <pagination v-show="total > 0" :total="total" :page.sync="page" :limit.sync="limit" @pagination="init" />
+      </div>
+    </div>
+
+    <el-dialog title="告警详情" :visible.sync="dialogVisible" width="60%" @close="closeDetailDialog">
+      <div style="display:flex;color: var(--font-color);">
+        <div style="width:70%;position: relative;">
+          <div style="height:60%;display: flex;margin-bottom: 1rem">
+            <div style="width:50%;background-color: #8c939d;margin-right: 1rem">
+              <el-image :src="imageUrl"
+                      style="width: 100%;height: 100%;display: flex;justify-content: center;align-items: center"
+                      :preview-src-list="imageUrl">
+                <div slot="error" class="image-slot">
+                  <div style="font-size: 2rem;">暂无图片</div>
+                </div>
+              </el-image>
+            </div>
+            <div v-if="nvrVideoSrc == ''"
+                 class="nvrRecord"
+                 style="width:50%;background-color: #8c939d;font-size: 2rem;align-items: center;justify-content: center;display: flex;">
+              暂无视频
+            </div>
+            <video
                 style="width:50%;background-color: #8c939d;"
                 class="nvrRecord"
                 ref="nvrVideo"
                 v-if="nvrVideoSrc != ''"
                 :src="nvrVideoSrc"
                 autoplay controls
-              >
-              </video>
-            </div>
-            <div style="width: 100%;height:40%;position: relative;display: flex;justify-content: center;align-items: center;">
-              <span style="font-size: 2.5rem;color: rgb(100,200,200)">{{this.alarm.statusNum == 0 || this.alarm.statusNum == 1 ? "未处理":"已处理"}}</span>
-            </div>
-            <!--          <iframe-->
-            <!--            v-show="!showImg && nvrRecordData.src != ''"-->
-            <!--            class="nvrRecord"-->
-            <!--            :myData="nvrRecordData"-->
-            <!--            v-if="recordReload"-->
-            <!--            name="nvrRecord"-->
-            <!--            :id="'nvrRecord'"-->
-            <!--            ref="nvrRecord"-->
-            <!--            :src="nvrRecordData.src">-->
-            <!--          </iframe>-->
+            >
+            </video>
           </div>
-
-          <div style="margin-left:2vw">
-            <div style="margin: 1rem 0; display: flex;position:relative;    align-items: center">告警级别:
-              <div style="margin: 0 1rem;border: red 1px solid;width: 3rem;height: 1.5rem;display: flex;align-items: center;justify-content: center;">
-                <span v-if="alarm.maxAlarmLevel == 4" style="color: red;font-size: 1rem;text-shadow: 0 0 3px #000000;">致命</span>
-                <span v-if="alarm.maxAlarmLevel == 3" style="color: orange;font-size: 1rem;text-shadow: 0 0 3px #000000;">严重</span>
-                <span v-if="alarm.maxAlarmLevel == 2" style="color: yellow;font-size: 1rem;text-shadow: 0 0 3px #000000;">一般</span>
-                <span v-if="alarm.maxAlarmLevel == 1" style="color: #08F9EB ;font-size: 1rem;text-shadow: 0 0 3px #000000;">提示</span>
-              </div>
-
-            </div>
-            <div style="margin: 2vh  0;">
-              告警名称：{{ alarm.alarmName }}
-            </div>
-            <div style="margin: 3vh  0;">
-              告警编号：{{ alarm.id }}
-            </div>
-            <div style="margin: 3vh  0;">
-              告警类型：{{ alarm.alarmCode == 1001 ? "行人告警" : alarm.alarmCode == 1002 ? "非机动车告警" : alarm.alarmCode == 1003 ?
-                "异物告警" :
-                alarm.alarmCode == 1004 ? "温度告警" :
-                  alarm.alarmCode == 1005 ? "湿度告警" : alarm.alarmCode == 1006 ? "气体告警" : alarm.alarmCode == 1007 ? "灯光告警" :
-                    alarm.alarmCode
-                      == 1008 ? "违停逆行告警" : alarm.alarmCode == 1009 ? "超速告警" : alarm.alarmCode == 1010 ? "动物告警" : alarm.alarmCode
-                        == 1012 ? "消防设备告警" : alarm.alarmCode == 1011 ? "井盖异常告警" : alarm.alarmCode == 1013 ? "火灾烟雾告警" :
-                          alarm.alarmCode
-                            == 1014 ? "红外测温告警" : "机体告警" }}
-            </div>
-            <div style="margin: 3vh 0;">
-              事件描述：{{ alarm.Description }}
-            </div>
-            <div style="margin: 3vh 0;">
-              告警位置：{{ alarm.location }}
-            </div>
-            <div style="margin: 3vh  0;">
-              发生时间：{{ alarm.happenTime }}
-            </div>
-            <div style="margin: 3vh  0;">
-              修复时间：{{ alarm.RecoveryTime == null ? "未修复" : alarm.RecoveryTime }}
-            </div>
+          <div style="width: 100%;height:40%;position: relative;display: flex;justify-content: center;align-items: center;">
+            <span style="font-size: 2.5rem;color: rgb(100,200,200)">{{this.alarm.statusNum == 0 || this.alarm.statusNum == 1 ? "未处理":"已处理"}}</span>
           </div>
         </div>
-        <span slot="footer" class="dialog-footer">
+
+        <div style="margin-left:2vw">
+          <div style="margin: 1rem 0; display: flex;position:relative;    align-items: center">告警级别:
+            <div style="margin: 0 1rem;border: red 1px solid;width: 3rem;height: 1.5rem;display: flex;align-items: center;justify-content: center;">
+              <span v-if="alarm.maxAlarmLevel == 4" style="color: red;font-size: 1rem;text-shadow: 0 0 3px #000000;">致命</span>
+              <span v-if="alarm.maxAlarmLevel == 3" style="color: orange;font-size: 1rem;text-shadow: 0 0 3px #000000;">严重</span>
+              <span v-if="alarm.maxAlarmLevel == 2" style="color: yellow;font-size: 1rem;text-shadow: 0 0 3px #000000;">一般</span>
+              <span v-if="alarm.maxAlarmLevel == 1" style="color: #08F9EB ;font-size: 1rem;text-shadow: 0 0 3px #000000;">提示</span>
+            </div>
+
+          </div>
+          <div style="margin: 2vh  0;">
+            告警名称：{{ alarm.alarmName }}
+          </div>
+          <div style="margin: 3vh  0;">
+            告警编号：{{ alarm.id }}
+          </div>
+          <div style="margin: 3vh  0;">
+            告警类型：{{ alarm.alarmCode == 1001 ? "行人告警" : alarm.alarmCode == 1002 ? "非机动车告警" : alarm.alarmCode == 1003 ?
+              "异物告警" :
+              alarm.alarmCode == 1004 ? "温度告警" :
+                  alarm.alarmCode == 1005 ? "湿度告警" : alarm.alarmCode == 1006 ? "气体告警" : alarm.alarmCode == 1007 ? "灯光告警" :
+                      alarm.alarmCode
+                      == 1008 ? "违停逆行告警" : alarm.alarmCode == 1009 ? "超速告警" : alarm.alarmCode == 1010 ? "动物告警" : alarm.alarmCode
+                      == 1012 ? "消防设备告警" : alarm.alarmCode == 1011 ? "井盖异常告警" : alarm.alarmCode == 1013 ? "火灾烟雾告警" :
+                          alarm.alarmCode
+                          == 1014 ? "红外测温告警" : "机体告警" }}
+          </div>
+          <div style="margin: 3vh 0;">
+            事件描述：{{ alarm.Description }}
+          </div>
+          <div style="margin: 3vh 0;">
+            告警位置：{{ alarm.location }}
+          </div>
+          <div style="margin: 3vh  0;">
+            发生时间：{{ alarm.happenTime }}
+          </div>
+          <div style="margin: 3vh  0;">
+            修复时间：{{ alarm.RecoveryTime == null ? "未修复" : alarm.RecoveryTime }}
+          </div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
           <template>
 <!--            <el-button type="success" style="margin-right: 3rem" v-if="alarmJudge(alarm.alarmCode)" @click="playRecord(alarm)">回 看</el-button>-->
             <el-button v-if="alarm.statusNum == 0 || alarm.statusNum == 1" style="background-color: var(--bt-confirm-bg)" type="primary" @click="showDetail(alarm)">处 理</el-button>
@@ -212,11 +207,8 @@
           </template>
 
         </span>
-      </el-dialog>
-      <div>
-        <pagination v-show="total > 0" :total="total" :page.sync="page" :limit.sync="limit" @pagination="init" />
-      </div>
-    </div>
+    </el-dialog>
+
     <!-- :visible.sync="dialogDetailFlag" -->
     <el-dialog :title="$t('alarm_dealWith.alarm_dealWith_label')" :visible.sync="dialogDetailFlag" class="dialog-class"
       @close="cancel()">

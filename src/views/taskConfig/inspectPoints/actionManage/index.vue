@@ -1838,6 +1838,17 @@ export default {
   color: #FFFFFF !important;
 }
 
+.image-slot{
+  font-size: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
 
+.nvrRecord{
+  background-color: #000000;
+  border: none;
+  display: inline-block;
+}
 
 </style>

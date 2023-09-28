@@ -518,48 +518,6 @@
                 <!--                  </el-table-column>-->
               </el-table>
             </div>
-
-            <el-dialog title="告警详情" :visible.sync="dialogVisible" width="60%">
-              <div style="display:flex">
-                <img :src="imageUrl" alt="" style="width:70%">
-                <div style="margin-left:2.5rem">
-                  <div style="margin: 0.625rem  0;">告警级别:
-                    <span v-if="alarm.MaxLevel == 4"
-                          style="border: red 0.0625rem solid; color: red;font-size: 1.375rem;">致命</span>
-                    <span v-if="alarm.MaxLevel == 3"
-                          style="border: orange 0.0625rem solid; color: orange;font-size: 1.375rem;">严重</span>
-                    <span v-if="alarm.MaxLevel == 2"
-                          style="border: yellow 0.0625rem solid; color: yellow;font-size: 1.25rem;">一般</span>
-                    <span v-if="alarm.MaxLevel == 1"
-                          style="border: #08F9EB 0.0625rem solid; color: #08F9EB ;font-size: 1.25rem;">提示</span>
-                  </div>
-                  <div style="margin: 1.25rem  0;">
-                    告警名称：{{ alarm.AlarmName }}
-                  </div>
-                  <div style="margin: 1.875rem  0;">
-                    告警编号：{{ alarm.ID }}
-                  </div>
-                  <div style="margin: 1.875rem  0;">
-                    告警类型：{{ this.alarmJudge(alarm.AlarmCode) }} </div>
-                  <div style="margin: 1.875rem 0;">
-                    事件描述：{{ alarm.Description }}
-                  </div>
-                  <div style="margin: 1.875rem 0;">
-                    告警位置：{{ alarm.Location }}
-                  </div>
-                  <div style="margin: 1.875rem  0;">
-                    发生时间：{{ alarm.ReportTime }}
-                  </div>
-                  <div style="margin: 1.875rem  0;">
-                    修复时间：{{ alarm.RecoveryTime == null ? "未修复" : alarm.RecoveryTime }}
-                  </div>
-                </div>
-              </div>
-              <span slot="footer" class="dialog-footer">
-                  <el-button @click="dialogVisible = false">取 消</el-button>
-                  <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-                </span>
-            </el-dialog>
           </div>
 
           <div class="leftTitle" style="display:flex;padding-top: 0.5rem;padding-bottom: 0.5rem;">
@@ -610,6 +568,79 @@
         </div>
       </el-col>
     </div>
+    <el-dialog title="告警详情" :visible.sync="dialogVisible" width="60%" @close="closeDetailDialog">
+      <div style="display:flex;color: var(--font-color);">
+        <div style="width:70%;position: relative;">
+          <div style="height:60%;display: flex;margin-bottom: 1rem">
+            <div style="width:50%;background-color: #8c939d;margin-right: 1rem">
+              <el-image :src="imageUrl"
+                      style="width: 100%;height: 100%;display: flex;justify-content: center;align-items: center"
+                      :preview-src-list="imageUrl">
+                <div slot="error" class="image-slot">
+                  <div style="font-size: 2rem;">暂无图片</div>
+                </div>
+              </el-image>
+            </div>
+            <div v-if="nvrVideoSrc == ''"
+                 class="nvrRecord"
+                 style="width:50%;background-color: #8c939d;font-size: 2rem;align-items: center;justify-content: center;display: flex;">
+              暂无视频
+            </div>
+            <video
+                style="width:50%;background-color: #8c939d;"
+                class="nvrRecord"
+                ref="nvrVideo"
+                v-if="nvrVideoSrc != ''"
+                :src="nvrVideoSrc"
+                autoplay controls
+            >
+            </video>
+          </div>
+          <div style="width: 100%;height:40%;position: relative;display: flex;justify-content: center;align-items: center;">
+            <span style="font-size: 2.5rem;color: rgb(100,200,200)">{{this.alarm.statusNum == 0 || this.alarm.statusNum == 1 ? "未处理":"已处理"}}</span>
+          </div>
+        </div>
+
+        <div style="margin-left:2vw">
+          <div style="margin: 1rem 0; display: flex;position:relative;    align-items: center">告警级别:
+            <div style="margin: 0 1rem;border: red 1px solid;width: 3rem;height: 1.5rem;display: flex;align-items: center;justify-content: center;">
+              <span v-if="alarm.MaxLevel == 4" style="color: red;font-size: 1rem;text-shadow: 0 0 3px #000000;">致命</span>
+              <span v-if="alarm.MaxLevel == 3" style="color: orange;font-size: 1rem;text-shadow: 0 0 3px #000000;">严重</span>
+              <span v-if="alarm.MaxLevel == 2" style="color: yellow;font-size: 1rem;text-shadow: 0 0 3px #000000;">一般</span>
+              <span v-if="alarm.MaxLevel == 1" style="color: #08F9EB ;font-size: 1rem;text-shadow: 0 0 3px #000000;">提示</span>
+            </div>
+
+          </div>
+          <div style="margin: 2vh  0;">
+            告警名称：{{ alarm.AlarmName }}
+          </div>
+          <div style="margin: 3vh  0;">
+            告警编号：{{ alarm.ID }}
+          </div>
+          <div style="margin: 3vh  0;">
+            告警类型：{{ alarmJudge(alarm.AlarmCode) }}
+          </div>
+          <div style="margin: 3vh 0;">
+            事件描述：{{ alarm.Description }}
+          </div>
+          <div style="margin: 3vh 0;">
+            告警位置：{{ alarm.Location }}
+          </div>
+          <div style="margin: 3vh  0;">
+            发生时间：{{ alarm.ReportTime }}
+          </div>
+          <div style="margin: 3vh  0;">
+            修复时间：{{ alarm.RecoveryTime == null ? "未修复" : alarm.RecoveryTime }}
+          </div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+                    <template>
+<!--                      <el-button v-if="alarm.Status == 0 || alarm.Status == 1"  type="primary" @click="showDetail(alarm)">处 理</el-button>-->
+                      <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                    </template>
+                  </span>
+    </el-dialog>
     <WebSocket></WebSocket>
   </div>
 </template>
@@ -757,6 +788,7 @@ export default {
       dialogVisible: false,
       imageUrl: null,
       alarm: [],
+      nvrVideoSrc: '',
       videoOn: false,
       lightOn: false,
       YTlogin: false,
@@ -1231,13 +1263,22 @@ export default {
 
     },
 
+    closeDetailDialog(){
+      // this.showImg = true
+      // console.log("this.showImg ",this.showImg)
+      // if(this.recordTimer){
+      //   clearInterval(this.recordTimer)
+      // }
+    },
+
     async AreaSwap(){
       console.log('this.areaId--->',this.areaId)
+      let accessTypeArr;
       getExistCarrierAreaList().then((res) => {
         console.log('区域',res)
         let areas = []
         if(res.code == 20000){
-          let accessTypeArr = res.data
+          accessTypeArr = res.data
           for (let i = 0, len = accessTypeArr.length; i < len; i++) {
             areas.push(accessTypeArr[i].id)
             let optionObj = {
@@ -1247,6 +1288,7 @@ export default {
             this.options.push(optionObj);
           }
         }
+        console.log('area--->',isNaN(this.areaId),areas.includes(this.areaId))
         if(!isNaN(this.areaId) && areas.includes(this.areaId)){
           this.choosedArea = this.areaId
         }else {
@@ -2015,6 +2057,11 @@ export default {
       // this.cameraRotation = {x:0,y:Math.PI/2,z:0}
     },
 
+    alarmCodeJudge(code){
+      let alarm = [1004,1005,1006,1014,1015]
+      return !alarm.includes(code)
+    },
+
     startPlan() {
       this.lowButteryType = true
       if (this.taskID == '') {
@@ -2226,8 +2273,25 @@ export default {
       this.alarm = e
       if(dialog){
         this.dialogVisible = true
+
+        this.alarm.hasMedia = this.alarmJudge(this.alarm.AlarmCode)
+        if(this.alarm.hasMedia){
+          this.playRecord(e)
+        }else {
+          this.imageUrl = ''
+          this.nvrVideoSrc = ''
+        }
       }
     },
+
+    playRecord(row){
+      console.log("查看详情数据",row)
+      this.nvrVideoSrc = row.id+'.mp4'
+      // this.nvrVideoSrc= '/static/video/'+row.id+'.mp4'
+      this.$refs.nvrVideo.load()
+      this.$forceUpdate()
+    },
+
     onTableRowClassName({row, rowIndex}){
       if (rowIndex%2==1) {
         return 'odd-row';
@@ -3876,6 +3940,24 @@ export default {
     .speed_urgency_active {
       opacity: 1;
     }
+  }
+}
+
+.screen {
+  ::v-deep .el-dialog .el-dialog__header {
+    border-radius: 0 !important;
+    background: var(--dialoghead) !important;;
+    padding: 15px;
+    color: #fff;
+  }
+
+  ::v-deep .el-dialog__footer {
+    background: var(--tablebody);
+  }
+
+  ::v-deep .el-dialog__body {
+    color: var(--font-color);
+    background: var(--tablebody);
   }
 }
 
