@@ -860,7 +860,8 @@ export default {
         value:'路面异物，请谨慎驾驶',
         label:'路面异物，请谨慎驾驶'
       }],
-      broadcastSelect: '语音停止播放'
+      broadcastSelect: '语音停止播放',
+      previewSrcList: [],
     };
   },
   created() {
@@ -871,16 +872,6 @@ export default {
   async mounted() {
     try {
       await this.AreaSwap()
-      await this.init()
-      await this.getSysConfig()
-      // await this.getAdvices()
-      await this.getVideo()
-      await this.lazyLoad()
-      await this.getCarTask()
-      await this.getCarList()
-      await this.getAlarmList()
-      await this.alarmSumButton('day')
-      await this.alarmAnalysisButton('day')
     } catch (error) {
       console.log(error);
     }
@@ -1141,6 +1132,7 @@ export default {
   methods: {
     async init() {
       //机器人列表
+      this.locationName = ''
       console.log('this.areaId',this.areaId)
       const robotInfo = await getCarrierListByAreaId(this.areaId)
       this.carrierArr = robotInfo.data //机器人的集合
@@ -1154,113 +1146,113 @@ export default {
         this.carrierSelected.CarrierAccessoryList.forEach((res) => {
           this.currentAdvices.push(res)
         })
-      }
-      console.log('查看选中机器人', this.carrierSelected)
-      if(this.carrierSelected == null){
-        return
-      }
-      this.getAreaName()
-      this.carID = this.carrierSelected.CarrierID
-      this.carrierName = this.carrierSelected.CarrierName
-      this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
 
-      const visibleLight = document.getElementById('visibleLight');
-      visibleLight.onload = () => {
-        visibleLight.contentDocument.ondblclick = (e) =>{
-          visibleLight.classList.toggle("iframe-fullScreen")
+        console.log('查看选中机器人', this.carrierSelected)
+        if(this.carrierSelected == null){
+          return
         }
-        visibleLight.contentDocument.onclick = (e) => {
-          // console.log("查看摄像机信息", this.currentAdvices[0].accessoryID)
-          this.currentCamera = this.currentAdvices[0]
-        }
-      };
-      const infrared = document.getElementById('infrared');
-      infrared.onload = () => {
-        infrared.contentDocument.ondblclick=(e)=>{
-          infrared.classList.toggle("iframe-fullScreen")
-        }
-        infrared.contentDocument.onclick = (e) => {
+        this.getAreaName()
+        this.carID = this.carrierSelected.CarrierID
+        this.carrierName = this.carrierSelected.CarrierName
+        this.$store.dispatch('global/getIp', this.carrierSelected.CarrierIP)
+
+        const visibleLight = document.getElementById('visibleLight');
+        visibleLight.onload = () => {
+          visibleLight.contentDocument.ondblclick = (e) =>{
+            visibleLight.classList.toggle("iframe-fullScreen")
+          }
+          visibleLight.contentDocument.onclick = (e) => {
+            // console.log("查看摄像机信息", this.currentAdvices[0].accessoryID)
+            this.currentCamera = this.currentAdvices[0]
+          }
         };
+        const infrared = document.getElementById('infrared');
+        infrared.onload = () => {
+          infrared.contentDocument.ondblclick=(e)=>{
+            infrared.classList.toggle("iframe-fullScreen")
+          }
+          infrared.contentDocument.onclick = (e) => {
+          };
 
-        let clientX = 2
-        let clientY = 110
-        // let timer
-        let that = this
-        infrared.contentDocument.onmousemove = (e) => {
-          // this.currentCamera = this.currentAdvices[1]
-          // console.log('视频宽高', e.clientX,e.clientY)
-          // console.log("查看红外信息", this.carrierSelected.CarrierAccessoryList[0].AccessoryID)
-          clientX = parseFloat(e.clientX).toFixed(1)
-          clientY = parseFloat(e.clientY).toFixed(1)
+          let clientX = 2
+          let clientY = 110
+          // let timer
+          let that = this
+          infrared.contentDocument.onmousemove = (e) => {
+            // this.currentCamera = this.currentAdvices[1]
+            // console.log('视频宽高', e.clientX,e.clientY)
+            // console.log("查看红外信息", this.carrierSelected.CarrierAccessoryList[0].AccessoryID)
+            clientX = parseFloat(e.clientX).toFixed(1)
+            clientY = parseFloat(e.clientY).toFixed(1)
 
-        }
-        infrared.contentDocument.onmouseover = (e) => {
-          that.tempicTimer = setInterval(() => {
-            let param = {
-              accessoryID: this.carrierSelected.CarrierAccessoryList[0].AccessoryID,
-              sourceHeight: 512,// parseFloat(e.target.clientWidth * 512 / 640)
-              sourceWidth: 640, //e.target.clientWidth,//640
-              x: parseInt(640 / e.target.clientWidth * clientX),
-              y: parseInt(512 / e.target.clientHeight * clientY),
-            }
-            getTemperature(param).then((res) => {
-              // console.log('调用接口参数', param, res)
-              if (res.code == 20000 && res.data != '') {
-                this.tempicture = res.data + '℃'
-                getHot(e)
-                setTimeout(()=>{
-                  that.tempicture = null
-                  that.tempictureShow = false
-                },10000)
+          }
+          infrared.contentDocument.onmouseover = (e) => {
+            that.tempicTimer = setInterval(() => {
+              let param = {
+                accessoryID: this.carrierSelected.CarrierAccessoryList[0].AccessoryID,
+                sourceHeight: 512,// parseFloat(e.target.clientWidth * 512 / 640)
+                sourceWidth: 640, //e.target.clientWidth,//640
+                x: parseInt(640 / e.target.clientWidth * clientX),
+                y: parseInt(512 / e.target.clientHeight * clientY),
               }
-            })
-            const getHot = function (e) {
-              let tempictureMove = document.getElementById('tempicture')
-              let tempoint = document.getElementById('tempoint')
-              const rightMove = e.target.clientWidth - clientX
-
-              if(tempictureMove != null){
-                if (clientX > 75) {
-                  if(rightMove < 30){
-                    tempictureMove.style.right = '30px'
-                  }else {
-                    tempictureMove.style.right = rightMove - 25 + 'px'
-                  }
-                }else {
-                  tempictureMove.style.right = e.target.clientWidth -  75 + 'px'
+              getTemperature(param).then((res) => {
+                // console.log('调用接口参数', param, res)
+                if (res.code == 20000 && res.data != '') {
+                  this.tempicture = res.data + '℃'
+                  getHot(e)
+                  setTimeout(()=>{
+                    that.tempicture = null
+                    that.tempictureShow = false
+                  },10000)
                 }
-                tempictureMove.style.top = clientY - 15 + 'px'
+              })
+              const getHot = function (e) {
+                let tempictureMove = document.getElementById('tempicture')
+                let tempoint = document.getElementById('tempoint')
+                const rightMove = e.target.clientWidth - clientX
+
+                if(tempictureMove != null){
+                  if (clientX > 75) {
+                    if(rightMove < 30){
+                      tempictureMove.style.right = '30px'
+                    }else {
+                      tempictureMove.style.right = rightMove - 25 + 'px'
+                    }
+                  }else {
+                    tempictureMove.style.right = e.target.clientWidth -  75 + 'px'
+                  }
+                  tempictureMove.style.top = clientY - 15 + 'px'
 
 
-                tempoint.style.right = rightMove + 'px'
-                tempoint.style.top = clientY + 'px'
+                  tempoint.style.right = rightMove + 'px'
+                  tempoint.style.top = clientY + 'px'
 
-                that.tempictureShow = true
+                  that.tempictureShow = true
+                }
+
               }
+            }, 500);
 
-            }
-          }, 500);
+          };
+          infrared.contentDocument.onmouseout = ()=>{
+            // console.log('移除')
+            window.clearInterval(that.tempicTimer)
+            // timer = null
+          }
 
         };
-        infrared.contentDocument.onmouseout = ()=>{
-          // console.log('移除')
-          window.clearInterval(that.tempicTimer)
-          // timer = null
+
+        if(this.choosedArea == 37){
+          this.filePath = ["/static/model/screen.glb","/static/model/robot.glb"]
+          this.vue3dShow = false
+          this.vue3dShow = true
+        }else {
+          this.filePath = ["/static/model/robot.glb"]
+          this.vue3dShow = false
+          this.vue3dShow = true
         }
 
-      };
-
-      if(this.choosedArea == 37){
-        this.filePath = ["/static/model/screen.glb","/static/model/robot.glb"]
-        this.vue3dShow = false
-        this.vue3dShow = true
-      }else {
-        this.filePath = ["/static/model/robot.glb"]
-        this.vue3dShow = false
-        this.vue3dShow = true
       }
-
-
     },
 
     closeDetailDialog(){
@@ -1274,10 +1266,10 @@ export default {
     async AreaSwap(){
       console.log('this.areaId--->',this.areaId)
       let accessTypeArr;
-      getExistCarrierAreaList().then((res) => {
-        console.log('区域',res)
+      getExistCarrierAreaList().then(async(res) => {
+        console.log('区域', res)
         let areas = []
-        if(res.code == 20000){
+        if (res.code == 20000) {
           accessTypeArr = res.data
           for (let i = 0, len = accessTypeArr.length; i < len; i++) {
             areas.push(accessTypeArr[i].id)
@@ -1288,12 +1280,23 @@ export default {
             this.options.push(optionObj);
           }
         }
-        console.log('area--->',isNaN(this.areaId),areas.includes(this.areaId))
-        if(!isNaN(this.areaId) && areas.includes(this.areaId)){
+        console.log('area--->', isNaN(this.areaId), areas.includes(this.areaId))
+        if (!isNaN(this.areaId) && areas.includes(this.areaId)) {
           this.choosedArea = this.areaId
-        }else {
+        } else {
           this.choosedArea = accessTypeArr[0].id
         }
+
+        await this.init()
+        await this.getSysConfig()
+        // await this.getAdvices()
+        await this.getVideo()
+        this.lazyLoad()
+        this.getCarTask()
+        this.getCarList()
+        this.getAlarmList()
+        this.alarmSumButton('day')
+        this.alarmAnalysisButton('day')
       })
     },
     switchTheme(){
@@ -1452,7 +1455,7 @@ export default {
       // console.log('选中机器人且更改参数',this.currentAdvices[0])
       // this.getVideo()
     },
-    getVideo() {
+    async getVideo() {
       let that = this
       setTimeout(() => {
         getRtsp(this.carID).then((res) => {
@@ -2273,8 +2276,8 @@ export default {
       this.alarm = e
       if(dialog){
         this.dialogVisible = true
-
-        this.alarm.hasMedia = this.alarmJudge(this.alarm.AlarmCode)
+        console.log('e--->',e)
+        this.alarm.hasMedia = this.alarmCodeJudge(e.AlarmCode)
         if(this.alarm.hasMedia){
           this.playRecord(e)
         }else {
@@ -2286,7 +2289,7 @@ export default {
 
     playRecord(row){
       console.log("查看详情数据",row)
-      this.nvrVideoSrc = row.id+'.mp4'
+      this.nvrVideoSrc = row.ID+'.mp4'
       // this.nvrVideoSrc= '/static/video/'+row.id+'.mp4'
       this.$refs.nvrVideo.load()
       this.$forceUpdate()

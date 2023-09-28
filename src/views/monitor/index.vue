@@ -647,6 +647,7 @@ export default {
       hkPlugin:{},
       loading:false,
       frameShadow: true,
+      previewSrcList: [],
       };
   },
   created() {
