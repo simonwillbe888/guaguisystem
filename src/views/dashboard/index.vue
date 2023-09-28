@@ -123,10 +123,22 @@ export default {
 
   methods: {
    search(){
+    console.log('查询日期',this.date == null)
+
+   if(this.date == null){
+    console.log('bbbbb')
+    this.time = ['','']
+   }else if (this.date[0] !== 'Invalid date'&& this.date[1]!='Invalid date' ){
+    this.time = this.date
     this.date[0]=  moment(this.date[0]).format("YYYY-MM-DD HH:mm:ss")
     this.date[1]=  moment(this.date[1]).format("YYYY-MM-DD HH:mm:ss")
-    this.time = this.date
-        console.log('查询日期',this.time)
+   }
+   else{
+    this.time = ['','']
+
+   }
+  
+ 
 
    }
 
@@ -193,9 +205,15 @@ export default {
 ::v-deep .el-input__inner{
   background:  var(--tablebody);
   color: var(--font-color);
-  // border: 1px solid #64C8C8;
+  // border: none;
 }
- 
+::v-deep .el-range-editor.el-input__inner{
+  border: none;
+
+}
+::v-deep .el-input__inner:hover{
+  border: none;
+}
 .echarts-container {
   display: flex;
 
