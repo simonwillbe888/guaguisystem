@@ -2,24 +2,18 @@
   <div style="height: 100%;background-color: transparent;">
     <div class="selectDate">
       <div style="margin:.625rem ;flex: 1;display: flex;position: relative;i">
-        <div class="block" style="border: none;">
+        <div  style="border: none;">
           <!-- <span style="color: var(--font-color)">{{ $t('comment_vary.default_time_label') }}</span> -->
-          <el-date-picker v-model="date"   value-format="yyyy-MM-dd"   type="daterange" align="right" unlink-panels range-separator="至"
-            start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions">
-            <template #default="{ value, text }">
-      <el-input
-        v-bind="{
-          value,
-          text,
-          'suffix-icon': 'el-icon-time' // 设置后缀图标
-        }"
-        :readonly="true"
-        placeholder="开始日期"
-      >
-      </el-input>
-    </template>
-          </el-date-picker>
-          
+          <!-- <el-date-picker v-model="date"   value-format="yyyy-MM-dd"   type="daterange" align="right" unlink-panels range-separator="至"
+            start-placeholder="开始日期" end-placeholder="结束日期" :picker-options="pickerOptions" >
+          </el-date-picker> -->
+          <el-date-picker v-model="startTime" type="date" value-format="yyyy-MM-dd" 
+          :placeholder="$t('comment_vary.start_time_label')"  prefix-icon="el-icon-date">
+        </el-date-picker>
+        <span style="color: var(--font-color);margin: 0 5px;">至</span>
+        <el-date-picker v-model="endTime" type="date" :placeholder="$t('comment_vary.end_time_label')"
+          value-format="yyyy-MM-dd">
+        </el-date-picker>
         </div>
         <!-- <el-input placeholder="请输入日期" @blur="date = day" v-model.number="day" class="day">
           <template slot="suffix">
@@ -70,6 +64,8 @@ export default {
     return {
       date: ['',''],
       value2:'',
+      startTime:'',
+      endTime:'',
       time:['',''],
       pickerOptions: {
           shortcuts: [{
@@ -124,7 +120,17 @@ export default {
   methods: {
    search(){
     // console.log('查询日期')
-    this.time = this.date;
+    if(this.startTime > this.endTime){
+      this.$notify({
+        message: '开始时间不能大于结束时间',
+        type: 'error',
+        title: '提示',
+        duration: 5000,
+      });
+    }else{
+      this.time = [this.startTime,this.endTime];
+
+    }
    }
 
 
@@ -140,7 +146,7 @@ export default {
   text-align: center;
   background-color: var(--tablebody);
   box-shadow: var(--shadow-color); 
-
+  position: relative;
   .search {
     width: 5rem;
     height: 1.875rem;
@@ -158,8 +164,8 @@ export default {
     height: 1.875rem;
     line-height: 1.875rem;
   }
-::v-deep .el-date-editor .el-range__icon{
-  line-height: 1.3;
+::v-deep .el-input__icon{
+  line-height: 1.8;
 }
 ::v-deep .el-date-editor .el-range__close-icon{
   line-height: 1.3;
@@ -180,7 +186,7 @@ export default {
   }
 
   .el-input {
-    width: 3.75rem;
+    width: 11rem;
   }
 }
 ::v-deep .el-range-separator{
@@ -189,6 +195,8 @@ export default {
 }
 ::v-deep .el-input__inner, .el-range-editor.el-input__inner{
   background:  var(--tablebody);
+  color: var(--font-color);
+  border: 1px solid #64C8C8;
 }
  
 .echarts-container {

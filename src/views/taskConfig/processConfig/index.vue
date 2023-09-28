@@ -144,7 +144,7 @@
         :close-on-click-modal="false"
       >
         <el-form
-          label-width="120px"
+          label-width="150px"
           :model="taskForm"
           :rules="rules"
           ref="taskForm"
@@ -293,6 +293,7 @@ export default {
       rules: {
         processName: [
           { required: true, message: '请输流程名称', trigger: 'change' },
+          { max: 64, message: '流程名称不能超过64个字符' }
         ],
         // inspectedTask: [
         //   { required: true, message: '请输入巡检任务名称', trigger: 'change' },
@@ -898,7 +899,7 @@ export default {
 }
 ::v-deep  .el-input__inner
  {
-  // width: 12.5rem;
+  width: 12.5rem;
   // height: 1.875rem;
   background-color: transparent;
   color: var(--font-color);

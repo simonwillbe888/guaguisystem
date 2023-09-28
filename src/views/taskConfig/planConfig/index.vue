@@ -463,9 +463,9 @@ export default {
         EndTime: [
           { required: true, message: '请输入结束时间', trigger: 'change' },
         ],
-        DetectionClass: [
-          {  required: true, message: '请选择算法', trigger: 'change' },
-        ],
+        // DetectionClass: [
+        //   {  required: true, message: '请选择算法', trigger: 'change' },
+        // ],
 
 
       },
