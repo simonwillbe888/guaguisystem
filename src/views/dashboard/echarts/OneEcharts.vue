@@ -124,7 +124,7 @@ export default {
         },
         legend: {
           top: '8%',
-          data: ['已处理', '告警数据'],
+          data: ['告警数据','已处理'],
           textStyle: {
             fontSize: 12, //字体大小
             color: '#64C8C8', //字体颜色
@@ -166,33 +166,7 @@ export default {
             }
         },
         series: [
-          {
-            name: '已处理',
-            type: 'bar',
-            barWidth: 30,
-            seriesLayoutBy: 'row',
-
-            label: {
-              show: false,
-              color: '#fff',
-              position: 'top',
-              formatter(params) {
-                if (params.value > 0) {
-                  return params.value;
-                } else {
-                  return '';
-                }
-              },
-            },
-            itemStyle: {
-              normal: { color: '#64C8C8' }
-            },
-            emphasis: {
-              focus: 'series',
-            },
-            data: this.dealCount,
-            barGap: '-5%',
-          },
+       
           {
             name: '告警数据',
             type: 'bar',
@@ -219,6 +193,33 @@ export default {
               normal: { color: '#f59b22' }
 
             },
+          },
+          {
+            name: '已处理',
+            type: 'bar',
+            barWidth: 30,
+            seriesLayoutBy: 'row',
+
+            label: {
+              show: false,
+              color: '#fff',
+              position: 'top',
+              formatter(params) {
+                if (params.value > 0) {
+                  return params.value;
+                } else {
+                  return '';
+                }
+              },
+            },
+            itemStyle: {
+              normal: { color: '#64C8C8' }
+            },
+            emphasis: {
+              focus: 'series',
+            },
+            data: this.dealCount,
+            barGap: '-5%',
           },
         ],
       };

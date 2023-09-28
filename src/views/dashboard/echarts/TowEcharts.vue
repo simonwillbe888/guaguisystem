@@ -77,7 +77,7 @@ export default {
           
         
         }
-        // console.log("查看发生率",this.occurCount/this.count)
+        console.log("查看发生率",this.occurCount/this.count,this.occurCount,this.count)
         if(this.$store.state.global.theme == 'theme-1'){
           self.getEchartLeft3(self.echartsData,'#000');
         }else{
@@ -148,14 +148,14 @@ export default {
             hoverAnimation: false, //关闭放大动画
             selectedOffset: 0, //选中块的偏移量
             label: {
-              show: false,
+              show: true,
               position: "center",
               formatter: this.percent +'%' ,
               fontSize: 13,
               color:titleColor
             },
             labelLine: {
-              show: false,
+              show: true,
             },
             data: [
               {
@@ -171,7 +171,7 @@ export default {
               },
               { value: this.occurCount, name: "告警次数" },
             ],
-            right: "50%",
+            right: "30%",
           },
         ],
       };

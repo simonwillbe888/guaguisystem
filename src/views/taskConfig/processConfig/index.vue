@@ -293,7 +293,7 @@ export default {
       rules: {
         processName: [
           { required: true, message: '请输流程名称', trigger: 'change' },
-          { max: 64, message: '流程名称不能超过64个字符' }
+          { max: 32, message: '流程名称不能超过32个字符' }
         ],
         // inspectedTask: [
         //   { required: true, message: '请输入巡检任务名称', trigger: 'change' },
