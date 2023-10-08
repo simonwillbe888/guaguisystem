@@ -8,7 +8,7 @@ import { getCountByOccur } from '@/api/homepageAlarm.js'
 
 export default {
   props:{
-    date:Number,
+    date:Array,
     required:true
   },
   data() {

@@ -187,7 +187,9 @@
 
           <el-col :span="15">
             <div class="map back-shaodow">
-              <img src="../../assets/img/route.png" class="backgroundIm">
+              <div class="image-container">
+                <img src="../../assets/img/route.png" class="backgroundIm" id="areaImage">
+              </div>
               <div style="display: flex;">
                 <div class="nowPosition">
                   <span style="margin:0.125rem 0.625rem 0  0.625rem ;font-size: 1.25rem;font-weight: var(--title-bolder);">巡检地图</span>
@@ -648,6 +650,7 @@ export default {
       loading:false,
       frameShadow: true,
       previewSrcList: [],
+      offset:0
       };
   },
   created() {
@@ -1078,11 +1081,34 @@ export default {
       const buttery = await getChargingStateByCarrierID(this.carrierSelected.CarrierID)
       this.butteryInfo = buttery.data
       let robot = document.getElementById('robot')
-      if (res.code == '20000') {
+      //动态移动
+      let areaImage = document.getElementById('areaImage')
+      let container = document.querySelector('.image-container')
+          if (res.code == '20000') {
         this.carList = res.data || [];
-        if (this.carList.x >= 1) {
-          const left = (93 / 46072) * this.carList.x
-          robot.style.left = left * 0.95 + '%'
+        this.offset = Math.floor(this.carList.x / 200)
+        // this.offset = this.offset +50
+         if (this.offset >= 2 && this.carList.pileNumber === null ) {
+         //1587 对应的参数是 地图的总长，需做相应的修改
+          areaImage.style.width = 2300 + "px"
+          // console.log('查看数据偏移量',this.offset)
+          if(this.offset  < container.scrollWidth - container.clientWidth){
+            setTimeout(() => {
+              container.scrollLeft = this.offset + 100
+            }, 0);
+          }
+          else{
+            setTimeout(() => {
+              container.scrollLeft = this.offset + 100
+            }, 0);
+            const left = (93 / container.clientWidth) * (this.offset -  container.scrollWidth + container.clientWidth)
+            robot.style.left = left * 0.6 + '%'
+          }
+        }
+        else{
+          areaImage.style.width = 100 + "%"
+          const move = (93/2300) * this.offset
+          robot.style.left =  move* 0.78 + '%'
         }
       }
       //气体
@@ -2183,17 +2209,38 @@ export default {
     background-size: 100%;
     background-repeat: no-repeat;
     color: #fff;
-
-    .backgroundIm {
-      border: transparent;
+    .image-container {
       width: 100%;
-      height: 100%;
-      position: relative;
-      //right: 1.5625rem;
-      //bottom: 0.8rem;
-      opacity: 1;
+      height: 8.5rem;
+      overflow-x: scroll;
+      scroll-behavior: smooth; /* 添加平滑滚动效果 */
+      scrollbar-width: none;
+      /* hide scrollbar for Firefox */
+      -ms-overflow-style: none;
+      /* hide scrollbar for IE and Edge */
     }
 
+    .image-container::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+
+    .image-container::-webkit-scrollbar-thumb {
+      background-color: transparent;
+    }
+
+    .image-container::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    .backgroundIm {
+      width: 100% ;//1587
+      height: 8.2rem;
+      border: transparent;
+      position: relative;
+      opacity: 1;
+      object-fit: fill;
+    }
     .nowPosition {
       flex: 1;
       display: flex;

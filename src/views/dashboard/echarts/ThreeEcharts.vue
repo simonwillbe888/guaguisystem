@@ -8,7 +8,7 @@ import { getCountByLevel } from '@/api/homepageAlarm.js'
 
 export default {
   props:{
-    date:Number,
+    date:Array,
     required:true
   },
   data() {

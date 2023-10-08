@@ -134,7 +134,7 @@
                   <el-descriptions-item style="color: var(--font-color)" label="顺序">
                     {{item.sequence}}</el-descriptions-item>
                   <el-descriptions-item style="color: var(--font-color)" label="巡检点名称">
-                    {{showInfo(item.locationID)}}
+                    <!-- {{showInfo(item.locationID)}} --> {{item.mapDisplayName}}
                   </el-descriptions-item>
                 </el-descriptions>
               </div>
@@ -273,7 +273,7 @@
           </el-row>
             <el-row :gutter="10">
               <el-col :span="12">
-                <el-form-item label="水平角度(0~360)" prop="yunPAngle">
+                <el-form-item label="水平角度" prop="yunPAngle">
                 <el-input
                 v-model.number="videoForm.yunPAngle"
                 ></el-input>
@@ -281,7 +281,7 @@
               </el-col>
               <el-col :span="12">
                 <!-- oninput="if(value.length==1){value=value.replace(/[^1-360]/g,'')}else{value=value.replace(/\D/g,'')}" -->
-                <el-form-item label="垂直角度(-90~90)" prop="yunTAngle">
+                <el-form-item label="垂直角度" prop="yunTAngle">
                 <el-input
                 v-model.number="videoForm.yunTAngle"
               ></el-input>
@@ -289,8 +289,8 @@
                </el-col>
              </el-row>
 
-            <el-form-item label="巡检点" prop="locationID">
-              <el-select
+            <el-form-item label="巡检点" prop="name">
+              <!-- <el-select
                 clearable
                 v-model="videoForm.locationID"
                 placeholder="请选择"
@@ -302,7 +302,15 @@
                   :value="item.locationID"
                 >
                 </el-option>
-              </el-select>
+              </el-select> -->
+
+              <el-autocomplete
+                class="inline-input"
+                v-model="videoForm.name"
+                value-key="name"
+                :fetch-suggestions="querySearch"
+                placeholder="请输入内容"
+              ></el-autocomplete>
             </el-form-item>
           </el-form>
         </div>
@@ -357,14 +365,14 @@
 
              <el-row :gutter="10">
               <el-col :span="12">
-                <el-form-item label="水平角度(0~360)" prop="yunPAngle">
+                <el-form-item label="水平角度" prop="yunPAngle">
                 <el-input
                 v-model.number="photoForm.yunPAngle"
                 ></el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="垂直角度(-90~90)" prop="yunTAngle">
+                <el-form-item label="垂直角度" prop="yunTAngle">
                 <el-input
                 v-model.number="photoForm.yunTAngle"
               ></el-input>
@@ -381,8 +389,15 @@
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="巡检点" prop="locationID">
-              <el-select
+                <el-form-item label="巡检点" prop="name">
+                  <el-autocomplete
+                class="inline-input"
+                v-model="photoForm.name"
+                value-key="name"
+                :fetch-suggestions="querySearch"
+                placeholder="请输入内容"
+              ></el-autocomplete>
+              <!-- <el-select
                 clearable
                 v-model="photoForm.locationID"
                 placeholder="请选择"
@@ -394,7 +409,7 @@
                   :value="item.locationID"
                 >
                 </el-option>
-              </el-select>
+              </el-select> -->
             </el-form-item>
             </el-col>
              </el-row>
@@ -459,9 +474,16 @@
           </el-form-item> -->
           <el-form-item
             label="巡检点"
-            prop="locationID"
+            prop="name"
           >
-            <el-select
+          <el-autocomplete
+                class="inline-input"
+                v-model="moveForm.name"
+                value-key="name"
+                :fetch-suggestions="querySearch"
+                placeholder="请输入内容"
+              ></el-autocomplete>
+            <!-- <el-select
               clearable
               v-model="moveForm.locationID"
               placeholder="请选择"
@@ -474,7 +496,7 @@
                 :value="item.locationID"
               >
               </el-option>
-            </el-select>
+            </el-select> -->
           </el-form-item>
           <el-form-item
             label="播报内容"
@@ -523,8 +545,15 @@
             ></el-input>
 
           </el-form-item>
-          <el-form-item label="巡检点" prop="locationID">
-            <el-select
+          <el-form-item label="巡检点" prop="name">
+            <el-autocomplete
+                class="inline-input"
+                v-model="infraForm.name"
+                value-key="name"
+                :fetch-suggestions="querySearch"
+                placeholder="请输入内容"
+              ></el-autocomplete>
+            <!-- <el-select
               clearable
               v-model="infraForm.locationID"
               placeholder="请选择"
@@ -536,7 +565,7 @@
                 :value="item.locationID"
               >
               </el-option>
-            </el-select>
+            </el-select> -->
           </el-form-item>
         </el-form>
       </div>
@@ -611,8 +640,15 @@
            </el-col>
            <el-col :span="12">
 
-          <el-form-item label="巡检点" prop="locationID">
-            <el-select
+          <el-form-item label="巡检点" prop="name">
+            <el-autocomplete
+                class="inline-input"
+                v-model="broadcast.name"
+                value-key="name"
+                :fetch-suggestions="querySearch"
+                placeholder="请输入内容"
+              ></el-autocomplete>
+            <!-- <el-select
               clearable
               v-model="broadcast.locationID"
               placeholder="请选择"
@@ -624,7 +660,7 @@
                 :value="item.locationID"
               >
               </el-option>
-            </el-select>
+            </el-select> -->
           </el-form-item>
            </el-col>
         </el-row>
@@ -706,10 +742,10 @@ export default {
         ],
         yunPAngle:[
 
-        { validator: this.validateYunPAngle, trigger: 'blur' }
+        { validator: this.validateYunPAngle, required:true, trigger: 'blur' }
         ],
         yunTAngle:[
-        { validator: this.validateYunTAngle, trigger: 'blur' }
+        { validator: this.validateYunTAngle, required:true,trigger: 'blur' }
 
         ],
         presetNo: [
@@ -719,10 +755,10 @@ export default {
             trigger: 'change',
           },
         ],
-        locationID: [
+        name: [
           {
             required: true,
-            message: '请选择巡检点',
+            message: '请输入巡检点',
             trigger: 'change',
           },
         ],
@@ -763,10 +799,17 @@ export default {
           },
         ],
         yunPAngle:[
-        { validator: this.validateYunPAngle, trigger: 'blur' }
+        { validator: this.validateYunPAngle, 
+          required:true,
+          trigger: 'blur' 
+        }
         ],
         yunTAngle:[
-        { validator: this.validateYunTAngle, trigger: 'blur' }
+        { 
+          required:true,
+          validator: this.validateYunTAngle, 
+          trigger: 'blur' 
+        }
 
         ],
         presetNo: [
@@ -776,10 +819,10 @@ export default {
             trigger: 'change',
           },
         ],
-        locationID: [
+        name: [
           {
             required: true,
-            message: '请选择巡检点',
+            message: '请输入巡检点',
             trigger: 'change',
           },
         ],
@@ -823,10 +866,10 @@ export default {
             trigger: 'change',
           },
         ],
-        locationID: [
+        name: [
           {
             required: true,
-            message: '请选择巡检点',
+            message: '请输入巡检点',
             trigger: 'change',
           },
         ],
@@ -862,7 +905,7 @@ export default {
             trigger: 'change',
           },
         ],
-        locationID: [
+        name: [
           {
             required: true,
             message: '请选择巡检点',
@@ -920,10 +963,10 @@ export default {
           { validator: this.validateVolume, trigger: 'blur' },
 
         ],
-        locationID: [
+        name: [
           {
             required: true,
-            message: '请选择巡检点',
+            message: '请输入巡检点',
             trigger: 'change',
           },
         ],
@@ -932,6 +975,7 @@ export default {
       templateList: [{id:0,label: '任务模板列表',children:[]}],
       patrolLocationList: [],
       sonTemplateDialogTitle: '',
+      suggestionList:[]
     };
   },
   computed:{
@@ -1003,6 +1047,17 @@ export default {
         });
     },
 
+    querySearch(queryString, cb) {
+        var patrolPoint = this.patrolLocationList;
+        var results = queryString ? patrolPoint.filter(this.createFilter(queryString)) : patrolPoint;
+        // 调用 callback 返回建议列表的数据
+        cb(results);
+      },
+      createFilter(queryString) {
+        return (patrolPoint) => {
+          return (patrolPoint.name.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+        };
+      },
     taskName(val) {
       switch (val) {
         case 1:
@@ -1032,11 +1087,13 @@ export default {
     async getAllPatrolLocationList() {
       // try {
       const res = await getPatrolPointListByAreaId(this.$route.query.areaId);
-      console.log('当前区域的巡检点',res)
       if (res.code === 20000) {
         res.data.forEach((element)=>{
+          this.suggestionList.push(element.name)
           this.patrolLocationList.push(element)
         })
+        // console.log('当前区域的巡检点',this.patrolLocationList)
+
       }
 
       // } catch (error) {}
@@ -1193,7 +1250,8 @@ export default {
           }
           this.actionsList.push({
             // id,
-            locationID: videoForm.locationID || 0,
+            mapDisplayName	:videoForm.name, //参数由id换成名称
+            // locationID: videoForm.locationID || 0,
             objId: Date.now(),
             type: 2,
             taskTemplateID: id,
@@ -1217,7 +1275,8 @@ export default {
           }
           this.actionsList.push({
             // id,
-            locationID: photoForm.locationID || 0,
+            // locationID: photoForm.locationID || 0,
+            mapDisplayName	:photoForm.name, 
             objId: Date.now(),
             type: 1,
             taskTemplateID: id,
@@ -1241,7 +1300,8 @@ export default {
           }
           this.actionsList.push({
             // id,
-            locationID: moveForm.locationID,
+            // locationID: moveForm.locationID,
+            mapDisplayName	:moveForm.name, 
             objId: Date.now(),
             type: 7,
             toPatrolLocation: moveForm.toPatrolLocation,
@@ -1263,7 +1323,8 @@ export default {
           }
           this.actionsList.push({
             // id,
-            locationID: infraForm.locationID || 0,
+            // locationID: infraForm.locationID || 0,
+            mapDisplayName	:infraForm.name, 
             objId: Date.now(),
             type: 8,
             taskTemplateID: id,
@@ -1284,7 +1345,8 @@ export default {
           }
           this.actionsList.push({
             // id,
-            locationID: broadcast.locationID || 0,
+            // locationID: broadcast.locationID || 0,
+            mapDisplayName:broadcast.name, 
             objId: Date.now(),
             type: 14,
             taskTemplateID: id,
@@ -1308,6 +1370,9 @@ export default {
     },
     editParam(obj, index) {
       this.ID = obj.id;
+      obj.name = obj.mapDisplayName
+      console.log('查看修改的参数',obj,index)
+
       if (obj.type === 2) {
         this.dialogTitle = '修改录像';
         this.cameraDialogVisible = true;
@@ -1432,7 +1497,8 @@ export default {
           case 7:
             obj = {
               toPatrolLocation: item.toPatrolLocation,
-              locationID: item.locationID || -1,
+              // locationID: item.locationID || -1,
+              mapDisplayName:item.name, 
               vertexID: item.vertexID || -1,
               voiceBroadcastText:item.voiceBroadcastText||''
             };
@@ -1698,7 +1764,7 @@ export default {
   font-size: 0.8vh;
     margin: auto;
   ::v-deep .el-input {
-   width: 13vw;
+   width: 200px;
 
   }
   .common-slider {

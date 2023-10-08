@@ -66,7 +66,7 @@ export default {
   },
   data() {
     return {
-      date: ['',''],
+      date: [],
       value2:'',
       startTime:'',
       endTime:'',
@@ -123,20 +123,16 @@ export default {
 
   methods: {
    search(){
-    console.log('查询日期',this.date == null)
+    if (this.date == null || this.date[0] === 'Invalid date' || this.date[1] === 'Invalid date'|| this.date[0] == this.date[1]) {
+  console.log('bbbbb / dddd');
+  this.time = ['', ''];
+} else {
 
-   if(this.date == null){
-    console.log('bbbbb')
-    this.time = ['','']
-   }else if (this.date[0] !== 'Invalid date'&& this.date[1]!='Invalid date' ){
-    this.time = this.date
-    this.date[0]=  moment(this.date[0]).format("YYYY-MM-DD HH:mm:ss")
-    this.date[1]=  moment(this.date[1]).format("YYYY-MM-DD HH:mm:ss")
-   }
-   else{
-    this.time = ['','']
-
-   }
+  console.log('ccccc',this.date);
+  this.time = this.date;
+  this.date[0] = moment(this.date[0]).format("YYYY-MM-DD HH:mm:ss");
+  this.date[1] = moment(this.date[1]).format("YYYY-MM-DD HH:mm:ss");
+}
   
  
 

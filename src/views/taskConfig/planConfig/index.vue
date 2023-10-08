@@ -281,7 +281,11 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="算法启动" prop="DetectionClass">
-          <el-radio-group v-model="taskForm.DetectionClass" :disabled="taskForm.isDetail" >
+          <el-switch
+  v-model="showAi"
+>
+</el-switch>
+          <el-radio-group v-show="showAi" v-model="taskForm.DetectionClass" :disabled="taskForm.isDetail" >
             <el-radio  :label="1">道路检测</el-radio>
             <el-radio  :label="2">照明检测</el-radio>
             <el-radio  :label="3">设备检测</el-radio>
@@ -289,13 +293,13 @@
             <el-radio  :label="5">火灾烟雾</el-radio>
           </el-radio-group>
           <el-checkbox-group v-model="taskAi" >
-          <div v-if="taskForm.DetectionClass == 1" >
+          <div v-if="taskForm.DetectionClass == 1 &&showAi" >
               <el-checkbox :disabled="taskForm.isDetail" 	 label="1001" style="width: 70px;color: var(--font-color)">行人</el-checkbox>
               <el-checkbox :disabled="taskForm.isDetail"  label="1002" style="width: 75px;;color: var(--font-color)">非机动车</el-checkbox>
               <el-checkbox :disabled="taskForm.isDetail"  label="1008" style="width: 75px;;color: var(--font-color)">违停</el-checkbox>
               <el-checkbox :disabled="taskForm.isDetail"  label="1016" style="width: 70px;;color: var(--font-color)">逆行</el-checkbox>
             </div>
-            <div v-if="taskForm.DetectionClass == 3">
+            <div v-if="taskForm.DetectionClass == 3  &&showAi">
               <el-checkbox 	:disabled="taskForm.isDetail"  label="1012" style="width: 70px;;color: var(--font-color)">消防设备</el-checkbox>
               <el-checkbox :disabled="taskForm.isDetail"  label="1017" style="width: 75px;;color: var(--font-color)">风机</el-checkbox>
               <el-checkbox :disabled="taskForm.isDetail"  label="1018" style="width: 75px;;color: var(--font-color)">指示灯</el-checkbox>
@@ -367,6 +371,7 @@ export default {
         endTime: '',
         openTime: '',
       },
+
       taskDialog: {
         addTimedTask: this.$t('plan_config.addTimedTask_label'),
         editTimedTask: this.$t('plan_config.editTimedTask_label'),
@@ -403,6 +408,7 @@ export default {
         },
       ],
       taskAi: [],
+      showAi:false,
       taskForm: {
         PlanName: '',
         PlanType: '',
@@ -508,7 +514,15 @@ export default {
     taskAi(newV, oldV) {
       this.taskForm.Ai = newV
       },
-
+      planTasks(newV,oldV){
+      console.log('巡检计划',newV)
+    },
+    showAi(newV,oldV){
+      if(newV == false){
+        this.taskForm.DetectionClass  = ''
+        console.log('监听到了暂停')
+      }
+    }
   },
   async mounted() {
     await this.init();
@@ -517,11 +531,7 @@ export default {
     await this.initTaskList();
     await this.initPlanList();
   },
-  watch:{
-    planTasks(newV,oldV){
-      console.log('巡检计划',newV)
-    }
-  },
+
   methods: {
     async init() {
       let self = this;
@@ -770,6 +780,9 @@ export default {
         };
         this.taskAi = this.taskForm.DetectionTypeList
         console.log("查看修改", this.taskForm, this.taskAi)
+        if(this.taskAi){
+          this.showAi = true
+        }
       }
       if (flag === 3) {
         this.dialogType = 'detail';
@@ -931,7 +944,7 @@ export default {
             obj.planID = PlanID;
             updatePatrolPlan(obj)
               .then((response) => {
-                console.log("查看参数", obj)
+                console.log("查看修改提交的参数", obj)
                 let data = response.data;
                 if (response.code === 20000) {
                   self.initPlanList();
