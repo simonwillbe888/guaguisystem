@@ -73,7 +73,8 @@ function resizeWeb(){
 #app {
   width: 100%;
   height: 100%;
-  // min-width: 1180px;
+  min-width: 1180px;
+  min-height:600px;
   background: var(--theme-color);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

@@ -410,7 +410,7 @@ export default {
 
 .headerBtn {
   // width: 8vw;
-  margin-top: 0.5rem;
+  // margin-top: 0.5rem;
   background-color: #64C8C8 !important;
 }
 

@@ -41,7 +41,7 @@ service.interceptors.response.use(
       Notification({
         title: '提示',
         duration: 5000,
-        message: res.data || 'Error',
+        message:  res.data.includes('NET')? '云台登录异常' :res.data || 'Error',
         type: 'error',
         // duration: 5 * 1000,
       });

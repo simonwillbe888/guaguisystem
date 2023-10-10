@@ -188,13 +188,13 @@
           <el-col :span="15">
             <div class="map back-shaodow">
               <div class="image-container">
-                <img src="../../assets/img/route.png" class="backgroundIm" id="areaImage">
+                <img src="../../assets/img/qfsd.png" class="backgroundIm" id="areaImage">
               </div>
               <div style="display: flex;">
                 <div class="nowPosition">
                   <span style="margin:0.125rem 0.625rem 0  0.625rem ;font-size: 1.25rem;font-weight: var(--title-bolder);">巡检地图</span>
                   <span style="font-size: 1rem;padding-top: 0.3rem;">{{ carrierName }}当前位置：{{ carList.pileNumber == null ?
-                    (isNaN(carList.x) ? '未知' : carList.x / 1000) :
+                    (isNaN(carList.x) ? '未知' :  (carList.x / 1000).toFixed(1)) :
                     '站点' + carList.pileNumber
                   }}</span>
                 </div>
@@ -220,7 +220,7 @@
               </div>
 
 
-              <div id="robot" style="position:relative;width: 3.125rem;bottom: 5.3rem;margin-left: 0rem;">
+              <div id="robot" style="position:relative;width: 3.125rem;bottom: 5.3rem;margin-left: 3rem;transition: left 1s ease-in-out;">
                 <img src="../../assets/img/robot1.png" style="width:2.5rem;height: 1.875rem;opacity: 1;">
               </div>
 
@@ -650,7 +650,7 @@ export default {
       loading:false,
       frameShadow: true,
       previewSrcList: [],
-      offset:0
+      offset:0,
       };
   },
   created() {
@@ -893,15 +893,15 @@ export default {
                 x: parseInt(640 / e.target.clientWidth * clientX),
                 y: parseInt(512 / e.target.clientHeight * clientY),
               }
-              getTemperature(param).then((res) => {
-                if (res.code == 20000 && res.data != '') {
-                  this.tempicture = res.data + '℃'
-                }
-                getHot()
-                setTimeout(() => {
-                  this.tempicture = null
-                }, 10000)
-              })
+              // getTemperature(param).then((res) => {
+              //   if (res.code == 20000 && res.data != '') {
+              //     this.tempicture = res.data + '℃'
+              //   }
+              //   getHot()
+              //   setTimeout(() => {
+              //     this.tempicture = null
+              //   }, 10000)
+              // })
               const getHot = function () {
                 let tempictureMove = document.getElementById('tempicture')
                 const rightMove = e.target.clientWidth - clientX
@@ -1084,30 +1084,53 @@ export default {
       //动态移动
       let areaImage = document.getElementById('areaImage')
       let container = document.querySelector('.image-container')
+      let containerWidth = container.offsetWidth
           if (res.code == '20000') {
         this.carList = res.data || [];
         this.offset = Math.floor(this.carList.x / 200)
         // this.offset = this.offset +50
-         if (this.offset >= 2 && this.carList.pileNumber === null ) {
+         if (this.offset >= 1 && this.carList.pileNumber === null ) {
          //1587 对应的参数是 地图的总长，需做相应的修改
-          areaImage.style.width = 2300 + "px"
-          // console.log('查看数据偏移量',this.offset)
-          if(this.offset  < container.scrollWidth - container.clientWidth){
-            setTimeout(() => {
-              container.scrollLeft = this.offset + 100
-            }, 0);
+          areaImage.style.width = 1600 + "px"
+          console.log('查看数据偏移量',this.offset,container.offsetWidth)
+          if(this.offset < containerWidth){
+            container.scrollLeft = 0
+            const left = (93/containerWidth) * this.offset
+            robot.style.left = left * 0.95  + '%'
           }
-          else{
-            setTimeout(() => {
-              container.scrollLeft = this.offset + 100
-            }, 0);
-            const left = (93 / container.clientWidth) * (this.offset -  container.scrollWidth + container.clientWidth)
-            robot.style.left = left * 0.6 + '%'
+          else if (this.offset > containerWidth * 2&& this.offset > containerWidth*2 ){
+            if((this.offset - containerWidth*2) > containerWidth){
+              this.offset = 0
+              return
+            }
+            container.scrollLeft = containerWidth*2 
+            const left = (93/containerWidth)* (this.offset - containerWidth*2)
+            robot.style.left = left  * 0.95 + '%'
           }
+          else if(this.offset>containerWidth){
+             container.scrollLeft = containerWidth
+             const left = (93/containerWidth)* (this.offset - containerWidth)
+             robot.style.left = left * 0.95 + '%'
+          }
+          else if ( this.offset == containerWidth || this.offset == containerWidth*2){
+            robot.style.transform = 'translateX(0px)'
+          }
+          // if(this.offset  < container.scrollWidth - container.clientWidth){
+          //   setTimeout(() => {
+          //     container.scrollLeft = this.offset + 100
+          //   }, 0);
+          // }
+          // else{
+          //   setTimeout(() => {
+          //     container.scrollLeft = this.offset + 100
+          //   }, 0);
+          //   const left = (93 / container.clientWidth) * (this.offset -  container.scrollWidth + container.clientWidth)
+          //   robot.style.left = left * 0.6 + '%'
+          // }
         }
         else{
           areaImage.style.width = 100 + "%"
-          const move = (93/2300) * this.offset
+          const move = (93/1587) * this.offset
           robot.style.left =  move* 0.78 + '%'
         }
       }
@@ -1902,7 +1925,8 @@ export default {
       }
 
       .onLine,.outLine {
-        width: 10rem;
+        // width: 10rem;
+        padding:0 10px;
         background-color: var(--online);
         text-align: center;
         height: 2rem;

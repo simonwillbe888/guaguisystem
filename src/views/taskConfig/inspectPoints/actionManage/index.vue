@@ -309,7 +309,7 @@
                 v-model="videoForm.name"
                 value-key="name"
                 :fetch-suggestions="querySearch"
-                placeholder="请输入内容"
+                placeholder="请输入巡检点名称"
               ></el-autocomplete>
             </el-form-item>
           </el-form>
@@ -395,7 +395,7 @@
                 v-model="photoForm.name"
                 value-key="name"
                 :fetch-suggestions="querySearch"
-                placeholder="请输入内容"
+                placeholder="请输入巡检点名称"
               ></el-autocomplete>
               <!-- <el-select
                 clearable
@@ -481,7 +481,7 @@
                 v-model="moveForm.name"
                 value-key="name"
                 :fetch-suggestions="querySearch"
-                placeholder="请输入内容"
+                placeholder="请输入巡检点名称"
               ></el-autocomplete>
             <!-- <el-select
               clearable
@@ -551,7 +551,7 @@
                 v-model="infraForm.name"
                 value-key="name"
                 :fetch-suggestions="querySearch"
-                placeholder="请输入内容"
+                placeholder="请输入巡检点名称"
               ></el-autocomplete>
             <!-- <el-select
               clearable
@@ -646,7 +646,7 @@
                 v-model="broadcast.name"
                 value-key="name"
                 :fetch-suggestions="querySearch"
-                placeholder="请输入内容"
+                placeholder="请输入巡检点名称"
               ></el-autocomplete>
             <!-- <el-select
               clearable
@@ -927,7 +927,7 @@ export default {
         readText: [
           {
             required: true,
-            message: '请输入内容',
+            message: '请输入巡检点名称',
             trigger: 'change',
           },
         ],

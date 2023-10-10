@@ -296,6 +296,7 @@ export default {
             message: '请输入机器人名称',
             trigger: 'blur',
           },
+          { max: 16, message: '机器人名称不能超过16个字' }
         ],
         robotIp: [
           {

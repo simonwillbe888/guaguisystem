@@ -70,7 +70,7 @@
           <img src="../../assets/img/logo@2x.png" alt="" class="logo">
           <div class="form">
 
-            <div style="color:#000000;font-size: 4rem;font-weight: bold;margin-bottom: 1.5rem">应急机器人管理系统</div>
+            <div style="color:#000000;font-size: 4rem;font-weight:390;margin-bottom: 3rem;margin-top:0.5rem">应急机器人管理系统</div>
 
             <el-form :inline-message="true" :show-message="false" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left"
               label-width="0rem">
@@ -410,6 +410,7 @@ export default {
 
 ::v-deep .el-input__inner {
   color: #64C8C8 !important;
+  background:transparent !important;
   height: 3.125rem;
   width:33.5rem;
   border: 2px solid #59b3b3;

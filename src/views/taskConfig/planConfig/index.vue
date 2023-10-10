@@ -4,8 +4,12 @@
       <!-- <h3 class="inspection-setting-title">
         {{ $t("plan_config.robotTask_manage") }}
       </h3> -->
-      <el-button icon="el-icon-plus" type="success" style="text-align: center;line-height:0.1rem" size="mini"
-        @click="addTimedTask(null, 1)">添加巡检计划</el-button>
+      <el-button 
+      icon="el-icon-plus" 
+      type="success" 
+      style="text-align: center;line-height:0.1rem" size="mini"
+      @click="addTimedTask(null, 1)"
+      >添加巡检计划</el-button>
       <div class="inspec-setting-inquire">
         <el-input placeholder="请输入关键字" size="mini" clearable v-model="keyWord"
           style="width:150px;margin-right:10px"></el-input>
@@ -281,10 +285,10 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="算法启动" prop="DetectionClass">
-          <el-switch
-  v-model="showAi"
->
-</el-switch>
+                  <el-switch style="width:60px"
+          v-model="showAi"
+        >
+        </el-switch>
           <el-radio-group v-show="showAi" v-model="taskForm.DetectionClass" :disabled="taskForm.isDetail" >
             <el-radio  :label="1">道路检测</el-radio>
             <el-radio  :label="2">照明检测</el-radio>
@@ -520,7 +524,8 @@ export default {
     showAi(newV,oldV){
       if(newV == false){
         this.taskForm.DetectionClass  = ''
-        console.log('监听到了暂停')
+        this.taskAi = []
+        console.log('监听到了')
       }
     }
   },
@@ -779,9 +784,14 @@ export default {
           ...item,
         };
         this.taskAi = this.taskForm.DetectionTypeList
-        console.log("查看修改", this.taskForm, this.taskAi)
-        if(this.taskAi){
+        console.log("查看修改", this.taskForm)
+        if(this.taskAi.length> 0){
           this.showAi = true
+          console.log('开关打开')
+        }else{
+          this.showAi = false
+          console.log('开关关闭')
+
         }
       }
       if (flag === 3) {
@@ -904,7 +914,7 @@ export default {
           if (!isEdit) {
             addPatrolPlan(obj)
               .then((response) => {
-                console.log("查看参数", obj)
+                console.log("查看参数", obj,'ai',self.taskAi)
                 if (response.code === 20000) {
                   // this.dialogFormVisible = false;
                   self.initPlanList();
@@ -1147,7 +1157,7 @@ export default {
 
 <style lang="scss" scoped>
 .inspection-header {
-  padding: 0 10px;
+  padding: -6px 10px;
   background-color: lightblue;
   border: 1px solid #fff;
 
@@ -1157,7 +1167,7 @@ export default {
 
   .inspec-setting-inquire {
     display: inline;
-    height: 50px;
+    // height: 50px;
     // margin-bottom: 10px;
     float: right;
   }

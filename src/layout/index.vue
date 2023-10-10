@@ -402,6 +402,7 @@ export default {
 
     .changeRoad {
       margin-left: 2rem;
+      width:10rem;
       ::v-deep .el-input__inner{
         color: #64c8c8;
       }

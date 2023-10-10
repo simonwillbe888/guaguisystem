@@ -154,6 +154,8 @@
               placeholder="请输入流程名称"
               class="process-input"
               v-model="taskForm.processName"
+              style="width:13rem"
+
             ></el-input>
           </el-form-item>
           <el-form-item label="地图显示名称" prop="mapName">
@@ -166,6 +168,7 @@
               v-model="taskForm.mapName"
               placeholder="请选择区域"
               clearable
+              style="width:13rem"
             >
               <el-option
                 v-for="item in bigAreaOptions"

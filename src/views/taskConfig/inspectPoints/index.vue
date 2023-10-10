@@ -149,7 +149,7 @@
         <el-col :span="12">
           <el-form-item label="巡检点名称" prop="inspectName">
           <el-input
-          style="width:260px"
+          style="width:16rem"
             placeholder="请输入巡检点名称"
             maxlength="20"
             v-model="inspectForm.inspectName"
@@ -159,7 +159,7 @@
         <el-col :span="12">
           <el-form-item label="导航点编号" prop="naviNumber">
           <el-input
-            style="width:260px"
+            style="width:16rem"
             placeholder="请输入导航点编号"
             oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
             v-model.number="inspectForm.naviNumber"
@@ -171,7 +171,7 @@
         <el-col :span="12">
           <el-form-item label="地图标注名称" prop="mapName">
           <el-input
-          style="width:260px"
+          style="width:16rem"
             placeholder="请输入地图标注名称"
             v-model="inspectForm.mapName"
           ></el-input>
@@ -180,7 +180,7 @@
         <el-col :span="12">
           <el-form-item label="所属组别" prop="belongGroup">
           <el-input
-          style="width:260px"
+          style="width:16rem"
             placeholder="请输入所属组别"
             oninput="if(value.length==1){value=value.replace(/[^1-9]/g,'')}else{value=value.replace(/\D/g,'')}"
             v-model.number="inspectForm.belongGroup"
@@ -194,7 +194,7 @@
             clearable
             placeholder="请选择区域"
             v-model="inspectForm.siteName"
-            style="width:260px"
+            style="width:16rem"
           >
             <el-option
               v-for="item in bigAreaOptions"
@@ -546,7 +546,7 @@ export default {
 
 <style lang="scss" scoped>
 .inspection-header {
-  padding: 20px 10px;
+  padding: 20px 0px;
   background-color: lightblue;
   border: 1px solid #fff;
 
