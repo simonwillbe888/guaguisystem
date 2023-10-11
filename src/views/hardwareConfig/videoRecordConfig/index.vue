@@ -66,7 +66,6 @@
                 style="color: #64C8C8;background-color: var(--title-bg)"
                 @click="edit(row, true)"
                 size="mini"
-
               >
                 详情
               </el-button>
@@ -781,6 +780,7 @@ export default {
           if(res.data.length>0){
             this.fileList = [...res.data]
           }else {
+            this.searchLoading = false
             return
           }
           // this.searchResultText = (this.ids+1)+' / '+ res.data.length
