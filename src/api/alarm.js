@@ -32,6 +32,40 @@ export function getDeleteAlarmSet(data) {
     method: 'post',
   });
 }
+export function getVoicePageList(data) {
+  return request({
+    url: '/api/AlarmSet/getVoicePageList',
+    method: 'post',
+    data,
+  });
+}
+export function getVoiceNoPageList(data) {
+  return request({
+    url: '/api/AlarmSet/getVoiceNoPageList',
+    method: 'post',
+    data,
+  });
+}
+export function addVoice(data) {
+  return request({
+    url: '/api/AlarmSet/addVoice',
+    method: 'post',
+    data,
+  });
+}
+export function deleteVoice(data) {
+  return request({
+    url: '/api/AlarmSet/deleteVoice?id=' + data,
+    method: 'post',
+  });
+}
+export function updateVoice(data) {
+  return request({
+    url: '/api/AlarmSet/updateVoice',
+    method: 'post',
+    data,
+  });
+}
 // 告警类型
 export function getAlarmTypeList() {
   return request({

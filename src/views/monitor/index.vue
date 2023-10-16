@@ -56,7 +56,7 @@
             </div>
 
             <div class="electri">
-              <el-progress :width="45" color="#64C8C8" text-color="#64C8C8" type="circle"
+              <el-progress :width="45" style="font-size: 24px;" color="#64C8C8" text-color="#64C8C8" type="circle"
                 :percentage="carList.batteryLevel"></el-progress>
               <div style="font-size: 0.85rem;margin: 0.5rem 0 0 0.5rem">当前电量</div>
             </div>
@@ -107,13 +107,16 @@
             <i class="el-icon-close closeBroad" style="margin-left: auto;color: #000000;"
               @click="broadcastVisible = false"></i>
           </div>
-          <el-radio-group v-model="selectedOption">
-            <el-radio style="color:red ;" label="语音停止播放"></el-radio><br>
-            <el-radio label="前方事故，请注意绕行"></el-radio><br>
-            <el-radio label="路面凹坑，请谨慎驾驶"></el-radio><br>
-            <el-radio label="路面异物，请谨慎驾驶"></el-radio><br>
-            <el-radio label="前方拥堵，请注意减速"></el-radio><br>
-            <el-radio label="道路湿滑，请谨慎驾驶"></el-radio><br>
+          <el-radio-group v-model="selectedOption" style="min-height:13rem;max-height:15rem;overflow:scroll">
+            <el-radio  style="color:red ;" label=" 语音停止播放"></el-radio>
+             <el-radio 
+               v-for="(item, index) in radioList"
+               :key="index"
+              :label="item.text"
+             >
+               {{ item.text }}
+               <br> 
+             </el-radio>
           </el-radio-group>
           <div class="broadcastBtn">
             <el-button type="primary" style="background-color:#64C8C8 ;" size="mini" @click="broadcast()">确 定</el-button>
@@ -556,7 +559,7 @@ import {
   stopCar, CancelCarrierControl, getTemperature,
   startVoiceBroadcast, stopVoiceBroadcast, getCarrierListByAreaId, getRtsp, getTaskRemainingMileage
 } from '../../api/robot';
-import { getAllPatrolPlan, startPatrolPlan } from '../../api/taskConfig';
+import { getAllPatrolPlan, startPatrolPlan,getVoiceNoPageList } from '../../api/taskConfig';
 import {
   StartLight, EndLight, StartWiper, EndWiper, startPanLeft, endPanLeft, startPanRight, endPanRight, startTiltUp, endTiltUp, startTiltDown, endTiltDown,
   StartZoomIn, StartZoomOut, EndZoomIn, EndZoomOut, StartIrisOpen, EndIrisOpen, StartIrisClose, EndIrisClose, StartFocusFar, EndFocusFar, StartFocusNear, EndFocusNear, takePhoto, startRecord, endRecord
@@ -651,6 +654,7 @@ export default {
       frameShadow: true,
       previewSrcList: [],
       offset:0,
+      radioList:[],
       };
   },
   created() {
@@ -776,7 +780,7 @@ export default {
       }
       this.stopWarn()
 
-      if (this.selectedOption != '语音停止播放' && this.selectedOption != '') {
+      if (!this.selectedOption.includes('语音停止播放') && this.selectedOption != '') {
         stopVoiceBroadcast(this.carrierSelected.CarrierID)
         this.selectedOption = ''
       }
@@ -855,6 +859,9 @@ export default {
       this.locationName = ''
       const robotInfo = await getCarrierListByAreaId(this.areaId)
       this.carrierArr = robotInfo.data //机器人的集合
+      getVoiceNoPageList().then((res)=>{
+        this.radioList = res.data
+      })
       if (this.carrierArr.length == 0) {
         this.carrierSelected = null
       } else {
@@ -1190,7 +1197,7 @@ export default {
     },
     broadcast() {
       this.broadcastVisible = false
-      if (this.selectedOption != '语音停止播放' && this.selectedOption != '') {
+      if (!this.selectedOption.includes('语音停止播放') && this.selectedOption != '') {
         let params = {
           carrierID: this.carrierSelected.CarrierID,
           text: this.selectedOption
@@ -1203,7 +1210,7 @@ export default {
           }
         })
       }
-      else if (this.selectedOption == '语音停止播放') {
+      else if (this.selectedOption.includes('语音停止播放')) {
         stopVoiceBroadcast(this.carrierSelected.CarrierID).then((res) => {
           if (res.code == 20000) {
             Notification({
@@ -1460,7 +1467,7 @@ export default {
       }
     },
     stopBroadcast() {
-      if (this.selectedOption != '语音停止播放' && this.selectedOption != '') {
+      if (!this.selectedOption.includes('语音停止播放')  && this.selectedOption != '') {
         this.selectedOption = '语音停止播放'
         this.broadcast()
       }
@@ -1800,6 +1807,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+::-webkit-scrollbar {
+  display: none; /* 隐藏滚动条上的箭头 */
+}
 .back-shaodow {
   background-color: var(--back-shadow);
   box-shadow: 2px 2px 3px 0px var(--shadow-color);
@@ -1990,6 +2000,7 @@ export default {
 
       ::v-deep .el-progress__text {
         color: var(--active-color);
+        font-size:12px !important;
       }
     }
 
@@ -2433,8 +2444,10 @@ export default {
   }
 
   ::v-deep .el-radio {
+    display:block;
     color: #000000;
-    margin: 0.625rem 1.25rem;
+    margin: 1rem 1.25rem;
+
 
     .el-radio__inner {
       border: .0625rem solid #000000;

@@ -159,7 +159,12 @@ export function getAllPatrolTemplate() {
   });
 }
 
-
+export function getVoiceNoPageList(data) {
+  return request({
+    url: '/api/AlarmSet/getVoiceNoPageList',
+    method: 'get',
+  });
+}
 export function getPatrolTemplatePageList(data) {
   return request({
     url: '/api/PatrolTemplate/getPatrolTemplatePageList',

@@ -306,6 +306,18 @@ export const asyncRoutes = [
 
         },
       },
+      {
+        path: 'broadcastSetting',
+        name: 'broadcastSetting',
+        component: () => import('@/views/alarm/broadcastSetting'),
+        meta: {
+          title: '语音配置',
+          icon: 'list',
+          parent_id: 3,
+          // roles: ['AlarmSetting'],
+
+        },
+      },
     ],
   },
   // 巡检记录
